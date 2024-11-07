@@ -1,0 +1,280 @@
+.uppercase{
+    text-transform: uppercase;
+}
+
+.transparent-button{
+    background-color: transparent;
+    border: none;
+}
+
+.no-click *{
+    pointer-events: none;
+}
+
+.pipeline-breadcrumb{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    height: 40px;
+    overflow-y: hidden;
+    width: 100%;
+}
+/* 
+.pipeline-breadcrumb::-webkit-scrollbar {
+    height: 4px;
+}
+
+.pipeline-breadcrumb::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.pipeline-breadcrumb::-webkit-scrollbar-thumb {
+    background: #c0bfbf;
+}
+
+.pipeline-breadcrumb::-webkit-scrollbar-thumb:hover {
+    background: #ababab;
+} */
+
+table.text-normal :is(td, tr){
+    text-transform: initial !important;
+}
+
+.pipeline-breadcrumb .pipeline-stage{
+    position: relative;
+    display: grid;
+    place-items: center;
+    height: 40px;
+    width: auto;
+    padding: 10px 40px;
+    background-color: rgb(189, 189, 189);
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+.pipeline-breadcrumb .pipeline-stage:not(:first-child){
+    padding-left: 60px;
+}
+
+.pipeline-breadcrumb .pipeline-stage span{
+    transition: all .15s linear;
+    -webkit-transition: all .15s linear;
+    -moz-transition: all .15s linear;
+    -ms-transition: all .15s linear;
+    -o-transition: all .15s linear;
+}
+
+.pipeline-breadcrumb .pipeline-stage:hover span{
+    opacity: 0.5;
+}
+
+.pipeline-breadcrumb .pipeline-stage:not(:last-child)::after{
+    content: '';
+    display: block;
+    height: 40px;
+    width: 40px;
+    border: 2px solid transparent;
+    border-right-color: #f5f8fa;
+    border-bottom-color: #f5f8fa;
+    position: absolute;
+    background-color: rgb(189, 189, 189);
+    z-index: 10;
+    right: -20px;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+}
+
+.pipeline-breadcrumb .pipeline-stage[data-success="true"], .pipeline-breadcrumb .pipeline-stage[data-success="true"]::after{
+    background-color: #4db855;
+    color: #fff;
+}
+
+.activities{
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    margin-bottom: 15px;
+}
+
+.activities .activity-items{
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    position: relative;
+}
+
+.activities .activity-items::after{
+    content: '';
+    display: block;
+    height: calc(100% - 10px);
+    width: 1px;
+    position: absolute;
+    left: 14px;
+    bottom: 0;
+    border-left: 1px solid #baaadb;
+}
+
+.planned-activities.activities .activity-items::after{
+    border-left-style: dashed;
+}
+
+.activities .activity-tag{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    column-gap: 20px;
+}
+
+.activities h2, .activities p, .activities h5{
+    margin-bottom: 0;
+}
+
+.activities .activity-tag hr{
+    width: 100%;
+}
+
+.activities .activity-item{
+    display: flex;
+    align-items: start;
+    column-gap: 15px;
+    width: 100%;
+}
+
+.activities .activity-item .activity-icon{
+    position: relative;
+    z-index: 5;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--kt-info);
+    display: grid;
+    margin-top: 5px;
+    place-items: center;
+    background-color: #fff;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    transition: all .15s linear;
+    -webkit-transition: all .15s linear;
+    -moz-transition: all .15s linear;
+    -ms-transition: all .15s linear;
+    -o-transition: all .15s linear;
+}
+
+.activities .activity-item:hover .activity-icon{
+    background-color: var(--kt-info);
+}
+
+.activities .activity-item:hover .activity-icon i{
+    color: #fff;
+}
+
+.activities .activity-item .activity-icon i{
+    color: var(--kt-info);
+}
+
+.activities .activity-item .activity-content{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+.activities .activity-item .activity-content .activity-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 10px;
+}
+
+.activities .activity-item .activity-content .activity-header .activity-action-button{
+    background-color: transparent;
+    border: none;
+    transition: all .15s linear;
+    -webkit-transition: all .15s linear;
+    -moz-transition: all .15s linear;
+    -ms-transition: all .15s linear;
+    -o-transition: all .15s linear;
+}
+
+.activities .activity-item .activity-content .activity-header .activity-action-button:hover{
+    opacity: 0.75;
+}
+
+.activities .activity-item .activity-content .activity-body{
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+}
+
+.activities .activity-item .activity-content .activity-body .activity-comment{
+    padding: 12.5px;
+    background-color: var(--kt-info-light);
+    border: 1px solid var(--kt-info);
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+.activities .activity-item .activity-content .activity-body .activity-info{
+    margin-top: 5px;
+}
+
+.kanban-handle{
+    cursor: move;
+}
+
+.kanban .card{
+    border: 1px solid transparent;
+    transition: all .15s linear;
+    -webkit-transition: all .15s linear;
+    -moz-transition: all .15s linear;
+    -ms-transition: all .15s linear;
+    -o-transition: all .15s linear;
+}
+
+.kanban:hover .card{
+    border-color: var(--kt-primary);
+}
+
+.kanban .detail-lead-button{
+    position: absolute;
+    right: 15px;
+    top: 7.5px;
+    display: flex;
+    align-items: center;
+    gap: 7.5px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all .15s linear;
+    -webkit-transition: all .15s linear;
+    -moz-transition: all .15s linear;
+    -ms-transition: all .15s linear;
+    -o-transition: all .15s linear;
+}
+
+.kanban:hover .detail-lead-button{
+    opacity: 1;
+    visibility: visible;
+    pointer-events: fill;
+}

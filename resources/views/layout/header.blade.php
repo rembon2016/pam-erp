@@ -150,7 +150,7 @@
                 </a>
             </div>
             <div class="menu-item px-5">
-                <a href="" class="menu-link px-5">Sign Out</a>
+                <a href="{{ route('auth.logout') }}" class="menu-link px-5">Sign Out</a>
             </div>
         </div>
     </div>

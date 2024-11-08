@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -20,10 +21,13 @@ return Application::configure(basePath: dirname(__DIR__))
 
             Route::middleware('web')
                 ->group(base_path('routes/parts/auth.php'));
+
+            Route::get('/admin', fn () => redirect()->route('auth.login'));
         }
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->redirectGuestsTo(redirect: fn (Request $request) => route('auth.login'));
+        $middleware->redirectUsersTo(redirect: fn (Request $request) => route('dashboard'));
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

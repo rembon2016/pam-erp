@@ -8,6 +8,7 @@ namespace App\Models;
 // use Laravel\Sanctum\HasApiTokens;
 
 use App\Traits\HandleTableTimestamps;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -20,7 +21,8 @@ final class User extends Authenticatable
         Notifiable,
         SoftDeletes,
         HandleTableTimestamps,
-        HasRoles;
+        HasRoles,
+        HasUuids;
 
     /**
      * The database table name for the User model.

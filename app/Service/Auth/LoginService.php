@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service\Auth;
 
 use App\Functions\ObjectResponse;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
 final class LoginService
@@ -25,7 +26,7 @@ final class LoginService
      */
     public function authenticateUser(array $dto): object
     {
-        return Auth::guard($dto['guard'])->attempt($dto)
+        return Auth::guard($dto['guard'])->attempt(Arr::except($dto, ['guard']))
             ? ObjectResponse::success(
                 message: 'Successfully logged in.',
                 statusCode: 200,

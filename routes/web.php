@@ -30,6 +30,11 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/{id}/edit', [ServiceTypeController::class, 'edit'])->name('edit');
             Route::put('/{id}', [ServiceTypeController::class, 'update'])->name('update');
             Route::get('/{id}/delete', [ServiceTypeController::class, 'destroy'])->name('destroy');
+
+            // Export Route
+            Route::get('/export/pdf', [ServiceTypeController::class, 'exportPdf'])->name('export.pdf');
+            Route::get('/export/excel', [ServiceTypeController::class, 'exportExcel'])->name('export.excel');
+            Route::get('/export/csv', [ServiceTypeController::class, 'exportCsv'])->name('export.csv');
         });
 
         Route::group([

@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\MasterData;
 
-use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use App\Functions\Utility;
 use App\Models\ServiceType;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\Facades\DataTables;
+use App\Exports\MasterData\ServiceTypeExport;
 use App\Http\Requests\ServiceType\GlobalServiceTypeRequest;
 
 final class ServiceTypeController extends Controller
@@ -136,5 +139,26 @@ final class ServiceTypeController extends Controller
         } catch (\Throwable $th) {
             return to_route('master-data.service-type.index')->with('toastError', __('crud.error_delete', ['name' => 'Service Type']));
         }
+    }
+
+    public function exportPdf()
+    {
+        $data = ServiceType::orderBy('service_code', 'ASC')->get();
+        $pdf = Pdf::loadView('exports.pdf.service-type', compact('data'));
+        $file_name = 'list_service_type_' . time() . '.pdf';
+
+        return $pdf->download($file_name);
+    }
+
+    public function exportExcel()
+    {
+        $file_name = 'list_service_type_' . time() . '.xlsx';
+        return Excel::download(new ServiceTypeExport, $file_name);
+    }
+
+    public function exportCsv()
+    {
+        $file_name = 'list_service_type_' . time() . '.csv';
+        return Excel::download(new ServiceTypeExport, $file_name);
     }
 }

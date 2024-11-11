@@ -48,6 +48,11 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/{id}/edit', [CurrencyController::class, 'edit'])->name('edit');
             Route::put('/{id}', [CurrencyController::class, 'update'])->name('update');
             Route::get('/{id}/delete', [CurrencyController::class, 'destroy'])->name('destroy');
+
+            // Export Route
+            Route::get('/export/pdf', [CurrencyController::class, 'exportPdf'])->name('export.pdf');
+            Route::get('/export/excel', [CurrencyController::class, 'exportExcel'])->name('export.excel');
+            Route::get('/export/csv', [CurrencyController::class, 'exportCsv'])->name('export.csv');
         });
     });
 

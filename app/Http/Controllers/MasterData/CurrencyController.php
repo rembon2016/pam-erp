@@ -8,10 +8,13 @@ use App\Models\Currency;
 use Illuminate\View\View;
 use App\Functions\Utility;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\Facades\DataTables;
+use App\Exports\MasterData\CurrencyExport;
 use App\Http\Requests\Currency\GlobalCurrencyRequest;
 
 final class CurrencyController extends Controller
@@ -138,5 +141,26 @@ final class CurrencyController extends Controller
         } catch (\Throwable $th) {
             return to_route('master-data.currency.index')->with('toastError', __('crud.error_delete', ['name' => 'Currency']));
         }
+    }
+
+    public function exportPdf()
+    {
+        $data = Currency::orderBy('currency_code', 'ASC')->get();
+        $pdf = Pdf::loadView('exports.pdf.currency', compact('data'));
+        $file_name = 'list_currency_' . time() . '.pdf';
+
+        return $pdf->download($file_name);
+    }
+
+    public function exportExcel()
+    {
+        $file_name = 'list_currency_' . time() . '.xlsx';
+        return Excel::download(new CurrencyExport, $file_name);
+    }
+
+    public function exportCsv()
+    {
+        $file_name = 'list_currency_' . time() . '.csv';
+        return Excel::download(new CurrencyExport, $file_name);
     }
 }

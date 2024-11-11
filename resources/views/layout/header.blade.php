@@ -141,8 +141,9 @@
             </div>
             <div class="separator my-2"></div>
             <div class="menu-item px-5">
-                <a href="" class="menu-link px-5">Ubah
-                    Profile</a>
+                <a href="{{ route('profile.index') }}" class="menu-link px-5">
+                    Profile Settings
+                </a>
             </div>
             <div class="menu-item px-5">
                 <a href="" class="menu-link px-5">

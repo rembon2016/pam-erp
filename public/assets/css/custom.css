@@ -19,7 +19,7 @@
     overflow-y: hidden;
     width: 100%;
 }
-/* 
+/*
 .pipeline-breadcrumb::-webkit-scrollbar {
     height: 4px;
 }
@@ -277,4 +277,28 @@ table.text-normal :is(td, tr){
     opacity: 1;
     visibility: visible;
     pointer-events: fill;
+}
+
+.btn {
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out !important;
+}
+
+.success-btn {
+    background-color: #13BA18;
+    color: #fff;
+}
+
+.success-btn:hover {
+    color: #13BA18;
+    border: 1px solid #13BA18 !important;
+}
+
+.danger-outline-btn {
+    color: #dc3545;
+    border: 1px solid #dc3545 !important;
+}
+
+.danger-outline-btn:hover {
+    background-color: #dc3545;
+    color: #fff;
 }

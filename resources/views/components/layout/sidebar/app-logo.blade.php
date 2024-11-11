@@ -1,8 +1,8 @@
 <div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
     <a href="javascript:void(0)">
-        <img width="200px" alt="Logo" src="{{ asset('assets/logos/logo.svg') }}"
+        <img width="200px" alt="Logo" src="{{ asset('assets/logos/logo-3.svg') }}"
             class="h-75px app-sidebar-logo-default">
-        <img alt="Logo" src="{{ asset('assets/logos/logo.svg') }}" class="h-20px app-sidebar-logo-minimize">
+        <img alt="Logo" src="{{ asset('assets/logos/logo-3.svg') }}" class="h-20px app-sidebar-logo-minimize">
     </a>
     <div id="kt_app_sidebar_toggle"
         class="app-sidebar-toggle btn btn-icon btn-shadow btn-sm btn-color-muted btn-active-color-primary body-bg h-30px w-30px position-absolute top-50 start-100 translate-middle rotate"

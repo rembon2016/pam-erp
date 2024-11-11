@@ -135,7 +135,7 @@
                                 class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Superadmin</span>
                         </div>
                         <a href="#"
-                            class="fw-semibold text-muted text-hover-primary fs-7">John Doe</a>
+                            class="fw-semibold text-muted text-hover-primary fs-7">{{ Auth::user()->email }}</a>
                     </div>
                 </div>
             </div>

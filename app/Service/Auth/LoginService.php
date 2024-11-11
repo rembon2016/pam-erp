@@ -27,7 +27,7 @@ final class LoginService
      */
     public function authenticateUser(array $dto): object
     {
-        $this->registeringNewUser(email: $dto['email']);
+        // $this->registeringNewUser(email: $dto['email']);
 
         return Auth::attempt($dto)
             ? ObjectResponse::success(

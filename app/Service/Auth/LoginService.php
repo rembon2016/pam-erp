@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Service\Auth;
 
 use App\Functions\ObjectResponse;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
 final class LoginService
@@ -26,11 +25,11 @@ final class LoginService
      */
     public function authenticateUser(array $dto): object
     {
-        return Auth::guard($dto['guard'])->attempt(Arr::except($dto, ['guard']))
+        return Auth::attempt($dto)
             ? ObjectResponse::success(
                 message: 'Successfully logged in.',
                 statusCode: 200,
-                data: Auth::guard('pam-erp')->user()
+                data: Auth::user()
             )
             : ObjectResponse::error(
                 message: 'Invalid email or password.',

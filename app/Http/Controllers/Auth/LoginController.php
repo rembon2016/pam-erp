@@ -40,9 +40,7 @@ final class LoginController extends Controller
      */
     public function authenticate(LoginRequest $request): RedirectResponse
     {
-        $response = $this->loginService->authenticateUser(dto: $request->validated() + [
-            'guard' => 'pam-erp'
-        ]);
+        $response = $this->loginService->authenticateUser(dto: $request->validated());
 
         return $response->success
             ? redirect()->route('dashboard')

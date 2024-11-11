@@ -42,10 +42,6 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'pam-erp' => [
-            'driver' => 'session',
-            'provider' => 'pam-erp',
-        ],
     ],
 
     /*
@@ -67,10 +63,6 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
-        ],
-        'pam-erp' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],

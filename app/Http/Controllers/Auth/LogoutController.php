@@ -18,12 +18,11 @@ final class LogoutController extends Controller
     /**
      * Invalidates the current session and redirects the user to the login page.
      *
-     * @param mixed $guard The guard to use for the logout process. Defaults to 'web'.
      * @return RedirectResponse A redirect response to the login page on success, or back to the current page with an error message on failure.
      */
-    public function logout(mixed $guard = 'web'): RedirectResponse
+    public function logout(): RedirectResponse
     {
-        $response = $this->logoutService->invalidatingSession(dto: ['guard' => $guard]);
+        $response = $this->logoutService->invalidatingSession();
 
         return $response->success
             ? redirect()->route('auth.login')

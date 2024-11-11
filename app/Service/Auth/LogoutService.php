@@ -17,13 +17,12 @@ final class LogoutService
     /**
      * Invalidates the current session and logs out the user.
      *
-     * @param array $dto An array containing the guard to use for logout.
      * @return \App\Functions\ObjectResponse A response object indicating the success or failure of the logout operation.
      */
-    public function invalidatingSession(array $dto)
+    public function invalidatingSession()
     {
         try {
-            Auth::guard($dto['guard'])->logout();
+            Auth::logout();
             request()->session()->invalidate();
             request()->session()->regenerateToken();
 

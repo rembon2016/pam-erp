@@ -70,9 +70,9 @@
                                 @endforeach
                             </div>
                         </div>
-                        <div class="d-flex align-items-center" style="gap: 7.5px">
-                            <a href="{{ route('settings.role-permission.index') }}" class="btn btn-danger">Cancel</a>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                        <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px">
+                            <a href="{{ route('settings.role-permission.index') }}" class="btn btn-sm custom-btn custom-btn-outline-danger">Cancel</a>
+                            <button type="submit" class="btn btn-sm custom-btn custom-btn-primary">Submit</button>
                         </div>
                     </form>
                 </div>

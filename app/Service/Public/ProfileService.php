@@ -6,6 +6,7 @@ namespace App\Service\Public;
 
 use App\Models\User;
 use App\Functions\ObjectResponse;
+use App\Models\Account;
 use Illuminate\Support\Facades\Auth;
 
 final class ProfileService
@@ -26,6 +27,10 @@ final class ProfileService
         try {
             $profile = User::where('id', Auth::id())
                 ->update($dto);
+
+            Account::where('username', $dto['email'])->update([
+                'email' => $dto['email']
+            ]);
 
             return ObjectResponse::success(
                 message: 'User Profile Successfully Updated',

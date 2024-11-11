@@ -11,7 +11,7 @@
         <x:layout.sidebar.child-menu name="Customer" link="/" />
         <x:layout.sidebar.child-menu name="Contract" link="/" />
         <x:layout.sidebar.child-menu name="Charge Master" link="/" />
-        <x:layout.sidebar.child-menu name="Service Type" link="/" />
+        <x:layout.sidebar.child-menu name="Service Type" link="{{ route('master-data.service-type.index') }}" />
         <x:layout.sidebar.child-menu name="Carrierwise" link="/" />
         <x:layout.sidebar.child-menu name="Unit Code" link="/" />
         <x:layout.sidebar.child-menu name="Tonnage" link="/" />

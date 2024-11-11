@@ -4,7 +4,7 @@
     <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
         <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
             <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                Role & Permission
+                Service Type
             </h1>
             <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                 <li class="breadcrumb-item text-muted">
@@ -17,7 +17,7 @@
                 <li class="breadcrumb-item">
                     <span class="bullet bg-gray-400 w-5px h-2px"></span>
                 </li>
-                <li class="breadcrumb-item text-muted">Role & Permission</li>
+                <li class="breadcrumb-item text-muted">Service Type</li>
             </ul>
         </div>
     </div>
@@ -35,7 +35,7 @@
                         <!--begin::Filter menu-->
 
                         <!--end::Filter menu-->
-                        <a href="{{ route('settings.role-permission.create') }}" class="btn btn-sm custom-btn custom-btn-primary">
+                        <a href="{{ route('master-data.service-type.create') }}" class="btn btn-sm custom-btn custom-btn-primary">
                             <i class="bx bx-plus"></i>
                             Add
                         </a>
@@ -101,14 +101,14 @@
                 <div class="card-body pt-0">
                     <!--begin::Table-->
                     <table class="table align-middle table-row-dashed fs-6 gy-5"
-                        id="role_table">
+                        id="service_type_table">
                         <!--begin::Table head-->
                         <thead>
                             <!--begin::Table row-->
                             <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                 <th class="min-w-50px">No</th>
-                                <th class="min-w-100px">Name</th>
-                                <th class="min-w-100px">Guard Name</th>
+                                <th class="min-w-100px">Service Code</th>
+                                <th class="min-w-100px">Service Name</th>
                                 <th class="text-center">Action</th>
                             </tr>
                             <!--end::Table row-->
@@ -138,7 +138,7 @@
         return {
             init: function() {
 
-                (t = document.querySelector("#role_table")) && (t.querySelectorAll(
+                (t = document.querySelector("#service_type_table")) && (t.querySelectorAll(
                         "tbody tr").forEach((t => {
                         const e = t.querySelectorAll("td"),
                             r = moment(e[3].innerHTML, "dd mm yyyy").format();
@@ -148,9 +148,27 @@
                         pageLength: 10,
                         processing: true,
                         serverSide: true,
-                        ajax: "{{ route('settings.role-permission.list') }}",
-                        columns: [{"data":"DT_RowIndex","name":"DT_RowIndex","orderable":false,"searchable":false},{"data":"name","name":"name"},{"data":"guard_name","name":"guard_name"},{"data":"action","name":"action"}]
-
+                        ajax: "{{ route('master-data.service-type.list') }}",
+                        columns: [
+                            {
+                                "data": "DT_RowIndex",
+                                "name": "DT_RowIndex",
+                                "orderable": false,
+                                "searchable": false
+                            },
+                            {
+                                "data": "service_code",
+                                "name": "service_code"
+                            },
+                            {
+                                "data":"service_name",
+                                "name":"service_name"
+                            },
+                            {
+                                "data":"action",
+                                "name":"action"
+                            }
+                        ]
                     }), document.querySelector('[data-kt-ecommerce-order-filter="search"]').addEventListener(
                         "keyup", (function(t) {
 
@@ -170,7 +188,5 @@
     KTUtil.onDOMContentLoaded((function() {
         KTDataTable.init()
     }));
-
-
 </script>
 @endpush

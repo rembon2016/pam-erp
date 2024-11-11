@@ -26,7 +26,7 @@ final class Utility
                 break;
 
             case 'delete':
-                $button = '<a href="'.$url.'" class="action-btn btn-icon"><i class="bx bx-trash text-action-danger"></i></a>';
+                $button = '<a href="'.$url.'" class="action-btn btn-icon" onclick="deleteConfirmation(event)"><i class="bx bx-trash text-action-danger"></i></a>';
                 break;
 
             case 'detail':

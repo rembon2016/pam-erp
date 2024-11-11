@@ -135,7 +135,7 @@
                                 <th class="min-w-50px">No</th>
                                 <th class="min-w-100px">Name</th>
                                 <th class="min-w-100px">Guard Name</th>
-                                <th>Action</th>
+                                <th class="text-center">Action</th>
                             </tr>
                             <!--end::Table row-->
                         </thead>
@@ -192,8 +192,11 @@
             }
         }
     }();
+
     KTUtil.onDOMContentLoaded((function() {
         KTDataTable.init()
     }));
+
+
 </script>
 @endpush

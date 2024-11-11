@@ -6,7 +6,7 @@
 <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
-<link rel="stylesheet" href="{{ asset('assets/plugins/iziToast/dist/css/iziToast.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/plugins/iziToast/css/iziToast.min.css') }}">
 <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
 
@@ -56,6 +56,10 @@
 
     .table-row-dashed tr {
         text-transform: capitalize !important;
+    }
+
+    .action-btn * {
+        pointer-events: none;
     }
 </style>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />

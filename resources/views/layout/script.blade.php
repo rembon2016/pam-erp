@@ -7,7 +7,7 @@
 <script src="{{ asset('assets/js/widgets.bundle.js') }}"></script>
 <script src="{{ asset('assets/js/custom/widgets.js') }}"></script>
 <script src="{{ asset('assets/plugins/custom/tinymce/tinymce.bundle.js') }}"></script>
-<script src="{{ asset('assets/plugins/iziToast/dist/js/iziToast.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/iziToast/js/iziToast.min.js') }}"></script>
 <script src="{{ asset('assets/js/custom.js') }}"></script>
 <script src="{{ asset('assets/js/custom/authentication/sign-in/general.js') }}"></script>
 
@@ -47,4 +47,23 @@
         picker.container.find('.calendar-table').remove();
         picker.container.find('.ranges').remove();
     });
+
+
+    function deleteConfirmation(event) {
+        event.preventDefault();
+        const urlToRedirect = event.currentTarget.getAttribute('href');
+
+        Swal.fire({
+            title: 'Are you sure you want to delete this item?',
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = urlToRedirect;
+            }
+        })
+
+    }
 </script>

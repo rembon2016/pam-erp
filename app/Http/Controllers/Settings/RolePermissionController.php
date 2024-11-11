@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Settings;
 use App\Models\Role;
 use Illuminate\View\View;
 use App\Functions\Convert;
+use App\Functions\Utility;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -41,12 +42,10 @@ final class RolePermissionController extends Controller
                 return Convert::convertToTitleCase($item->name);
             })
             ->addColumn('action', function ($item) {
-                $actionEdit = route('settings.role-permission.edit', $item->id);
-                $actionDel = route('settings.role-permission.destroy', $item->id);
-
-                $btn = '<a href="'.$actionEdit.'" class="btn btn-success btn-sm btn-icon"><i class="fa fa-edit"></i></a>
-                    <a onclick="confirmation(event)" href="'.$actionDel.'" class="btn btn-danger btn-sm btn-icon"><i class="fa fa-trash"></i></a>';
-                return $btn;
+                return Utility::generateTableActions([
+                    'edit' => route('settings.role-permission.edit', $item->id),
+                    'delete' => route('settings.role-permission.destroy', $item->id),
+                ]);
             })
             ->rawColumns(['action'])
             ->toJson();

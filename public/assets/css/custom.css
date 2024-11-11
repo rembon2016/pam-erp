@@ -302,3 +302,91 @@ table.text-normal :is(td, tr){
     background-color: #dc3545;
     color: #fff;
 }
+
+.custom-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5px;
+}
+
+.custom-btn-primary {
+    background-color: #13BA18;
+    color: #fff;
+    border: 1px solid #13BA18 !important;
+}
+
+.custom-btn-primary i{
+    color: #fff;
+}
+
+.custom-btn-primary:hover {
+    color: #fff;
+    background-color: #13BA18;
+    opacity: .75;
+}
+
+.custom-btn-outline-primary {
+    background-color: #fff;
+    color: #13BA18;
+    border: 1px solid #13BA18 !important;
+}
+
+.custom-btn-outline-primary i {
+    color: #13BA18;
+}
+
+.custom-btn-outline-primary:hover {
+    background-color: #fff;
+    color: #13BA18;
+    opacity: .75;
+}
+
+.text-action-primary {
+    color: #13BA18;
+}
+
+.text-action-warning {
+    color: #C56A14;
+}
+
+.text-action-success {
+    color: #0AAA12;
+}
+
+.text-action-danger {
+    color: #BE0808;
+}
+
+.text-action-info {
+    color: #1F18B2;
+}
+
+.action-btn i {
+    font-size: 20px;
+}
+
+.action-btn {
+    transition: all .15s linear;
+}
+
+.action-btn:hover {
+    opacity: 0.75;
+}
+
+.pagination .active>.page-link, .page-link.active {
+    background-color: #13BA18;
+}
+
+.pagination .page-item:hover:not(.active):not(.offset):not(.disabled) .page-link {
+    color: #13BA18 !important;
+}
+
+.pagination .page-link:hover {
+    color: #13BA18 !important;
+}
+
+.pagination .page-item:hover:not(.active):not(.offset):not(.disabled) .page-link .previous, .pagination .page-item:hover:not(.active):not(.offset):not(.disabled) .page-link .next {
+    background-color: #13BA18 !important;
+}

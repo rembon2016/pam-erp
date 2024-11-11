@@ -6,7 +6,7 @@ final class Utility
 {
     public static function generateTableActions(array $actions)
     {
-        $tableActions = '<div class="d-flex flex-wrap align-items-center justify-content-center gap-1">';
+        $tableActions = '<div class="d-flex flex-wrap align-items-center justify-content-center gap-3">';
 
         foreach ($actions as $type => $url) {
             $tableActions .= self::generateActionButton($type, $url);
@@ -22,19 +22,23 @@ final class Utility
         $button = "";
         switch ($type) {
             case 'edit':
-                $button = '<a href="'.$url.'" class="action-btn btn btn-success btn-sm btn-icon"><i class="bx bx-edit"></i></a>';
+                $button = '<a href="'.$url.'" class="action-btn btn-icon"><i class="bx bx-edit text-action-warning"></i></a>';
                 break;
 
             case 'delete':
-                $button = '<a href="'.$url.'" class="action-btn btn btn-danger btn-sm btn-icon" onclick="deleteConfirmation(event)"><i class="bx bx-trash"></i></a>';
+                $button = '<a href="'.$url.'" class="action-btn btn-icon"><i class="bx bx-trash text-action-danger"></i></a>';
                 break;
 
             case 'detail':
-                $button = '<a href="'.$url.'" class="action-btn btn btn-info btn-sm btn-icon"><i class="bx bx-info-circle"></i></a>';
+                $button = '<a href="'.$url.'" class="action-btn btn-icon"><i class="bx bx-info-circle text-action-info"></i></a>';
+                break;
+
+            case 'download':
+                $button = '<a href="'.$url.'" class="action-btn btn-icon" download><i class="bx bx-download text-action-success"></i></a>';
                 break;
 
             default:
-                $button = '<a href="'.$url.'" class="action-btn btn btn-info btn-sm btn-icon"><i class="bx bx-loader"></i></a>';
+                $button = '<a href="'.$url.'" class="action-btn btn-icon"><i class="bx bx-loader text-action-primary"></i></a>';
                 break;
         }
 

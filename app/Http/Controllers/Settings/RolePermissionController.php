@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Settings;
 
+use App\Exports\Settings\RolePermissionExport;
 use App\Models\Role;
 use Illuminate\View\View;
 use App\Functions\Convert;
 use App\Functions\Utility;
 use App\Models\Permission;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\RolePermission\GlobalRolePermissionRequest;
 
@@ -35,7 +38,7 @@ final class RolePermissionController extends Controller
      */
     public function list(): JsonResponse
     {
-        $roles = Role::all();
+        $roles = Role::latest()->get();
         return DataTables::of($roles)
             ->addIndexColumn()
             ->editColumn('name', function ($item) {
@@ -161,5 +164,26 @@ final class RolePermissionController extends Controller
         } catch (\Throwable $th) {
             return to_route('settings.role-permission.index')->with('toastError', __('crud.error_delete', ['name' => 'Role & Permission']));
         }
+    }
+
+    public function exportPdf()
+    {
+        $data = Role::latest()->get();
+        $pdf = Pdf::loadView('exports.pdf.role-permission', compact('data'));
+        $file_name = 'list_role_' . time() . '.pdf';
+
+        return $pdf->download($file_name);
+    }
+
+    public function exportExcel()
+    {
+        $file_name = 'list_role_' . time() . '.xlsx';
+        return Excel::download(new RolePermissionExport, $file_name);
+    }
+
+    public function exportCsv()
+    {
+        $file_name = 'list_role_' . time() . '.csv';
+        return Excel::download(new RolePermissionExport, $file_name);
     }
 }

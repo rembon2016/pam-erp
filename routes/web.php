@@ -61,6 +61,11 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/{id}/edit', [RolePermissionController::class, 'edit'])->name('edit');
             Route::put('/{id}', [RolePermissionController::class, 'update'])->name('update');
             Route::get('/{id}/delete', [RolePermissionController::class, 'destroy'])->name('destroy');
+
+            // Export Route
+            Route::get('/export/pdf', [RolePermissionController::class, 'exportPdf'])->name('export.pdf');
+            Route::get('/export/excel', [RolePermissionController::class, 'exportExcel'])->name('export.excel');
+            Route::get('/export/csv', [RolePermissionController::class, 'exportCsv'])->name('export.csv');
         });
     });
 });

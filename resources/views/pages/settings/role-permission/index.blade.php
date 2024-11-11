@@ -51,17 +51,17 @@
                             data-kt-menu="true">
                             <!--begin::Menu item-->
                             <div class="menu-item px-3">
-                                <a href="#" class="menu-link px-3" data-kt-ecommerce-export="excel">Export as Excel</a>
+                                <a href="{{ route('settings.role-permission.export.excel') }}" class="menu-link px-3" data-kt-ecommerce-export="excel">Export as Excel</a>
                             </div>
                             <!--end::Menu item-->
                             <!--begin::Menu item-->
                             <div class="menu-item px-3">
-                                <a href="#" class="menu-link px-3" data-kt-ecommerce-export="csv">Export as CSV</a>
+                                <a href="{{ route('settings.role-permission.export.csv') }}" class="menu-link px-3" data-kt-ecommerce-export="csv">Export as CSV</a>
                             </div>
                             <!--end::Menu item-->
                             <!--begin::Menu item-->
                             <div class="menu-item px-3">
-                                <a href="#" class="menu-link px-3" data-kt-ecommerce-export="pdf">Export as PDF</a>
+                                <a href="{{ route('settings.role-permission.export.pdf') }}" class="menu-link px-3" data-kt-ecommerce-export="pdf">Export as PDF</a>
                             </div>
                             <!--end::Menu item-->
                         </div>

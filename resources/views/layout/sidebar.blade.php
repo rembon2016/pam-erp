@@ -89,4 +89,9 @@
         <x:layout.sidebar.child-menu name="Cashflow Statement" link="/" />
     </x:layout.sidebar.parent-menu>
 
+    {{-- Accounting --}}
+    <x:layout.sidebar.parent-menu name="Settings" iconClass="bx bx-cog">
+        <x:layout.sidebar.child-menu name="Role & Permission" link="{{ route('settings.role-permission.index') }}" />
+    </x:layout.sidebar.parent-menu>
+
 </x:layout.sidebar.wrapper>

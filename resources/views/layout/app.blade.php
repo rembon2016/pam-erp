@@ -89,7 +89,7 @@
 
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
                     <div class="d-flex flex-column flex-column-fluid">
-                        @stack('body')
+                        @yield('body')
                     </div>
                     <!--begin::Footer-->
                     @include('layout.footer')
@@ -111,7 +111,7 @@
         </span>
     </div>
 
-    @include('layout.script')
 </body>
+@include('layout.script')
 
 </html>

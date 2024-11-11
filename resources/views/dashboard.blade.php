@@ -1,4 +1,4 @@
 @extends('layout.app')
-@push('body')
+@section('body')
 
-@endpush
+@endsection

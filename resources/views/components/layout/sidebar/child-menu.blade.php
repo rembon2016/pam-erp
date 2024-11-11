@@ -1,8 +1,8 @@
 @props(['name' => $name, 'link' => $link])
 
-<a class="menu-link" href="{{ $link }}">
+<a class="meass="menu-tnu-link" href="{{ $link }}">
     <span class="menu-bullet">
         <span class="bullet bullet-dot"></span>
     </span>
-    <span class="menu-title">{{ $name }}</span>
+    <span clitle">{{ $name }}</span>
 </a>

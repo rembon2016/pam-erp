@@ -15,7 +15,7 @@
     href="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.7/dist/css/tempus-dominus.min.css"
     crossorigin="anonymous">
 
-@yield('css')
+@stack('css')
 <style>
     .feedback-invalid {
         color: #f1416c !important;

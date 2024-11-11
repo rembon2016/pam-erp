@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\MasterData;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use App\Functions\Utility;
 use App\Models\ServiceType;
@@ -65,7 +66,7 @@ final class ServiceTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(GlobalServiceTypeRequest $request)
+    public function store(GlobalServiceTypeRequest $request): RedirectResponse
     {
         $requestDTO = $request->validated();
 
@@ -80,7 +81,7 @@ final class ServiceTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id): View|RedirectResponse
     {
         $service_type = ServiceType::where('id', $id)->first();
 
@@ -101,7 +102,7 @@ final class ServiceTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(GlobalServiceTypeRequest $request, string $id)
+    public function update(GlobalServiceTypeRequest $request, string $id): RedirectResponse
     {
         $requestDTO = $request->validated();
         $service_type = ServiceType::where('id', $id)->first();
@@ -121,7 +122,7 @@ final class ServiceTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
         $service_type = ServiceType::where('id', $id)->first();
         if (is_null($service_type)) return to_route('master-data.service-type.index')->with(

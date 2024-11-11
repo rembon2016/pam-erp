@@ -17,7 +17,7 @@
         <x:layout.sidebar.child-menu name="Tonnage" link="/" />
         <x:layout.sidebar.child-menu name="Container" link="/" />
         <x:layout.sidebar.child-menu name="Payment Method" link="/" />
-        <x:layout.sidebar.child-menu name="Currency" link="/" />
+        <x:layout.sidebar.child-menu name="Currency" link="{{ route('master-data.currency.index') }}" />
         <x:layout.sidebar.child-menu name="Chart of Account" link="/" />
         <x:layout.sidebar.child-menu name="Fixed Asset" link="/" />
     </x:layout.sidebar.parent-menu>

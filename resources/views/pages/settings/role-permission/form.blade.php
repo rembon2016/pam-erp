@@ -13,7 +13,13 @@
                     <li class="breadcrumb-item">
                         <span class="bullet bg-gray-400 w-5px h-2px"></span>
                     </li>
-                    <li class="breadcrumb-item text-muted">Role & Permission</li>
+                    <li class="breadcrumb-item text-muted">Settings</li>
+                    <li class="breadcrumb-item">
+                        <span class="bullet bg-gray-400 w-5px h-2px"></span>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('settings.role-permission.index') }}" class="text-muted text-hover-primary">Role & Permission</a>
+                    </li>
                     <li class="breadcrumb-item">
                         <span class="bullet bg-gray-400 w-5px h-2px"></span>
                     </li>

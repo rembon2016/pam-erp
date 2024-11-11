@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MasterData\CurrencyController;
 use App\Http\Controllers\MasterData\ServiceTypeController;
 use App\Http\Controllers\Settings\RolePermissionController;
 
@@ -29,6 +30,19 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/{id}/edit', [ServiceTypeController::class, 'edit'])->name('edit');
             Route::put('/{id}', [ServiceTypeController::class, 'update'])->name('update');
             Route::get('/{id}/delete', [ServiceTypeController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::group([
+            'prefix' => 'currency',
+            'as' => 'currency.'
+        ], function () {
+            Route::get('/', [CurrencyController::class, 'index'])->name('index');
+            Route::get('/list', [CurrencyController::class, 'list'])->name('list');
+            Route::get('/create', [CurrencyController::class, 'create'])->name('create');
+            Route::post('/', [CurrencyController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [CurrencyController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [CurrencyController::class, 'update'])->name('update');
+            Route::get('/{id}/delete', [CurrencyController::class, 'destroy'])->name('destroy');
         });
     });
 

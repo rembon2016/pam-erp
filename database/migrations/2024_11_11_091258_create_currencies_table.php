@@ -14,10 +14,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('finance.service_types', function (Blueprint $table) {
+        Schema::create('finance.currencies', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('service_code');
-            $table->string('service_name');
+            $table->char('currency_code', 8);
+            $table->string('currency_name');
+            $table->date('currency_date')->nullable();
+            $table->decimal('buy_rate', 10, 4)->default(0);
+            $table->decimal('sell_rate', 10, 4)->default(0);
+            $table->text('notes')->nullable();
 
             TableTimestamps::set($table);
         });
@@ -28,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('finance.service_types');
+        Schema::dropIfExists('finance.currencies');
     }
 };

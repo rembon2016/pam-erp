@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\MasterData;
+namespace App\Http\Controllers\Finance\MasterData;
 
 use App\Models\Currency;
 use Illuminate\View\View;
@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\Facades\DataTables;
 use App\Exports\MasterData\CurrencyExport;
-use App\Http\Requests\Currency\GlobalCurrencyRequest;
+use App\Http\Requests\Finance\Currency\GlobalCurrencyRequest;
 
 final class CurrencyController extends Controller
 {
@@ -24,7 +24,7 @@ final class CurrencyController extends Controller
      */
     public function index(): View
     {
-        return view('pages.master-data.currency.index');
+        return view('pages.finance.master-data.currency.index');
     }
 
     /**
@@ -44,8 +44,8 @@ final class CurrencyController extends Controller
             })
             ->addColumn('action', function ($item) {
                 return Utility::generateTableActions([
-                    'edit' => route('master-data.currency.edit', $item->id),
-                    'delete' => route('master-data.currency.destroy', $item->id),
+                    'edit' => route('finance.master-data.currency.edit', $item->id),
+                    'delete' => route('finance.master-data.currency.destroy', $item->id),
                 ]);
             })
             ->rawColumns(['action'])
@@ -59,13 +59,13 @@ final class CurrencyController extends Controller
     {
         $data = [
             'page' => 'Add Currency',
-            'action' => route('master-data.currency.store'),
+            'action' => route('finance.master-data.currency.store'),
             'method' => 'POST',
          ];
 
         $currency = new Currency;
 
-         return view('pages.master-data.currency.form', compact('data', 'currency'));
+         return view('pages.finance.master-data.currency.form', compact('data', 'currency'));
     }
 
     /**
@@ -77,7 +77,7 @@ final class CurrencyController extends Controller
 
         try {
             Currency::create($requestDTO);
-            return to_route('master-data.currency.index')->with('toastSuccess', __('crud.created', ['name' => 'Currency']));
+            return to_route('finance.master-data.currency.index')->with('toastSuccess', __('crud.created', ['name' => 'Currency']));
         } catch (\Throwable $th) {
             return back()->with('toastError', __('crud.error_create', ['name' => 'Currency']));
         }
@@ -90,18 +90,18 @@ final class CurrencyController extends Controller
     {
         $currency = Currency::where('id', $id)->first();
 
-        if (is_null($currency)) return to_route('master-data.currency.index')->with(
+        if (is_null($currency)) return to_route('finance.master-data.currency.index')->with(
             'toastError',
             __('crud.not_found', ['name' => 'Currency'])
         );
 
         $data = [
             'page' => 'Edit Currency',
-            'action' => route('master-data.currency.update', $id),
+            'action' => route('finance.master-data.currency.update', $id),
             'method' => 'PUT',
          ];
 
-         return view('pages.master-data.currency.form', compact('data', 'currency'));
+         return view('pages.finance.master-data.currency.form', compact('data', 'currency'));
     }
 
     /**
@@ -111,14 +111,14 @@ final class CurrencyController extends Controller
     {
         $requestDTO = $request->validated();
         $currency = Currency::where('id', $id)->first();
-        if (is_null($currency)) return to_route('master-data.currency.index')->with(
+        if (is_null($currency)) return to_route('finance.master-data.currency.index')->with(
             'toastError',
             __('crud.not_found', ['name' => 'Currency'])
         );
 
         try {
             $currency->update($requestDTO);
-            return to_route('master-data.currency.index')->with('toastSuccess', __('crud.updated', ['name' => 'Currency']));
+            return to_route('finance.master-data.currency.index')->with('toastSuccess', __('crud.updated', ['name' => 'Currency']));
         } catch (\Throwable $th) {
             return back()->with('toastError', __('crud.error_update', ['name' => 'Currency']));
         }
@@ -130,16 +130,16 @@ final class CurrencyController extends Controller
     public function destroy(string $id): RedirectResponse
     {
         $currency = Currency::where('id', $id)->first();
-        if (is_null($currency)) return to_route('master-data.currency.index')->with(
+        if (is_null($currency)) return to_route('finance.master-data.currency.index')->with(
             'toastError',
             __('crud.not_found', ['name' => 'Currency'])
         );
 
         try {
             $currency->delete();
-            return to_route('master-data.currency.index')->with('toastSuccess', __('crud.deleted', ['name' => 'Currency']));
+            return to_route('finance.master-data.currency.index')->with('toastSuccess', __('crud.deleted', ['name' => 'Currency']));
         } catch (\Throwable $th) {
-            return to_route('master-data.currency.index')->with('toastError', __('crud.error_delete', ['name' => 'Currency']));
+            return to_route('finance.master-data.currency.index')->with('toastError', __('crud.error_delete', ['name' => 'Currency']));
         }
     }
 

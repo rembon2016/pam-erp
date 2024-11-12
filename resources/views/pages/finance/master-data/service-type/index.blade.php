@@ -1,29 +1,11 @@
 @extends('layout.app')
 @section('body')
-<div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
-    <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
-        <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-            <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                Currency
-            </h1>
-            <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
-                <li class="breadcrumb-item text-muted">
-                    <a href="#" class="text-muted text-hover-primary">Home</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <span class="bullet bg-gray-400 w-5px h-2px"></span>
-                </li>
-                <li class="breadcrumb-item text-muted">Master Data</li>
-                <li class="breadcrumb-item">
-                    <span class="bullet bg-gray-400 w-5px h-2px"></span>
-                </li>
-                <li class="breadcrumb-item text-muted">Currency</li>
-            </ul>
-        </div>
-    </div>
-</div>
+    <x:layout.breadcrumb.wrapper module="Master Data" pageName="Service Type">
+        <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />
+        <x:layout.breadcrumb.item pageName="Master Data" />
+    </x:layout.breadcrumb.wrapper>
 
-<div id="kt_app_content" class="app-content flex-column-fluid">
+    <div id="kt_app_content" class="app-content flex-column-fluid">
         <!--begin::Content container-->
         <div id="kt_app_content_container" class="app-container container-xxl">
             <!--begin::Products-->
@@ -35,7 +17,7 @@
                         <!--begin::Filter menu-->
 
                         <!--end::Filter menu-->
-                        <a href="{{ route('master-data.currency.create') }}" class="btn btn-sm custom-btn custom-btn-primary">
+                        <a href="{{ route('finance.master-data.service-type.create') }}" class="btn btn-sm custom-btn custom-btn-primary">
                             <i class="bx bx-plus"></i>
                             Add
                         </a>
@@ -51,17 +33,17 @@
                             data-kt-menu="true">
                             <!--begin::Menu item-->
                             <div class="menu-item px-3">
-                                <a href="{{ route('master-data.currency.export.excel') }}" class="menu-link px-3" data-kt-ecommerce-export="excel">Export as Excel</a>
+                                <a href="{{ route('finance.master-data.service-type.export.excel') }}" class="menu-link px-3" data-kt-ecommerce-export="excel">Export as Excel</a>
                             </div>
                             <!--end::Menu item-->
                             <!--begin::Menu item-->
                             <div class="menu-item px-3">
-                                <a href="{{ route('master-data.currency.export.csv') }}" class="menu-link px-3" data-kt-ecommerce-export="csv">Export as CSV</a>
+                                <a href="{{ route('finance.master-data.service-type.export.csv') }}" class="menu-link px-3" data-kt-ecommerce-export="csv">Export as CSV</a>
                             </div>
                             <!--end::Menu item-->
                             <!--begin::Menu item-->
                             <div class="menu-item px-3">
-                                <a href="{{ route('master-data.currency.export.pdf') }}" class="menu-link px-3" data-kt-ecommerce-export="pdf">Export as PDF</a>
+                                <a href="{{ route('finance.master-data.service-type.export.pdf') }}" class="menu-link px-3" data-kt-ecommerce-export="pdf">Export as PDF</a>
                             </div>
                             <!--end::Menu item-->
                         </div>
@@ -101,17 +83,14 @@
                 <div class="card-body pt-0">
                     <!--begin::Table-->
                     <table class="table align-middle table-row-dashed fs-6 gy-5"
-                        id="currency_table">
+                        id="service_type_table">
                         <!--begin::Table head-->
                         <thead>
                             <!--begin::Table row-->
                             <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                 <th class="min-w-50px">No</th>
-                                <th class="min-w-100px">Currency Code</th>
-                                <th class="min-w-100px">Currency Name</th>
-                                <th class="min-w-100px">Date</th>
-                                <th class="min-w-100px">Buy Rate</th>
-                                <th class="min-w-100px">Sell Rate</th>
+                                <th class="min-w-100px">Service Code</th>
+                                <th class="min-w-100px">Service Name</th>
                                 <th class="text-center">Action</th>
                             </tr>
                             <!--end::Table row-->
@@ -141,7 +120,7 @@
         return {
             init: function() {
 
-                (t = document.querySelector("#currency_table")) && (t.querySelectorAll(
+                (t = document.querySelector("#service_type_table")) && (t.querySelectorAll(
                         "tbody tr").forEach((t => {
                         const e = t.querySelectorAll("td"),
                             r = moment(e[3].innerHTML, "dd mm yyyy").format();
@@ -151,7 +130,7 @@
                         pageLength: 10,
                         processing: true,
                         serverSide: true,
-                        ajax: "{{ route('master-data.currency.list') }}",
+                        ajax: "{{ route('finance.master-data.service-type.list') }}",
                         columns: [
                             {
                                 "data": "DT_RowIndex",
@@ -160,24 +139,12 @@
                                 "searchable": false
                             },
                             {
-                                "data": "currency_code",
-                                "name": "currency_code"
+                                "data": "service_code",
+                                "name": "service_code"
                             },
                             {
-                                "data":"currency_name",
-                                "name":"currency_name"
-                            },
-                            {
-                                "data":"currency_date",
-                                "name":"currency_date"
-                            },
-                            {
-                                "data":"buy_rate",
-                                "name":"buy_rate"
-                            },
-                            {
-                                "data":"sell_rate",
-                                "name":"sell_rate"
+                                "data":"service_name",
+                                "name":"service_name"
                             },
                             {
                                 "data":"action",

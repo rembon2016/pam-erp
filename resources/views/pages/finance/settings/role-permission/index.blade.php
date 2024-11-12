@@ -1,29 +1,11 @@
 @extends('layout.app')
 @section('body')
-<div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
-    <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
-        <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-            <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                Role & Permission
-            </h1>
-            <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
-                <li class="breadcrumb-item text-muted">
-                    <a href="#" class="text-muted text-hover-primary">Home</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <span class="bullet bg-gray-400 w-5px h-2px"></span>
-                </li>
-                <li class="breadcrumb-item text-muted">Settings </li>
-                <li class="breadcrumb-item">
-                    <span class="bullet bg-gray-400 w-5px h-2px"></span>
-                </li>
-                <li class="breadcrumb-item text-muted">Role & Permission</li>
-            </ul>
-        </div>
-    </div>
-</div>
+    <x:layout.breadcrumb.wrapper module="Settings" pageName="Role & Permission">
+        <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />
+        <x:layout.breadcrumb.item pageName="Settings" />
+    </x:layout.breadcrumb.wrapper>
 
-<div id="kt_app_content" class="app-content flex-column-fluid">
+    <div id="kt_app_content" class="app-content flex-column-fluid">
         <!--begin::Content container-->
         <div id="kt_app_content_container" class="app-container container-xxl">
             <!--begin::Products-->
@@ -35,7 +17,7 @@
                         <!--begin::Filter menu-->
 
                         <!--end::Filter menu-->
-                        <a href="{{ route('settings.role-permission.create') }}" class="btn btn-sm custom-btn custom-btn-primary">
+                        <a href="{{ route('finance.settings.role-permission.create') }}" class="btn btn-sm custom-btn custom-btn-primary">
                             <i class="bx bx-plus"></i>
                             Add
                         </a>
@@ -51,17 +33,17 @@
                             data-kt-menu="true">
                             <!--begin::Menu item-->
                             <div class="menu-item px-3">
-                                <a href="{{ route('settings.role-permission.export.excel') }}" class="menu-link px-3" data-kt-ecommerce-export="excel">Export as Excel</a>
+                                <a href="{{ route('finance.settings.role-permission.export.excel') }}" class="menu-link px-3" data-kt-ecommerce-export="excel">Export as Excel</a>
                             </div>
                             <!--end::Menu item-->
                             <!--begin::Menu item-->
                             <div class="menu-item px-3">
-                                <a href="{{ route('settings.role-permission.export.csv') }}" class="menu-link px-3" data-kt-ecommerce-export="csv">Export as CSV</a>
+                                <a href="{{ route('finance.settings.role-permission.export.csv') }}" class="menu-link px-3" data-kt-ecommerce-export="csv">Export as CSV</a>
                             </div>
                             <!--end::Menu item-->
                             <!--begin::Menu item-->
                             <div class="menu-item px-3">
-                                <a href="{{ route('settings.role-permission.export.pdf') }}" class="menu-link px-3" data-kt-ecommerce-export="pdf">Export as PDF</a>
+                                <a href="{{ route('finance.settings.role-permission.export.pdf') }}" class="menu-link px-3" data-kt-ecommerce-export="pdf">Export as PDF</a>
                             </div>
                             <!--end::Menu item-->
                         </div>
@@ -148,7 +130,7 @@
                         pageLength: 10,
                         processing: true,
                         serverSide: true,
-                        ajax: "{{ route('settings.role-permission.list') }}",
+                        ajax: "{{ route('finance.settings.role-permission.list') }}",
                         columns: [{"data":"DT_RowIndex","name":"DT_RowIndex","orderable":false,"searchable":false},{"data":"name","name":"name"},{"data":"guard_name","name":"guard_name"},{"data":"action","name":"action"}]
 
                     }), document.querySelector('[data-kt-ecommerce-order-filter="search"]').addEventListener(

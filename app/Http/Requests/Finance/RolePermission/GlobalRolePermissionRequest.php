@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\RolePermission;
+namespace App\Http\Requests\Finance\RolePermission;
 
 use Illuminate\Foundation\Http\FormRequest;
 

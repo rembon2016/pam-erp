@@ -58,7 +58,8 @@ final class LoginService
                 ?: User::create([
                     'email' => $account->username,
                     'password' => $account->password,
-                    'email_verified_at' => now()
+                    'email_verified_at' => now(),
+                    'type' => 'operation',
                 ]);
         }
 

@@ -150,6 +150,13 @@
                     <span class="menu-text">Change Password</span>
                 </a>
             </div>
+            @if (Auth::user()->type == 'operation')
+                <div class="menu-item px-5">
+                    <a href="{{ route('auth.redirect.operation') }}" class="menu-link px-5">
+                        <span class="menu-text">Switch to Operation</span>
+                    </a>
+                </div>
+            @endif
             <div class="menu-item px-5">
                 <a href="{{ route('auth.logout') }}" class="menu-link px-5">Sign Out</a>
             </div>

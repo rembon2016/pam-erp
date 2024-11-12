@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
-use App\Models\Currency;
+use App\Models\Finance\Currency;
 use Illuminate\View\View;
 use App\Functions\Utility;
 use Illuminate\Http\Request;

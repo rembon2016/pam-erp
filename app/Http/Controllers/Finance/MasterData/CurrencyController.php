@@ -22,9 +22,9 @@ use App\Http\Requests\Finance\Currency\GlobalCurrencyRequest;
 final class CurrencyController extends Controller
 {
     /**
-     * Constructs a new instance of the ProfileController class, injecting the ProfileService dependency.
+     * Constructs a new instance of the ServiceTypeController class, injecting the ServiceType dependency.
      *
-     * @param CurrencyService $currencyService The CurrencyService instance to be used by this controller.
+     * @param CurrencyService $currencyService The ServiceTypeService instance to be used by this controller.
      */
     public function __construct(
         protected CurrencyService $currencyService,

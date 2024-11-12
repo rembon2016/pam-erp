@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
-use App\Models\Currency;
+use App\Models\Finance\Currency;
 use App\Functions\ObjectResponse;
 
 final class CurrencyService

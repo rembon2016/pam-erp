@@ -7,19 +7,27 @@ namespace App\Http\Controllers\Finance\MasterData;
 use Illuminate\View\View;
 use App\Functions\Utility;
 use App\Models\Finance\ServiceType;
-use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\Facades\DataTables;
 use App\Exports\MasterData\ServiceTypeExport;
 use App\Http\Requests\Finance\ServiceType\GlobalServiceTypeRequest;
+use App\Service\Finance\MasterData\ServiceTypeService;
 
 final class ServiceTypeController extends Controller
 {
+    /**
+     * Constructs a new instance of the ServiceTypeController class, injecting the ServiceTypeService dependency.
+     *
+     * @param ServiceTypeService $serviceTypeService The ServiceTypeService instance to be used by this controller.
+     */
+    public function __construct(
+        protected ServiceTypeService $serviceTypeService,
+    ) {}
+
     /**
      * Display a listing of the resource.
      */
@@ -71,14 +79,13 @@ final class ServiceTypeController extends Controller
      */
     public function store(GlobalServiceTypeRequest $request): RedirectResponse
     {
-        $requestDTO = $request->validated();
+        $response = $this->serviceTypeService->createServiceType($request->validated());
 
-        try {
-            ServiceType::create($requestDTO);
-            return to_route('finance.master-data.service-type.index')->with('toastSuccess', __('crud.created', ['name' => 'Service Type']));
-        } catch (\Throwable $th) {
-            return back()->with('toastError', __('crud.error_create', ['name' => 'Service Type']));
-        }
+        return $response->success
+            ? to_route('finance.master-data.service-type.index')
+                ->with('toastSuccess', $response->message)
+            : back()
+                ->with('toastError', $response->message);
     }
 
     /**
@@ -107,19 +114,13 @@ final class ServiceTypeController extends Controller
      */
     public function update(GlobalServiceTypeRequest $request, string $id): RedirectResponse
     {
-        $requestDTO = $request->validated();
-        $service_type = ServiceType::where('id', $id)->first();
-        if (is_null($service_type)) return to_route('finance.master-data.service-type.index')->with(
-            'toastError',
-            __('crud.not_found', ['name' => 'Service Type'])
-        );
+        $response = $this->serviceTypeService->updateServiceType($request->validated() + ['id' => $id]);
 
-        try {
-            $service_type->update($requestDTO);
-            return to_route('finance.master-data.service-type.index')->with('toastSuccess', __('crud.updated', ['name' => 'Service Type']));
-        } catch (\Throwable $th) {
-            return back()->with('toastError', __('crud.error_update', ['name' => 'Service Type']));
-        }
+        return $response->success
+            ? to_route('finance.master-data.service-type.index')
+                ->with('toastSuccess', $response->message)
+            : back()
+                ->with('toastError', $response->message);
     }
 
     /**
@@ -127,20 +128,21 @@ final class ServiceTypeController extends Controller
      */
     public function destroy(string $id): RedirectResponse
     {
-        $service_type = ServiceType::where('id', $id)->first();
-        if (is_null($service_type)) return to_route('finance.master-data.service-type.index')->with(
-            'toastError',
-            __('crud.not_found', ['name' => 'Service Type'])
-        );
+        $response = $this->serviceTypeService->deleteServiceType(['id' => $id]);
 
-        try {
-            $service_type->delete();
-            return to_route('finance.master-data.service-type.index')->with('toastSuccess', __('crud.deleted', ['name' => 'Service Type']));
-        } catch (\Throwable $th) {
-            return to_route('finance.master-data.service-type.index')->with('toastError', __('crud.error_delete', ['name' => 'Service Type']));
-        }
+        return $response->success
+            ? to_route('finance.master-data.service-type.index')
+                ->with('toastSuccess', $response->message)
+            : back()
+                ->with('toastError', $response->message);
     }
 
+    /**
+     * Export the list of service type to a PDF file.
+     *
+     * This method generates a PDF file containing the list of currencies ordered by service type in ascending order.
+     * The generated PDF file is then downloaded with the filename "list_service_type_{timestamp}.pdf".
+     */
     public function exportPdf()
     {
         $data = ServiceType::orderBy('service_code', 'ASC')->get();
@@ -150,12 +152,24 @@ final class ServiceTypeController extends Controller
         return $pdf->download($file_name);
     }
 
+    /**
+     * Export the list of service type to an Excel file.
+     *
+     * This method generates an Excel file containing the list of currencies ordered by service type in ascending order.
+     * The generated Excel file is then downloaded with the filename "list_service_type_{timestamp}.xlsx".
+     */
     public function exportExcel()
     {
         $file_name = 'list_service_type_' . time() . '.xlsx';
         return Excel::download(new ServiceTypeExport, $file_name);
     }
 
+    /**
+     * Export the list of service type to a CSV file.
+     *
+     * This method generates a CSV file containing the list of service types ordered by service type in ascending order.
+     * The generated CSV file is then downloaded with the filename "list_service_type_{timestamp}.csv".
+     */
     public function exportCsv()
     {
         $file_name = 'list_service_type_' . time() . '.csv';

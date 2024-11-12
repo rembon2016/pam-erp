@@ -9,6 +9,9 @@
 <x:form.wrapper action="{{ route('reset_password.update') }}" method="POST">
     <div class="row">
         <div class="col-md-12">
+            <x:form.input type="password" label="Old Password" name="old_password" placeholder="Old Password" required="true" />
+        </div>
+        <div class="col-md-12">
             <x:form.input type="password" label="New Password" name="password" placeholder="New Password" required="true" />
         </div>
         <div class="col-md-12">

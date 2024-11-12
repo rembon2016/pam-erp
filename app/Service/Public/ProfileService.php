@@ -6,7 +6,7 @@ namespace App\Service\Public;
 
 use App\Models\User;
 use App\Functions\ObjectResponse;
-use App\Models\Account;
+use App\Models\Operation\Account;
 use Illuminate\Support\Facades\Auth;
 
 final class ProfileService

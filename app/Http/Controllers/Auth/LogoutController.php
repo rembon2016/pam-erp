@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 
 final class LogoutController extends Controller
 {
+    /**
+     * Constructs a new instance of the LogoutController class, injecting the LogoutService dependency.
+     *
+     * @param LogoutService $logoutService The service responsible for invalidating the user's session.
+     */
     public function __construct(
         protected LogoutService $logoutService,
     ) {}

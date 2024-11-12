@@ -18,7 +18,7 @@
                         <span class="bullet bg-gray-400 w-5px h-2px"></span>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{{ route('master-data.currency.index') }}" class="text-muted text-hover-primary">Currency</a>
+                        <a href="{{ route('finance.master-data.currency.index') }}" class="text-muted text-hover-primary">Currency</a>
                     </li>
                     <li class="breadcrumb-item">
                         <span class="bullet bg-gray-400 w-5px h-2px"></span>
@@ -82,7 +82,7 @@
                             </div>
                         </div>
                         <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px">
-                            <a href="{{ route('master-data.currency.index') }}" class="btn btn-sm custom-btn custom-btn-outline-danger">Cancel</a>
+                            <a href="{{ route('finance.master-data.currency.index') }}" class="btn btn-sm custom-btn custom-btn-outline-danger">Cancel</a>
                             <button type="submit" class="btn btn-sm custom-btn custom-btn-primary">Submit</button>
                         </div>
                     </form>

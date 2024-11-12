@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\MasterData;
+namespace App\Http\Controllers\Finance\MasterData;
 
 use Illuminate\View\View;
 use App\Functions\Utility;
@@ -16,7 +16,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\Facades\DataTables;
 use App\Exports\MasterData\ServiceTypeExport;
-use App\Http\Requests\ServiceType\GlobalServiceTypeRequest;
+use App\Http\Requests\Finance\ServiceType\GlobalServiceTypeRequest;
 
 final class ServiceTypeController extends Controller
 {
@@ -25,7 +25,7 @@ final class ServiceTypeController extends Controller
      */
     public function index(): View
     {
-        return view('pages.master-data.service-type.index');
+        return view('pages.finance.master-data.service-type.index');
     }
 
     /**
@@ -42,8 +42,8 @@ final class ServiceTypeController extends Controller
             ->addIndexColumn()
             ->addColumn('action', function ($item) {
                 return Utility::generateTableActions([
-                    'edit' => route('master-data.service-type.edit', $item->id),
-                    'delete' => route('master-data.service-type.destroy', $item->id),
+                    'edit' => route('finance.master-data.service-type.edit', $item->id),
+                    'delete' => route('finance.master-data.service-type.destroy', $item->id),
                 ]);
             })
             ->rawColumns(['action'])
@@ -57,13 +57,13 @@ final class ServiceTypeController extends Controller
     {
         $data = [
             'page' => 'Add Service Type',
-            'action' => route('master-data.service-type.store'),
+            'action' => route('finance.master-data.service-type.store'),
             'method' => 'POST',
          ];
 
         $service_type = new ServiceType;
 
-         return view('pages.master-data.service-type.form', compact('data', 'service_type'));
+         return view('pages.finance.master-data.service-type.form', compact('data', 'service_type'));
     }
 
     /**
@@ -75,7 +75,7 @@ final class ServiceTypeController extends Controller
 
         try {
             ServiceType::create($requestDTO);
-            return to_route('master-data.service-type.index')->with('toastSuccess', __('crud.created', ['name' => 'Service Type']));
+            return to_route('finance.master-data.service-type.index')->with('toastSuccess', __('crud.created', ['name' => 'Service Type']));
         } catch (\Throwable $th) {
             return back()->with('toastError', __('crud.error_create', ['name' => 'Service Type']));
         }
@@ -88,18 +88,18 @@ final class ServiceTypeController extends Controller
     {
         $service_type = ServiceType::where('id', $id)->first();
 
-        if (is_null($service_type)) return to_route('master-data.service-type.index')->with(
+        if (is_null($service_type)) return to_route('finance.master-data.service-type.index')->with(
             'toastError',
             __('crud.not_found', ['name' => 'Service Type'])
         );
 
         $data = [
             'page' => 'Edit Service Type',
-            'action' => route('master-data.service-type.update', $id),
+            'action' => route('finance.master-data.service-type.update', $id),
             'method' => 'PUT',
          ];
 
-         return view('pages.master-data.service-type.form', compact('data', 'service_type'));
+         return view('pages.finance.master-data.service-type.form', compact('data', 'service_type'));
     }
 
     /**
@@ -109,14 +109,14 @@ final class ServiceTypeController extends Controller
     {
         $requestDTO = $request->validated();
         $service_type = ServiceType::where('id', $id)->first();
-        if (is_null($service_type)) return to_route('master-data.service-type.index')->with(
+        if (is_null($service_type)) return to_route('finance.master-data.service-type.index')->with(
             'toastError',
             __('crud.not_found', ['name' => 'Service Type'])
         );
 
         try {
             $service_type->update($requestDTO);
-            return to_route('master-data.service-type.index')->with('toastSuccess', __('crud.updated', ['name' => 'Service Type']));
+            return to_route('finance.master-data.service-type.index')->with('toastSuccess', __('crud.updated', ['name' => 'Service Type']));
         } catch (\Throwable $th) {
             return back()->with('toastError', __('crud.error_update', ['name' => 'Service Type']));
         }
@@ -128,16 +128,16 @@ final class ServiceTypeController extends Controller
     public function destroy(string $id): RedirectResponse
     {
         $service_type = ServiceType::where('id', $id)->first();
-        if (is_null($service_type)) return to_route('master-data.service-type.index')->with(
+        if (is_null($service_type)) return to_route('finance.master-data.service-type.index')->with(
             'toastError',
             __('crud.not_found', ['name' => 'Service Type'])
         );
 
         try {
             $service_type->delete();
-            return to_route('master-data.service-type.index')->with('toastSuccess', __('crud.deleted', ['name' => 'Service Type']));
+            return to_route('finance.master-data.service-type.index')->with('toastSuccess', __('crud.deleted', ['name' => 'Service Type']));
         } catch (\Throwable $th) {
-            return to_route('master-data.service-type.index')->with('toastError', __('crud.error_delete', ['name' => 'Service Type']));
+            return to_route('finance.master-data.service-type.index')->with('toastError', __('crud.error_delete', ['name' => 'Service Type']));
         }
     }
 

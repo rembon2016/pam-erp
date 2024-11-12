@@ -15,10 +15,21 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\Facades\DataTables;
 use App\Exports\MasterData\CurrencyExport;
+use App\Service\Finance\MasterData\CurrencyService;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use App\Http\Requests\Finance\Currency\GlobalCurrencyRequest;
 
 final class CurrencyController extends Controller
 {
+    /**
+     * Constructs a new instance of the ProfileController class, injecting the ProfileService dependency.
+     *
+     * @param CurrencyService $currencyService The CurrencyService instance to be used by this controller.
+     */
+    public function __construct(
+        protected CurrencyService $currencyService,
+    ) {}
+
     /**
      * Display a listing of the resource.
      */
@@ -73,14 +84,13 @@ final class CurrencyController extends Controller
      */
     public function store(GlobalCurrencyRequest $request): RedirectResponse
     {
-        $requestDTO = $request->validated();
+        $response = $this->currencyService->createCurrency($request->validated());
 
-        try {
-            Currency::create($requestDTO);
-            return to_route('finance.master-data.currency.index')->with('toastSuccess', __('crud.created', ['name' => 'Currency']));
-        } catch (\Throwable $th) {
-            return back()->with('toastError', __('crud.error_create', ['name' => 'Currency']));
-        }
+        return $response->success
+            ? to_route('finance.master-data.currency.index')
+                ->with('toastSuccess', $response->message)
+            : back()
+                ->with('toastError', $response->message);
     }
 
     /**
@@ -109,19 +119,13 @@ final class CurrencyController extends Controller
      */
     public function update(GlobalCurrencyRequest $request, string $id): RedirectResponse
     {
-        $requestDTO = $request->validated();
-        $currency = Currency::where('id', $id)->first();
-        if (is_null($currency)) return to_route('finance.master-data.currency.index')->with(
-            'toastError',
-            __('crud.not_found', ['name' => 'Currency'])
-        );
+        $response = $this->currencyService->updateCurrency($request->validated() + ['id' => $id]);
 
-        try {
-            $currency->update($requestDTO);
-            return to_route('finance.master-data.currency.index')->with('toastSuccess', __('crud.updated', ['name' => 'Currency']));
-        } catch (\Throwable $th) {
-            return back()->with('toastError', __('crud.error_update', ['name' => 'Currency']));
-        }
+        return $response->success
+            ? to_route('finance.master-data.currency.index')
+                ->with('toastSuccess', $response->message)
+            : back()
+                ->with('toastError', $response->message);
     }
 
     /**
@@ -129,20 +133,21 @@ final class CurrencyController extends Controller
      */
     public function destroy(string $id): RedirectResponse
     {
-        $currency = Currency::where('id', $id)->first();
-        if (is_null($currency)) return to_route('finance.master-data.currency.index')->with(
-            'toastError',
-            __('crud.not_found', ['name' => 'Currency'])
-        );
+        $response = $this->currencyService->deleteCurrency(['id' => $id]);
 
-        try {
-            $currency->delete();
-            return to_route('finance.master-data.currency.index')->with('toastSuccess', __('crud.deleted', ['name' => 'Currency']));
-        } catch (\Throwable $th) {
-            return to_route('finance.master-data.currency.index')->with('toastError', __('crud.error_delete', ['name' => 'Currency']));
-        }
+        return $response->success
+            ? to_route('finance.master-data.currency.index')
+                ->with('toastSuccess', $response->message)
+            : back()
+                ->with('toastError', $response->message);
     }
 
+    /**
+     * Export the list of currencies to a PDF file.
+     *
+     * This method generates a PDF file containing the list of currencies ordered by currency code in ascending order.
+     * The generated PDF file is then downloaded with the filename "list_currency_{timestamp}.pdf".
+     */
     public function exportPdf()
     {
         $data = Currency::orderBy('currency_code', 'ASC')->get();
@@ -152,12 +157,24 @@ final class CurrencyController extends Controller
         return $pdf->download($file_name);
     }
 
+    /**
+     * Export the list of currencies to an Excel file.
+     *
+     * This method generates an Excel file containing the list of currencies ordered by currency code in ascending order.
+     * The generated Excel file is then downloaded with the filename "list_currency_{timestamp}.xlsx".
+     */
     public function exportExcel()
     {
         $file_name = 'list_currency_' . time() . '.xlsx';
         return Excel::download(new CurrencyExport, $file_name);
     }
 
+    /**
+     * Export the list of currencies to a CSV file.
+     *
+     * This method generates a CSV file containing the list of currencies ordered by currency code in ascending order.
+     * The generated CSV file is then downloaded with the filename "list_currency_{timestamp}.csv".
+     */
     public function exportCsv()
     {
         $file_name = 'list_currency_' . time() . '.csv';

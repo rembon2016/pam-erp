@@ -33,6 +33,11 @@ final class GlobalCurrencyRequest extends FormRequest
         ];
     }
 
+    /**
+     * Returns an array of attribute names and their corresponding display names for the form fields.
+     *
+     * @return array<string, string>
+     */
     public function attributes(): array
     {
         return [

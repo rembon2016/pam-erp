@@ -5,10 +5,10 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\MasterData\CurrencyController;
-use App\Http\Controllers\MasterData\ServiceTypeController;
 use App\Http\Controllers\ResetPasswordController;
-use App\Http\Controllers\Settings\RolePermissionController;
+use App\Http\Controllers\Finance\MasterData\CurrencyController;
+use App\Http\Controllers\Finance\MasterData\ServiceTypeController;
+use App\Http\Controllers\Finance\Settings\RolePermissionController;
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

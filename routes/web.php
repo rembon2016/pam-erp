@@ -7,12 +7,15 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MasterData\CurrencyController;
 use App\Http\Controllers\MasterData\ServiceTypeController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\Settings\RolePermissionController;
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/reset-password', [ResetPasswordController::class, 'index'])->name('reset_password.index');
+    Route::post('/reset-password', [ResetPasswordController::class, 'update'])->name('reset_password.update');
 
 
     Route::group([

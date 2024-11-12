@@ -18,25 +18,22 @@ trait HandleTableTimestamps
      */
     public static function bootHandleTableTimestamps()
     {
-        if ($auth = Auth::user()) {
+        // Action after eloquent model was created
+        static::created(function ($model) {
+            $model->created_by ??= Auth::user()->email;
+            $model->save();
+        });
 
-            // Action after eloquent model was created
-            static::created(function ($model) use ($auth) {
-                $model->created_by = $auth->email;
-                $model->save();
-            });
+        // Action after eloquent model was updated
+        static::updating(function ($model) {
+            $model->updated_by ??= Auth::user()->email;
+            $model->save();
+        });
 
-            // Action after eloquent model was updated
-            static::updated(function ($model) use ($auth) {
-                $model->updated_by = $auth->email;
-                $model->save();
-            });
-
-            // Action after eloquent model was deleted
-            static::deleted(function ($model) use ($auth) {
-                $model->deleted_by = $auth->email;
-                $model->save();
-            });
-        }
+        // Action after eloquent model was deleted
+        static::deleted(function ($model) {
+            $model->deleted_by ??= Auth::user()->email;
+            $model->save();
+        });
     }
 }

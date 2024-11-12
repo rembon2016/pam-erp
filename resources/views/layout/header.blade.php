@@ -146,8 +146,8 @@
                 </a>
             </div>
             <div class="menu-item px-5">
-                <a href="" class="menu-link px-5">
-                    <span class="menu-text">Ubah Password</span>
+                <a href="{{ route('reset_password.index') }}" class="menu-link px-5">
+                    <span class="menu-text">Change Password</span>
                 </a>
             </div>
             <div class="menu-item px-5">

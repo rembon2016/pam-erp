@@ -6,9 +6,11 @@ namespace App\Http\Controllers\Finance\MasterData;
 
 use Illuminate\View\View;
 use App\Functions\Utility;
-use App\Models\Finance\ServiceType;
+use Illuminate\Http\Response;
+use App\Functions\ResponseJson;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
+use App\Models\Finance\ServiceType;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
@@ -45,17 +47,25 @@ final class ServiceTypeController extends Controller
      */
     public function list(): JsonResponse
     {
-        $service_types = ServiceType::orderBy('service_code', 'ASC')->get();
-        return DataTables::of($service_types)
-            ->addIndexColumn()
-            ->addColumn('action', function ($item) {
-                return Utility::generateTableActions([
-                    'edit' => route('finance.master-data.service-type.edit', $item->id),
-                    'delete' => route('finance.master-data.service-type.destroy', $item->id),
-                ]);
-            })
-            ->rawColumns(['action'])
-            ->toJson();
+        if (request()->ajax()) {
+
+            $service_types = ServiceType::orderBy('service_code', 'ASC')->get();
+            return DataTables::of($service_types)
+                ->addIndexColumn()
+                ->addColumn('action', function ($item) {
+                    return Utility::generateTableActions([
+                        'edit' => route('finance.master-data.service-type.edit', $item->id),
+                        'delete' => route('finance.master-data.service-type.destroy', $item->id),
+                    ]);
+                })
+                ->rawColumns(['action'])
+                ->toJson();
+        }
+
+        return ResponseJson::error(
+            Response::HTTP_UNAUTHORIZED,
+            'Access Unauthorized',
+        );
     }
 
     /**

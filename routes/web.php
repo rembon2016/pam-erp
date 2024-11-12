@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\Finance\MasterData\CurrencyController;
+use App\Http\Controllers\Finance\MasterData\FixedAssetController;
 use App\Http\Controllers\Finance\MasterData\ServiceTypeController;
 use App\Http\Controllers\Finance\Settings\RolePermissionController;
 
@@ -60,6 +61,24 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/export/pdf', [CurrencyController::class, 'exportPdf'])->name('export.pdf');
                 Route::get('/export/excel', [CurrencyController::class, 'exportExcel'])->name('export.excel');
                 Route::get('/export/csv', [CurrencyController::class, 'exportCsv'])->name('export.csv');
+            });
+
+            Route::group([
+                'prefix' => 'fixed-asset',
+                'as' => 'fixed-asset.'
+            ], function () {
+                Route::get('/', [FixedAssetController::class, 'index'])->name('index');
+                Route::get('/list', [FixedAssetController::class, 'list'])->name('list');
+                Route::get('/create', [FixedAssetController::class, 'create'])->name('create');
+                Route::post('/', [FixedAssetController::class, 'store'])->name('store');
+                Route::get('/{id}/edit', [FixedAssetController::class, 'edit'])->name('edit');
+                Route::put('/{id}', [FixedAssetController::class, 'update'])->name('update');
+                Route::get('/{id}/delete', [FixedAssetController::class, 'destroy'])->name('destroy');
+
+                // Export Route
+                Route::get('/export/pdf', [FixedAssetController::class, 'exportPdf'])->name('export.pdf');
+                Route::get('/export/excel', [FixedAssetController::class, 'exportExcel'])->name('export.excel');
+                Route::get('/export/csv', [FixedAssetController::class, 'exportCsv'])->name('export.csv');
             });
         });
 

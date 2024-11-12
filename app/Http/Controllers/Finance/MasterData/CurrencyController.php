@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
-use App\Models\Finance\Currency;
 use Illuminate\View\View;
 use App\Functions\Utility;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Functions\ResponseJson;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Finance\Currency;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
@@ -47,20 +49,28 @@ final class CurrencyController extends Controller
      */
     public function list(): JsonResponse
     {
-        $currencys = Currency::orderBy('currency_code', 'ASC')->get();
-        return DataTables::of($currencys)
-            ->addIndexColumn()
-            ->editColumn('currency_date', function ($item) {
-                return $item->currency_date?->format('d-m-Y');
-            })
-            ->addColumn('action', function ($item) {
-                return Utility::generateTableActions([
-                    'edit' => route('finance.master-data.currency.edit', $item->id),
-                    'delete' => route('finance.master-data.currency.destroy', $item->id),
-                ]);
-            })
-            ->rawColumns(['action'])
-            ->toJson();
+        if (request()->ajax()) {
+
+            $currencies = Currency::orderBy('currency_code', 'ASC')->get();
+            return DataTables::of($currencies)
+                ->addIndexColumn()
+                ->editColumn('currency_date', function ($item) {
+                    return $item->currency_date?->format('d-m-Y');
+                })
+                ->addColumn('action', function ($item) {
+                    return Utility::generateTableActions([
+                        'edit' => route('finance.master-data.currency.edit', $item->id),
+                        'delete' => route('finance.master-data.currency.destroy', $item->id),
+                    ]);
+                })
+                ->rawColumns(['action'])
+                ->toJson();
+        }
+
+        return ResponseJson::error(
+            Response::HTTP_UNAUTHORIZED,
+            'Access Unauthorized',
+        );
     }
 
     /**

@@ -19,7 +19,7 @@
         <x:layout.sidebar.child-menu name="Payment Method" link="/" />
         <x:layout.sidebar.child-menu name="Currency" link="{{ route('finance.master-data.currency.index') }}" />
         <x:layout.sidebar.child-menu name="Chart of Account" link="/" />
-        <x:layout.sidebar.child-menu name="Fixed Asset" link="/" />
+        <x:layout.sidebar.child-menu name="Fixed Asset" link="{{ route('finance.master-data.fixed-asset.index') }}" />
     </x:layout.sidebar.parent-menu>
 
     {{-- Job Order --}}

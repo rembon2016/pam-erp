@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Database\Seeders\Finance\FinanceSeeder;
 
 final class DatabaseSeeder extends Seeder
 {
@@ -18,6 +19,7 @@ final class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
+            FinanceSeeder::class,
         ]);
     }
 }

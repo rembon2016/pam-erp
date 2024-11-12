@@ -2,7 +2,7 @@
 
 namespace App\Exports\MasterData;
 
-use App\Models\Currency;
+use App\Models\Finance\Currency;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;

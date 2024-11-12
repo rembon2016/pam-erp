@@ -2,7 +2,7 @@
 
 namespace App\Exports\MasterData;
 
-use App\Models\ServiceType;
+use App\Models\Finance\ServiceType;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;

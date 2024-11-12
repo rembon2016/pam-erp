@@ -1,18 +1,18 @@
 @extends('layout.app')
 
-@push('body')
+@section('body')
 
-<x:layout.breadcrumb.wrapper module="Setting" pageName="Profile">
+<x:layout.breadcrumb.wrapper module="Setting" pageName="Profile Settings">
     <x:layout.breadcrumb.item pageName="Home" href="/dashboard" />
 </x:layout.breadcrumb.wrapper>
 
 <x:form.wrapper action="{{ route('profile.update') }}" method="POST">
     <div class="row">
-        <div class="col-6">
-            <x:form.input label="First Name" name="first_name" placeholder="First Name" :model="$user" />
+        <div class="col-md-6">
+            <x:form.input label="First Name" name="first_name" placeholder="First Name" :model="$user" required="true" />
         </div>
-        <div class="col-6">
-            <x:form.input label="Last Name" name="last_name" placeholder="Last Name" :model="$user" />
+        <div class="col-md-6">
+            <x:form.input label="Last Name" name="last_name" placeholder="Last Name" :model="$user" required="true" />
         </div>
     </div>
     <div class="row">
@@ -27,4 +27,4 @@
 </x:form.wrapper>
 
 
-@endpush
+@endsection

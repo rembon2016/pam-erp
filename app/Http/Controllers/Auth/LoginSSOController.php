@@ -23,12 +23,11 @@ final class LoginSSOController extends Controller
      */
     public function redirectToOperation()
     {
-        $response = Http::asForm()->post('https://api-user-new-demo.logi-chain.com/api/login', [
+        $response = Http::asForm()->post('http://203.175.10.178:8070/api/login/email', [
             'username' => Auth::user()->email,
-            'password' => 'Ambonpati71',
         ]);
 
-        $token = base64_encode($response->collect()['access_token']);
+        $token = base64_encode($response->object()->access_token.".3hJ7k2N5pQ8rXsZ1");
 
         return redirect()
             ->to(config('app.frontend_url')."dashboard?token={$token}");

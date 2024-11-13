@@ -18,7 +18,7 @@
         <x:layout.sidebar.child-menu name="Container" link="/" />
         <x:layout.sidebar.child-menu name="Payment Method" link="/" />
         <x:layout.sidebar.child-menu name="Currency" link="{{ route('finance.master-data.currency.index') }}" />
-        <x:layout.sidebar.child-menu name="Chart of Account" link="/" />
+        <x:layout.sidebar.child-menu name="Chart of Account" link="{{ route('finance.master-data.chart-of-account.index') }}" />
         <x:layout.sidebar.child-menu name="Fixed Asset" link="{{ route('finance.master-data.fixed-asset.index') }}" />
     </x:layout.sidebar.parent-menu>
 
@@ -91,7 +91,7 @@
 
     {{-- Accounting --}}
     <x:layout.sidebar.parent-menu name="Settings" iconClass="bx bx-cog">
-        <x:layout.sidebar.child-menu name="Role & Permission" link="{{ route('finance.settings.role-permission.index') }}" />
+        <x:layout.sidebar.child-menu name="Role & Permission" link="{{ route('settings.role-permission.index') }}" />
     </x:layout.sidebar.parent-menu>
 
 </x:layout.sidebar.wrapper>

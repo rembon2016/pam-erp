@@ -7,8 +7,8 @@
 ])
 
 <div class='mb-10'>
-    <label class='form-label {{ $required ? 'required' : '' }}'>{{ $label }}</label>
-    <select class="@if($errors->has($name)) is-invalid @endif form-select" name="{{ $name }}" {{ $required ? 'required' : '' }}>
+    <label for="#{{ $name }}" class='form-label {{ $required ? 'required' : '' }}'>{{ $label }}</label>
+    <select class="@if($errors->has($name)) is-invalid @endif form-select" name="{{ $name }}" {{ $required ? 'required' : '' }} id="{{ $name }}">
         <option value="" @selected(is_null(old($name, $model?->{$name})))>{{ $defaultOption }}</option>
 
         {{ $slot }}

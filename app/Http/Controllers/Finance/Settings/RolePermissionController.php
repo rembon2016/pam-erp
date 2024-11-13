@@ -28,7 +28,7 @@ final class RolePermissionController extends Controller
      */
     public function index(): View
     {
-        return view('pages.finance.settings.role-permission.index');
+        return view('public.settings.role-permission.index');
     }
 
     /**
@@ -49,8 +49,8 @@ final class RolePermissionController extends Controller
                 })
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([
-                        'edit' => route('finance.settings.role-permission.edit', $item->id),
-                        'delete' => route('finance.settings.role-permission.destroy', $item->id),
+                        'edit' => route('settings.role-permission.edit', $item->id),
+                        'delete' => route('settings.role-permission.destroy', $item->id),
                     ]);
                 })
                 ->rawColumns(['action'])
@@ -70,7 +70,7 @@ final class RolePermissionController extends Controller
     {
         $data = [
             'page' => 'Add Role & Permission',
-            'action' => route('finance.settings.role-permission.store'),
+            'action' => route('settings.role-permission.store'),
             'method' => 'POST',
          ];
 
@@ -78,7 +78,7 @@ final class RolePermissionController extends Controller
         $rolePermissions = [];
         $permissions = Permission::latest()->get()->groupBy('type');
 
-         return view('pages.finance.settings.role-permission.form', compact('data', 'role', 'permissions', 'rolePermissions'));
+         return view('public.settings.role-permission.form', compact('data', 'role', 'permissions', 'rolePermissions'));
     }
 
     /**
@@ -97,7 +97,7 @@ final class RolePermissionController extends Controller
             $role->givePermissionTo($requestDTO['permission']);
 
             DB::commit();
-            return to_route('finance.settings.role-permission.index')->with('toastSuccess', __('crud.created', ['name' => 'Role & Permission']));
+            return to_route('settings.role-permission.index')->with('toastSuccess', __('crud.created', ['name' => 'Role & Permission']));
         } catch (\Throwable $th) {
             DB::rollback();
             return back()->with('toastError', __('crud.error_create', ['name' => 'Role & Permission']));
@@ -111,21 +111,21 @@ final class RolePermissionController extends Controller
     {
         $role = Role::where('id', $id)->first();
 
-        if (is_null($role)) return to_route('finance.settings.role-permission.index')->with(
+        if (is_null($role)) return to_route('settings.role-permission.index')->with(
             'toastError',
             __('crud.not_found', ['name' => 'Role & Permission'])
         );
 
         $data = [
             'page' => 'Edit Role & Permission',
-            'action' => route('finance.settings.role-permission.update', $id),
+            'action' => route('settings.role-permission.update', $id),
             'method' => 'PUT',
          ];
 
         $rolePermissions = $role->permissions->pluck('id')->toArray();
         $permissions = Permission::latest()->get()->groupBy('type');
 
-         return view('pages.finance.settings.role-permission.form', compact('data', 'role', 'permissions', 'rolePermissions'));
+         return view('public.settings.role-permission.form', compact('data', 'role', 'permissions', 'rolePermissions'));
     }
 
     /**
@@ -135,7 +135,7 @@ final class RolePermissionController extends Controller
     {
         $requestDTO = $request->validated();
         $role = Role::where('id', $id)->first();
-        if (is_null($role)) return to_route('finance.settings.role-permission.index')->with(
+        if (is_null($role)) return to_route('settings.role-permission.index')->with(
             'toastError',
             __('crud.not_found', ['name' => 'Role & Permission'])
         );
@@ -149,7 +149,7 @@ final class RolePermissionController extends Controller
             $role->syncPermissions($requestDTO['permission']);
 
             DB::commit();
-            return to_route('finance.settings.role-permission.index')->with('toastSuccess', __('crud.updated', ['name' => 'Role & Permission']));
+            return to_route('settings.role-permission.index')->with('toastSuccess', __('crud.updated', ['name' => 'Role & Permission']));
         } catch (\Throwable $th) {
             DB::rollback();
             return back()->with('toastError', __('crud.error_update', ['name' => 'Role & Permission']));
@@ -162,16 +162,16 @@ final class RolePermissionController extends Controller
     public function destroy(string $id)
     {
         $role = Role::where('id', $id)->first();
-        if (is_null($role)) return to_route('finance.settings.role-permission.index')->with(
+        if (is_null($role)) return to_route('settings.role-permission.index')->with(
             'toastError',
             __('crud.not_found', ['name' => 'Role & Permission'])
         );
 
         try {
             $role->delete();
-            return to_route('finance.settings.role-permission.index')->with('toastSuccess', __('crud.deleted', ['name' => 'Role & Permission']));
+            return to_route('settings.role-permission.index')->with('toastSuccess', __('crud.deleted', ['name' => 'Role & Permission']));
         } catch (\Throwable $th) {
-            return to_route('finance.settings.role-permission.index')->with('toastError', __('crud.error_delete', ['name' => 'Role & Permission']));
+            return to_route('settings.role-permission.index')->with('toastError', __('crud.error_delete', ['name' => 'Role & Permission']));
         }
     }
 

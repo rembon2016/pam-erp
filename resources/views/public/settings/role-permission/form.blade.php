@@ -3,7 +3,7 @@
     <x:layout.breadcrumb.wrapper module="Settings" pageName="{!! $data['page'] !!}">
         <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />
         <x:layout.breadcrumb.item pageName="Settings" />
-        <x:layout.breadcrumb.item pageName="Role & Permission" href="{{ route('finance.settings.role-permission.index') }}" />
+        <x:layout.breadcrumb.item pageName="Role & Permission" href="{{ route('settings.role-permission.index') }}" />
     </x:layout.breadcrumb.wrapper>
 
     <x:form.wrapper action="{{ $data['action'] }}" method="{{ $data['method'] }}">
@@ -47,7 +47,7 @@
             </div>
         </div>
         <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px">
-            <x:form.cancel-button href="{{ route('finance.settings.role-permission.index') }}" label="Cancel" />
+            <x:form.cancel-button href="{{ route('settings.role-permission.index') }}" label="Cancel" />
             <x:form.submit-button label="Submit" />
         </div>
     </x:form.wrapper>

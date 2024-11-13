@@ -10,6 +10,7 @@ use App\Http\Controllers\Finance\MasterData\CurrencyController;
 use App\Http\Controllers\Finance\MasterData\FixedAssetController;
 use App\Http\Controllers\Finance\MasterData\ServiceTypeController;
 use App\Http\Controllers\Finance\Settings\RolePermissionController;
+use App\Http\Controllers\Finance\MasterData\ChartOfAccountController;
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -80,29 +81,48 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/export/excel', [FixedAssetController::class, 'exportExcel'])->name('export.excel');
                 Route::get('/export/csv', [FixedAssetController::class, 'exportCsv'])->name('export.csv');
             });
-        });
 
-        Route::group([
-            'prefix' => 'settings',
-            'as' => 'settings.'
-        ], function () {
             Route::group([
-                'prefix' => 'role-permission',
-                'as' => 'role-permission.'
+                'prefix' => 'chart-of-account',
+                'as' => 'chart-of-account.'
             ], function () {
-                Route::get('/', [RolePermissionController::class, 'index'])->name('index');
-                Route::get('/list', [RolePermissionController::class, 'list'])->name('list');
-                Route::get('/create', [RolePermissionController::class, 'create'])->name('create');
-                Route::post('/', [RolePermissionController::class, 'store'])->name('store');
-                Route::get('/{id}/edit', [RolePermissionController::class, 'edit'])->name('edit');
-                Route::put('/{id}', [RolePermissionController::class, 'update'])->name('update');
-                Route::get('/{id}/delete', [RolePermissionController::class, 'destroy'])->name('destroy');
+                Route::get('/', [ChartOfAccountController::class, 'index'])->name('index');
+                Route::get('/list', [ChartOfAccountController::class, 'list'])->name('list');
+                Route::get('/create', [ChartOfAccountController::class, 'create'])->name('create');
+                Route::post('/', [ChartOfAccountController::class, 'store'])->name('store');
+                Route::get('/{id}/edit', [ChartOfAccountController::class, 'edit'])->name('edit');
+                Route::put('/{id}', [ChartOfAccountController::class, 'update'])->name('update');
+                Route::get('/{id}/delete', [ChartOfAccountController::class, 'destroy'])->name('destroy');
 
                 // Export Route
-                Route::get('/export/pdf', [RolePermissionController::class, 'exportPdf'])->name('export.pdf');
-                Route::get('/export/excel', [RolePermissionController::class, 'exportExcel'])->name('export.excel');
-                Route::get('/export/csv', [RolePermissionController::class, 'exportCsv'])->name('export.csv');
+                Route::get('/export/pdf', [ChartOfAccountController::class, 'exportPdf'])->name('export.pdf');
+                Route::get('/export/excel', [ChartOfAccountController::class, 'exportExcel'])->name('export.excel');
+                Route::get('/export/csv', [ChartOfAccountController::class, 'exportCsv'])->name('export.csv');
             });
+        });
+    });
+
+
+    Route::group([
+        'prefix' => 'settings',
+        'as' => 'settings.'
+    ], function () {
+        Route::group([
+            'prefix' => 'role-permission',
+            'as' => 'role-permission.'
+        ], function () {
+            Route::get('/', [RolePermissionController::class, 'index'])->name('index');
+            Route::get('/list', [RolePermissionController::class, 'list'])->name('list');
+            Route::get('/create', [RolePermissionController::class, 'create'])->name('create');
+            Route::post('/', [RolePermissionController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [RolePermissionController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [RolePermissionController::class, 'update'])->name('update');
+            Route::get('/{id}/delete', [RolePermissionController::class, 'destroy'])->name('destroy');
+
+            // Export Route
+            Route::get('/export/pdf', [RolePermissionController::class, 'exportPdf'])->name('export.pdf');
+            Route::get('/export/excel', [RolePermissionController::class, 'exportExcel'])->name('export.excel');
+            Route::get('/export/csv', [RolePermissionController::class, 'exportCsv'])->name('export.csv');
         });
     });
 });

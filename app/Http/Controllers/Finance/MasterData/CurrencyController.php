@@ -50,7 +50,6 @@ final class CurrencyController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-
             $currencies = Currency::orderBy('currency_code', 'ASC')->get();
             return DataTables::of($currencies)
                 ->addIndexColumn()
@@ -100,7 +99,7 @@ final class CurrencyController extends Controller
             ? to_route('finance.master-data.currency.index')
                 ->with('toastSuccess', $response->message)
             : back()
-                ->with('toastError', $response->message);
+                ->with('toastError', $response->message)->withInput();
     }
 
     /**
@@ -135,7 +134,7 @@ final class CurrencyController extends Controller
             ? to_route('finance.master-data.currency.index')
                 ->with('toastSuccess', $response->message)
             : back()
-                ->with('toastError', $response->message);
+                ->with('toastError', $response->message)->withInput();
     }
 
     /**

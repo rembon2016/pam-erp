@@ -6,6 +6,7 @@ namespace Database\Seeders\Finance;
 
 use Illuminate\Database\Seeder;
 use Database\Seeders\Finance\FixedAssetSeeder;
+use Database\Seeders\Finance\ChartOfAccountSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 final class FinanceSeeder extends Seeder
@@ -17,6 +18,7 @@ final class FinanceSeeder extends Seeder
     {
         $this->call([
             FixedAssetSeeder::class,
+            ChartOfAccountSeeder::class
         ]);
     }
 }

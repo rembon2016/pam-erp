@@ -18,7 +18,7 @@ final class Permission extends SpatiePermission
      *
      * @var string
      */
-    protected $table = 'usr.permissions';
+    protected $table = 'usrs.permissions';
 
     /**
      * Indicates that the `id` column should be guarded from mass assignment.

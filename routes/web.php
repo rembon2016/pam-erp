@@ -11,6 +11,7 @@ use App\Http\Controllers\Finance\MasterData\FixedAssetController;
 use App\Http\Controllers\Finance\MasterData\ServiceTypeController;
 use App\Http\Controllers\Finance\Settings\RolePermissionController;
 use App\Http\Controllers\Finance\MasterData\ChartOfAccountController;
+use App\Http\Controllers\Finance\MasterData\CustomerForBillingController;
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -62,6 +63,26 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/export/pdf', [CurrencyController::class, 'exportPdf'])->name('export.pdf');
                 Route::get('/export/excel', [CurrencyController::class, 'exportExcel'])->name('export.excel');
                 Route::get('/export/csv', [CurrencyController::class, 'exportCsv'])->name('export.csv');
+            });
+
+            Route::group([
+                'prefix' => 'customerforbilling',
+                'as' => 'customerforbilling.'
+            ], function () {
+                Route::get('/export/csv', [CustomerForBillingController::class, 'exportCsv'])->name('export.csv');
+
+                Route::get('/', [CustomerForBillingController::class, 'index'])->name('index');
+                Route::get('/list', [CustomerForBillingController::class, 'list'])->name('list');
+                Route::get('/create', [CustomerForBillingController::class, 'create'])->name('create');
+                Route::post('/', [CustomerForBillingController::class, 'store'])->name('store');
+                Route::get('/{id}/edit', [CustomerForBillingController::class, 'edit'])->name('edit');
+                Route::put('/{id}', [CustomerForBillingController::class, 'update'])->name('update');
+                Route::get('/{id}/delete', [CustomerForBillingController::class, 'destroy'])->name('destroy');
+
+                // // Export Route
+                // Route::get('/export/pdf', [CurrencyController::class, 'exportPdf'])->name('export.pdf');
+                // Route::get('/export/excel', [CurrencyController::class, 'exportExcel'])->name('export.excel');
+
             });
 
             Route::group([

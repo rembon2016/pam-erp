@@ -9,6 +9,7 @@
         <x:layout.sidebar.child-menu name="Job Order" link="/" />
         <x:layout.sidebar.child-menu name="CTD Wise" link="/" />
         <x:layout.sidebar.child-menu name="Customer" link="/" />
+        <x:layout.sidebar.child-menu name="Billing Customer" link="{{ route('finance.master-data.customerforbilling.index') }}" />
         <x:layout.sidebar.child-menu name="Contract" link="/" />
         <x:layout.sidebar.child-menu name="Charge Master" link="/" />
         <x:layout.sidebar.child-menu name="Service Type" link="{{ route('finance.master-data.service-type.index') }}" />

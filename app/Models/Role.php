@@ -18,7 +18,7 @@ final class Role extends SpatieRole
      *
      * @var string
      */
-    protected $table = 'usr.roles';
+    protected $table = 'usrs.roles';
 
     /**
      * Indicates that the `id` column should be guarded from mass assignment.

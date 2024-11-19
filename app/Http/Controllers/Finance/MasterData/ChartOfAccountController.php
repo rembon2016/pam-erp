@@ -10,7 +10,9 @@ use Illuminate\Http\Response;
 use App\Functions\ResponseJson;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Models\Finance\AccountGroup;
 use Illuminate\Http\RedirectResponse;
+use App\Models\Finance\SubAccountGroup;
 use Yajra\DataTables\Facades\DataTables;
 use App\Service\Finance\MasterData\ChartOfAccountService;
 use App\Http\Requests\Finance\ChartOfAccount\StoreChartOfAccountRequest;
@@ -51,8 +53,10 @@ final class ChartOfAccountController extends Controller
          ];
 
          $coa = null;
+         $account_groups = AccountGroup::orderBy('code', 'ASC')->get();
+         $sub_account_groups = SubAccountGroup::orderBy('code', 'ASC')->get();
 
-        return view('pages.finance.master-data.chart-of-account.form', compact('data', 'coa'));
+        return view('pages.finance.master-data.chart-of-account.form', compact('data', 'coa', 'account_groups', 'sub_account_groups'));
     }
 
     public function store(StoreChartOfAccountRequest $request): RedirectResponse
@@ -74,11 +78,17 @@ final class ChartOfAccountController extends Controller
          ];
 
         $getCoaResponse = $this->coaService->getCoaById($id);
-        return $getCoaResponse->success
-            ? view('pages.finance.master-data.chart-of-account.form', [
-                'data' => $data,
-                'coa' => $getCoaResponse->data
-            ]) : to_route('finance.master-data.chart-of-account.index')->with('toastError', $getCoaResponse->message);
+        if (!$getCoaResponse->success) return to_route('finance.master-data.chart-of-account.index')->with('toastError', $getCoaResponse->message);
+
+         $account_groups = AccountGroup::orderBy('code', 'ASC')->get();
+         $sub_account_groups = SubAccountGroup::orderBy('code', 'ASC')->get();
+
+        return view('pages.finance.master-data.chart-of-account.form', [
+            'data' => $data,
+            'coa' => $getCoaResponse->data,
+            'account_groups' => $account_groups,
+            'sub_account_groups' => $sub_account_groups,
+        ]);
     }
 
     public function update(UpdateChartOfAccountRequest $request, string $id): RedirectResponse

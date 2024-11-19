@@ -21,10 +21,18 @@
                 <x:form.input label="Subledger Name" name="subledger_name" placeholder="Type Name of Subledger" :model="$coa" required="true" />
             </div>
             <div class='col-md-4'>
-                <x:form.select label="Account Group" name="account_group_id" defaultOption="Select Account Group" :model="$coa" required="true"></x:form.select>
+                <x:form.select2 label="Account Group" name="account_group_id" placeholder="Select Account Group" :model="$coa" required="true">
+                    @foreach ($account_groups as $account_group)
+                        <option value="{{ $account_group->id }}" @selected(old('account_group_id', $coa?->account_group_id == $account_group->id))>{{ "{$account_group->code}: {$account_group->name}" }}</option>
+                    @endforeach
+                </x:form.select>
             </div>
             <div class='col-md-4'>
-                <x:form.select label="Sub Account Group" name="sub_account_group_id" defaultOption="Sub Select Account Group" :model="$coa" required="true"></x:form.select>
+                <x:form.select2 label="Sub Account Group" name="sub_account_group_id" placeholder="Select Sub Account Group" :model="$coa" required="true">
+                    @foreach ($sub_account_groups as $sub_accout_group)
+                        <option value="{{ $sub_accout_group->id }}" @selected(old('sub_accout_group_id', $coa?->sub_accout_group_id == $sub_accout_group->id))>{{ "{$sub_accout_group->code}: {$sub_accout_group->name}" }}</option>
+                    @endforeach
+                </x:form.select>
             </div>
             <div class='col-md-4'>
                 <x:form.select label="Cash Flow ?" name="is_cashflow" defaultOption="Select Option" :model="$coa" required="true">

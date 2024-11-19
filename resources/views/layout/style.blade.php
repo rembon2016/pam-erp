@@ -14,6 +14,7 @@
 <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.7/dist/css/tempus-dominus.min.css"
     crossorigin="anonymous">
+<script src="assets/plugins/custom/tinymce/tinymce.bundle.js"></script>
 
 @stack('css')
 <style>

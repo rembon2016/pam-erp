@@ -24,7 +24,7 @@
                 <x:form.input type="number" label="Sell Rate" name="sell_rate" placeholder="0" :model="$currency" required="true" />
             </div>
             <div class='col-md-12'>
-                <x:form.textarea label="Notes" name="notes" placeholder="Type Notes..." :model="$currency" />
+                <x:form.simple-editor label="Notes" name="notes" placeholder="Type Notes..." :model="$currency" />
             </div>
         </div>
         <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px">

@@ -64,6 +64,21 @@
                 window.location.href = urlToRedirect;
             }
         })
-
     }
+
+    const basicTinyMceOptions = {
+        selector: ".tinymce-simple-editor",
+        height : "300",
+        menubar: false,
+        toolbar: [
+            "bold italic underline"
+        ]
+    };
+    if ( KTThemeMode.getMode() === "dark" ) {
+        options["skin"] = "oxide-dark";
+        options["content_css"] = "dark";
+    }
+
+    tinymce.init(basicTinyMceOptions);
+
 </script>

@@ -31,4 +31,11 @@ final class Unit extends Model
      * @var string
      */
     protected $primaryKey = 'unit_id';
+
+    /**
+     * Indicates that the model does not have created_at and updated_at timestamp columns.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
 }

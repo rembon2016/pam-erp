@@ -37,83 +37,49 @@
 @endsection
 
 @push('js')
-<script>
-
-    "use strict";
-    var KTDataTable = function() {
-        var t, e;
-        return {
-            init: function() {
-
-                (t = document.querySelector("#fixed_asset_table")) && (t.querySelectorAll(
-                        "tbody tr").forEach((t => {
-                        const e = t.querySelectorAll("td"),
-                            r = moment(e[3].innerHTML, "dd mm yyyy").format();
-                        e[3].setAttribute("data-order", r)
-                    })), e = $(t).DataTable({
-                        searchDelay: 500,
-                        pageLength: 10,
-                        processing: true,
-                        serverSide: true,
-                        ajax: "{{ route('finance.master-data.fixed-asset.list') }}",
-                        columns: [
-                            {
-                                "data": "DT_RowIndex",
-                                "name": "DT_RowIndex",
-                                "orderable": false,
-                                "searchable": false
-                            },
-                            {
-                                "data": "asset_name",
-                                "name": "asset_name"
-                            },
-                            {
-                                "data": "asset_code",
-                                "name": "asset_code"
-                            },
-                            {
-                                "data":"type",
-                                "name":"type"
-                            },
-                            {
-                                "data":"acquisition_date",
-                                "name":"acquisition_date"
-                            },
-                            {
-                                "data":"purchase_price",
-                                "name":"purchase_price"
-                            },
-                            {
-                                "data":"useful_life",
-                                "name":"useful_life"
-                            },
-                            {
-                                "data":"status",
-                                "name":"status"
-                            },
-                            {
-                                "data":"action",
-                                "name":"action"
-                            }
-                        ]
-                    }), document.querySelector('[data-kt-ecommerce-order-filter="search"]').addEventListener(
-                        "keyup", (function(t) {
-
-                                e.search(t.target.value).draw()
-
-                        })), (() => {
-                        const t = document.querySelector('[data-kt-ecommerce-order-filter="status"]');
-                        $(t).on("change", (t => {
-                            let r = t.target.value;
-                            "all" === r && (r = ""), e.column(2).search(r).draw()
-                        }))
-                    })())
-            }
-        }
-    }();
-
-    KTUtil.onDOMContentLoaded((function() {
-        KTDataTable.init()
-    }));
-</script>
+@component('components.layout.table.datatable', [
+    'id' => 'fixed_asset_table',
+    'url' => route('finance.master-data.fixed-asset.list'),
+    'columns' => [
+        [
+            "data" => "DT_RowIndex",
+            "name" => "DT_RowIndex",
+            "orderable" => false,
+            "searchable" => false
+        ],
+        [
+            "data" => "asset_name",
+            "name" => "asset_name",
+        ],
+        [
+            "data" => "asset_code",
+            "name" => "asset_code",
+        ],
+        [
+            "data" => "type",
+            "name" => "type",
+        ],
+        [
+            "data" => "acquisition_date",
+            "name" => "acquisition_date",
+        ],
+        [
+            "data" => "purchase_price",
+            "name" => "purchase_price",
+        ],
+        [
+            "data" => "useful_life",
+            "name" => "useful_life",
+        ],
+        [
+            "data" => "status",
+            "name" => "status",
+        ],
+        [
+            "data" => "action",
+            "name" => "action",
+        ],
+    ]
+])
+@endcomponent
 @endpush

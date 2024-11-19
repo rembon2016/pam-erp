@@ -25,8 +25,8 @@ final class StoreUnitRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'unit_code' => ['required', 'string'],
-            'unit_name' => ['required', 'string', 'unique:pgsql.master.unit,unit_name']
+            'unit_name' => ['required', 'string'],
+            'description' => ['required', 'string', 'unique:pgsql.master.unit,description'],
         ];
     }
 }

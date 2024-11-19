@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
-use App\Exports\MasterData\UnitExport;
 use Illuminate\View\View;
 use App\Functions\Utility;
 use Illuminate\Http\Response;
@@ -13,7 +12,9 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Operation\Master\Unit;
 use Illuminate\Http\RedirectResponse;
+use App\Exports\MasterData\UnitExport;
 use Yajra\DataTables\Facades\DataTables;
 use App\Service\Finance\MasterData\UnitService;
 use App\Http\Requests\Finance\MasterData\Unit\StoreUnitRequest;
@@ -80,7 +81,9 @@ final class UnitController extends Controller
             'method' => 'POST',
          ];
 
-        return view('pages.finance.master-data.unit.form', compact('data'));
+         $unit = new Unit;
+
+        return view('pages.finance.master-data.unit.form', compact('data', 'unit'));
     }
 
     /**
@@ -128,7 +131,10 @@ final class UnitController extends Controller
             'method' => 'PUT',
          ];
 
-        return view('pages.finance.master-data.unit.form', compact('data'));
+        return view('pages.finance.master-data.unit.form', [
+            'data' => $data,
+            'unit' => $getUnitResponse->data,
+        ]);
     }
 
     /**

@@ -23,7 +23,7 @@ final class UnitService
      */
     public function getUnitCollections(): Collection
     {
-        return Unit::orderBy('description', 'ASC')->get();
+        return Unit::orderBy('date_created', 'DESC')->get();
     }
 
     /**
@@ -58,6 +58,7 @@ final class UnitService
             );
 
         } catch (\Throwable $th) {
+            dd($th);
             return ObjectResponse::error(
                 message: $th->getMessage(),
                 errors: $th->getTrace(),
@@ -75,7 +76,7 @@ final class UnitService
     public function updateUnit(int $id, array $dto): object
     {
         try {
-            $unit = Unit::findOrFail($id);
+            $unit = Unit::where('unit_id', $id)->first();
             $unit->update($dto);
 
             return ObjectResponse::success(

@@ -12,6 +12,7 @@ use App\Http\Controllers\Finance\MasterData\ServiceTypeController;
 use App\Http\Controllers\Finance\Settings\RolePermissionController;
 use App\Http\Controllers\Finance\MasterData\ChartOfAccountController;
 use App\Http\Controllers\Finance\MasterData\CustomerForBillingController;
+use App\Http\Controllers\Finance\MasterData\UnitController;
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -119,6 +120,19 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/export/pdf', [ChartOfAccountController::class, 'exportPdf'])->name('export.pdf');
                 Route::get('/export/excel', [ChartOfAccountController::class, 'exportExcel'])->name('export.excel');
                 Route::get('/export/csv', [ChartOfAccountController::class, 'exportCsv'])->name('export.csv');
+            });
+
+            Route::group([
+                'prefix' => 'unit',
+                'as' => 'unit.'
+            ], function () {
+                Route::get('/', [UnitController::class, 'index'])->name('index');
+                Route::get('/list', [UnitController::class, 'list'])->name('list');
+                Route::get('/create', [UnitController::class, 'create'])->name('create');
+                Route::post('/', [UnitController::class, 'store'])->name('store');
+                Route::get('/{id}/edit', [UnitController::class, 'edit'])->name('edit');
+                Route::put('/{id}', [UnitController::class, 'update'])->name('update');
+                Route::get('/{id}/delete', [UnitController::class, 'destroy'])->name('destroy');
             });
         });
     });

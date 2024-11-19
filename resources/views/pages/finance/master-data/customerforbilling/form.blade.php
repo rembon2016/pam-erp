@@ -48,7 +48,7 @@
             </div>
 
             <div class='col-md-6'>
-               <x:form.select label="Billing Customer Type" name="customer_type" defaultOption="Select Billing Customer Type" :model="$customer" >
+               <x:form.select label="Billing Customer Type" name="customer_type" defaultOption="Select Billing Customer Type" :model="$customer" required="true">
                     @foreach ($customer_type as $row)
                         <option value="{{ $row->customer_type_id }}" @selected(old('customer_type', $customer?->customer_type) == $row->customer_type_id)>{{ $row->customer_type_name }}</option>
                     @endforeach

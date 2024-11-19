@@ -2,25 +2,30 @@
 
 <x:layout.sidebar.wrapper>
 
-    <x:layout.sidebar.menu-item name="Dashboard" iconClass="bx bxs-dashboard" link="/" />
+    <x:layout.sidebar.menu-item
+        name="Dashboard"
+        iconClass="bx bxs-dashboard"
+        link="/"
+        :activeCondition="Route::is('dashboard')"
+    />
 
     {{-- Master Data --}}
-    <x:layout.sidebar.parent-menu name="Master Data" iconClass="bx bxs-data">
+    <x:layout.sidebar.parent-menu name="Master Data" iconClass="bx bxs-data" :showCondition="Route::is('finance.master-data.*')">
         <x:layout.sidebar.child-menu name="Job Order" link="/" />
         <x:layout.sidebar.child-menu name="CTD Wise" link="/" />
         <x:layout.sidebar.child-menu name="Customer" link="/" />
-        <x:layout.sidebar.child-menu name="Billing Customer" link="{{ route('finance.master-data.customerforbilling.index') }}" />
+        <x:layout.sidebar.child-menu name="Billing Customer" link="{{ route('finance.master-data.customerforbilling.index') }}" :activeCondition="Route::is('finance.master-data.customerforbilling.*')" />
         <x:layout.sidebar.child-menu name="Contract" link="/" />
         <x:layout.sidebar.child-menu name="Charge Master" link="/" />
-        <x:layout.sidebar.child-menu name="Service Type" link="{{ route('finance.master-data.service-type.index') }}" />
+        <x:layout.sidebar.child-menu name="Service Type" link="{{ route('finance.master-data.service-type.index') }}" :activeCondition="Route::is('finance.master-data.service-type.*')" />
         <x:layout.sidebar.child-menu name="Carrierwise" link="/" />
-        <x:layout.sidebar.child-menu name="Unit Code" link="/" />
+        <x:layout.sidebar.child-menu name="Unit Code" link="{{ route('finance.master-data.unit.index') }}" :activeCondition="Route::is('finance.master-data.unit.*')" />
         <x:layout.sidebar.child-menu name="Tonnage" link="/" />
         <x:layout.sidebar.child-menu name="Container" link="/" />
         <x:layout.sidebar.child-menu name="Payment Method" link="/" />
-        <x:layout.sidebar.child-menu name="Currency" link="{{ route('finance.master-data.currency.index') }}" />
-        <x:layout.sidebar.child-menu name="Chart of Account" link="{{ route('finance.master-data.chart-of-account.index') }}" />
-        <x:layout.sidebar.child-menu name="Fixed Asset" link="{{ route('finance.master-data.fixed-asset.index') }}" />
+        <x:layout.sidebar.child-menu name="Currency" link="{{ route('finance.master-data.currency.index') }}" :activeCondition="Route::is('finance.master-data.currency.*')" />
+        <x:layout.sidebar.child-menu name="Chart of Account" link="{{ route('finance.master-data.chart-of-account.index') }}" :activeCondition="Route::is('finance.master-data.chart-of-account.*')" />
+        <x:layout.sidebar.child-menu name="Fixed Asset" link="{{ route('finance.master-data.fixed-asset.index') }}" :activeCondition="Route::is('finance.master-data.fixed-asset.*')" />
     </x:layout.sidebar.parent-menu>
 
     {{-- Job Order --}}

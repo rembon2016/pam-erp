@@ -1,6 +1,10 @@
-@props(['name' => $name, 'iconClass' => $iconClass])
+@props([
+    'name' => $name,
+    'iconClass' => $iconClass,
+    'showCondition' => $showCondition ?? false,
+])
 
-<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+<div data-kt-menu-trigger="click" class="menu-item menu-accordion @if ($showCondition) show @endif">
     <span class="menu-link">
         <span class="menu-icon">
             <i class="{{ $iconClass }}"></i>

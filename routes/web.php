@@ -133,6 +133,11 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/{id}/edit', [UnitController::class, 'edit'])->name('edit');
                 Route::put('/{id}', [UnitController::class, 'update'])->name('update');
                 Route::get('/{id}/delete', [UnitController::class, 'destroy'])->name('destroy');
+
+                // Export Route
+                Route::get('/export/pdf', [UnitController::class, 'exportPdf'])->name('export.pdf');
+                Route::get('/export/excel', [UnitController::class, 'exportExcel'])->name('export.excel');
+                Route::get('/export/csv', [UnitController::class, 'exportCsv'])->name('export.csv');
             });
         });
     });

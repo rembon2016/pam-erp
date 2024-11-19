@@ -79,7 +79,7 @@ final class ServiceTypeService
             $serviceType->delete();
 
             return ObjectResponse::success(
-                message: __('crud.deleted', ['name' => 'Currency']),
+                message: __('crud.deleted', ['name' => 'Service Type']),
                 data: $serviceType
             );
 

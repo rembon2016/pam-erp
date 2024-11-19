@@ -16,7 +16,7 @@ final class Unit extends Model
      *
      * @var string
      */
-    protected $table = 'master.units';
+    protected $table = 'master.unit';
 
     /**
      * The attributes that are mass assignable.

@@ -28,6 +28,7 @@ final class FixedAssetController extends Controller
     public function __construct(
         protected FixedAssetService $fixedAssetService
     ) {}
+
     /**
      * Display a listing of the resource.
      */

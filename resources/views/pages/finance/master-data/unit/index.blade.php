@@ -15,12 +15,12 @@
             />
         </x:layout.card.header>
         <x:layout.card.body>
-            <x:layout.table.wrapper id="service_type_table">
+            <x:layout.table.wrapper id="unit_table">
                 <thead>
                     <x:layout.table.row>
                         <x:layout.table.heading widthPixel="50" title="No" />
-                        <x:layout.table.heading widthPixel="100" title="Service Code" />
-                        <x:layout.table.heading widthPixel="100" title="Service Name" />
+                        <x:layout.table.heading widthPixel="100" title="Unit Code" />
+                        <x:layout.table.heading widthPixel="100" title="Unit Name" />
                         <x:layout.table.heading widthPixel="100" customClass="text-center" title="Action" />
                     </x:layout.table.row>
                 </thead>
@@ -33,14 +33,13 @@
 
 @push('js')
 <script>
-
     "use strict";
     var KTDataTable = function() {
         var t, e;
         return {
             init: function() {
 
-                (t = document.querySelector("#service_type_table")) && (t.querySelectorAll(
+                (t = document.querySelector("#unit_table")) && (t.querySelectorAll(
                         "tbody tr").forEach((t => {
                         const e = t.querySelectorAll("td"),
                             r = moment(e[3].innerHTML, "dd mm yyyy").format();
@@ -50,7 +49,7 @@
                         pageLength: 10,
                         processing: true,
                         serverSide: true,
-                        ajax: "{{ route('finance.master-data.service-type.list') }}",
+                        ajax: "{{ route('finance.master-data.unit.list') }}",
                         columns: [
                             {
                                 "data": "DT_RowIndex",
@@ -59,12 +58,12 @@
                                 "searchable": false
                             },
                             {
-                                "data": "service_code",
-                                "name": "service_code"
+                                "data": "unit_name",
+                                "name": "unit_name"
                             },
                             {
-                                "data":"service_name",
-                                "name":"service_name"
+                                "data":"description",
+                                "name":"description"
                             },
                             {
                                 "data":"action",

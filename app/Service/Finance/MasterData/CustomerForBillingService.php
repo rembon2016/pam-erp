@@ -15,10 +15,10 @@ final class CustomerForBillingService
     public function __construct(){}
 
     /**
-     * Creates a new currency record in the database.
+     * Creates a new customer billing record in the database.
      *
-     * @param array $dto An associative array containing the data for the new currency.
-     * @return object An ObjectResponse instance containing the success message and the created currency object.
+     * @param array $dto An associative array containing the data for the new customer billing.
+     * @return object An ObjectResponse instance containing the success message and the created customer billing object.
      * @throws \Throwable If an exception occurs during the creation process.
      */
     public function createCustomer(array $dto): object
@@ -40,10 +40,10 @@ final class CustomerForBillingService
     }
 
     /**
-     * Updates an existing currency record in the database.
+     * Updates an existing customer billing record in the database.
      *
-     * @param array $dto An associative array containing the updated data for the currency.
-     * @return object An ObjectResponse instance containing the success message and the updated currency object.
+     * @param array $dto An associative array containing the updated data for the customer billing.
+     * @return object An ObjectResponse instance containing the success message and the updated customer billing object.
      * @throws \Throwable If an exception occurs during the update process.
      */
     public function updateCustomer(array $dto): object
@@ -66,21 +66,21 @@ final class CustomerForBillingService
     }
 
     /**
-     * Deletes an existing currency record from the database.
+     * Deletes an existing customer billing record from the database.
      *
-     * @param array $dto An associative array containing the ID of the currency to be deleted.
-     * @return object An ObjectResponse instance containing the success message and the deleted currency object.
+     * @param array $dto An associative array containing the ID of the customer billing to be deleted.
+     * @return object An ObjectResponse instance containing the success message and the deleted customer billing object.
      * @throws \Throwable If an exception occurs during the deletion process.
      */
     public function deleteCustomer(array $dto): object
     {
         try {
-            $currency = Currency::findOrFail($dto['id']);
-            $currency->delete();
+            $customer = CustomerBilling::findOrFail($dto['id']);
+            $customer->delete();
 
             return ObjectResponse::success(
                 message: __('crud.deleted', ['name' => 'Customer For Billing']),
-                data: $currency
+                data: $customer
             );
 
         } catch (\Throwable $th) {

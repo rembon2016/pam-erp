@@ -6,7 +6,6 @@ namespace App\Http\Controllers\Finance\MasterData;
 
 use Illuminate\View\View;
 use App\Functions\Utility;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Functions\ResponseJson;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -18,8 +17,7 @@ use Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\Facades\DataTables;
 use App\Exports\MasterData\CurrencyExport;
 use App\Service\Finance\MasterData\CurrencyService;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use App\Http\Requests\Finance\Currency\GlobalCurrencyRequest;
+use App\Http\Requests\Finance\MasterData\Currency\GlobalCurrencyRequest;
 
 final class CurrencyController extends Controller
 {

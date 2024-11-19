@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Finance\ServiceType;
+namespace App\Http\Requests\Finance\MasterData\ChartOfAccount;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-final class GlobalServiceTypeRequest extends FormRequest
+final class StoreChartOfAccountRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,16 +24,7 @@ final class GlobalServiceTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'service_code' => 'required|string|max:255',
-            'service_name' => 'required|string|max:255',
-        ];
-    }
-
-    public function attributes(): array
-    {
-        return [
-            'service_code' => 'Service Code',
-            'service_name' => 'Service Name',
+            //
         ];
     }
 }

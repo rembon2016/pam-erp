@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Finance\FixedAsset;
+namespace App\Http\Requests\Finance\Master\FixedAsset;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-final class StoreFixedAssetRequest extends FormRequest
+final class UpdateFixedAssetRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

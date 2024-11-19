@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Finance\Currency;
+namespace App\Http\Requests\Finance\MasterData\Currency;
 
 use Illuminate\Foundation\Http\FormRequest;
 

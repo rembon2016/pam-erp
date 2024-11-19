@@ -16,7 +16,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\Facades\DataTables;
 use App\Exports\MasterData\ServiceTypeExport;
-use App\Http\Requests\Finance\ServiceType\GlobalServiceTypeRequest;
+use App\Http\Requests\Finance\MasterData\ServiceType\GlobalServiceTypeRequest;
 use App\Service\Finance\MasterData\ServiceTypeService;
 
 final class ServiceTypeController extends Controller

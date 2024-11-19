@@ -6,10 +6,8 @@ namespace App\Http\Controllers\Finance\MasterData;
 
 use Illuminate\View\View;
 use App\Functions\Utility;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Functions\ResponseJson;
-use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Operation\Master\CustomerBilling;
 use App\Models\Operation\Master\CustomerGroup;
 use App\Models\Operation\Master\Countries;
@@ -21,7 +19,6 @@ use Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\Facades\DataTables;
 use App\Exports\MasterData\CustomerForBillingExport;
 use App\Service\Finance\MasterData\CustomerForBillingService;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use App\Http\Requests\Finance\MasterData\CustomerForBilling\StoreCustomerForBillingRequest;
 use App\Http\Requests\Finance\MasterData\CustomerForBilling\UpdateCustomerForBillingRequest;
 

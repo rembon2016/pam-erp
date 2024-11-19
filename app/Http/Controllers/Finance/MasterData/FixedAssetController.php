@@ -6,7 +6,6 @@ namespace App\Http\Controllers\Finance\MasterData;
 
 use Illuminate\View\View;
 use App\Functions\Utility;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Functions\ResponseJson;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -20,8 +19,8 @@ use App\Models\Finance\FixedAssetStatus;
 use Yajra\DataTables\Facades\DataTables;
 use App\Exports\MasterData\FixedAssetExport;
 use App\Service\Finance\MasterData\FixedAssetService;
-use App\Http\Requests\Finance\FixedAsset\StoreFixedAssetRequest;
-use App\Http\Requests\Finance\FixedAsset\UpdateFixedAssetRequest;
+use App\Http\Requests\Finance\MasterData\FixedAsset\StoreFixedAssetRequest;
+use App\Http\Requests\Finance\MasterData\FixedAsset\UpdateFixedAssetRequest;
 
 final class FixedAssetController extends Controller
 {

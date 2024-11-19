@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Finance\MasterData;
 
 use Illuminate\View\View;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Functions\ResponseJson;
 use Illuminate\Http\JsonResponse;
@@ -15,8 +14,8 @@ use Illuminate\Http\RedirectResponse;
 use App\Models\Finance\SubAccountGroup;
 use Yajra\DataTables\Facades\DataTables;
 use App\Service\Finance\MasterData\ChartOfAccountService;
-use App\Http\Requests\Finance\ChartOfAccount\StoreChartOfAccountRequest;
-use App\Http\Requests\Finance\ChartOfAccount\UpdateChartOfAccountRequest;
+use App\Http\Requests\Finance\MasterData\ChartOfAccount\StoreChartOfAccountRequest;
+use App\Http\Requests\Finance\MasterData\ChartOfAccount\UpdateChartOfAccountRequest;
 
 final class ChartOfAccountController extends Controller
 {

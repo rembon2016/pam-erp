@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Finance\ChartOfAccount;
+namespace App\Http\Requests\Finance\MasterData\ChartOfAccount;
 
 use Illuminate\Foundation\Http\FormRequest;
 

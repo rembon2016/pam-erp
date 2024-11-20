@@ -68,7 +68,7 @@ Route::group(['middleware' => ['auth']], function () {
             });
 
             Route::group([
-                'prefix' => 'customerforbilling',
+                'prefix' => 'customer-for-billing',
                 'as' => 'customerforbilling.'
             ], function () {
                 Route::get('/export/csv', [CustomerForBillingController::class, 'exportCsv'])->name('export.csv');

@@ -6,13 +6,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\Finance\MasterData\UnitController;
 use App\Http\Controllers\Finance\MasterData\CurrencyController;
 use App\Http\Controllers\Finance\MasterData\FixedAssetController;
 use App\Http\Controllers\Finance\MasterData\ServiceTypeController;
 use App\Http\Controllers\Finance\Settings\RolePermissionController;
+use App\Http\Controllers\Finance\MasterData\PaymentMethodController;
 use App\Http\Controllers\Finance\MasterData\ChartOfAccountController;
 use App\Http\Controllers\Finance\MasterData\CustomerForBillingController;
-use App\Http\Controllers\Finance\MasterData\UnitController;
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -138,6 +139,24 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/export/pdf', [UnitController::class, 'exportPdf'])->name('export.pdf');
                 Route::get('/export/excel', [UnitController::class, 'exportExcel'])->name('export.excel');
                 Route::get('/export/csv', [UnitController::class, 'exportCsv'])->name('export.csv');
+            });
+
+            Route::group([
+                'prefix' => 'payment-method',
+                'as' => 'payment-method.'
+            ], function () {
+                Route::get('/', [PaymentMethodController::class, 'index'])->name('index');
+                Route::get('/list', [PaymentMethodController::class, 'list'])->name('list');
+                Route::get('/create', [PaymentMethodController::class, 'create'])->name('create');
+                Route::post('/', [PaymentMethodController::class, 'store'])->name('store');
+                Route::get('/{id}/edit', [PaymentMethodController::class, 'edit'])->name('edit');
+                Route::put('/{id}', [PaymentMethodController::class, 'update'])->name('update');
+                Route::get('/{id}/delete', [PaymentMethodController::class, 'destroy'])->name('destroy');
+
+                // Export Route
+                Route::get('/export/pdf', [PaymentMethodController::class, 'exportPdf'])->name('export.pdf');
+                Route::get('/export/excel', [PaymentMethodController::class, 'exportExcel'])->name('export.excel');
+                Route::get('/export/csv', [PaymentMethodController::class, 'exportCsv'])->name('export.csv');
             });
         });
     });

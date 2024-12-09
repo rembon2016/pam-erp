@@ -7,6 +7,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\Finance\MasterData\UnitController;
+use App\Http\Controllers\Finance\MasterData\ChargeController;
+use App\Http\Controllers\Finance\MasterData\DaybookController;
 use App\Http\Controllers\Finance\MasterData\CurrencyController;
 use App\Http\Controllers\Finance\MasterData\FixedAssetController;
 use App\Http\Controllers\Finance\MasterData\ServiceTypeController;
@@ -125,6 +127,24 @@ Route::group(['middleware' => ['auth']], function () {
             });
 
             Route::group([
+                'prefix' => 'charge',
+                'as' => 'charge.'
+            ], function () {
+                Route::get('/', [ChargeController::class, 'index'])->name('index');
+                Route::get('/list', [ChargeController::class, 'list'])->name('list');
+                Route::get('/create', [ChargeController::class, 'create'])->name('create');
+                Route::post('/', [ChargeController::class, 'store'])->name('store');
+                Route::get('/{id}/edit', [ChargeController::class, 'edit'])->name('edit');
+                Route::put('/{id}', [ChargeController::class, 'update'])->name('update');
+                Route::get('/{id}/delete', [ChargeController::class, 'destroy'])->name('destroy');
+
+                // Export Route
+                Route::get('/export/pdf', [ChargeController::class, 'exportPdf'])->name('export.pdf');
+                Route::get('/export/excel', [ChargeController::class, 'exportExcel'])->name('export.excel');
+                Route::get('/export/csv', [ChargeController::class, 'exportCsv'])->name('export.csv');
+            });
+
+            Route::group([
                 'prefix' => 'unit',
                 'as' => 'unit.'
             ], function () {
@@ -176,6 +196,24 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/export/pdf', [PortController::class, 'exportPdf'])->name('export.pdf');
                 Route::get('/export/excel', [PortController::class, 'exportExcel'])->name('export.excel');
                 Route::get('/export/csv', [PortController::class, 'exportCsv'])->name('export.csv');
+            });
+
+            Route::group([
+                'prefix' => 'daybook',
+                'as' => 'daybook.'
+            ], function () {
+                Route::get('/', [DaybookController::class, 'index'])->name('index');
+                Route::get('/list', [DaybookController::class, 'list'])->name('list');
+                Route::get('/create', [DaybookController::class, 'create'])->name('create');
+                Route::post('/', [DaybookController::class, 'store'])->name('store');
+                Route::get('/{id}/edit', [DaybookController::class, 'edit'])->name('edit');
+                Route::put('/{id}', [DaybookController::class, 'update'])->name('update');
+                Route::get('/{id}/delete', [DaybookController::class, 'destroy'])->name('destroy');
+
+                // Export Route
+                Route::get('/export/pdf', [DaybookController::class, 'exportPdf'])->name('export.pdf');
+                Route::get('/export/excel', [DaybookController::class, 'exportExcel'])->name('export.excel');
+                Route::get('/export/csv', [DaybookController::class, 'exportCsv'])->name('export.csv');
             });
         });
     });

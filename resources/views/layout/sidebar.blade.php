@@ -18,12 +18,12 @@
         <x:layout.sidebar.child-menu name="Port" link="{{ route('finance.master-data.port.index') }}" :activeCondition="Route::is('finance.master-data.port.*')" />
         {{-- <x:layout.sidebar.child-menu name="Billing Customer" link="{{ route('finance.master-data.customerforbilling.index') }}" :activeCondition="Route::is('finance.master-data.customerforbilling.*')" /> --}}
         <x:layout.sidebar.child-menu name="Service Type" link="{{ route('finance.master-data.service-type.index') }}" :activeCondition="Route::is('finance.master-data.service-type.*')" />
-        <x:layout.sidebar.child-menu name="GL Charge Master" link="/" />
+        <x:layout.sidebar.child-menu name="GL Charge Master" link="{{ route('finance.master-data.charge.index') }}" :activeCondition="Route::is('finance.master-data.charge.*')" />
         <x:layout.sidebar.child-menu name="Unit" link="{{ route('finance.master-data.unit.index') }}" :activeCondition="Route::is('finance.master-data.unit.*')" />
         <x:layout.sidebar.child-menu name="Payment Method" link="{{ route('finance.master-data.payment-method.index') }}" :activeCondition="Route::is('finance.master-data.payment-method.*')" />
         <x:layout.sidebar.child-menu name="Currency" link="{{ route('finance.master-data.currency.index') }}" :activeCondition="Route::is('finance.master-data.currency.*')" />
         <x:layout.sidebar.child-menu name="Chart of Account" link="{{ route('finance.master-data.chart-of-account.index') }}" :activeCondition="Route::is('finance.master-data.chart-of-account.*')" />
-        <x:layout.sidebar.child-menu name="Daybook" link="/" />
+        <x:layout.sidebar.child-menu name="Daybook" link="{{ route('finance.master-data.daybook.index') }}" :activeCondition="Route::is('finance.master-data.daybook.*')" />
         {{-- <x:layout.sidebar.child-menu name="Fixed Asset" link="{{ route('finance.master-data.fixed-asset.index') }}" :activeCondition="Route::is('finance.master-data.fixed-asset.*')" />
         <x:layout.sidebar.child-menu name="Tonnage" link="/" />
         <x:layout.sidebar.child-menu name="Container" link="/" /> --}}
@@ -154,6 +154,7 @@
 
     {{-- Accounting --}}
     <x:layout.sidebar.parent-menu name="Settings" iconClass="bx bx-cog">
+        <x:layout.sidebar.child-menu name="User" link="/" />
         <x:layout.sidebar.child-menu name="Role & Permission" link="{{ route('settings.role-permission.index') }}" />
     </x:layout.sidebar.parent-menu>
 

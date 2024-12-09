@@ -3,7 +3,7 @@
     <x:layout.breadcrumb.wrapper module="Master Data" pageName="{!! $data['page'] !!}">
         <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />
         <x:layout.breadcrumb.item pageName="Master Data" />
-        <x:layout.breadcrumb.item pageName="Fixed Asset" href="{{ route('finance.master-data.payment-method.index') }}" />
+        <x:layout.breadcrumb.item pageName="Payment Method" href="{{ route('finance.master-data.payment-method.index') }}" />
     </x:layout.breadcrumb.wrapper>
 
     <x:form.wrapper action="{{ $data['action'] }}" method="{{ $data['method'] }}">

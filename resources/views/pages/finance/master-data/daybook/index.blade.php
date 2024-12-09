@@ -1,27 +1,27 @@
 @extends('layout.app')
 @section('body')
-    <x:layout.breadcrumb.wrapper module="Master Data" pageName="Currency">
+    <x:layout.breadcrumb.wrapper module="Master Data" pageName="Daybook">
         <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />
         <x:layout.breadcrumb.item pageName="Master Data" />
-        <x:layout.breadcrumb.item pageName="Currency" href="{{ route('finance.master-data.currency.index') }}" />
     </x:layout.breadcrumb.wrapper>
 
     <x:layout.card.wrapper>
         <x:layout.card.header>
             <x:layout.card.toolbar
-                createDataLink="{{ route('finance.master-data.currency.create') }}"
-                exportExcelLink="{{ route('finance.master-data.currency.export.excel') }}"
-                exportCsvLink="{{ route('finance.master-data.currency.export.csv') }}"
-                exportPdfLink="{{ route('finance.master-data.currency.export.pdf') }}"
+                createDataLink="{{ route('finance.master-data.daybook.create') }}"
+                exportExcelLink="{{ route('finance.master-data.daybook.export.excel') }}"
+                exportCsvLink="{{ route('finance.master-data.daybook.export.csv') }}"
+                exportPdfLink="{{ route('finance.master-data.daybook.export.pdf') }}"
             />
         </x:layout.card.header>
         <x:layout.card.body>
-            <x:layout.table.wrapper id="currency_table">
+            <x:layout.table.wrapper id="daybook_table">
                 <thead>
                     <x:layout.table.row>
                         <x:layout.table.heading widthPixel="50" title="No" />
-                        <x:layout.table.heading widthPixel="100" title="Currency Code" />
-                        <x:layout.table.heading widthPixel="100" title="Currency Name" />
+                        <x:layout.table.heading widthPixel="100" title="Daybook Code" />
+                        <x:layout.table.heading widthPixel="100" title="Daybook Name" />
+                        <x:layout.table.heading widthPixel="100" title="Description" />
                         <x:layout.table.heading widthPixel="100" customClass="text-center" title="Action" />
                     </x:layout.table.row>
                 </thead>
@@ -34,8 +34,8 @@
 
 @push('js')
 @component('components.layout.table.datatable', [
-    'id' => 'currency_table',
-    'url' => route('finance.master-data.currency.list'),
+    'id' => 'daybook_table',
+    'url' => route('finance.master-data.daybook.list'),
     'columns' => [
         [
             "data" => "DT_RowIndex",
@@ -44,12 +44,16 @@
             "searchable" => false
         ],
         [
-            "data" => "currency_code",
-            "name" => "currency_code",
+            "data" => "code",
+            "name" => "code",
         ],
         [
-            "data" => "currency_name",
-            "name" => "currency_name",
+            "data" => "name",
+            "name" => "name",
+        ],
+        [
+            "data" => "description",
+            "name" => "description",
         ],
         [
             "data" => "action",

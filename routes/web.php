@@ -14,6 +14,7 @@ use App\Http\Controllers\Finance\Settings\RolePermissionController;
 use App\Http\Controllers\Finance\MasterData\PaymentMethodController;
 use App\Http\Controllers\Finance\MasterData\ChartOfAccountController;
 use App\Http\Controllers\Finance\MasterData\CustomerForBillingController;
+use App\Http\Controllers\Finance\MasterData\PortController;
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -157,6 +158,24 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/export/pdf', [PaymentMethodController::class, 'exportPdf'])->name('export.pdf');
                 Route::get('/export/excel', [PaymentMethodController::class, 'exportExcel'])->name('export.excel');
                 Route::get('/export/csv', [PaymentMethodController::class, 'exportCsv'])->name('export.csv');
+            });
+
+            Route::group([
+                'prefix' => 'port',
+                'as' => 'port.'
+            ], function () {
+                Route::get('/', [PortController::class, 'index'])->name('index');
+                Route::get('/list', [PortController::class, 'list'])->name('list');
+                Route::get('/create', [PortController::class, 'create'])->name('create');
+                Route::post('/', [PortController::class, 'store'])->name('store');
+                Route::get('/{id}/edit', [PortController::class, 'edit'])->name('edit');
+                Route::put('/{id}', [PortController::class, 'update'])->name('update');
+                Route::get('/{id}/delete', [PortController::class, 'destroy'])->name('destroy');
+
+                // Export Route
+                Route::get('/export/pdf', [PortController::class, 'exportPdf'])->name('export.pdf');
+                Route::get('/export/excel', [PortController::class, 'exportExcel'])->name('export.excel');
+                Route::get('/export/csv', [PortController::class, 'exportCsv'])->name('export.csv');
             });
         });
     });

@@ -26,10 +26,6 @@ final class GlobalCurrencyRequest extends FormRequest
         return [
             'currency_code' => 'required|string|max:8',
             'currency_name' => 'required|string|max:255',
-            'currency_date' => 'required|date',
-            'buy_rate' => 'required|numeric|min:0',
-            'sell_rate' => 'required|numeric|min:0',
-            'notes' => 'nullable|string|max:500'
         ];
     }
 

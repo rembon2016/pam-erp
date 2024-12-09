@@ -22,9 +22,6 @@
                         <x:layout.table.heading widthPixel="50" title="No" />
                         <x:layout.table.heading widthPixel="100" title="Currency Code" />
                         <x:layout.table.heading widthPixel="100" title="Currency Name" />
-                        <x:layout.table.heading widthPixel="100" title="Date" />
-                        <x:layout.table.heading widthPixel="100" title="Buy Rate" />
-                        <x:layout.table.heading widthPixel="100" title="Sell Rate" />
                         <x:layout.table.heading widthPixel="100" customClass="text-center" title="Action" />
                     </x:layout.table.row>
                 </thead>
@@ -53,18 +50,6 @@
         [
             "data" => "currency_name",
             "name" => "currency_name",
-        ],
-        [
-            "data" => "currency_date",
-            "name" => "currency_date",
-        ],
-        [
-            "data" => "buy_rate",
-            "name" => "buy_rate",
-        ],
-        [
-            "data" => "sell_rate",
-            "name" => "sell_rate",
         ],
         [
             "data" => "action",

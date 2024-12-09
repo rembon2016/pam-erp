@@ -14,19 +14,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // // Drop
-        // DB::statement('DROP SCHEMA IF EXISTS accounting CASCADE');
-        // DB::statement('DROP SCHEMA IF EXISTS crm CASCADE');
-        // DB::statement('DROP SCHEMA IF EXISTS dxb CASCADE');
-        // DB::statement('DROP SCHEMA IF EXISTS finance CASCADE');
-        // DB::statement('DROP SCHEMA IF EXISTS hrm CASCADE');
-        // DB::statement('DROP SCHEMA IF EXISTS master CASCADE');
-        // DB::statement('DROP SCHEMA IF EXISTS origin CASCADE');
-        // DB::statement('DROP SCHEMA IF EXISTS user CASCADE');
-        // DB::statement('DROP SCHEMA IF EXISTS usr CASCADE');
-        // DB::statement('DROP SCHEMA IF EXISTS usrs CASCADE');
-
-        // Up
         DB::statement('CREATE SCHEMA accounting');
         DB::statement('CREATE SCHEMA crm');
         DB::statement('CREATE SCHEMA dxb');

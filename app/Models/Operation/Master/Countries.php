@@ -3,26 +3,68 @@
 namespace App\Models\Operation\Master;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Countries extends Model
 {
-
+    /**
+     * The table associated with the model.
+     *
+     * @var string|null
+     */
     protected $table = 'master.countries';
-	public $timestamps = false;
-	protected $primaryKey = 'country_id';
-    static $rules = [
-		'country_code' => 'required|max:5',
-		'country_name' => 'required|max:150',
-		'region_id' => 'numeric|required',
-		'status' => 'numeric|required',
-		'created_by' => 'nullable',
-		'modified_by' => 'nullable',
-	];
-    protected $fillable = ['country_id','country_code','country_name','region_id','created_by','modified_by','status','date_modified'];
 
-	public function region()
+    /**
+     * Indicates that this model does not have created_at and updated_at timestamp columns.
+     *
+     * @var bool
+     */
+	public $timestamps = false;
+
+    /**
+     * The primary key column for the model.
+     *
+     * @var string
+     */
+	protected $primaryKey = 'country_id';
+
+    /**
+     * Indicates that all fields are guarded from mass assignment except for the 'id' field.
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
+
+	/**
+     * Get the region that the country belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    */
+    public function region(): BelongsTo
     {
-        return $this->belongsTo(Region::class, 'region_id', 'region_id');
+        return $this->belongsTo(
+            related: Region::class,
+            foreignKey: 'region_id',
+            ownerKey: 'region_id'
+        );
     }
 
+    /**
+     * Get the status of the countries.
+     *
+     * @return string The status of the port, either 'Active', 'In Active', or 'Deleted'.
+     */
+    public function getStatusLabel(): string
+    {
+        switch ($this->status) {
+            case '1':
+                return 'Active';
+            case '2':
+                return 'In Active';
+            case '3':
+                return 'Deleted';
+            default:
+                return 'Unknown';
+        }
+    }
 }

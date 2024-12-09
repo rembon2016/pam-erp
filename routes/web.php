@@ -6,8 +6,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\Finance\MasterData\PortController;
 use App\Http\Controllers\Finance\MasterData\UnitController;
 use App\Http\Controllers\Finance\MasterData\ChargeController;
+use App\Http\Controllers\Finance\MasterData\CountryController;
 use App\Http\Controllers\Finance\MasterData\DaybookController;
 use App\Http\Controllers\Finance\MasterData\CurrencyController;
 use App\Http\Controllers\Finance\MasterData\FixedAssetController;
@@ -16,7 +18,6 @@ use App\Http\Controllers\Finance\Settings\RolePermissionController;
 use App\Http\Controllers\Finance\MasterData\PaymentMethodController;
 use App\Http\Controllers\Finance\MasterData\ChartOfAccountController;
 use App\Http\Controllers\Finance\MasterData\CustomerForBillingController;
-use App\Http\Controllers\Finance\MasterData\PortController;
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -178,6 +179,24 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/export/pdf', [PaymentMethodController::class, 'exportPdf'])->name('export.pdf');
                 Route::get('/export/excel', [PaymentMethodController::class, 'exportExcel'])->name('export.excel');
                 Route::get('/export/csv', [PaymentMethodController::class, 'exportCsv'])->name('export.csv');
+            });
+
+            Route::group([
+                'prefix' => 'country',
+                'as' => 'country.'
+            ], function () {
+                Route::get('/', [CountryController::class, 'index'])->name('index');
+                Route::get('/list', [CountryController::class, 'list'])->name('list');
+                Route::get('/create', [CountryController::class, 'create'])->name('create');
+                Route::post('/', [CountryController::class, 'store'])->name('store');
+                Route::get('/{id}/edit', [CountryController::class, 'edit'])->name('edit');
+                Route::put('/{id}', [CountryController::class, 'update'])->name('update');
+                Route::get('/{id}/delete', [CountryController::class, 'destroy'])->name('destroy');
+
+                // Export Route
+                Route::get('/export/pdf', [CountryController::class, 'exportPdf'])->name('export.pdf');
+                Route::get('/export/excel', [CountryController::class, 'exportExcel'])->name('export.excel');
+                Route::get('/export/csv', [CountryController::class, 'exportCsv'])->name('export.csv');
             });
 
             Route::group([

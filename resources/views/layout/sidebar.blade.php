@@ -14,7 +14,7 @@
         <x:layout.sidebar.child-menu name="Customer" link="/" />
         <x:layout.sidebar.child-menu name="Customer Contract" link="/" />
         <x:layout.sidebar.child-menu name="Agent Contract" link="/" />
-        <x:layout.sidebar.child-menu name="Country" link="/" />
+        <x:layout.sidebar.child-menu name="Country" link="{{ route('finance.master-data.country.index') }}" :activeCondition="Route::is('finance.master-data.country.*')" />
         <x:layout.sidebar.child-menu name="Port" link="{{ route('finance.master-data.port.index') }}" :activeCondition="Route::is('finance.master-data.port.*')" />
         {{-- <x:layout.sidebar.child-menu name="Billing Customer" link="{{ route('finance.master-data.customerforbilling.index') }}" :activeCondition="Route::is('finance.master-data.customerforbilling.*')" /> --}}
         <x:layout.sidebar.child-menu name="Service Type" link="{{ route('finance.master-data.service-type.index') }}" :activeCondition="Route::is('finance.master-data.service-type.*')" />

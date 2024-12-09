@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreignUuid('service_type_id')
                 ->nullable()
                 ->references('id')
-                ->on('finance.service_type')
+                ->on('finance.service_types')
                 ->onDelete('cascade');
             $table->integer('port')->nullable();
             $table->integer('por_country_id')->nullable();

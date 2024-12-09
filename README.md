@@ -23,12 +23,12 @@ To set up the Leave Request system, follow these steps:
 5. Run migrations and seeders
 6. Start the application
 
-For detailed installation instructions, please refer to the [Installation Guide](https://laravel.com/docs/11.x).
+## Custom Artisan Commands
+```
+php artisan pds:sql-migrate --dbusername= --dbname= --filename=
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Notes:
+- `--dbusername` is the username of the database
+- `--dbname` is the name of the database
+- `--filename` is the name of the file to be migrated located in the `database/sql` folder. ex: accounting/crm/master/etc..
+```

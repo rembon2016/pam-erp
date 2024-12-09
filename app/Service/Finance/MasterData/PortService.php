@@ -23,7 +23,10 @@ final class PortService
      */
     public function getPorts(): Collection
     {
-        return Port::with('country')->orderBy('port_name', 'asc')->get();
+        return Port::with('country')
+            ->whereNotIn('status', ['2', '3'])
+            ->orderBy('port_name', 'asc')
+            ->get();
     }
 
     /**

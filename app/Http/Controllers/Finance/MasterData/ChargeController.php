@@ -53,6 +53,12 @@ final class ChargeController extends Controller
                         'delete' => route('finance.master-data.charge.destroy', $item->id),
                     ]);
                 })
+                ->editColumn('revenue_id', function ($item) {
+                    return $item?->revenue_id ?? '-';
+                })
+                ->editColumn('cost_id', function ($item) {
+                    return $item?->cost_id ?? '-';
+                })
                 ->rawColumns(['action'])
                 ->toJson();
         }

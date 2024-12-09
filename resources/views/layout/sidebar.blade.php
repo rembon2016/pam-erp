@@ -18,7 +18,7 @@
         <x:layout.sidebar.child-menu name="Port" link="/" />
         {{-- <x:layout.sidebar.child-menu name="Billing Customer" link="{{ route('finance.master-data.customerforbilling.index') }}" :activeCondition="Route::is('finance.master-data.customerforbilling.*')" /> --}}
         <x:layout.sidebar.child-menu name="Service Type" link="{{ route('finance.master-data.service-type.index') }}" :activeCondition="Route::is('finance.master-data.service-type.*')" />
-        <x:layout.sidebar.child-menu name="GL Charge Master" link="/" />
+        <x:layout.sidebar.child-menu name="GL Charge Master" link="{{ route('finance.master-data.charge.index') }}" :activeCondition="Route::is('finance.master-data.charge.*')" />
         <x:layout.sidebar.child-menu name="Unit" link="{{ route('finance.master-data.unit.index') }}" :activeCondition="Route::is('finance.master-data.unit.*')" />
         <x:layout.sidebar.child-menu name="Payment Method" link="{{ route('finance.master-data.payment-method.index') }}" :activeCondition="Route::is('finance.master-data.payment-method.*')" />
         <x:layout.sidebar.child-menu name="Currency" link="{{ route('finance.master-data.currency.index') }}" :activeCondition="Route::is('finance.master-data.currency.*')" />

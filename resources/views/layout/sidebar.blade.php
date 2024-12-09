@@ -23,7 +23,7 @@
         <x:layout.sidebar.child-menu name="Payment Method" link="{{ route('finance.master-data.payment-method.index') }}" :activeCondition="Route::is('finance.master-data.payment-method.*')" />
         <x:layout.sidebar.child-menu name="Currency" link="{{ route('finance.master-data.currency.index') }}" :activeCondition="Route::is('finance.master-data.currency.*')" />
         <x:layout.sidebar.child-menu name="Chart of Account" link="{{ route('finance.master-data.chart-of-account.index') }}" :activeCondition="Route::is('finance.master-data.chart-of-account.*')" />
-        <x:layout.sidebar.child-menu name="Daybook" link="/" />
+        <x:layout.sidebar.child-menu name="Daybook" link="{{ route('finance.master-data.daybook.index') }}" :activeCondition="Route::is('finance.master-data.daybook.*')" />
         {{-- <x:layout.sidebar.child-menu name="Fixed Asset" link="{{ route('finance.master-data.fixed-asset.index') }}" :activeCondition="Route::is('finance.master-data.fixed-asset.*')" />
         <x:layout.sidebar.child-menu name="Tonnage" link="/" />
         <x:layout.sidebar.child-menu name="Container" link="/" /> --}}

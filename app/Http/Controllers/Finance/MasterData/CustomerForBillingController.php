@@ -59,7 +59,7 @@ final class CustomerForBillingController extends Controller
                     return $item->countries?->country_name ?? "";
                 })
                 ->editColumn('types', function ($item) {
-                    return $item->customer_type_detail?->customer_type_name ?? "";
+                    return $item->customerTypeDetail?->customer_type_name ?? "";
                 })
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([

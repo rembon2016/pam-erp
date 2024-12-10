@@ -12,6 +12,7 @@ use App\Http\Controllers\Finance\MasterData\ChargeController;
 use App\Http\Controllers\Finance\MasterData\CountryController;
 use App\Http\Controllers\Finance\MasterData\DaybookController;
 use App\Http\Controllers\Finance\MasterData\CurrencyController;
+use App\Http\Controllers\Finance\MasterData\CustomerController;
 use App\Http\Controllers\Finance\MasterData\FixedAssetController;
 use App\Http\Controllers\Finance\MasterData\ServiceTypeController;
 use App\Http\Controllers\Finance\Settings\RolePermissionController;
@@ -35,6 +36,25 @@ Route::group(['middleware' => ['auth']], function () {
             'prefix' => 'master-data',
             'as' => 'master-data.'
         ], function () {
+
+            Route::group([
+                'prefix' => 'customer',
+                'as' => 'customer.'
+            ], function () {
+                Route::get('/', [CustomerController::class, 'index'])->name('index');
+                Route::get('/list', [CustomerController::class, 'list'])->name('list');
+                Route::get('/create', [CustomerController::class, 'create'])->name('create');
+                Route::post('/', [CustomerController::class, 'store'])->name('store');
+                Route::get('/{id}/edit', [CustomerController::class, 'edit'])->name('edit');
+                Route::put('/{id}', [CustomerController::class, 'update'])->name('update');
+                Route::get('/{id}/delete', [CustomerController::class, 'destroy'])->name('destroy');
+
+                // Export Route
+                Route::get('/export/pdf', [CustomerController::class, 'exportPdf'])->name('export.pdf');
+                Route::get('/export/excel', [CustomerController::class, 'exportExcel'])->name('export.excel');
+                Route::get('/export/csv', [CustomerController::class, 'exportCsv'])->name('export.csv');
+            });
+
             Route::group([
                 'prefix' => 'service-type',
                 'as' => 'service-type.'

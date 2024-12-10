@@ -40,18 +40,6 @@ final class CustomerContract extends Model
     public $incrementing = false;
     const FOLDER_NAME = 'customer-contract/file';
 
-    public static function generateUniqueCode()
-    {
-        $code_prefix = "Q-";
-
-        return IdGenerator::generate([
-            'table' => (new static)->getTable(),
-            'field' => 'contract_no',
-            'length' => 6,
-            'prefix' => $code_prefix
-        ]);
-    }
-
     public function getFileURL()
     {
         return asset('storage/' . self::FOLDER_NAME . '/' . $this->contract_file);

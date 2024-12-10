@@ -1,11 +1,11 @@
-resources/views/pages/finance/master-data/payment-method<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>List Payment Method</title>
+    <title>List Port</title>
     <style>
         html {
             margin: 0;
@@ -49,22 +49,26 @@ resources/views/pages/finance/master-data/payment-method<!DOCTYPE html>
 
 <body>
 
-    <h1 align="center" style="margin-bottom: 30px;">List Payment Method</h1>
+    <h1 align="center" style="margin-bottom: 30px;">List Port</h1>
 
     <table border="1" cellpadding="5">
         <thead>
             <tr>
                 <th>No</th>
-                <th>Payement Terms</th>
-                <th>Date Created</th>
+                <th>Port Name</th>
+                <th>Port Code</th>
+                <th>Country</th>
+                <th>Transport Mode</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($data as $item)
                 <tr>
                     <td align="center">{{ $loop->iteration }}</td>
-                    <td>{{ $item->payment_terms }}</td>
-                    <td align="center">{{ $item->created_at?->format('d-m-Y H:i:s') }}</td>
+                    <td>{{ $item->port_name }}</td>
+                    <td>{{ $item->port_code }}</td>
+                    <td>{{ $item->country?->country_name }}</td>
+                    <td>{{ $item->transport_mode }}</td>
                 </tr>
             @endforeach
         </tbody>

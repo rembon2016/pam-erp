@@ -5,7 +5,7 @@ resources/views/pages/finance/master-data/payment-method<!DOCTYPE html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>List Payment Method</title>
+    <title>List Daybook</title>
     <style>
         html {
             margin: 0;
@@ -49,22 +49,26 @@ resources/views/pages/finance/master-data/payment-method<!DOCTYPE html>
 
 <body>
 
-    <h1 align="center" style="margin-bottom: 30px;">List Payment Method</h1>
+    <h1 align="center" style="margin-bottom: 30px;">List Daybook</h1>
 
     <table border="1" cellpadding="5">
         <thead>
             <tr>
                 <th>No</th>
-                <th>Payement Terms</th>
-                <th>Date Created</th>
+                <th>Daybook Code</th>
+                <th>Daybook Name</th>
+                <th>Type</th>
+                <th>Description</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($data as $item)
                 <tr>
                     <td align="center">{{ $loop->iteration }}</td>
-                    <td>{{ $item->payment_terms }}</td>
-                    <td align="center">{{ $item->created_at?->format('d-m-Y H:i:s') }}</td>
+                    <td align="center">{{ $item->code }}</td>
+                    <td>{{ $item->name }}</td>
+                    <td>{{ $item->type }}</td>
+                    <td>{{ $item->description }}</td>
                 </tr>
             @endforeach
         </tbody>

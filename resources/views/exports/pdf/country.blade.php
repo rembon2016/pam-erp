@@ -1,11 +1,11 @@
-resources/views/pages/finance/master-data/payment-method<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>List Payment Method</title>
+    <title>List Country Master</title>
     <style>
         html {
             margin: 0;
@@ -49,22 +49,24 @@ resources/views/pages/finance/master-data/payment-method<!DOCTYPE html>
 
 <body>
 
-    <h1 align="center" style="margin-bottom: 30px;">List Payment Method</h1>
+    <h1 align="center" style="margin-bottom: 30px;">List Country Master</h1>
 
     <table border="1" cellpadding="5">
         <thead>
             <tr>
                 <th>No</th>
-                <th>Payement Terms</th>
-                <th>Date Created</th>
+                <th>Country Name</th>
+                <th>Country Code</th>
+                <th>Region</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($data as $item)
                 <tr>
                     <td align="center">{{ $loop->iteration }}</td>
-                    <td>{{ $item->payment_terms }}</td>
-                    <td align="center">{{ $item->created_at?->format('d-m-Y H:i:s') }}</td>
+                    <td align="center">{{ $item->country_name }}</td>
+                    <td>{{ $item->country_code }}</td>
+                    <td>{{ $item->region?->region_name }}</td>
                 </tr>
             @endforeach
         </tbody>

@@ -22,7 +22,17 @@
                         processing: true,
                         serverSide: true,
                         ajax: "{{ $url }}",
-                        columns: @json($columns)
+                        columns: @json($columns),
+                        columnDefs: [
+                        {
+                            // Optional: Adjust render logic for specific columns directly in JS
+                            targets: '_all',
+                            render: function(data, type, row, meta) {
+                                // If the data is null, display 'N/A'
+                                return data === null ? 'N/A' : data;
+                            }
+                        }
+                    ]
                     }), document.querySelector('[data-kt-ecommerce-order-filter="search"]').addEventListener(
                         "keyup", (function(t) {
 

@@ -14,6 +14,7 @@ use App\Http\Controllers\Finance\Settings\RolePermissionController;
 use App\Http\Controllers\Finance\MasterData\PaymentMethodController;
 use App\Http\Controllers\Finance\MasterData\ChartOfAccountController;
 use App\Http\Controllers\Finance\MasterData\CustomerForBillingController;
+use App\Http\Controllers\Finance\GeneralWise\Shipment\ShipmentController;
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -159,6 +160,24 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/export/csv', [PaymentMethodController::class, 'exportCsv'])->name('export.csv');
             });
         });
+
+        Route::group([
+            'prefix' => 'general-wise',
+            'as' => 'general-wise.'
+        ], function () {
+            Route::group([
+                'prefix' => 'shipment',
+                'as' => 'shipment.'
+            ], function () {
+                Route::get('/filter/origin', [ShipmentController::class, 'origin'])->name('origin');
+                Route::get('/filter/destination', [ShipmentController::class, 'destination'])->name('destination');
+                Route::get('/filter/vessel', [ShipmentController::class, 'vessel'])->name('vessel');
+                Route::get('/filter/eta', [ShipmentController::class, 'etamerge'])->name('eta');
+                Route::get('/list', [ShipmentController::class, 'list'])->name('list');
+                Route::get('/{type}', [ShipmentController::class, 'index'])->name('index');
+
+            });
+        });
     });
 
 
@@ -184,4 +203,5 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/export/csv', [RolePermissionController::class, 'exportCsv'])->name('export.csv');
         });
     });
+
 });

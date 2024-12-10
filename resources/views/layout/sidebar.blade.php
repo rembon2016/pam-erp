@@ -12,7 +12,7 @@
     {{-- Master Data --}}
     <x:layout.sidebar.parent-menu name="Master Data" iconClass="bx bxs-data" :showCondition="Route::is('finance.master-data.*')">
         <x:layout.sidebar.child-menu name="Customer" link="{{ route('finance.master-data.customer.index') }}" :activeCondition="Route::is('finance.master-data.customer.*')" />
-        <x:layout.sidebar.child-menu name="Customer Contract" link="/" />
+        <x:layout.sidebar.child-menu name="Customer Contract" link="{{ route('finance.master-data.customer-contract.index') }}" :activeCondition="Route::is('finance.master-data.customer-contract.*')" />
         <x:layout.sidebar.child-menu name="Agent Contract" link="/" />
         <x:layout.sidebar.child-menu name="Country" link="{{ route('finance.master-data.country.index') }}" :activeCondition="Route::is('finance.master-data.country.*')" />
         <x:layout.sidebar.child-menu name="Port" link="{{ route('finance.master-data.port.index') }}" :activeCondition="Route::is('finance.master-data.port.*')" />

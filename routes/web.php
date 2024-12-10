@@ -18,6 +18,7 @@ use App\Http\Controllers\Finance\MasterData\ServiceTypeController;
 use App\Http\Controllers\Finance\Settings\RolePermissionController;
 use App\Http\Controllers\Finance\MasterData\PaymentMethodController;
 use App\Http\Controllers\Finance\MasterData\ChartOfAccountController;
+use App\Http\Controllers\Finance\MasterData\CustomerContractController;
 use App\Http\Controllers\Finance\MasterData\CustomerForBillingController;
 use App\Http\Controllers\Finance\GeneralWise\Shipment\ShipmentController;
 
@@ -54,6 +55,24 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/export/pdf', [CustomerController::class, 'exportPdf'])->name('export.pdf');
                 Route::get('/export/excel', [CustomerController::class, 'exportExcel'])->name('export.excel');
                 Route::get('/export/csv', [CustomerController::class, 'exportCsv'])->name('export.csv');
+            });
+
+            Route::group([
+                'prefix' => 'customer-contract',
+                'as' => 'customer-contract.'
+            ], function () {
+                Route::get('/', [CustomerContractController::class, 'index'])->name('index');
+                Route::get('/list', [CustomerContractController::class, 'list'])->name('list');
+                Route::get('/create', [CustomerContractController::class, 'create'])->name('create');
+                Route::post('/', [CustomerContractController::class, 'store'])->name('store');
+                Route::get('/{id}/edit', [CustomerContractController::class, 'edit'])->name('edit');
+                Route::put('/{id}', [CustomerContractController::class, 'update'])->name('update');
+                Route::get('/{id}/delete', [CustomerContractController::class, 'destroy'])->name('destroy');
+
+                // Export Route
+                Route::get('/export/pdf', [CustomerContractController::class, 'exportPdf'])->name('export.pdf');
+                Route::get('/export/excel', [CustomerContractController::class, 'exportExcel'])->name('export.excel');
+                Route::get('/export/csv', [CustomerContractController::class, 'exportCsv'])->name('export.csv');
             });
 
             Route::group([

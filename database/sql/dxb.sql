@@ -1,7 +1,7 @@
 /*
- Navicat Premium Data Transfer
+ Navicat Premium Dump SQL
 
- Source Server         : Rembon Development Connection
+ Source Server         : Dev-203.175.10.178
  Source Server Type    : PostgreSQL
  Source Server Version : 140012 (140012)
  Source Host           : 203.175.10.178:2408
@@ -12,9 +12,20 @@
  Target Server Version : 140012 (140012)
  File Encoding         : 65001
 
- Date: 09/09/2024 11:11:09
+ Date: 09/12/2024 18:36:28
 */
 
+
+-- ----------------------------
+-- Sequence structure for courir_shipment_mode_id_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "dxb"."courir_shipment_mode_id_seq";
+CREATE SEQUENCE "dxb"."courir_shipment_mode_id_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 9223372036854775807
+START 1
+CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for status_id_seq
@@ -42,33 +53,41 @@ CREATE TABLE "dxb"."agreed_rate" (
   "modified_by" varchar(255) COLLATE "pg_catalog"."default",
   "charge_id" uuid,
   "price" numeric(10,2),
-  "currency" varchar(255) COLLATE "pg_catalog"."default"
+  "currency" varchar(255) COLLATE "pg_catalog"."default",
+  "unit" varchar(255) COLLATE "pg_catalog"."default",
+  "creating_by" varchar(255) COLLATE "pg_catalog"."default"
 )
 ;
 
 -- ----------------------------
 -- Records of agreed_rate
 -- ----------------------------
-INSERT INTO "dxb"."agreed_rate" VALUES ('2bca96ce-f015-4a3f-8d00-882918db233f', 'FRC', 'Freight Rate Collect', '9ee103fb-66b7-4409-888c-a4ae40d6d69a', NULL, NULL, 'dubai@pamcargo.com', NULL, 'e4489011-13f6-4d21-bb04-cf38ea2df4d6', 3.73, NULL);
-INSERT INTO "dxb"."agreed_rate" VALUES ('924cdc7d-ab1f-4e3e-91a3-3bcfe6220745', 'EXW', 'EXW', '9f10b274-877e-46bc-b419-9db0af6fb0e3', NULL, NULL, 'dubai@pamcargo.com', NULL, '7d52dff5-e06f-4a82-a562-ad2330068eac', 6736.60, NULL);
-INSERT INTO "dxb"."agreed_rate" VALUES ('928f4eaa-7f9d-405b-85b9-a7cf2133a1e5', 'DDC', 'Door Delivery Charges', '9a4d2d76-8fe1-4985-8a55-8a463039fca7', NULL, NULL, 'dubai@pamcargo.com', NULL, 'c1677fd9-a704-4169-8994-4b25932b9579', 120.00, NULL);
-INSERT INTO "dxb"."agreed_rate" VALUES ('d742ad4c-87f7-46e5-9a31-4a8f5999ca55', 'DDC', 'Door Delivery Charges', '67a495c2-b30c-4e3c-baba-2602cbb3c42f', NULL, NULL, 'dubai@pamcargo.com', NULL, 'c1677fd9-a704-4169-8994-4b25932b9579', 520.00, NULL);
-INSERT INTO "dxb"."agreed_rate" VALUES ('e781e2f3-8311-402a-ad26-83c5ccbad202', 'DDC', 'Door Delivery Charges', 'e72465c6-7d1f-4e63-9504-770020f8693b', NULL, NULL, 'dubai@pamcargo.com', NULL, 'c1677fd9-a704-4169-8994-4b25932b9579', 560.00, NULL);
-INSERT INTO "dxb"."agreed_rate" VALUES ('c0849079-2d6f-4464-a00c-9843f4feb494', 'EXW', 'EXW', 'dbb60074-7fc8-4a9f-81ae-d07ee88ea2b0', NULL, NULL, 'dubai@pamcargo.com', NULL, '7d52dff5-e06f-4a82-a562-ad2330068eac', 1.00, NULL);
-INSERT INTO "dxb"."agreed_rate" VALUES ('f3e5f0ef-59e1-47c5-8748-f17ed5dfedfe', 'DDC', 'Door Delivery Charges', '54d6c107-7c02-4ae6-a916-322dcb2a8222', NULL, NULL, 'dubai@pamcargo.com', NULL, 'c1677fd9-a704-4169-8994-4b25932b9579', 1005.00, NULL);
-INSERT INTO "dxb"."agreed_rate" VALUES ('c14cf19a-9a4e-4630-bdc0-b8c455a570c4', 'FRP', 'Freight Rate Prepaid', 'ca1e6202-587a-4326-94cf-d3e161a273fa', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, NULL);
-INSERT INTO "dxb"."agreed_rate" VALUES ('1de3b975-5c73-40c1-be3a-41ba8d9f43c3', 'FRP', 'Freight Rate Prepaid', '912bd056-3711-487a-a1d5-a884046fc254', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, NULL);
-INSERT INTO "dxb"."agreed_rate" VALUES ('1c87e00d-6a10-4942-8ba1-6becf2559c64', 'FRP', 'Freight Rate Prepaid', '41ccf845-9e64-4efb-859d-15395753657d', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, NULL);
-INSERT INTO "dxb"."agreed_rate" VALUES ('51170f91-50b3-404c-aa07-f27ff7dbd2a4', 'HF', 'Handling Fee', '39393fac-4390-4a21-ae1c-49d9eeb12671', NULL, NULL, 'dubai@pamcargo.com', NULL, 'a121a634-3278-4118-92fe-8d737d079e8b', 10.00, NULL);
-INSERT INTO "dxb"."agreed_rate" VALUES ('62089f22-e241-45f0-be94-4a5609907a3a', 'EXW', 'EXW', '6ea5972e-7192-491b-b67b-1716a88eecb6', NULL, NULL, 'dubai@pamcargo.com', NULL, '7d52dff5-e06f-4a82-a562-ad2330068eac', 1.00, NULL);
-INSERT INTO "dxb"."agreed_rate" VALUES ('5f5522f9-469f-43b4-a9e0-42c3dd0f44e0', 'FRP', 'Freight Rate Prepaid', '9dcc3c1c-3d71-4145-8d4b-3ba33edff35b', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, NULL);
-INSERT INTO "dxb"."agreed_rate" VALUES ('d561d18e-11a5-476a-9ef3-d78d243e6345', 'FRP', 'Freight Rate Prepaid', '6007ef0b-34f7-4e90-b43b-6081c41b73b3', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, NULL);
-INSERT INTO "dxb"."agreed_rate" VALUES ('5d961c3f-2f1e-46fc-9fd6-70b9853f4710', 'HF', 'Handling Fee', 'e11dbcc7-4743-4ad7-a8e7-aff1323a1466', NULL, NULL, 'dubai@pamcargo.com', NULL, 'a121a634-3278-4118-92fe-8d737d079e8b', 10.00, NULL);
-INSERT INTO "dxb"."agreed_rate" VALUES ('5a02f4a1-cf65-44f7-b5b2-4f7c2587a3de', 'FRP', 'Freight Rate Prepaid', 'db6374b7-a237-4d38-9525-5fc87e03c8b9', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, NULL);
-INSERT INTO "dxb"."agreed_rate" VALUES ('d088a43d-4074-4e35-bebb-c4f8ab51ba29', 'FRP', 'Freight Rate Prepaid', '3217d8fb-8c52-445d-a870-ac91a6d33135', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, NULL);
-INSERT INTO "dxb"."agreed_rate" VALUES ('85fa2556-ac3f-4727-83b2-9d755afd793b', 'FRP', 'Freight Rate Prepaid', 'b34f807d-0526-442f-8b25-a1134de5ab21', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, NULL);
-INSERT INTO "dxb"."agreed_rate" VALUES ('eb25ebed-cf0b-48d5-a8a1-2c0178d3e964', 'FRP', 'Freight Rate Prepaid', '0aa9f735-d5c7-4b74-b8c8-2a6abcd6f593', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, NULL);
-INSERT INTO "dxb"."agreed_rate" VALUES ('3dbbefc4-eb3f-4368-aec8-1878004c059f', 'FRP', 'Freight Rate Prepaid', '6637d456-b568-452c-bf72-61f3afb3ddc1', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('2bca96ce-f015-4a3f-8d00-882918db233f', 'FRC', 'Freight Rate Collect', '9ee103fb-66b7-4409-888c-a4ae40d6d69a', NULL, NULL, 'dubai@pamcargo.com', NULL, 'e4489011-13f6-4d21-bb04-cf38ea2df4d6', 3.73, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('924cdc7d-ab1f-4e3e-91a3-3bcfe6220745', 'EXW', 'EXW', '9f10b274-877e-46bc-b419-9db0af6fb0e3', NULL, NULL, 'dubai@pamcargo.com', NULL, '7d52dff5-e06f-4a82-a562-ad2330068eac', 6736.60, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('928f4eaa-7f9d-405b-85b9-a7cf2133a1e5', 'DDC', 'Door Delivery Charges', '9a4d2d76-8fe1-4985-8a55-8a463039fca7', NULL, NULL, 'dubai@pamcargo.com', NULL, 'c1677fd9-a704-4169-8994-4b25932b9579', 120.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('d742ad4c-87f7-46e5-9a31-4a8f5999ca55', 'DDC', 'Door Delivery Charges', '67a495c2-b30c-4e3c-baba-2602cbb3c42f', NULL, NULL, 'dubai@pamcargo.com', NULL, 'c1677fd9-a704-4169-8994-4b25932b9579', 520.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('e781e2f3-8311-402a-ad26-83c5ccbad202', 'DDC', 'Door Delivery Charges', 'e72465c6-7d1f-4e63-9504-770020f8693b', NULL, NULL, 'dubai@pamcargo.com', NULL, 'c1677fd9-a704-4169-8994-4b25932b9579', 560.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('c0849079-2d6f-4464-a00c-9843f4feb494', 'EXW', 'EXW', 'dbb60074-7fc8-4a9f-81ae-d07ee88ea2b0', NULL, NULL, 'dubai@pamcargo.com', NULL, '7d52dff5-e06f-4a82-a562-ad2330068eac', 1.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('f3e5f0ef-59e1-47c5-8748-f17ed5dfedfe', 'DDC', 'Door Delivery Charges', '54d6c107-7c02-4ae6-a916-322dcb2a8222', NULL, NULL, 'dubai@pamcargo.com', NULL, 'c1677fd9-a704-4169-8994-4b25932b9579', 1005.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('c14cf19a-9a4e-4630-bdc0-b8c455a570c4', 'FRP', 'Freight Rate Prepaid', 'ca1e6202-587a-4326-94cf-d3e161a273fa', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('1de3b975-5c73-40c1-be3a-41ba8d9f43c3', 'FRP', 'Freight Rate Prepaid', '912bd056-3711-487a-a1d5-a884046fc254', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('1c87e00d-6a10-4942-8ba1-6becf2559c64', 'FRP', 'Freight Rate Prepaid', '41ccf845-9e64-4efb-859d-15395753657d', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('51170f91-50b3-404c-aa07-f27ff7dbd2a4', 'HF', 'Handling Fee', '39393fac-4390-4a21-ae1c-49d9eeb12671', NULL, NULL, 'dubai@pamcargo.com', NULL, 'a121a634-3278-4118-92fe-8d737d079e8b', 10.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('62089f22-e241-45f0-be94-4a5609907a3a', 'EXW', 'EXW', '6ea5972e-7192-491b-b67b-1716a88eecb6', NULL, NULL, 'dubai@pamcargo.com', NULL, '7d52dff5-e06f-4a82-a562-ad2330068eac', 1.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('5f5522f9-469f-43b4-a9e0-42c3dd0f44e0', 'FRP', 'Freight Rate Prepaid', '9dcc3c1c-3d71-4145-8d4b-3ba33edff35b', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('d561d18e-11a5-476a-9ef3-d78d243e6345', 'FRP', 'Freight Rate Prepaid', '6007ef0b-34f7-4e90-b43b-6081c41b73b3', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('5d961c3f-2f1e-46fc-9fd6-70b9853f4710', 'HF', 'Handling Fee', 'e11dbcc7-4743-4ad7-a8e7-aff1323a1466', NULL, NULL, 'dubai@pamcargo.com', NULL, 'a121a634-3278-4118-92fe-8d737d079e8b', 10.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('5a02f4a1-cf65-44f7-b5b2-4f7c2587a3de', 'FRP', 'Freight Rate Prepaid', 'db6374b7-a237-4d38-9525-5fc87e03c8b9', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('d088a43d-4074-4e35-bebb-c4f8ab51ba29', 'FRP', 'Freight Rate Prepaid', '3217d8fb-8c52-445d-a870-ac91a6d33135', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('85fa2556-ac3f-4727-83b2-9d755afd793b', 'FRP', 'Freight Rate Prepaid', 'b34f807d-0526-442f-8b25-a1134de5ab21', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('eb25ebed-cf0b-48d5-a8a1-2c0178d3e964', 'FRP', 'Freight Rate Prepaid', '0aa9f735-d5c7-4b74-b8c8-2a6abcd6f593', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('3dbbefc4-eb3f-4368-aec8-1878004c059f', 'FRP', 'Freight Rate Prepaid', '6637d456-b568-452c-bf72-61f3afb3ddc1', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('639268e6-30ac-4bae-a535-d92645d3fdfc', 'EXW', 'EXW', '6e4821cf-169b-4dcc-9115-86d1a60073ed', NULL, NULL, 'dubai@pamcargo.com', NULL, '7d52dff5-e06f-4a82-a562-ad2330068eac', 1.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('bcb148df-5446-4fbe-9050-4813474c360d', 'FCA', 'FCA', '6e4821cf-169b-4dcc-9115-86d1a60073ed', NULL, NULL, NULL, NULL, 'f388c6e0-ff00-46f6-878c-84eb2e5c6146', 100.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('edfba296-ec6f-4c85-9d5c-b95aaf7e2e80', 'EXW', 'EXW', '38d691ab-a093-4134-be2e-4f84ef05dde5', NULL, NULL, 'dubai@pamcargo.com', NULL, '7d52dff5-e06f-4a82-a562-ad2330068eac', 42.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('eed83bb6-ad95-4d12-95f5-5a3a6310dbd4', 'DDC', 'Door Delivery Charges', '73321db0-997a-418a-8a4d-ee71f04bc8c8', NULL, NULL, 'dubai@pamcargo.com', NULL, 'c1677fd9-a704-4169-8994-4b25932b9579', 10.00, NULL, NULL, NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('82c0ae69-53c1-4a54-b3ca-beb4df09b536', 'FRP', 'Freight Rate Prepaid', '2f34a1b1-b647-456b-88ec-d02962d04b16', NULL, NULL, 'dubai@pamcargo.com', NULL, '73221da2-81cd-4a5c-bf9a-3fdb00e5ed43', 10.00, 'EUR', 'TOTAL', NULL);
+INSERT INTO "dxb"."agreed_rate" VALUES ('bd348f84-a038-4fb6-b9a8-83b96c9dab53', 'OLC', 'OLC', '2f34a1b1-b647-456b-88ec-d02962d04b16', NULL, NULL, NULL, NULL, '42bb4997-b58b-4800-830a-31a66595c732', 12.00, 'USD', 'KG', NULL);
 
 -- ----------------------------
 -- Table structure for chat_note
@@ -89,6 +108,8 @@ CREATE TABLE "dxb"."chat_note" (
 -- ----------------------------
 -- Records of chat_note
 -- ----------------------------
+INSERT INTO "dxb"."chat_note" VALUES ('4cd1bc43-e5cd-48a0-89af-a9728a5e2a2b', '0211ca52-7c9a-4003-9623-0be52855cb6a', 'Halo Bujang', '2024-10-22 10:35:44.130763', 'dubai@pamcargo.com', NULL, NULL, 1);
+INSERT INTO "dxb"."chat_note" VALUES ('3374d195-dc46-4e56-9d40-f418949166cb', '0211ca52-7c9a-4003-9623-0be52855cb6a', '#bujanglapuk', '2024-10-22 10:36:25.92812', 'dubai@pamcargo.com', NULL, NULL, 1);
 
 -- ----------------------------
 -- Table structure for claim
@@ -116,6 +137,8 @@ CREATE TABLE "dxb"."claim" (
 -- ----------------------------
 INSERT INTO "dxb"."claim" VALUES ('25e50ddf-cfaa-4b99-8c8f-114cd522d699', '455eaf63-cbdc-4c51-861c-3ee3d9359d4b', 'JKTSA2405001', '2024-06-26 00:00:00', 'CLAIM#-2406002', 't', 1, 2, NULL, 'thomas@pamcargo.com', NULL, 'thomas@pamcargo.com', 1);
 INSERT INTO "dxb"."claim" VALUES ('4c431b47-bcc1-4089-afc1-2af3d3df2256', '455eaf63-cbdc-4c51-861c-3ee3d9359d4b', 'JKTSA2405001', '2024-06-11 00:00:00', 'CLAIM#-2406001', 't', 10, 7, NULL, 'thomas@pamcargo.com', NULL, 'thomas@pamcargo.com', 1);
+INSERT INTO "dxb"."claim" VALUES ('b575e7c2-183b-489e-a2d6-279a50cc2d96', 'f69d7b4a-3a21-477e-b575-367dd515978e', 'DACCA2410001', '2024-10-29 00:00:00', 'CLAIM#-2410003', 't', 20, 20, NULL, 'thomas@pamcargo.com', NULL, NULL, 1);
+INSERT INTO "dxb"."claim" VALUES ('56c33bc2-aaa6-484c-9d79-c5cc198a6fa1', '3e7352d5-854d-4367-a7dd-a14a895b0aa7', 'DXBSE2410001', '2024-10-30 00:00:00', 'CLAIM#-2410004', 't', 123, 123, NULL, 'thomas@pamcargo.com', NULL, NULL, 1);
 
 -- ----------------------------
 -- Table structure for claim_detail
@@ -135,6 +158,8 @@ CREATE TABLE "dxb"."claim_detail" (
 INSERT INTO "dxb"."claim_detail" VALUES ('22b4da84-0cc9-4bd6-bc65-a57ae4b112ea', '25e50ddf-cfaa-4b99-8c8f-114cd522d699', 1, 'test');
 INSERT INTO "dxb"."claim_detail" VALUES ('fc86602e-92fa-4278-93b7-5d809298d763', '4c431b47-bcc1-4089-afc1-2af3d3df2256', 2, '');
 INSERT INTO "dxb"."claim_detail" VALUES ('4c983c3b-21dc-460e-a36f-87d905a5f9c7', '25e50ddf-cfaa-4b99-8c8f-114cd522d699', 2, '');
+INSERT INTO "dxb"."claim_detail" VALUES ('9b45d0a7-553c-4303-9a70-cf0fe7c170d6', 'b575e7c2-183b-489e-a2d6-279a50cc2d96', 1, 'test');
+INSERT INTO "dxb"."claim_detail" VALUES ('4aec5b74-c2c9-4c50-9966-7947be2c3e60', '56c33bc2-aaa6-484c-9d79-c5cc198a6fa1', 1, 'Desc test');
 
 -- ----------------------------
 -- Table structure for claims_document
@@ -156,6 +181,7 @@ INSERT INTO "dxb"."claims_document" VALUES ('5bfc8d67-5f29-4dab-b127-f3ccfea69c2
 INSERT INTO "dxb"."claims_document" VALUES ('4c5be4e7-9b59-4b41-a672-d95ffa80408c', '4c431b47-bcc1-4089-afc1-2af3d3df2256', '455eaf63-cbdc-4c51-861c-3ee3d9359d4b', 'damage_report_file', '11062024/damage_report_file-110620241718094757.pdf');
 INSERT INTO "dxb"."claims_document" VALUES ('dc7e3422-a1ac-4ce7-a8a0-3b16121f3150', '4c431b47-bcc1-4089-afc1-2af3d3df2256', '455eaf63-cbdc-4c51-861c-3ee3d9359d4b', 'damage_report_file', '11062024/damage_report_file-110620241718094919.pdf');
 INSERT INTO "dxb"."claims_document" VALUES ('8eb3b4e3-c151-4ecc-a025-26eb67e41957', '25e50ddf-cfaa-4b99-8c8f-114cd522d699', '455eaf63-cbdc-4c51-861c-3ee3d9359d4b', 'damage_report_file', '26062024/damage_report_file-260620241719393456.pdf');
+INSERT INTO "dxb"."claims_document" VALUES ('bc29ef12-3f3c-42ea-a160-2465c0b543a1', 'b575e7c2-183b-489e-a2d6-279a50cc2d96', 'f69d7b4a-3a21-477e-b575-367dd515978e', 'damage_report_file', '29102024/damage_report_file-291020241730189630.pdf');
 
 -- ----------------------------
 -- Table structure for control_office
@@ -285,19 +311,99 @@ INSERT INTO "dxb"."control_office" VALUES ('0bbcfe21-f507-435a-95d6-e0a376d50e03
 INSERT INTO "dxb"."control_office" VALUES ('f4a79b04-59b7-4087-bf0d-1ea974b1ef5f', 'b91e189f-9077-41bb-8b38-d82209f3b293', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
 INSERT INTO "dxb"."control_office" VALUES ('c5153747-423c-4300-b05a-f99cca2a06cd', 'b91e189f-9077-41bb-8b38-d82209f3b293', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
 INSERT INTO "dxb"."control_office" VALUES ('9f855472-0cda-4ad8-900f-93d99ff8912f', 'b91e189f-9077-41bb-8b38-d82209f3b293', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
+INSERT INTO "dxb"."control_office" VALUES ('b97b31e7-7d9c-4333-b35b-0f1d62bfcbb0', 'e53223f0-6d5b-472b-b35e-48745db328af', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
+INSERT INTO "dxb"."control_office" VALUES ('076b0dd9-a8e7-4707-8cb0-4d86523f5b52', '37f8990b-a6f8-41c5-8a8a-817504337781', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
+INSERT INTO "dxb"."control_office" VALUES ('86343cf9-df99-4d9c-97d9-49b4310b1e5e', '37f8990b-a6f8-41c5-8a8a-817504337781', '8149fafc-c5b5-4402-bc60-68796eb32c41', NULL);
+INSERT INTO "dxb"."control_office" VALUES ('ee2e9f9c-a7ff-4ace-abcc-2b80edeaded3', '9b651741-7c30-4d88-a8b0-c4777e8333b2', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
+INSERT INTO "dxb"."control_office" VALUES ('65cd73ce-b6c1-4b85-8871-31dd9637c4a9', 'ffc45b79-473c-44c8-a6f3-bc0f0eebabac', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
+INSERT INTO "dxb"."control_office" VALUES ('85330b28-90b0-48d6-bae1-caa774966b22', '27f648c3-b90d-4ec7-a55a-de02514d499d', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
+INSERT INTO "dxb"."control_office" VALUES ('c4518ba3-bfd5-4cd1-b7b7-69373e8be58e', '0e5ecb23-02f4-4bd9-950a-f1c756bd5c2a', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
+INSERT INTO "dxb"."control_office" VALUES ('7f6adc34-35a0-4f71-bfb1-6761abab7fa7', '8819bc36-7643-4ab4-b6cc-f8beb4ef73d4', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
+INSERT INTO "dxb"."control_office" VALUES ('8960e8f3-f26f-46c0-9ecc-bbd04b908242', '9f6fded9-af57-4e18-8833-6543a97ffb5e', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
+INSERT INTO "dxb"."control_office" VALUES ('3cbbf1ed-825e-44ed-8297-df6e62df33a7', '5d9b097f-b696-4395-bf72-d767fa78a60d', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
+INSERT INTO "dxb"."control_office" VALUES ('b622a608-6ef6-4bfa-b685-82a6b9c5a1a3', 'c041241a-01f6-4769-973f-87a44eb11476', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
+INSERT INTO "dxb"."control_office" VALUES ('f15b0d1e-e707-4dc4-84c7-a2abc8ab9d85', 'c041241a-01f6-4769-973f-87a44eb11476', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
+INSERT INTO "dxb"."control_office" VALUES ('0381bf54-efa4-4ccb-884c-f7c6f3cd2672', '790aeb0b-c079-4590-886b-c3f4b0cea21f', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
+INSERT INTO "dxb"."control_office" VALUES ('892f2074-ddc0-4e63-bd1d-7082937db703', 'eed85aa2-f0a6-4453-b1ff-5028526cafb4', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
+INSERT INTO "dxb"."control_office" VALUES ('21aeec5d-b668-4500-b2a4-4c55a7172f91', '16497a46-812c-45af-a448-7533617d535c', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
+INSERT INTO "dxb"."control_office" VALUES ('17d079e9-b540-49f9-80b5-6ff6d6db44a5', '2f34a1b1-b647-456b-88ec-d02962d04b16', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
+INSERT INTO "dxb"."control_office" VALUES ('dd30811c-f322-4f0e-af19-feaae3030569', 'f8e943ae-2d78-45b6-bc0f-f04eb21ef740', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
+INSERT INTO "dxb"."control_office" VALUES ('17e03721-12b1-466c-897d-771a78c1b905', 'f8e943ae-2d78-45b6-bc0f-f04eb21ef740', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
+INSERT INTO "dxb"."control_office" VALUES ('a1acd284-eef3-4498-994b-1cd2c199dba7', '0211ca52-7c9a-4003-9623-0be52855cb6a', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL);
 
 -- ----------------------------
 -- Table structure for courir_shipment_mode
 -- ----------------------------
 DROP TABLE IF EXISTS "dxb"."courir_shipment_mode";
 CREATE TABLE "dxb"."courir_shipment_mode" (
-  "id" int4 NOT NULL,
+  "id" int4 NOT NULL DEFAULT nextval('"dxb".courir_shipment_mode_id_seq'::regclass),
   "shipment_name" varchar(255) COLLATE "pg_catalog"."default"
 )
 ;
 
 -- ----------------------------
 -- Records of courir_shipment_mode
+-- ----------------------------
+INSERT INTO "dxb"."courir_shipment_mode" VALUES (1, 'TES');
+
+-- ----------------------------
+-- Table structure for customer
+-- ----------------------------
+DROP TABLE IF EXISTS "dxb"."customer";
+CREATE TABLE "dxb"."customer" (
+  "customer_id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+  "customer_name" varchar(255) COLLATE "pg_catalog"."default",
+  "customer_address" varchar(500) COLLATE "pg_catalog"."default",
+  "customer_email" varchar(100) COLLATE "pg_catalog"."default",
+  "customer_telp" varchar(25) COLLATE "pg_catalog"."default",
+  "customer_fax" varchar(20) COLLATE "pg_catalog"."default",
+  "customer_phone" varchar(20) COLLATE "pg_catalog"."default",
+  "customer_tax_id" varchar(50) COLLATE "pg_catalog"."default",
+  "customer_contact_person" varchar(200) COLLATE "pg_catalog"."default",
+  "country_id" int8,
+  "date_created" timestamp(0) NOT NULL DEFAULT now(),
+  "created_by" varchar(255) COLLATE "pg_catalog"."default",
+  "date_modified" timestamp(0) DEFAULT now(),
+  "modified_by" varchar(255) COLLATE "pg_catalog"."default",
+  "status" int4 NOT NULL DEFAULT 1,
+  "customer_type" uuid NOT NULL,
+  "customer_code" varchar(20) COLLATE "pg_catalog"."default",
+  "customer_group_id" uuid,
+  "iata_code" varchar(50) COLLATE "pg_catalog"."default",
+  "office_id" uuid,
+  "city" varchar(255) COLLATE "pg_catalog"."default",
+  "zip_code" varchar(255) COLLATE "pg_catalog"."default",
+  "vendor_id" uuid
+)
+;
+
+-- ----------------------------
+-- Records of customer
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for customer_group
+-- ----------------------------
+DROP TABLE IF EXISTS "dxb"."customer_group";
+CREATE TABLE "dxb"."customer_group" (
+  "customer_group_id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+  "customer_group_name" varchar(255) COLLATE "pg_catalog"."default",
+  "customer_group_address" varchar(255) COLLATE "pg_catalog"."default",
+  "customer_group_email" varchar(100) COLLATE "pg_catalog"."default",
+  "customer_group_telp" varchar(25) COLLATE "pg_catalog"."default",
+  "customer_group_phone" varchar(20) COLLATE "pg_catalog"."default",
+  "customer_group_contact_person" varchar(255) COLLATE "pg_catalog"."default",
+  "customer_group_fax" varchar(20) COLLATE "pg_catalog"."default",
+  "date_created" timestamp(6) DEFAULT now(),
+  "created_by" varchar(255) COLLATE "pg_catalog"."default",
+  "date_modified" timestamp(6),
+  "modified_by" varchar(255) COLLATE "pg_catalog"."default",
+  "status" int2 DEFAULT 1
+)
+;
+
+-- ----------------------------
+-- Records of customer_group
 -- ----------------------------
 
 -- ----------------------------
@@ -391,6 +497,76 @@ INSERT INTO "dxb"."dimension" VALUES ('91ed1dae-b5aa-4213-a62d-7d1fe436a404', 'a
 INSERT INTO "dxb"."dimension" VALUES ('91e28507-2e33-4fca-9f3b-3ba39a91667c', '0ded26ec-a390-4b5e-8bfb-7d53d07b4a90', '10', NULL, 10, 104, 10, 0.104, 17.332);
 INSERT INTO "dxb"."dimension" VALUES ('89e39d62-58fa-45b7-b1c1-a4a19635060d', '65571c6b-b369-4ca9-a27d-0feef90bfc5d', '56', NULL, 67, 67, 54, 13.575, 2262.409);
 INSERT INTO "dxb"."dimension" VALUES ('41cf7f61-bfea-42c4-9f39-bdf4d60285b6', '0aa9f735-d5c7-4b74-b8c8-2a6abcd6f593', '100', NULL, 23, 343, 35, 27.611, 4601.649);
+INSERT INTO "dxb"."dimension" VALUES ('f00533a9-d38a-4a40-b402-8a0bf6b73e32', 'e53223f0-6d5b-472b-b35e-48745db328af', '21', NULL, 33, 33, 2123, 48.551, 8091.509);
+INSERT INTO "dxb"."dimension" VALUES ('1d984368-56f7-4cc8-8242-ec36d7f2fea8', 'e53223f0-6d5b-472b-b35e-48745db328af', '21', NULL, 33, 33, 2123, 48.551, 8091.509);
+INSERT INTO "dxb"."dimension" VALUES ('61762b6a-0449-4a0e-b43b-ef6abc51a2cf', 'e53223f0-6d5b-472b-b35e-48745db328af', '21', NULL, 33, 33, 2123, 48.551, 8091.509);
+INSERT INTO "dxb"."dimension" VALUES ('b3883fcc-15bb-4aba-90a5-48a04d831043', '37f8990b-a6f8-41c5-8a8a-817504337781', '10', NULL, 100, 100, 100, 10, 1666.6);
+INSERT INTO "dxb"."dimension" VALUES ('4279e422-1264-4ecc-affc-00d698f82531', '0e5ecb23-02f4-4bd9-950a-f1c756bd5c2a', '55', NULL, 55, 55, 55, 9.151, 1525.105);
+INSERT INTO "dxb"."dimension" VALUES ('53ee3936-748d-4519-88eb-8233fdd48494', '8819bc36-7643-4ab4-b6cc-f8beb4ef73d4', '5151', NULL, 51, 51, 11, 147.375, 24561.517);
+INSERT INTO "dxb"."dimension" VALUES ('46617be9-bc78-43d2-9409-7988455defd1', '5d9b097f-b696-4395-bf72-d767fa78a60d', '15', NULL, 15, 15, 15, 0.051, 8.499);
+INSERT INTO "dxb"."dimension" VALUES ('ddead1f9-db04-4f9c-8cc6-1e915bd3456c', 'c041241a-01f6-4769-973f-87a44eb11476', '33', NULL, 33, 33, 33, 1.186, 197.658);
+INSERT INTO "dxb"."dimension" VALUES ('ad5edbea-40c1-4510-9e65-fb09e3cca67a', '790aeb0b-c079-4590-886b-c3f4b0cea21f', '51', NULL, 15, 11, 11, 0.093, 15.499);
+INSERT INTO "dxb"."dimension" VALUES ('972f23c4-fd1b-4beb-a4b7-ebd95c0266e6', 'eed85aa2-f0a6-4453-b1ff-5028526cafb4', '28', NULL, 28, 28, 26, 0.571, 95.162);
+INSERT INTO "dxb"."dimension" VALUES ('c4b92857-8120-4fc0-99f7-5529e4517319', '16497a46-812c-45af-a448-7533617d535c', '11', NULL, 41, 11, 11, 0.055, 9.166);
+INSERT INTO "dxb"."dimension" VALUES ('5bc6d4a7-6a47-4a44-a667-aee3e33efdde', '4f65571c-256a-4a64-89b4-62eac92fafdd', '5', NULL, 100, 100, 100, 5, 833.3);
+INSERT INTO "dxb"."dimension" VALUES ('dd1dccc6-e79d-4c49-8a96-f5a3f3a87143', '52668d09-c09d-4d5e-b922-ee5ceb9f133c', '123', NULL, 123, 123, 123, 228.887, 38146.307);
+INSERT INTO "dxb"."dimension" VALUES ('c2e2b791-31c0-4dbe-964e-3c607cf8a53c', '2f34a1b1-b647-456b-88ec-d02962d04b16', '123', NULL, 123, 123, 123, 228.887, 38146.307);
+INSERT INTO "dxb"."dimension" VALUES ('e6f03e59-6eb8-4091-a265-5df291872d03', 'f8e943ae-2d78-45b6-bc0f-f04eb21ef740', '100', NULL, 100, 100, 100, 100, 16666);
+INSERT INTO "dxb"."dimension" VALUES ('813aaf43-11cd-4c28-904b-75ca98d9b8ae', '0211ca52-7c9a-4003-9623-0be52855cb6a', '100', NULL, 10, 20, 100, 2, 333.32);
+INSERT INTO "dxb"."dimension" VALUES ('946f3de4-dc58-4fec-8537-60f5ff728d03', '5a19eaf1-23e4-4515-807e-b52774b985b8', '123', NULL, 123, 123, 123, 228.887, 38146.307);
+INSERT INTO "dxb"."dimension" VALUES ('593ab951-6b76-4f29-a38e-b6f666d4264a', 'cc0ddd3d-89a1-4283-9194-24a0b0eb6389', '200', NULL, 200, 200, 200, 1600, 266656);
+INSERT INTO "dxb"."dimension" VALUES ('54d81acd-1c89-412c-9ac7-4c25f89cb16e', '6e4821cf-169b-4dcc-9115-86d1a60073ed', '100', NULL, 100, 100, 100, 100, 16666);
+INSERT INTO "dxb"."dimension" VALUES ('478f701c-42e8-45d6-801f-2b275114e944', '1cd2eaa9-ba27-4bec-a790-027610447cc7', '1200', NULL, 100, 100, 100, 1200, 199992);
+INSERT INTO "dxb"."dimension" VALUES ('26265232-cc29-40ea-8e05-6d9902b795d1', 'e9a82d7f-0ccf-4323-99e5-e1f9c3e16e0b', '10', NULL, 100, 100, 100, 10, 1666.6);
+INSERT INTO "dxb"."dimension" VALUES ('7056f171-1eb3-4eb4-82c7-7d83170ff893', '6c3d38d4-f2eb-4652-b1ee-9229bb2676eb', '123', NULL, 123, 123, 123, 228.887, 38146.307);
+INSERT INTO "dxb"."dimension" VALUES ('aca4aaa5-ffe2-42c4-ac70-9fa0fdc944d3', '29f6a3fd-8a22-4dfd-9212-de4eaf9ccf47', '23', NULL, 12, 13, 1, 0.004, 0.666);
+INSERT INTO "dxb"."dimension" VALUES ('dd1ce9a3-a177-47d8-92b9-18525a6b39fc', '73321db0-997a-418a-8a4d-ee71f04bc8c8', '11', NULL, 11, 11, 11, 0.015, 2.499);
+INSERT INTO "dxb"."dimension" VALUES ('b069ce13-c995-45bf-9d44-9726c7074417', '3e7352d5-854d-4367-a7dd-a14a895b0aa7', '123', NULL, 123, 123, 123, 228.887, 38146.307);
+INSERT INTO "dxb"."dimension" VALUES ('e7181ed2-29ad-4b07-a219-ef8fd15be3ee', 'c2c95c41-caa7-437e-b2e7-8fc3bea08038', '123', NULL, 123, 123, 123, 228.887, 38146.307);
+INSERT INTO "dxb"."dimension" VALUES ('bd06d53c-161f-47c5-b880-70b6d85185fe', 'a5bd22c7-c19b-4253-9eb7-64ce65a8c3be', '44', NULL, 44, 44, 44, 3.748, 624.641);
+
+-- ----------------------------
+-- Table structure for final_alert
+-- ----------------------------
+DROP TABLE IF EXISTS "dxb"."final_alert";
+CREATE TABLE "dxb"."final_alert" (
+  "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+  "vessel_name_voyage" varchar(100) COLLATE "pg_catalog"."default",
+  "no_final_alert" varchar(20) COLLATE "pg_catalog"."default",
+  "file_final_alert" varchar(255) COLLATE "pg_catalog"."default",
+  "date_created" date,
+  "created_by" varchar(255) COLLATE "pg_catalog"."default",
+  "eta_dubai" date
+)
+;
+COMMENT ON COLUMN "dxb"."final_alert"."created_by" IS 'di isi email origin yang created sehingga jadi parameter saat ditampilkan hanya tampil di origin yang create';
+COMMENT ON COLUMN "dxb"."final_alert"."eta_dubai" IS 'tgl estimasi tiba di duba';
+
+-- ----------------------------
+-- Records of final_alert
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for final_alert_crossair
+-- ----------------------------
+DROP TABLE IF EXISTS "dxb"."final_alert_crossair";
+CREATE TABLE "dxb"."final_alert_crossair" (
+  "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+  "no_loading_plan" varchar(100) COLLATE "pg_catalog"."default",
+  "no_final_alert" varchar(20) COLLATE "pg_catalog"."default",
+  "file_final_alert" varchar(255) COLLATE "pg_catalog"."default",
+  "date_created" date,
+  "created_by" varchar(255) COLLATE "pg_catalog"."default",
+  "eta_dubai" date,
+  "loading_plan_id" uuid
+)
+;
+COMMENT ON COLUMN "dxb"."final_alert_crossair"."created_by" IS 'di isi email origin yang created sehingga jadi parameter saat ditampilkan hanya tampil di origin yang create';
+COMMENT ON COLUMN "dxb"."final_alert_crossair"."eta_dubai" IS 'tgl estimasi tiba di duba';
+
+-- ----------------------------
+-- Records of final_alert_crossair
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for hasil
@@ -418,115 +594,52 @@ CREATE TABLE "dxb"."histori_job" (
   "date_created" timestamp(6),
   "created_by" varchar(255) COLLATE "pg_catalog"."default",
   "gmt" varchar(10) COLLATE "pg_catalog"."default",
-  "status_id" int8
+  "status_id" int8,
+  "is_deleted" int2 DEFAULT 0
 )
 ;
 
 -- ----------------------------
 -- Records of histori_job
 -- ----------------------------
-INSERT INTO "dxb"."histori_job" VALUES ('2929f8da-6166-47a1-89a1-710dbaa1c64b', '41e8e812-7143-455f-9fdf-0db22139a3b9', 'Booking Received', 'ABERDEEN', '2024-05-24 10:17:02', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('9243f936-54c4-4ed2-8070-8f2fc63e9d14', 'ab49df81-a7ed-4d0d-b519-7c3e976ca013', 'Booking Received', 'ABURATSU', '2024-05-24 10:18:44', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('ce582ca3-e7a9-407e-b999-dad44e964780', '352b8464-7bc5-47a5-afce-07d6e052e360', 'Booking Received', 'ABADAN', '2024-05-24 10:20:13', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('065ee8c3-bef7-4214-8345-abc44ae91b19', '9c9f1fd0-ae9a-4ad9-95dd-13cac87dc057', 'Booking Received', 'ÅBO (TURKU)', '2024-05-24 10:33:09', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('43fee943-85e8-4cc5-883e-5ec282e9c635', '365bcd71-518e-4c37-85b2-ef8fa3fd5ba0', 'Booking Received', 'RIO HAINA', '2024-05-24 10:35:17', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('b2ba7f89-918f-498a-821e-0a681c160452', '2f4b6724-4980-484c-8faf-58f24439a47f', 'Booking Received', 'AARHUS', '2024-05-24 10:37:07', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('f2dcbfa1-f6b9-4d3b-9e13-8c12ada35630', 'c17e7a19-95e1-4a91-898d-5d3c238003f9', 'Booking Received', 'DUBAI', '2024-05-24 10:39:04', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('655138aa-edc0-465b-8206-cb10c19e56ab', '3fec9603-a1c0-4f2c-aea8-bb2d41e762a9', 'Booking Received', 'DUBAI', '2024-05-24 10:40:14', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('dc41f156-bb2e-4656-846f-857c77075b5b', '6c8e8768-46b2-4209-ba8e-b03bc2c60113', 'Booking Received', 'ABERDEEN', '2024-05-27 03:11:33', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('86d51e9f-4e16-4c74-92f3-94db57d02fa7', '410a3d15-5ae4-4c2c-a355-cb0f03ef8cb5', 'Booking Received', 'ABURATSU', '2024-05-27 03:57:04', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('df56e2c4-b0d0-4098-b6e3-1eddd2aed2e3', '537f09e9-a2db-4bc4-91a2-0f3c1557eb78', 'Booking Received', 'CASABLANCA', '2024-05-27 04:09:16', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('a5782219-920f-4e8c-ac53-503dbb613cfe', '69a5a94b-b7c5-405c-9d43-dd81280eae75', 'Booking Received', 'DUBAI', '2024-05-30 07:07:06', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('ec51090e-2713-4b9b-bcd9-a724c0dc4154', 'd3bbf757-f4c1-4b09-9cf0-6ab399d9c7e0', 'Booking Received', 'ABU DHABI', '2024-06-04 02:42:24', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('6ecea624-8082-4c97-9fe6-e1300c4e9a7e', '8adc2a22-8a6b-4db5-b7f2-3d2c8ea11b67', 'Booking Received', 'ABIDJAN', '2024-06-04 02:43:51', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('2a3c5cbd-9d89-43e0-b6ba-e03b0596f984', '6bcccf97-9c8d-4373-bde9-076a0caa0436', 'Booking Received', 'ABIDJAN', '2024-06-04 02:45:38', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('0483962f-5ba5-4f01-80b7-8150f4ea4efe', '4e7ebbad-2d58-4cdf-ae5f-b8b5c39a23ab', 'Booking Received', 'ABU DHABI', '2024-06-04 02:47:23', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('2eaac3aa-2f4c-45dc-8c35-a92bba068b31', '6ab1464a-5895-41eb-b67c-19dd743c27f4', 'Booking Received', 'ABERDEEN', '2024-06-04 02:49:11', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('e1c0b1e6-2f36-4058-8075-f019c2e7f218', '56baf38e-6ff8-4bbd-81a4-20e64ca6f0a8', 'Booking Received', 'ABIDJAN', '2024-06-04 02:50:49', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('9e332e5f-82b2-4678-a215-d6a1bbf594a2', '3117a224-6a04-458c-a624-f2a7f2037f56', 'Booking Received', 'ABIDJAN', '2024-06-04 02:52:46', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('9872ce6e-1c3a-469e-a9ef-5d570eb33d0c', 'ca1e6202-587a-4326-94cf-d3e161a273fa', 'Booking Received', 'ABERDEEN', '2024-06-04 02:54:38', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('f8608460-e350-436e-a067-76316892ccc0', '53d59b90-626c-4af8-a858-651186572d91', 'Booking Received', 'ÅGOTNES', '2024-06-04 02:57:21', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('dc1da801-26d6-44f1-9b6b-f712bd811aef', '6d9d4ea7-8547-4a76-93ba-f2fe31892701', 'Booking Received', 'ABERDEEN', '2024-06-04 03:01:28', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('140aa84e-9785-4113-b884-750653276a8b', '0095a867-c7cd-480d-93f5-c12e61a8c7da', 'Booking Received', 'ABIDJAN', '2024-06-04 03:02:44', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('ae907cf5-81cb-473c-9f38-dfd7355ad381', '4de4babe-69d0-430a-8923-b8764a925ed0', 'Booking Received', 'ABU DHABI', '2024-06-04 03:04:06', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('ca0f99db-71e2-47a4-9745-70bba9033858', 'a1d653c3-f716-4ce3-8469-6af1173ef79b', 'Booking Received', 'ÅBO (TURKU)', '2024-06-04 03:07:06', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('31b42dc4-bf5c-4e10-9718-342f7db48484', 'd54a473d-38f7-4df6-bc03-2ec06088d880', 'Booking Received', 'ABIDJAN', '2024-06-04 03:09:25', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('9f6c0989-332f-407d-a38e-ee0b9ded10ca', '40c393f6-a567-46f9-9b33-46774d70c484', 'Booking Received', 'ABURATSU', '2024-06-04 03:13:00', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('1a876e0f-ca20-4844-a5a2-780bffaa6c72', '2736ee27-1e47-43d4-bb1c-d8c3b1b6e3fa', 'Booking Received', 'ABU DHABI', '2024-06-04 03:14:27', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('a5d7042f-03e2-4a57-b40b-2533b0b4402a', '07af919c-2586-452e-b021-c6de8a3c83a1', 'Booking Received', 'ABIDJAN', '2024-06-04 03:15:34', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('9f004ce3-eb83-4b71-8f73-32553ba94dfe', '39393fac-4390-4a21-ae1c-49d9eeb12671', 'Booking Received', 'ÅBO (TURKU)', '2024-06-04 03:17:06', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('35b613c5-da30-4b9e-ae6a-c66bd488d894', 'b01f25e8-fed4-4190-87c1-640d6a084b7c', 'Booking Received', 'AALEN-HEIDENHEIM', '2024-06-04 03:19:29', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('a67cb5df-b9cb-416d-9c9f-fc39ddec2f3f', 'a0df10f1-6174-4dd5-adda-afc69cbdddd1', 'Booking Received', 'ABADAN', '2024-06-04 03:21:21', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('e7c935ba-cd46-46e0-b966-7d4e3618dfa0', 'b053010e-4219-43a6-a56d-b292f39e25c5', 'Booking Received', 'AARHUS', '2024-06-04 03:23:15', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('a581e4d7-b9cd-4f50-a837-f6de3a83f41f', 'eda254dc-bb8a-4800-a014-8330dbf0975b', 'Booking Received', 'AARHUS', '2024-06-04 03:25:14', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('46473853-0115-4f68-a2c2-a777b76053fb', 'b4bedcef-ea49-42e9-b3be-da59c36e166e', 'Booking Received', 'AARHUS', '2024-06-04 03:27:33', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('cb90230f-e71d-4c90-9b0e-442bc7bfe358', '8923a3a6-109d-47e6-b7fa-f860c5eabe3d', 'Booking Received', 'AALEN-HEIDENHEIM', '2024-06-04 03:29:21', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('1156b50e-705a-4ec9-9695-3f367ce577a1', '4fefff4e-e463-4393-b5a6-6c7f1f7ef265', 'Booking Received', 'ABHA', '2024-06-04 03:30:58', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('c708a11e-27d4-4bda-a6b5-bff4bf59be2f', 'c8687520-d7c8-4058-997c-961c713c18aa', 'Booking Received', 'AGANA', '2024-06-04 03:32:34', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('c58d1158-d4f1-469b-9e66-fedffdf50a2c', '6e9e7ab4-b0cd-4eb4-b81a-4badbd7373a6', 'Booking Received', 'AALEN-HEIDENHEIM', '2024-06-04 03:34:04', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('a4820af5-7e97-4fe0-ba3f-7f5e85d76c33', '1b811059-ca80-4603-855e-86f9890a1805', 'Booking Received', 'AARHUS', '2024-06-04 03:35:43', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('d21183ca-391b-4bbf-81c1-e7d194aafcdf', '912bd056-3711-487a-a1d5-a884046fc254', 'Booking Received', 'ABBEVILLE', '2024-06-04 03:37:00', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('97a6bf89-73c2-4001-a790-e8d1b304c9d8', 'fe033103-040c-468f-91d8-cb934482c594', 'Booking Received', 'AARHUS', '2024-06-04 03:39:03', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('0eb80bcc-5877-4766-92d0-0f283c8d25e7', '10f6d5dc-d708-4351-a1e3-35c62cfdc76c', 'Booking Received', 'AARHUS', '2024-06-04 03:40:28', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('9624b543-9571-4529-b18f-556419417a91', '677a92fe-283a-4518-a2d5-705feac53126', 'Booking Received', 'AARHUS', '2024-06-04 03:43:05', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('68ac193c-5e2b-47a5-a74a-81883cb6ff6c', '815a6c7a-38da-4598-b246-ce426cf58737', 'Booking Received', 'AALBORG', '2024-06-04 03:45:03', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('1afb0cca-0448-49e8-aec2-f21c39d1cbb7', '08052673-0558-49ee-abb9-80f127ff8ac2', 'Booking Received', 'ABU DHABI', '2024-06-04 03:46:27', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('2201e7d5-5dd9-48ed-aed0-1fd533f5d4ed', '2468ea51-4c64-4bf9-816b-daf2c07d1aa6', 'Booking Received', 'ABAKAN', '2024-06-04 03:48:06', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('7ab8fb8a-44b5-4ab3-b078-ba201eef360e', '6bd85111-f46b-465f-8cb4-d1cdedad6da7', 'Booking Received', 'AARHUS', '2024-06-04 03:49:56', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('fae20bc0-a5b3-4266-a333-08685ad3601e', '52fd6c66-4dd5-430c-bfde-7491110dab24', 'Booking Received', 'AALEN-HEIDENHEIM', '2024-06-04 03:51:32', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('20f6b11a-3996-4261-83e7-39d87c3eb9c0', '2412c9de-563d-4fed-8ac8-73e780621984', 'Booking Received', 'AARHUS', '2024-06-04 03:52:59', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('22c8f580-5d65-40b6-8ab4-41c972d3267b', '09b7d475-b92c-43ca-87c6-e7ec070848e9', 'Booking Received', 'AALBORG', '2024-06-04 03:54:10', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('79f85496-4ea5-4607-9259-43ffac1ee055', 'bb619a92-9823-42a0-8466-7a60d7d21446', 'Booking Received', 'DUBAI', '2024-06-04 04:20:25', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('5b76999d-4a8f-495a-9ab9-5f0f16594491', '3c244936-60ba-4c50-a230-51ea58cd9427', 'Booking Received', 'DUBAI', '2024-06-04 04:22:09', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('170fee21-f5ae-43de-8f42-44149cc11c0e', 'abd29adf-78e7-48db-85c0-b346c8f3808e', 'Booking Received', 'DUBAI', '2024-06-04 06:25:10', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('c9eaeeec-9371-4ab7-9aeb-33e4f5077ab4', '48a6111b-9244-4ea0-8c07-2350db07254d', 'Booking Received', 'DUBAI', '2024-06-04 06:26:24', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('83ad1221-e6a6-4681-be2d-6582901f276e', 'a2e2282f-d196-4ba0-ad88-3e04b388b0de', 'Booking Received', 'DUBAI', '2024-06-04 06:27:52', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('f8fd0b38-530d-4b20-b14a-0e371c1c370b', '3b848e3a-f9b1-4944-895e-f6a83f034bef', 'Booking Received', 'DUBAI', '2024-06-04 06:28:55', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('50644bcd-5b9f-4e0a-ba88-9dddc5086c91', 'abe1cc11-8667-4b0b-b9c6-a79272575402', 'Booking Received', 'DUBAI', '2024-06-04 06:30:47', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('f15facac-469b-4917-bed0-c0bda0e27b79', '2088a818-0433-45b7-9110-1dbae3b9a9b9', 'Booking Received', 'DUBAI', '2024-06-04 06:32:14', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('057df6f5-88b0-40d7-8baf-0aa03b164674', '0ded26ec-a390-4b5e-8bfb-7d53d07b4a90', 'Booking Received', 'ABBOT POINT', '2024-06-10 09:51:52', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('ef5bc7fb-c18c-4cee-8bd6-8d59255ec6fb', '41ccf845-9e64-4efb-859d-15395753657d', 'Booking Received', 'ABIDJAN', '2024-06-11 03:35:35', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('2cc973aa-b99f-4ea1-b22e-c5bffeeeb96b', '3e9d64c1-1587-422c-b74f-49559eec819e', 'Booking Received', 'ABERDEEN', '2024-06-11 04:05:37', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('496cec6a-1dae-40cd-829c-a05ca9f45948', 'b34f807d-0526-442f-8b25-a1134de5ab21', 'Booking Received', 'ÅBO (TURKU)', '2024-06-11 04:43:58', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('b7d0214a-3235-49b6-9c29-9894e46d52a1', '6ea5972e-7192-491b-b67b-1716a88eecb6', 'Booking Received', 'ABAKAN', '2024-06-11 04:52:32', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('321f91a6-9fe7-4bd5-8e1a-183313d7cdf2', '9dcc3c1c-3d71-4145-8d4b-3ba33edff35b', 'Booking Received', 'AALEN-HEIDENHEIM', '2024-06-11 05:03:23', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('517edb69-952b-4985-9133-29496dccbd5e', '6007ef0b-34f7-4e90-b43b-6081c41b73b3', 'Booking Received', 'DUBAI', '2024-06-11 06:19:18', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('1f855ddd-dd61-4a0f-b728-81d26d67cad0', 'e11dbcc7-4743-4ad7-a8e7-aff1323a1466', 'Booking Received', 'DUBAI', '2024-06-11 07:46:17', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('637414fa-72b5-4144-859b-8d4fc2e40087', 'db6374b7-a237-4d38-9525-5fc87e03c8b9', 'Booking Received', 'AALEN-HEIDENHEIM', '2024-06-13 07:30:48', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('88148687-c86f-4147-9259-e8f9f41ceb2e', 'e502484f-0d0b-45dc-b8c3-b221899db262', 'Booking Received', 'ÅBO (TURKU)', '2024-06-13 09:06:13', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('4597e880-f7d5-4d39-89be-6f6701dba30e', '3217d8fb-8c52-445d-a870-ac91a6d33135', 'Booking Received', 'AALBORG', '2024-06-20 10:38:18', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('5eac1686-3012-460c-bfda-55333694ad69', 'a221ef20-676e-4701-a33d-da6d9a533008', 'Booking Received', 'DUBAI', '2024-06-25 03:56:52', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('422f010c-fd1f-4e7b-b197-7de6b745a90e', 'dc98c4da-32a6-4b86-b48a-0fbca09a1c18', 'Booking Received', 'DUBAI', '2024-06-25 10:45:44', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('c97a2732-1818-4c1e-b817-bde911bf9e50', '0aa9f735-d5c7-4b74-b8c8-2a6abcd6f593', 'Booking Received', 'DUBAI', '2024-06-26 02:45:04', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('e29ff98f-47e0-4814-ad97-f472180e101e', 'b91e189f-9077-41bb-8b38-d82209f3b293', 'Booking Received', 'ABBOT POINT', '2024-07-22 07:36:25', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('872795d4-68b9-4f59-bb5c-582036c0d576', '65571c6b-b369-4ca9-a27d-0feef90bfc5d', 'Booking Received', 'ABERDEEN', '2024-07-22 07:53:29', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('7955bc1d-7980-4b99-a96a-0f3c88c26b05', '7cd31e9b-c624-479a-bd93-cc09a60a9ee6', 'Booking Received', 'ABIDJAN', '2024-07-22 07:55:23', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('6d54b4d8-1a40-4954-a33e-19e42cf457db', '6637d456-b568-452c-bf72-61f3afb3ddc1', 'Booking Received', 'ABERDEEN', '2024-07-22 07:58:42', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('3f82dc1b-b88c-4e15-96e8-33ab17d64608', 'b5c3b066-2b07-4a63-a664-587413519156', 'Booking Received', 'ABERDEEN', '2024-07-22 08:02:09', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('de8f8854-bd0e-4895-96bf-1d960736ce59', 'd81d596f-2c74-46b6-9d44-b94e96693a4f', 'Booking Received', 'ABERDEEN', '2024-07-22 10:38:16', NULL, NULL, 'GMT+7', NULL);
-INSERT INTO "dxb"."histori_job" VALUES ('51185578-c983-49b3-9227-b42adfc4e12e', '3e9d64c1-1587-422c-b74f-49559eec819e', 'Loading Completed', 'DUBAI', '2024-08-06 10:48:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 5);
-INSERT INTO "dxb"."histori_job" VALUES ('b74f807f-8b9d-4ec2-af43-c8d8e084c607', '6ea5972e-7192-491b-b67b-1716a88eecb6', 'Departure', 'DUBAI', '2024-08-06 10:50:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 27);
-INSERT INTO "dxb"."histori_job" VALUES ('5b9358ce-9e00-458c-8f82-9aadf3b560a4', '6007ef0b-34f7-4e90-b43b-6081c41b73b3', 'Under storage at warehouse', 'DUBAI', '2024-08-06 11:31:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 54);
-INSERT INTO "dxb"."histori_job" VALUES ('91898294-8e63-4ad5-aa06-fb77c5f8bac9', '3c244936-60ba-4c50-a230-51ea58cd9427', 'Under storage at warehouse', 'DUBAI', '2024-08-06 11:31:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 54);
-INSERT INTO "dxb"."histori_job" VALUES ('c0818147-0e9d-4861-94c7-b035571539bd', 'bb619a92-9823-42a0-8466-7a60d7d21446', 'Under storage at warehouse', 'DUBAI', '2024-08-06 11:31:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 54);
-INSERT INTO "dxb"."histori_job" VALUES ('584f423c-ac95-434d-8606-7c7bd3413463', '65571c6b-b369-4ca9-a27d-0feef90bfc5d', 'Under Custom Clereance', 'DUBAI', '2024-08-06 16:44:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 4);
-INSERT INTO "dxb"."histori_job" VALUES ('339facc4-52e6-4afd-bc5e-a6b675096e1e', 'e502484f-0d0b-45dc-b8c3-b221899db262', 'Under Custom Clereance', 'DUBAI', '2024-08-06 16:44:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 4);
-INSERT INTO "dxb"."histori_job" VALUES ('29dd034b-787f-47e2-a07a-59be57488ee9', '41ccf845-9e64-4efb-859d-15395753657d', 'Under Custom Clereance', 'DUBAI', '2024-08-06 16:44:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 4);
-INSERT INTO "dxb"."histori_job" VALUES ('90663506-fd81-4f91-823b-cbbf25aa4dcc', '0ded26ec-a390-4b5e-8bfb-7d53d07b4a90', 'Under Custom Clereance', 'DUBAI', '2024-08-06 16:44:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 4);
-INSERT INTO "dxb"."histori_job" VALUES ('9c3ed685-2530-4662-912b-601d7431c5e1', 'ca1e6202-587a-4326-94cf-d3e161a273fa', 'Under Custom Clereance', 'DUBAI', '2024-08-06 16:44:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 4);
-INSERT INTO "dxb"."histori_job" VALUES ('9a8ae3b3-d5d8-4e75-ae72-9d92fb4156fd', '53d59b90-626c-4af8-a858-651186572d91', 'Under Custom Clereance', 'DUBAI', '2024-08-06 16:44:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 4);
-INSERT INTO "dxb"."histori_job" VALUES ('5054ccd3-1884-4c2e-aa6b-3eae864617c6', '65571c6b-b369-4ca9-a27d-0feef90bfc5d', 'Loading Completed', 'DUBAI', '2024-08-06 16:45:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 5);
-INSERT INTO "dxb"."histori_job" VALUES ('8fe010ab-6aec-4952-96d2-4818463e2b4a', 'e502484f-0d0b-45dc-b8c3-b221899db262', 'Loading Completed', 'DUBAI', '2024-08-06 16:45:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 5);
-INSERT INTO "dxb"."histori_job" VALUES ('c143d747-f342-485b-812a-49b8a3c1037e', '41ccf845-9e64-4efb-859d-15395753657d', 'Loading Completed', 'DUBAI', '2024-08-06 16:45:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 5);
-INSERT INTO "dxb"."histori_job" VALUES ('22e91790-3ed1-4e25-80ae-11ecebbb7899', '0ded26ec-a390-4b5e-8bfb-7d53d07b4a90', 'Loading Completed', 'DUBAI', '2024-08-06 16:45:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 5);
-INSERT INTO "dxb"."histori_job" VALUES ('6094093a-e0e4-4bfd-9e47-74965234b184', '53d59b90-626c-4af8-a858-651186572d91', 'Loading Completed', 'DUBAI', '2024-08-06 16:45:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 5);
-INSERT INTO "dxb"."histori_job" VALUES ('434683d2-63fe-46c3-85f3-483265498f33', 'ca1e6202-587a-4326-94cf-d3e161a273fa', 'Loading Completed', 'DUBAI', '2024-08-06 16:45:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 5);
-INSERT INTO "dxb"."histori_job" VALUES ('3e4539e7-abb5-452f-926b-eb2dd8461589', '3117a224-6a04-458c-a624-f2a7f2037f56', 'Loading Completed', 'DUBAI', '2024-08-06 16:45:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 5);
-INSERT INTO "dxb"."histori_job" VALUES ('dcaa1443-ce7c-426b-895c-1214930d1e94', '6ea5972e-7192-491b-b67b-1716a88eecb6', 'In transit', 'DUBAI', '2024-08-06 16:45:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 28);
-INSERT INTO "dxb"."histori_job" VALUES ('c26a5182-7d89-46d8-b365-f1542bc29e58', '912bd056-3711-487a-a1d5-a884046fc254', 'In transit', 'DUBAI', '2024-08-06 16:45:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 28);
-INSERT INTO "dxb"."histori_job" VALUES ('1b16d1ff-fb6e-42bf-ab6a-ca6fef182cb8', '1b811059-ca80-4603-855e-86f9890a1805', 'In transit', 'DUBAI', '2024-08-06 16:45:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 28);
-INSERT INTO "dxb"."histori_job" VALUES ('64c7a682-7a6e-474d-8920-5d3ba51e465e', 'ca1e6202-587a-4326-94cf-d3e161a273fa', 'Container Onboard', 'DUBAI', '2024-08-07 02:05:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 6);
-INSERT INTO "dxb"."histori_job" VALUES ('e4964fb8-3c29-4e75-882e-77c7d1c654d8', '537f09e9-a2db-4bc4-91a2-0f3c1557eb78', 'Container Onboard', 'DUBAI', '2024-08-07 02:05:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 6);
+INSERT INTO "dxb"."histori_job" VALUES ('489ae379-0548-4f8c-931e-fae04c3f47cc', 'f8e943ae-2d78-45b6-bc0f-f04eb21ef740', 'Booking Received', 'BAIE D''URFé', '2024-10-21 08:51:34', NULL, NULL, 'GMT+7', 1, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('54d74d23-290f-49a5-afd6-d439eb249ad6', '2f34a1b1-b647-456b-88ec-d02962d04b16', 'Booking Received', 'ÅBO (TURKU)', '2024-10-21 07:02:54', NULL, NULL, 'GMT+7', 1, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('53b160e4-a179-4f7a-8404-f541c601f371', '52668d09-c09d-4d5e-b922-ee5ceb9f133c', 'Booking Received', NULL, '2024-10-21 06:52:50', NULL, NULL, '', 1, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('ef509901-bc11-45a8-8f41-d7f325ce4077', '0211ca52-7c9a-4003-9623-0be52855cb6a', 'Booking Received', 'ABBOT POINT', '2024-10-22 03:31:57', NULL, NULL, 'GMT+7', 15, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('9b374a2d-89dd-4176-91cb-dd3db7876459', 'f8e943ae-2d78-45b6-bc0f-f04eb21ef740', 'Arrived in transit Port', 'DUBAI', NULL, NULL, 'thomas@pamcargo.com', 'GMT+7', 10, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('4b63fed9-7da1-447b-b26c-1e1fcbb7ce44', '38d691ab-a093-4134-be2e-4f84ef05dde5', 'Booking Received', NULL, '2024-10-28 02:56:43', NULL, NULL, 'GMT+7', 57, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('4b926394-5df9-4aa7-8842-c9f33d078cf0', '5a19eaf1-23e4-4515-807e-b52774b985b8', 'Booking Received', 'ABERDEEN', '2024-10-28 04:16:52', NULL, NULL, 'GMT+7', 29, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('f11a2620-6d77-4f89-afe5-57255ad95436', 'f8e943ae-2d78-45b6-bc0f-f04eb21ef740', 'In Transit to other port', 'DUBAI', NULL, NULL, 'thomas@pamcargo.com', 'GMT+7', 11, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('fbff35f4-4512-4607-83d4-96cd20b6635e', '2f34a1b1-b647-456b-88ec-d02962d04b16', 'Vessel Departed', 'DUBAI', NULL, NULL, 'thomas@pamcargo.com', 'GMT+7', 9, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('217cecad-114f-432e-a842-00f0d4682605', 'cc0ddd3d-89a1-4283-9194-24a0b0eb6389', 'Booking Received', 'JAKARTA', '2024-10-29 03:03:07', NULL, NULL, 'GMT+7', 1, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('4cd6c8ba-8e60-4108-a898-e944a4f3e643', '6e4821cf-169b-4dcc-9115-86d1a60073ed', 'Booking Received', NULL, '2024-10-29 03:41:15', NULL, NULL, 'GMT+7', 57, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('9da4ddfb-cf7d-43f0-bb5f-b46ce49a7aad', '6e4821cf-169b-4dcc-9115-86d1a60073ed', 'Booking Confirmed', 'DUBAI', '2024-10-29 11:43:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 58, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('6ce20fce-dbfb-419d-88d9-f1f976cde3da', '38d691ab-a093-4134-be2e-4f84ef05dde5', 'Booking Confirmed', 'DUBAI', '2024-10-29 11:43:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 58, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('fca4e0b4-de56-4702-85e0-c342e82c22fb', '5a19eaf1-23e4-4515-807e-b52774b985b8', 'Booking Confirmed', 'DUBAI', NULL, NULL, 'thomas@pamcargo.com', 'GMT+7', 30, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('26f6b444-0e04-4315-93c0-29e547448665', '5a19eaf1-23e4-4515-807e-b52774b985b8', 'Received in Airport Warehouse', 'DUBAI', '2024-10-28 10:55:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 31, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('93c2e4b9-c46f-4e94-bad0-9659007e7dab', '5a19eaf1-23e4-4515-807e-b52774b985b8', 'Manifested', 'DUBAI', '2024-10-29 10:58:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 32, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('833fc781-fba3-42af-b42b-e7fbdefcb7c7', '5a19eaf1-23e4-4515-807e-b52774b985b8', 'Cargo partially Airlifted', 'DUBAI', '2024-10-29 11:10:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 34, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('aa2c1920-9718-44f5-ae47-a1552c4a6c90', '5a19eaf1-23e4-4515-807e-b52774b985b8', 'In Transit another Airport', 'DUBAI', '2024-10-29 11:22:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 37, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('a709d263-fc3c-41c4-b076-dcb9d4449a0e', '5a19eaf1-23e4-4515-807e-b52774b985b8', 'Arrived in destination Airport', 'DUBAI', '2024-10-12 11:23:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 38, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('f4578bb6-b437-4e90-a1e2-bbffa2aed42b', '5a19eaf1-23e4-4515-807e-b52774b985b8', 'Under Customs Clearance', 'DUBAI', '2024-10-29 11:30:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 39, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('e05afc8b-c7d6-428f-b18b-93a57f059b38', '5a19eaf1-23e4-4515-807e-b52774b985b8', 'Truck departed from airport', 'DUBAI', '2024-10-29 11:38:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 40, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('596a3721-865c-4495-9094-f9c501b7fc13', '0211ca52-7c9a-4003-9623-0be52855cb6a', 'Booking Confirmed', 'DUBAI', '2024-10-29 14:39:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 16, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('2f161fe2-0dc1-451b-bbe3-7809919f2c96', '1cd2eaa9-ba27-4bec-a790-027610447cc7', 'Booking Received', NULL, '2024-10-29 07:42:05', NULL, NULL, '', NULL, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('1acd1295-755e-4a6f-96da-11b0537ce2bf', 'e9a82d7f-0ccf-4323-99e5-e1f9c3e16e0b', 'Booking Received', NULL, '2024-10-29 07:48:41', NULL, NULL, 'GMT+7', 63, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('866277bb-124d-4cd1-aa65-d40d28135d28', '5a19eaf1-23e4-4515-807e-b52774b985b8', 'Cargo Airlifted', 'DUBAI', '2024-10-29 14:56:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 36, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('d68ea35a-a666-45c5-9da1-bbfabfa6022c', '6c3d38d4-f2eb-4652-b1ee-9229bb2676eb', 'Booking Received', NULL, '2024-10-29 08:06:43', NULL, NULL, '', NULL, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('779ef0c6-9f6a-4371-b19e-36ec01f465fb', '0211ca52-7c9a-4003-9623-0be52855cb6a', 'Loading Completed', 'DUBAI', '2024-10-29 15:19:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 19, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('a6f561d0-2ba6-4375-87f8-962882c86c71', '0211ca52-7c9a-4003-9623-0be52855cb6a', 'Arrived in transit Port', 'DUBAI', '2024-10-29 15:20:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 24, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('67590801-32c2-4a71-9cab-572e10ecb1ab', '0211ca52-7c9a-4003-9623-0be52855cb6a', 'Cancel', 'DUBAI', '2024-10-29 15:21:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 22, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('b7471481-a8e8-4850-8758-58cd3118d0ec', '29f6a3fd-8a22-4dfd-9212-de4eaf9ccf47', 'Booking Received', 'ABERDEEN', '2024-10-29 08:26:28', NULL, NULL, 'GMT+7', 29, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('cac1b57d-d68c-473b-9c9d-98a7b57c2d2c', '29f6a3fd-8a22-4dfd-9212-de4eaf9ccf47', 'Booking Confirmed', 'DUBAI', '2024-10-29 15:27:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 30, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('960a89a9-0a4f-4d88-b245-a70e6d06e345', '73321db0-997a-418a-8a4d-ee71f04bc8c8', 'Booking Received', 'ABIDJAN', '2024-10-29 08:31:08', NULL, NULL, 'GMT+7', 29, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('237f3bd0-292a-4ad8-bbdd-292b060ed8f6', '3e7352d5-854d-4367-a7dd-a14a895b0aa7', 'Booking Received', 'ABBOT POINT', '2024-10-29 08:52:35', NULL, NULL, 'GMT+7', 43, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('8d75acdc-9331-40a8-b373-b82dd4f91628', '6c3d38d4-f2eb-4652-b1ee-9229bb2676eb', 'In Transit', 'DUBAI', '2024-10-29 18:01:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 74, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('2f3de7aa-e53b-4329-b064-61bcdbc5a9df', '226dd33d-0f65-4e2f-8601-1080143bb0f0', 'Booking Received', NULL, '2024-10-30 06:59:36', NULL, NULL, '', NULL, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('8ea9db01-37f7-400d-b94f-cd095571565a', 'c2c95c41-caa7-437e-b2e7-8fc3bea08038', 'Booking Received', NULL, '2024-10-30 07:14:08', NULL, NULL, '', 71, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('08eb0ca1-2df4-4193-bcff-6a80cbabda1a', 'a5bd22c7-c19b-4253-9eb7-64ce65a8c3be', 'Booking Received', NULL, '2024-10-30 07:16:16', NULL, NULL, '', 71, 0);
+INSERT INTO "dxb"."histori_job" VALUES ('ce55749a-8425-482e-b587-0479c9fa06f6', 'a5bd22c7-c19b-4253-9eb7-64ce65a8c3be', 'In Transit', 'DUBAI', '2024-10-30 14:37:00', NULL, 'thomas@pamcargo.com', 'GMT+7', 74, 0);
 
 -- ----------------------------
 -- Table structure for job_order
@@ -543,7 +656,7 @@ CREATE TABLE "dxb"."job_order" (
   "created_by" varchar(255) COLLATE "pg_catalog"."default",
   "date_modified" date,
   "modified_by" varchar(255) COLLATE "pg_catalog"."default",
-  "job_order_type" int2,
+  "job_order_type" varchar(16) COLLATE "pg_catalog"."default",
   "status" int2 NOT NULL,
   "origin_id" uuid,
   "origin_name" varchar(255) COLLATE "pg_catalog"."default",
@@ -552,7 +665,11 @@ CREATE TABLE "dxb"."job_order" (
   "etd_dubai" date,
   "dxb" uuid,
   "port_name_sea_export" varchar(255) COLLATE "pg_catalog"."default",
-  "eta_dubai" date
+  "eta_dubai" date,
+  "loading_plan_id" uuid,
+  "feeder_vessel_name" varchar(255) COLLATE "pg_catalog"."default",
+  "voyage_number_feeder" varchar(255) COLLATE "pg_catalog"."default",
+  "loading_plan_number" varchar(255) COLLATE "pg_catalog"."default"
 )
 ;
 COMMENT ON COLUMN "dxb"."job_order"."vessel_id" IS 'sea import dan sea export';
@@ -569,39 +686,8 @@ COMMENT ON COLUMN "dxb"."job_order"."status" IS '1. generated
 -- ----------------------------
 -- Records of job_order
 -- ----------------------------
-INSERT INTO "dxb"."job_order" VALUES ('aef3bcfb-ca54-46b1-bb85-4a3bc0177349', 'SI2406002', '2024-06-11', 'test', '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND - 11', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', 'ABIDJAN', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."job_order" VALUES ('bf670255-8a4e-4dc7-ba05-1e16f5f438d4', 'SI2406001', '2024-06-11', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND - 11', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, 3, '533219ad-bfa1-4cf6-87f9-fce85748a647', 'ABIDJAN', NULL, NULL, NULL, NULL, '', NULL);
-INSERT INTO "dxb"."job_order" VALUES ('ae60b96d-283c-468f-b15a-712ce5f88100', 'AI2408001', '2024-08-07', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 3, 1, NULL, NULL, NULL, '83299999900', NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."job_order" VALUES ('f554fc40-8c06-40f3-b147-2a39c15fe48a', 'SE2406001', '2024-06-11', 'test', '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND - 11', NULL, 'dubai@pamcargo.com', NULL, NULL, 2, 3, NULL, NULL, NULL, NULL, '2024-06-12', '33a4b77d-792e-4498-9439-c10506695992', 'ABU DHABI', NULL);
-INSERT INTO "dxb"."job_order" VALUES ('635eca9c-f101-4711-bb96-814e9fe74d39', 'AE2408001', '2024-08-07', 'Testing lagi', NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 4, 1, NULL, NULL, NULL, '83299999933', NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."job_order" VALUES ('30e89ea9-736c-4d53-a396-31ee4862c29c', 'SE2406002', '2024-06-11', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND - 11', NULL, 'dubai@pamcargo.com', NULL, NULL, 2, 3, NULL, NULL, NULL, NULL, '2024-06-11', '33a4b77d-792e-4498-9439-c10506695992', 'ABU DHABI', NULL);
-INSERT INTO "dxb"."job_order" VALUES ('de0c1081-1cb2-4e14-911f-9b37ce6b62c5', 'TC2408001', '2024-08-07', 'Testing terozzz', NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 6, 1, NULL, NULL, NULL, '-', NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."job_order" VALUES ('4c92fc4d-9020-4435-8854-96f2c419cf09', 'AI2406001', '2024-06-11', 'test', NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 3, 3, NULL, NULL, NULL, '83299999900', NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."job_order" VALUES ('905f86a3-1e35-422a-89e3-b9d6c0211b45', 'AE2406001', '2024-06-11', 'test', NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 4, 3, NULL, NULL, NULL, '83299999900', NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."job_order" VALUES ('6cdb134e-962f-4b21-9552-616a5a07cab7', 'WH2406002', '2024-06-27', 'test', NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 5, 3, NULL, NULL, NULL, '-', NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."job_order" VALUES ('eee98930-fd50-4427-9be9-5f23af319aef', 'WH2406001', '2024-06-11', 'test', NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 5, 3, NULL, NULL, NULL, '-', NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."job_order" VALUES ('5dd07fd4-7471-402f-85ce-3a656f0ac20e', 'WH2408001', '2024-08-07', 'DC Cakung', NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 5, 1, NULL, NULL, '10', '-', NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."job_order" VALUES ('ef07475b-8cd0-4661-9547-6e747f1e90d4', 'TC2406001', '2024-06-11', 'test', NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 6, 3, NULL, NULL, NULL, '-', NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."job_order" VALUES ('78daa06c-c2a2-48e0-bde0-04fcec499099', 'SI2406005', '2024-06-27', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND - 11', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, 3, '533219ad-bfa1-4cf6-87f9-fce85748a647', 'ABIDJAN', NULL, NULL, NULL, NULL, '', NULL);
-INSERT INTO "dxb"."job_order" VALUES ('e190c936-1807-4a8a-b51f-cdbc642e7f50', 'SI2406004', '2024-06-27', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND - 11', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, 3, '533219ad-bfa1-4cf6-87f9-fce85748a647', 'ÅBO (TURKU)', NULL, NULL, NULL, NULL, '', NULL);
-INSERT INTO "dxb"."job_order" VALUES ('c88b56a0-850d-4d92-b2fa-59401005880f', 'AI2406002', '2024-06-27', 'test', NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 3, 1, NULL, NULL, NULL, '83299999900', NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."job_order" VALUES ('d5fac5d2-89f4-4b3d-aa20-9c08c50e72b7', 'AE2406002', '2024-06-27', 'test', NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 4, 1, NULL, NULL, NULL, '83299999900', NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."job_order" VALUES ('1b039e33-5fa7-483d-b91e-2a046b6ece0a', 'SI2406006', '2024-06-27', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND - 11', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', 'ABIDJAN', NULL, NULL, NULL, NULL, '', NULL);
-INSERT INTO "dxb"."job_order" VALUES ('476e1146-dc21-48c9-a148-85be08c12a4f', 'SI2406007', '2024-06-27', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND - 11', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', 'ABIDJAN', NULL, NULL, NULL, NULL, '', NULL);
-INSERT INTO "dxb"."job_order" VALUES ('c8244a95-8eb9-4fd9-8300-a3673ba6659c', 'SI2406003', '2024-06-26', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND - 11', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, 3, '533219ad-bfa1-4cf6-87f9-fce85748a647', 'ABIDJAN', NULL, NULL, NULL, NULL, '', NULL);
-INSERT INTO "dxb"."job_order" VALUES ('50225405-33dd-4876-8f2b-885683228bfa', 'SI2406008', '2024-06-27', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND - 11', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', 'ABIDJAN', NULL, NULL, NULL, NULL, '', NULL);
-INSERT INTO "dxb"."job_order" VALUES ('5ca78662-d11b-4e7b-bc0c-5ab28749b59b', 'SE2406004', '2024-06-27', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND - 11', NULL, 'dubai@pamcargo.com', NULL, NULL, 2, 1, NULL, NULL, NULL, NULL, '2024-06-27', NULL, NULL, NULL);
-INSERT INTO "dxb"."job_order" VALUES ('256d2dbf-86a7-4fdd-9123-f8d7a773a802', 'SE2406003', '2024-06-27', 'test', '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND - 11', NULL, 'dubai@pamcargo.com', NULL, NULL, 2, 3, NULL, NULL, NULL, NULL, '2024-06-27', '33a4b77d-792e-4498-9439-c10506695992', 'ABU DHABI', NULL);
-INSERT INTO "dxb"."job_order" VALUES ('abb46dd1-fb13-4ee4-b61e-566ccc841b14', 'AI2406003', '2024-06-27', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 3, 3, NULL, NULL, NULL, '83299999933', NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."job_order" VALUES ('0e644126-92e1-4863-a3f6-d192fab232ce', 'SI2406009', '2024-06-27', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND - 11', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', 'ABIDJAN', NULL, NULL, NULL, NULL, '', NULL);
-INSERT INTO "dxb"."job_order" VALUES ('e301afd2-a683-4261-9019-7205a02a24bc', 'SI2406010', '2024-06-27', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND - 11', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', 'ÅBO (TURKU)', NULL, NULL, NULL, NULL, '', NULL);
-INSERT INTO "dxb"."job_order" VALUES ('91b3e66a-8e13-4db1-b8ae-c6ff744f2f80', 'AE2406003', '2024-06-27', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 4, 3, NULL, NULL, NULL, '83299999933', NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."job_order" VALUES ('5f777a32-ebda-435b-9e8a-62d0cf54f23b', 'WH2406003', '2024-06-27', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 5, 3, NULL, NULL, NULL, '-', NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."job_order" VALUES ('e661afc9-0ffd-4f0b-b98d-c7312374f0c3', 'TC2406002', '2024-06-28', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 6, 1, NULL, NULL, NULL, '-', NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."job_order" VALUES ('1a8f63c5-e2a4-4aaa-8329-1dfdde6d07a3', 'TC2406003', '2024-06-28', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 6, 3, NULL, NULL, NULL, '-', NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."job_order" VALUES ('1bf2c54a-d048-4fe4-9a9b-9c6f17e82213', 'SI2407001', '2024-07-03', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND - 11', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', 'ABIDJAN', NULL, NULL, NULL, NULL, '', NULL);
-INSERT INTO "dxb"."job_order" VALUES ('bf53fdba-7753-4984-a3ba-cf41dbbf587c', 'SI2407002', '2024-07-03', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND - 11', NULL, NULL, NULL, NULL, 1, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', 'ABIDJAN', NULL, NULL, NULL, NULL, '', NULL);
-INSERT INTO "dxb"."job_order" VALUES ('75aa9e0b-cf46-4d7c-9b59-5343b6c5f5bf', 'SI2407003', '2024-07-03', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND - 11', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', 'ABIDJAN', NULL, NULL, NULL, NULL, '', '2024-06-12');
+INSERT INTO "dxb"."job_order" VALUES ('c701cc13-b158-42f3-86cb-4d1731d843e3', 'SI2410007', '2024-10-21', NULL, 'c8f148db-e9e3-4df8-9e6e-fce1fd4da075', 'CSCL GLOBE - 123456789', NULL, 'system@pamcargo.com', NULL, NULL, 'SEAIMPORT', 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', 'PAM INTERNATIONAL CARGO (LLC)', NULL, NULL, NULL, NULL, NULL, '2024-10-22', '04118885-1e24-41ed-9c7c-dae53ee68fe8', NULL, NULL, 'SF-2410001');
+INSERT INTO "dxb"."job_order" VALUES ('293131db-517c-4934-bfd8-3402f0b7a6c4', 'CO2410007', '2024-10-30', NULL, NULL, NULL, NULL, 'system@pamcargo.com', NULL, NULL, 'COURIER', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'CTN1412512');
 
 -- ----------------------------
 -- Table structure for job_order_detail
@@ -619,48 +705,31 @@ COMMENT ON COLUMN "dxb"."job_order_detail"."job_id" IS 'job id shipping instruct
 -- ----------------------------
 -- Records of job_order_detail
 -- ----------------------------
-INSERT INTO "dxb"."job_order_detail" VALUES ('c3f15aa8-64e5-439f-a76c-500cf7db38a8', 'bf670255-8a4e-4dc7-ba05-1e16f5f438d4', 'DXBSI2406013', '41ccf845-9e64-4efb-859d-15395753657d');
-INSERT INTO "dxb"."job_order_detail" VALUES ('49f15b97-4170-42fe-bc42-2f4c6169c2ad', 'aef3bcfb-ca54-46b1-bb85-4a3bc0177349', 'DXBSI2406013', '41ccf845-9e64-4efb-859d-15395753657d');
-INSERT INTO "dxb"."job_order_detail" VALUES ('b22772e9-b2a9-4332-875d-e244e0602336', 'f554fc40-8c06-40f3-b147-2a39c15fe48a', 'DXBSE2406009', '39393fac-4390-4a21-ae1c-49d9eeb12671');
-INSERT INTO "dxb"."job_order_detail" VALUES ('74b36ba1-97b6-4620-9507-bdc64c2c1a33', '30e89ea9-736c-4d53-a396-31ee4862c29c', 'DXBSE2406009', '39393fac-4390-4a21-ae1c-49d9eeb12671');
-INSERT INTO "dxb"."job_order_detail" VALUES ('7c63e6b0-7d16-42d8-a48d-7031fe04d22e', '4c92fc4d-9020-4435-8854-96f2c419cf09', 'DXBAI2406012', '6ea5972e-7192-491b-b67b-1716a88eecb6');
-INSERT INTO "dxb"."job_order_detail" VALUES ('af5bff43-974f-42c6-b5a3-618c8187e370', '905f86a3-1e35-422a-89e3-b9d6c0211b45', 'DXBAE2406012', '9dcc3c1c-3d71-4145-8d4b-3ba33edff35b');
-INSERT INTO "dxb"."job_order_detail" VALUES ('caf46428-16c7-4d8c-844c-1762c649a13b', 'eee98930-fd50-4427-9be9-5f23af319aef', 'DXBWH2406003', '6007ef0b-34f7-4e90-b43b-6081c41b73b3');
-INSERT INTO "dxb"."job_order_detail" VALUES ('912b3994-6d2b-459e-9708-0e7277ce1366', 'ef07475b-8cd0-4661-9547-6e747f1e90d4', 'DXBTC2406008', 'e11dbcc7-4743-4ad7-a8e7-aff1323a1466');
-INSERT INTO "dxb"."job_order_detail" VALUES ('c1c39c74-a223-4bf7-8263-bf9afb44f781', 'c8244a95-8eb9-4fd9-8300-a3673ba6659c', 'DXBSI2406013', '41ccf845-9e64-4efb-859d-15395753657d');
-INSERT INTO "dxb"."job_order_detail" VALUES ('fa7cad25-4591-4ec4-88b5-503aa62d6050', 'e190c936-1807-4a8a-b51f-cdbc642e7f50', 'DXBSI2406013', '41ccf845-9e64-4efb-859d-15395753657d');
-INSERT INTO "dxb"."job_order_detail" VALUES ('6cb027e3-0e2f-456d-9157-8f312b7dd515', '78daa06c-c2a2-48e0-bde0-04fcec499099', 'DXBSI2406013', '41ccf845-9e64-4efb-859d-15395753657d');
-INSERT INTO "dxb"."job_order_detail" VALUES ('6b068a9f-9c9f-438a-8f99-313e5d841d36', '256d2dbf-86a7-4fdd-9123-f8d7a773a802', 'DXBSE2406011', 'b34f807d-0526-442f-8b25-a1134de5ab21');
-INSERT INTO "dxb"."job_order_detail" VALUES ('6f5a06d1-36ed-4978-9066-c4c93b213844', 'c88b56a0-850d-4d92-b2fa-59401005880f', 'DXBAI2406012', '6ea5972e-7192-491b-b67b-1716a88eecb6');
-INSERT INTO "dxb"."job_order_detail" VALUES ('a2e1dcd2-235d-4b70-abfd-89c73267ed6f', 'c88b56a0-850d-4d92-b2fa-59401005880f', 'DXBAI2406013', 'db6374b7-a237-4d38-9525-5fc87e03c8b9');
-INSERT INTO "dxb"."job_order_detail" VALUES ('fb5b9466-9d66-4c58-b6a7-60c95b5d7dae', 'd5fac5d2-89f4-4b3d-aa20-9c08c50e72b7', 'DXBAE2406012', '9dcc3c1c-3d71-4145-8d4b-3ba33edff35b');
-INSERT INTO "dxb"."job_order_detail" VALUES ('91a94699-cb1e-463f-8747-35af10bd18f2', 'd5fac5d2-89f4-4b3d-aa20-9c08c50e72b7', 'DXBAE2406013', '3217d8fb-8c52-445d-a870-ac91a6d33135');
-INSERT INTO "dxb"."job_order_detail" VALUES ('bb7b9820-e69f-4e2d-943f-2911002eacab', '1b039e33-5fa7-483d-b91e-2a046b6ece0a', 'DXBSI2406013', '41ccf845-9e64-4efb-859d-15395753657d');
-INSERT INTO "dxb"."job_order_detail" VALUES ('f01e1dd3-438d-4322-adbd-6ccaa47f1b23', '476e1146-dc21-48c9-a148-85be08c12a4f', 'DXBSI2406013', '41ccf845-9e64-4efb-859d-15395753657d');
-INSERT INTO "dxb"."job_order_detail" VALUES ('5fa5d510-110c-4de2-8075-06760b8320e5', '50225405-33dd-4876-8f2b-885683228bfa', 'DXBSI2406013', '41ccf845-9e64-4efb-859d-15395753657d');
-INSERT INTO "dxb"."job_order_detail" VALUES ('e60073a0-bcfc-4759-a722-95decc6d0900', '5ca78662-d11b-4e7b-bc0c-5ab28749b59b', 'DXBSE2406011', 'b34f807d-0526-442f-8b25-a1134de5ab21');
-INSERT INTO "dxb"."job_order_detail" VALUES ('ad009b15-3ea6-4d94-9d9b-d37394a17983', 'abb46dd1-fb13-4ee4-b61e-566ccc841b14', 'DXBAI2406013', 'db6374b7-a237-4d38-9525-5fc87e03c8b9');
-INSERT INTO "dxb"."job_order_detail" VALUES ('617beb70-3d70-4b07-9150-fe6b402280a0', '0e644126-92e1-4863-a3f6-d192fab232ce', 'DXBSI2406013', '41ccf845-9e64-4efb-859d-15395753657d');
-INSERT INTO "dxb"."job_order_detail" VALUES ('1773e89a-3a46-4019-94d3-16e64130bf4c', 'e301afd2-a683-4261-9019-7205a02a24bc', 'DXBSI2406013', '41ccf845-9e64-4efb-859d-15395753657d');
-INSERT INTO "dxb"."job_order_detail" VALUES ('8cf6670f-b4a5-434a-9fae-1802f8531ee2', '91b3e66a-8e13-4db1-b8ae-c6ff744f2f80', 'DXBAE2406013', '3217d8fb-8c52-445d-a870-ac91a6d33135');
-INSERT INTO "dxb"."job_order_detail" VALUES ('9331ac24-dfa6-4516-aad9-85f1528da4ae', '5f777a32-ebda-435b-9e8a-62d0cf54f23b', 'DXBWH2406004', 'a221ef20-676e-4701-a33d-da6d9a533008');
-INSERT INTO "dxb"."job_order_detail" VALUES ('722ce42f-0e82-45b5-b49b-4ec79daf10b1', 'e661afc9-0ffd-4f0b-b98d-c7312374f0c3', 'DXBTC2406010', '0aa9f735-d5c7-4b74-b8c8-2a6abcd6f593');
-INSERT INTO "dxb"."job_order_detail" VALUES ('252f9353-d88f-4f80-9ad7-9c070781ba58', '1a8f63c5-e2a4-4aaa-8329-1dfdde6d07a3', 'DXBTC2406010', '0aa9f735-d5c7-4b74-b8c8-2a6abcd6f593');
-INSERT INTO "dxb"."job_order_detail" VALUES ('ca818544-27eb-43b6-b6f1-5c09423f6b11', '1bf2c54a-d048-4fe4-9a9b-9c6f17e82213', 'DXBSI2406013', '41ccf845-9e64-4efb-859d-15395753657d');
-INSERT INTO "dxb"."job_order_detail" VALUES ('58d3deef-20b4-4170-813f-37dd83294d78', 'bf53fdba-7753-4984-a3ba-cf41dbbf587c', 'DXBSI2406013', '41ccf845-9e64-4efb-859d-15395753657d');
-INSERT INTO "dxb"."job_order_detail" VALUES ('bd795c4e-0b56-4ee0-a1f8-6f6a678a23a4', '75aa9e0b-cf46-4d7c-9b59-5343b6c5f5bf', 'DXBSI2406013', '41ccf845-9e64-4efb-859d-15395753657d');
-INSERT INTO "dxb"."job_order_detail" VALUES ('b41adbec-c40c-441a-a8fe-8186e743103c', 'ae60b96d-283c-468f-b15a-712ce5f88100', 'DXBAI2406011', '912bd056-3711-487a-a1d5-a884046fc254');
-INSERT INTO "dxb"."job_order_detail" VALUES ('35527501-95a2-440a-b42a-c9d7a380982a', 'ae60b96d-283c-468f-b15a-712ce5f88100', 'DXBAI2406013', 'db6374b7-a237-4d38-9525-5fc87e03c8b9');
-INSERT INTO "dxb"."job_order_detail" VALUES ('172253e2-0861-4957-a2da-b0453dc67a1a', '635eca9c-f101-4711-bb96-814e9fe74d39', 'DXBAE2406013', '3217d8fb-8c52-445d-a870-ac91a6d33135');
-INSERT INTO "dxb"."job_order_detail" VALUES ('6b8302a3-9c34-4d9f-930d-d6a96fd15d16', '635eca9c-f101-4711-bb96-814e9fe74d39', 'DXBAE2406012', '9dcc3c1c-3d71-4145-8d4b-3ba33edff35b');
-INSERT INTO "dxb"."job_order_detail" VALUES ('5e747da8-d442-46cb-9951-3a9bb20a8422', '635eca9c-f101-4711-bb96-814e9fe74d39', 'DXBAE2406011', '09b7d475-b92c-43ca-87c6-e7ec070848e9');
-INSERT INTO "dxb"."job_order_detail" VALUES ('c2b013a2-700c-4284-9f0d-90cf7ceccf07', '635eca9c-f101-4711-bb96-814e9fe74d39', 'DXBAE2406010', '2412c9de-563d-4fed-8ac8-73e780621984');
-INSERT INTO "dxb"."job_order_detail" VALUES ('73ed415d-2ee1-4a57-bff0-3204585dbd35', 'de0c1081-1cb2-4e14-911f-9b37ce6b62c5', 'DXBTC2406010', '0aa9f735-d5c7-4b74-b8c8-2a6abcd6f593');
-INSERT INTO "dxb"."job_order_detail" VALUES ('6c294890-9e10-4627-96e8-0f6f7241d483', 'de0c1081-1cb2-4e14-911f-9b37ce6b62c5', 'DXBTC2406009', 'dc98c4da-32a6-4b86-b48a-0fbca09a1c18');
-INSERT INTO "dxb"."job_order_detail" VALUES ('4e7fce95-0c90-49ec-a521-4a6d24bea97c', '6cdb134e-962f-4b21-9552-616a5a07cab7', 'DXBWH2406004', 'a221ef20-676e-4701-a33d-da6d9a533008');
-INSERT INTO "dxb"."job_order_detail" VALUES ('ba501a82-3a76-4a7d-9d4a-df166dac905d', '5dd07fd4-7471-402f-85ce-3a656f0ac20e', 'DXBWH2406004', 'a221ef20-676e-4701-a33d-da6d9a533008');
-INSERT INTO "dxb"."job_order_detail" VALUES ('a1d53a06-fe11-4f18-b8f2-6fd593f0461f', '5dd07fd4-7471-402f-85ce-3a656f0ac20e', 'DXBWH2406003', '6007ef0b-34f7-4e90-b43b-6081c41b73b3');
-INSERT INTO "dxb"."job_order_detail" VALUES ('c918aa6a-c4ae-4e16-b7af-b8e777b332fa', '5dd07fd4-7471-402f-85ce-3a656f0ac20e', 'DXBWH2406002', '3c244936-60ba-4c50-a230-51ea58cd9427');
+INSERT INTO "dxb"."job_order_detail" VALUES ('7e7faba0-bcc2-4a1e-b589-0b1f941166ff', 'c701cc13-b158-42f3-86cb-4d1731d843e3', 'DXBSI2410002', 'f8e943ae-2d78-45b6-bc0f-f04eb21ef740');
+INSERT INTO "dxb"."job_order_detail" VALUES ('034ce0f2-c63f-4b57-8103-259ef1e77603', 'c701cc13-b158-42f3-86cb-4d1731d843e3', 'DXBSI2410001', '2f34a1b1-b647-456b-88ec-d02962d04b16');
+INSERT INTO "dxb"."job_order_detail" VALUES ('68490b39-8553-4076-9782-69682b252b18', '293131db-517c-4934-bfd8-3402f0b7a6c4', 'DXBCO7001003', 'a5bd22c7-c19b-4253-9eb7-64ce65a8c3be');
+
+-- ----------------------------
+-- Table structure for job_order_document
+-- ----------------------------
+DROP TABLE IF EXISTS "dxb"."job_order_document";
+CREATE TABLE "dxb"."job_order_document" (
+  "document_id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+  "type_document" varchar(255) COLLATE "pg_catalog"."default",
+  "name_file" varchar(255) COLLATE "pg_catalog"."default",
+  "date_created" date,
+  "created_by" varchar(255) COLLATE "pg_catalog"."default",
+  "date_modified" date,
+  "modified_by" varchar(255) COLLATE "pg_catalog"."default",
+  "status" int2,
+  "job_order_id" uuid,
+  "updated_by" varchar(255) COLLATE "pg_catalog"."default"
+)
+;
+
+-- ----------------------------
+-- Records of job_order_document
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for job_order_vendor
@@ -682,48 +751,6 @@ COMMENT ON COLUMN "dxb"."job_order_vendor"."type" IS '1. SEA Import , Air Emport
 -- ----------------------------
 -- Records of job_order_vendor
 -- ----------------------------
-INSERT INTO "dxb"."job_order_vendor" VALUES ('8d4f8ae5-05de-41bf-a32f-b5c4935c0f64', 'bf670255-8a4e-4dc7-ba05-1e16f5f438d4', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('e8b188f2-a388-4f6e-8f72-f560fbb52a90', 'aef3bcfb-ca54-46b1-bb85-4a3bc0177349', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('1c45e67e-b39f-40ab-a67b-b28dea3a5e89', 'f554fc40-8c06-40f3-b147-2a39c15fe48a', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('88894f7e-4193-4518-8f33-11602d695f11', '30e89ea9-736c-4d53-a396-31ee4862c29c', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('de00b2ee-942b-4bf5-bae7-d28be638474c', '4c92fc4d-9020-4435-8854-96f2c419cf09', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('29cfd84d-13f6-4577-8bf7-d38a40be2757', '905f86a3-1e35-422a-89e3-b9d6c0211b45', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('0be20caa-b7ae-4d1c-9d7e-646e11e62cf7', 'eee98930-fd50-4427-9be9-5f23af319aef', '466fe9b7-1d5c-4a44-94ca-8c8733031bef', 'MSM SHIPPING LINES LLC', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('0cc14100-243f-4d2f-af3c-f0e19df16127', 'ef07475b-8cd0-4661-9547-6e747f1e90d4', '466fe9b7-1d5c-4a44-94ca-8c8733031bef', 'MSM SHIPPING LINES LLC', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('028e5aa1-be69-466f-869c-8bce794d2be0', 'c8244a95-8eb9-4fd9-8300-a3673ba6659c', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('0af4a634-9ba4-4164-9398-25dec9057666', 'e190c936-1807-4a8a-b51f-cdbc642e7f50', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('e83af7d1-854a-457c-baea-6166b22b42cf', '78daa06c-c2a2-48e0-bde0-04fcec499099', '466fe9b7-1d5c-4a44-94ca-8c8733031bef', 'MSM SHIPPING LINES LLC', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('dd5dda6a-2a3a-4744-885f-22abf6c0ef4c', '256d2dbf-86a7-4fdd-9123-f8d7a773a802', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('e731c34f-eb85-4b00-b8e9-e39001bcc87b', 'c88b56a0-850d-4d92-b2fa-59401005880f', '12513594-22da-4cd7-88dc-abf658890a81', 'SENORIAL SHIPPING SERVICES LLC', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('7baf078e-7da6-4aae-b983-e6d4220d4b9a', 'd5fac5d2-89f4-4b3d-aa20-9c08c50e72b7', '12513594-22da-4cd7-88dc-abf658890a81', 'SENORIAL SHIPPING SERVICES LLC', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('84aebb72-0a58-493a-b10c-c3216de67996', '1b039e33-5fa7-483d-b91e-2a046b6ece0a', '466fe9b7-1d5c-4a44-94ca-8c8733031bef', 'MSM SHIPPING LINES LLC', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('d29bb24b-f065-47fe-b4cc-66f34be6d8be', '476e1146-dc21-48c9-a148-85be08c12a4f', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('535af900-f657-4a67-bf35-e6633fc45d8c', '50225405-33dd-4876-8f2b-885683228bfa', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('012eaa8d-575d-476b-a73a-ce4ba7864f26', '5ca78662-d11b-4e7b-bc0c-5ab28749b59b', '466fe9b7-1d5c-4a44-94ca-8c8733031bef', 'MSM SHIPPING LINES LLC', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('90fcf61a-4e6b-4670-8094-5ca7c28a8a4c', 'abb46dd1-fb13-4ee4-b61e-566ccc841b14', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('933da476-69f4-4fff-964c-2f40e497b2a6', '0e644126-92e1-4863-a3f6-d192fab232ce', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('394d1d5d-556b-4c54-92fd-b21728309dec', '0e644126-92e1-4863-a3f6-d192fab232ce', '466fe9b7-1d5c-4a44-94ca-8c8733031bef', 'MSM SHIPPING LINES LLC', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('a80f9751-f52d-45d3-87c2-1fd442bfd294', 'e301afd2-a683-4261-9019-7205a02a24bc', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('d88fecc3-0624-4718-a0a7-087090a70737', 'e301afd2-a683-4261-9019-7205a02a24bc', '466fe9b7-1d5c-4a44-94ca-8c8733031bef', 'MSM SHIPPING LINES LLC', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('6cab19a6-0983-41cb-8f3d-30ad0e12fd29', 'e301afd2-a683-4261-9019-7205a02a24bc', '12513594-22da-4cd7-88dc-abf658890a81', 'SENORIAL SHIPPING SERVICES LLC', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('ad4a6640-aeb1-4518-92d0-7089fe2a7a94', '91b3e66a-8e13-4db1-b8ae-c6ff744f2f80', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('7a86da9e-4a08-4791-a122-1d2f81bc688f', '5f777a32-ebda-435b-9e8a-62d0cf54f23b', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('651f5c1e-1c68-4c33-ab7a-696c340c9fa2', 'e661afc9-0ffd-4f0b-b98d-c7312374f0c3', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('badc9007-d4c9-4b48-896b-b78fe6745656', '1a8f63c5-e2a4-4aaa-8329-1dfdde6d07a3', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('77b4dbc4-c7b7-4985-974a-049031e7e272', '1bf2c54a-d048-4fe4-9a9b-9c6f17e82213', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('f67e126a-486f-434d-b803-b5fc04a03bce', '1bf2c54a-d048-4fe4-9a9b-9c6f17e82213', '466fe9b7-1d5c-4a44-94ca-8c8733031bef', 'MSM SHIPPING LINES LLC', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('efbb1923-5314-45a3-a3d3-787c22311bb4', 'bf53fdba-7753-4984-a3ba-cf41dbbf587c', '466fe9b7-1d5c-4a44-94ca-8c8733031bef', 'MSM SHIPPING LINES LLC', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('6dc7f486-baa9-4bc2-b598-e7a252e8f56a', 'bf53fdba-7753-4984-a3ba-cf41dbbf587c', '12513594-22da-4cd7-88dc-abf658890a81', 'SENORIAL SHIPPING SERVICES LLC', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('2a292cb6-9ac1-4852-a5a3-1271110571b7', '75aa9e0b-cf46-4d7c-9b59-5343b6c5f5bf', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('4e0585e1-1244-4012-b7a7-c9500fea9e6a', 'ae60b96d-283c-468f-b15a-712ce5f88100', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('2da0d37e-dc5f-484e-b550-f3c4b5a9cec9', 'ae60b96d-283c-468f-b15a-712ce5f88100', '466fe9b7-1d5c-4a44-94ca-8c8733031bef', 'MSM SHIPPING LINES LLC', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('dda31e3f-758a-4f65-871a-35e65cee052d', '635eca9c-f101-4711-bb96-814e9fe74d39', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('5c862cba-9d05-4254-9ce1-76785e07b9d2', '635eca9c-f101-4711-bb96-814e9fe74d39', '466fe9b7-1d5c-4a44-94ca-8c8733031bef', 'MSM SHIPPING LINES LLC', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('2435cec9-cdfb-42ad-8692-990745ef89d1', 'de0c1081-1cb2-4e14-911f-9b37ce6b62c5', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('98ea08f0-0b8e-458f-be26-35f1c9a98c09', 'de0c1081-1cb2-4e14-911f-9b37ce6b62c5', '466fe9b7-1d5c-4a44-94ca-8c8733031bef', 'MSM SHIPPING LINES LLC', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('51e25fac-fbd1-4a84-89e7-2e60670050fb', '6cdb134e-962f-4b21-9552-616a5a07cab7', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('4057d87c-fc10-447e-8e05-e94959dd5c1e', '5dd07fd4-7471-402f-85ce-3a656f0ac20e', '466fe9b7-1d5c-4a44-94ca-8c8733031bef', 'MSM SHIPPING LINES LLC', 'Shipping line', 'SEA');
-INSERT INTO "dxb"."job_order_vendor" VALUES ('c3a1202e-9ed5-43a5-885d-cd1e00e4b3fa', '5dd07fd4-7471-402f-85ce-3a656f0ac20e', '12513594-22da-4cd7-88dc-abf658890a81', 'SENORIAL SHIPPING SERVICES LLC', 'Shipping line', 'SEA');
 
 -- ----------------------------
 -- Table structure for loading_plan
@@ -772,28 +799,6 @@ COMMENT ON COLUMN "dxb"."loading_plan"."notes" IS 'untuk mencatat nomor cts seme
 -- ----------------------------
 -- Records of loading_plan
 -- ----------------------------
-INSERT INTO "dxb"."loading_plan" VALUES ('e91bb35e-a833-4d99-b486-600801fdf452', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES', '17641241241', '2024-05-28', NULL, '2024-05-28', 'thomas@pamcargo.com', 3, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-06-08 12:01:00', NULL, NULL, NULL, 'LP-2405002', 'be6e0ecd-d2ca-482a-a4f9-4fb2a06d62e6', 'PAM INTERNATIONAL CARGO', NULL, 'c5ca58ff-a66e-4963-96fa-49f312d7d189', 'ABHINANDAN STEELS,', '<p><strong>A-113/2, WAZIRPUR INDUSTRIAL AREA,</strong></p><p><strong>DELHI-110052 INDIA</strong></p>', '56a21f4d-5947-441f-a6db-0b5f0c259e10', '4M SYSTEMS A.S.', '<p>SLEZANU 2296/9, 169 00, PRAHA 6</p><p>PRAGUE, CZECH REPUBLIC</p><p>TEL.:+420 778 728 744</p><p>EMAIL:KECLIKOVA@4MTACTICAL.COM</p>', 'test', NULL, '9999999', 'Prepaid', NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('186b65a2-f2be-4a80-a818-b99a31f28200', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES', '17623432423', '2024-05-28', NULL, '2024-05-31', 'thomas@pamcargo.com', 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-05-21 12:00:00', NULL, NULL, NULL, 'LP-2405001', 'be6e0ecd-d2ca-482a-a4f9-4fb2a06d62e6', 'PAM INTERNATIONAL CARGO', NULL, 'c5ca58ff-a66e-4963-96fa-49f312d7d189', 'ABHINANDAN STEELS,', '<p><strong>A-113/2, WAZIRPUR INDUSTRIAL AREA,</strong></p><p><strong>DELHI-110052 INDIA</strong></p>', '56a21f4d-5947-441f-a6db-0b5f0c259e10', '4M SYSTEMS A.S.', '<p>SLEZANU 2296/9, 169 00, PRAHA 6</p><p>PRAGUE, CZECH REPUBLIC</p><p>TEL.:+420 778 728 744</p><p>EMAIL:KECLIKOVA@4MTACTICAL.COM</p>', 'test', NULL, '9999999', 'Prepaid', NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('af41c82e-c395-4981-ac61-dce0cdb593ec', 'fa2eea8f-5707-4bdf-9533-270556ce7858', 'SWISS', '72434543534', '2024-05-31', NULL, '2024-05-31', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-06-01 09:10:00', NULL, NULL, NULL, 'LP-2405003', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('7424a423-ef33-490d-b35e-c729e46576fe', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES', '17641241241', '2024-06-14', NULL, '2024-06-14', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-06-14 15:10:00', NULL, NULL, NULL, 'LP-2406004', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('7ac525d2-2b00-4e3e-a448-76aa57b9f474', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR', '83299999900', '2024-06-28', NULL, '2024-06-28', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-06-29 11:23:00', NULL, NULL, NULL, 'LP-2406005', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('c6f99492-6bbd-4e4e-8454-06e97598fe6f', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR', '83299999900', '2024-07-02', NULL, '2024-07-02', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-07-05 16:33:00', NULL, NULL, NULL, 'LP-2407006', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('49ed38ac-c753-4f92-87b4-fb5b36b7397e', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES', '17623432423', '2024-07-03', NULL, '2024-07-03', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-07-03 17:18:00', NULL, NULL, NULL, 'LP-2407007', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('f3aee564-dc4c-4766-9b06-b5ee60560e4c', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR', '83299999900', '2024-07-05', NULL, '2024-07-05', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-07-05 14:40:00', NULL, NULL, NULL, 'LP-2407008', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('1b859785-4c8b-438a-9b6d-419f2cf0e16e', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR', '83299999900', '2024-07-09', NULL, '2024-07-09', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-07-09 11:51:00', NULL, NULL, NULL, 'LP-2407009', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('aef9a1f0-8edf-4380-8621-1203f740e532', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES', '17623432423', '2024-07-12', NULL, '2024-07-12', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-07-13 13:52:00', NULL, NULL, NULL, 'LP-2407010', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('88000272-77cc-46c8-b730-3dcc3ffc1abd', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR', '83299999900', '2024-07-12', NULL, '2024-07-12', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-07-13 13:56:00', NULL, NULL, NULL, 'LP-2407011', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('9be7b072-6bac-4b71-a3a0-d7fc78f8c53e', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR', '83299999911', '2024-07-15', NULL, '2024-07-15', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-07-14 10:42:00', NULL, NULL, NULL, 'LP-2407012', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('da543f9d-b6c8-4b7e-8f5a-a697e762b154', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR', '83299999900', '2024-07-15', NULL, '2024-07-15', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-07-15 15:21:00', NULL, NULL, NULL, 'LP-2407013', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('4489aebf-4d94-43b2-9b3b-f6b70086721b', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR', '83299999933', '2024-07-22', NULL, '2024-07-22', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-07-23 14:21:00', NULL, NULL, NULL, 'LP-2407015', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('54ff3f81-533d-4d9b-82c6-4c2f9253b104', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES', '17600000011', '2024-07-25', NULL, '2024-07-25', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-07-25 09:14:00', NULL, NULL, NULL, 'LP-2407016', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('cf32566f-045c-4e19-ad52-f15ec0fa5bef', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES', '17600000011', '2024-07-29', NULL, '2024-08-01', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-07-29 11:17:00', NULL, NULL, NULL, 'LP-2407017', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('7edbc633-b538-43dc-9d12-a71fd3d00740', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR', '83299999911', '2024-07-17', NULL, '2024-08-01', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-07-17 10:18:00', NULL, NULL, NULL, 'LP-2407014', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('70088114-62fd-4336-9048-4d6ece473121', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES', '17600000011', '2024-08-01', NULL, '2024-08-01', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-08-02 17:37:00', NULL, NULL, NULL, 'LP-2408018', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('bf7ae104-8ee7-4b47-a1f0-0f4701d56dca', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES', '17600000022', '2024-08-01', NULL, '2024-08-01', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-08-03 17:38:00', NULL, NULL, NULL, 'LP-2408019', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('27dbf874-ec21-4fd2-994d-7ce456cd2300', '94022317-8d22-4115-b368-2cd855325924', 'ABSA CARGO AIRLINE / LATAM CARGO BRASIL', '54999999900', '2024-08-05', NULL, '2024-08-05', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-08-06 17:07:00', NULL, NULL, NULL, 'LP-2408020', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('408d4fbe-7bfb-403d-96dc-7d23b25db7b3', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES', '17600000044', '2024-08-16', NULL, '2024-08-16', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-08-16 15:44:00', NULL, NULL, NULL, 'LP-2408021', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan" VALUES ('25daf84d-8ae2-48d4-9d37-c0ed8634a119', 'ae307878-e20a-444c-823b-1de4b1df36d4', 'LUFTHANSA CARGO AG', '02023424343', '2024-08-21', NULL, '2024-08-21', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-08-21 17:03:00', NULL, NULL, NULL, 'LP-2408022', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for loading_plan_detail
@@ -819,28 +824,6 @@ CREATE TABLE "dxb"."loading_plan_detail" (
 -- ----------------------------
 -- Records of loading_plan_detail
 -- ----------------------------
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('5e468dbe-eb5a-497c-a58e-f6c2cba962d2', 'e91bb35e-a833-4d99-b486-600801fdf452', '1211', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', 'ABADAN - ABD', '2024-06-21', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', 'ABADAN - ABD', '2024-08-01', 'ABD', 'ABD', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('19576471-7597-48d0-ad99-970bae9fc38a', '186b65a2-f2be-4a80-a818-b99a31f28200', '123', 'f56521b2-6260-4cd7-82ca-440eb48ef835', 'AARHUS - AAR', '2024-05-31', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', 'ABADAN - ABD', '2024-05-30', 'AAR', 'ABD', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('145381d0-62d9-4acb-9b0a-f0a51286340b', 'af41c82e-c395-4981-ac61-dce0cdb593ec', 'SW23', '0562a989-3a20-4cdf-bb1f-81c5e467e5b0', 'DUBAI INTERNATIONAL - DXB', '2024-06-02', '120ebedb-b5f5-4ef7-8202-a0a0331c24ad', 'HAMBURG - HAM', '2024-06-03', 'DXB', 'HAM', 'fa2eea8f-5707-4bdf-9533-270556ce7858', 'SWISS');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('d656bd13-ab51-4f87-9f1b-e3dcf2146f9b', '7424a423-ef33-490d-b35e-c729e46576fe', '111', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', 'AALEN HEIDENHEIM ELCHINGEN - EDPA', '2024-06-15', 'f56521b2-6260-4cd7-82ca-440eb48ef835', 'AARHUS - AAR', '2024-06-15', 'EDPA', 'AAR', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('495b7bc9-d4b9-47bd-9871-c96fa5384022', '7ac525d2-2b00-4e3e-a448-76aa57b9f474', '222', '35b0c6e1-dba7-41f0-8081-a001910b6fad', 'AALBORG - AAL', '2024-06-30', '35b0c6e1-dba7-41f0-8081-a001910b6fad', 'AALBORG - AAL', '2024-07-01', 'AAL', 'AAL', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('6ac20cc0-e052-4214-b7f6-4b42ca016a30', 'c6f99492-6bbd-4e4e-8454-06e97598fe6f', '111', '35b0c6e1-dba7-41f0-8081-a001910b6fad', 'AALBORG - AAL', '2024-07-12', '35b0c6e1-dba7-41f0-8081-a001910b6fad', 'AALBORG - AAL', '2024-07-20', 'AAL', 'AAL', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('04188a03-baac-480e-9a60-7a9c289b8aa8', '49ed38ac-c753-4f92-87b4-fb5b36b7397e', '12', '229eaa02-9568-4f59-b118-6409afbcb7b6', 'ABAKAN - ABA', '2024-07-04', 'f56521b2-6260-4cd7-82ca-440eb48ef835', 'AARHUS - AAR', '2024-07-18', 'ABA', 'AAR', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('0367a3e9-7879-4cad-8f4b-300a41dde65d', 'f3aee564-dc4c-4766-9b06-b5ee60560e4c', '122', '229eaa02-9568-4f59-b118-6409afbcb7b6', 'ABAKAN - ABA', '2024-07-06', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', 'ABADAN - ABD', '2024-07-07', 'ABA', 'ABD', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('3fdf6de1-99f0-4ba9-80ed-9feefa3e73fb', '1b859785-4c8b-438a-9b6d-419f2cf0e16e', '122', '35b0c6e1-dba7-41f0-8081-a001910b6fad', 'AALBORG - AAL', '2024-07-11', 'f56521b2-6260-4cd7-82ca-440eb48ef835', 'AARHUS - AAR', '2024-07-11', 'AAL', 'AAR', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('9cf70022-62b0-4983-9fb4-39c22e3829d6', 'aef9a1f0-8edf-4380-8621-1203f740e532', 'EK1200', '0562a989-3a20-4cdf-bb1f-81c5e467e5b0', 'DUBAI INTERNATIONAL - DXB', '2024-07-14', '120ebedb-b5f5-4ef7-8202-a0a0331c24ad', 'HAMBURG - HAM', '2024-07-15', 'DXB', 'HAM', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('88872419-5bf0-45ea-90d0-f193e8b1eab2', '88000272-77cc-46c8-b730-3dcc3ffc1abd', '123', '0562a989-3a20-4cdf-bb1f-81c5e467e5b0', 'DUBAI INTERNATIONAL - DXB', '2024-07-14', '120ebedb-b5f5-4ef7-8202-a0a0331c24ad', 'HAMBURG - HAM', '2024-07-15', 'DXB', 'HAM', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('faed1bf7-ccce-4614-9c0c-f244a0e1b2f6', '9be7b072-6bac-4b71-a3a0-d7fc78f8c53e', '456', '35b0c6e1-dba7-41f0-8081-a001910b6fad', 'AALBORG - AAL', '2024-07-15', 'f56521b2-6260-4cd7-82ca-440eb48ef835', 'AARHUS - AAR', '2024-07-16', 'AAL', 'AAR', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('c3d53a21-62e6-4cab-aecb-2679ff3644f5', 'da543f9d-b6c8-4b7e-8f5a-a697e762b154', 'AB212', '0562a989-3a20-4cdf-bb1f-81c5e467e5b0', 'DUBAI INTERNATIONAL - DXB', '2024-07-16', 'd8f8840d-6c5b-4dae-8731-cea29a319146', 'GATWICK - LGW', '2024-07-16', 'DXB', 'LGW', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('3818d0aa-3be9-4d73-b86b-41289f930dd1', '4489aebf-4d94-43b2-9b3b-f6b70086721b', '22', 'f56521b2-6260-4cd7-82ca-440eb48ef835', 'AARHUS - AAR', '2024-07-24', 'f56521b2-6260-4cd7-82ca-440eb48ef835', 'AARHUS - AAR', '2024-07-26', 'AAR', 'AAR', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('84a7d624-8d4b-44d2-9dec-89e8cad1688f', '54ff3f81-533d-4d9b-82c6-4c2f9253b104', '123', '35b0c6e1-dba7-41f0-8081-a001910b6fad', 'AALBORG - AAL', '2024-07-26', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', 'AALEN HEIDENHEIM ELCHINGEN - EDPA', '2024-07-26', 'AAL', 'EDPA', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('da8fb8a7-145a-47bc-aae7-779e76be956f', 'cf32566f-045c-4e19-ad52-f15ec0fa5bef', '12345', 'f56521b2-6260-4cd7-82ca-440eb48ef835', 'AARHUS - AAR', '2024-07-30', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', 'ABADAN - ABD', '2024-07-31', 'AAR', 'ABD', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('00c1f4fe-d1b3-43c9-a02a-fb740471b5a2', '7edbc633-b538-43dc-9d12-a71fd3d00740', '23', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', 'AALEN HEIDENHEIM ELCHINGEN - EDPA', '2024-07-18', 'f56521b2-6260-4cd7-82ca-440eb48ef835', 'AARHUS - AAR', '2024-07-19', 'EDPA', 'AAR', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('f4030298-d51b-4483-b8be-86415541a96e', '70088114-62fd-4336-9048-4d6ece473121', 'EK808', '0562a989-3a20-4cdf-bb1f-81c5e467e5b0', 'DUBAI INTERNATIONAL - DXB', '2024-08-03', '53b458d5-22ed-402a-a40e-6b926e095049', 'FRANKFURT MAIN - FRA', '2024-08-04', 'DXB', 'FRA', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('5b8488ac-d15a-4d47-8ee0-de5034b9e7a0', 'bf7ae104-8ee7-4b47-a1f0-0f4701d56dca', 'EK202', '0562a989-3a20-4cdf-bb1f-81c5e467e5b0', 'DUBAI INTERNATIONAL - DXB', '2024-08-04', '53b458d5-22ed-402a-a40e-6b926e095049', 'FRANKFURT MAIN - FRA', '2024-08-05', 'DXB', 'FRA', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('95950d0e-0119-4373-aa29-c597885323c9', '27dbf874-ec21-4fd2-994d-7ce456cd2300', 'A001', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', 'AALEN HEIDENHEIM ELCHINGEN - EDPA', '2024-08-09', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', 'AALEN HEIDENHEIM ELCHINGEN - EDPA', '2024-08-10', 'EDPA', 'EDPA', '94022317-8d22-4115-b368-2cd855325924', 'ABSA CARGO AIRLINE / LATAM CARGO BRASIL');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('ad84e976-7d57-4286-9aa4-acc8cf0e8cf5', '408d4fbe-7bfb-403d-96dc-7d23b25db7b3', '121', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', 'ABADAN - ABD', '2024-08-24', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', 'AALEN HEIDENHEIM ELCHINGEN - EDPA', '2024-09-07', 'ABD', 'EDPA', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES');
-INSERT INTO "dxb"."loading_plan_detail" VALUES ('aeb85d24-e330-4d43-89c9-8ce06115a210', '25daf84d-8ae2-48d4-9d37-c0ed8634a119', 'LH008', '0562a989-3a20-4cdf-bb1f-81c5e467e5b0', 'DUBAI INTERNATIONAL - DXB', '2024-08-22', '120ebedb-b5f5-4ef7-8202-a0a0331c24ad', 'HAMBURG - HAM', '2024-08-23', 'DXB', 'HAM', 'ae307878-e20a-444c-823b-1de4b1df36d4', 'LUFTHANSA CARGO AG');
 
 -- ----------------------------
 -- Table structure for loading_plan_detail_local
@@ -866,11 +849,29 @@ CREATE TABLE "dxb"."loading_plan_detail_local" (
 -- ----------------------------
 -- Records of loading_plan_detail_local
 -- ----------------------------
-INSERT INTO "dxb"."loading_plan_detail_local" VALUES ('f178238f-1c70-4ab7-ab38-c6747c544f28', 'ec40a263-4a05-45ea-8feb-aa73dd42465c', '1111', '35b0c6e1-dba7-41f0-8081-a001910b6fad', 'AALBORG - AAL', '2024-06-12', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', 'AALEN HEIDENHEIM ELCHINGEN - EDPA', '2024-06-13', 'AAL', 'EDPA', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES');
-INSERT INTO "dxb"."loading_plan_detail_local" VALUES ('87fefbac-6ed4-424d-8c03-4b95b86a1f44', 'cb877848-b430-475d-a2c8-130a23170753', '222', '229eaa02-9568-4f59-b118-6409afbcb7b6', 'ABAKAN - ABA', '2024-06-20', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', 'ABADAN - ABD', '2024-06-20', 'ABA', 'ABD', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES');
-INSERT INTO "dxb"."loading_plan_detail_local" VALUES ('72c20d7c-6413-4a2a-b5ed-c8c62790dec5', '31c52960-bfbd-4c5d-a8bf-320db8f96a8f', 'A001', '35b0c6e1-dba7-41f0-8081-a001910b6fad', 'AALBORG - AAL', '2024-07-01', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', 'ABADAN - ABD', '2024-07-06', 'AAL', 'ABD', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR');
-INSERT INTO "dxb"."loading_plan_detail_local" VALUES ('5566a41b-addf-4540-9128-5fa0f8a5ec47', '4086e0a3-a7d4-4041-97a7-25dbb58272fb', '212', '35b0c6e1-dba7-41f0-8081-a001910b6fad', 'AALBORG - AAL', '2024-06-15', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', 'AALEN HEIDENHEIM ELCHINGEN - EDPA', '2024-06-15', 'AAL', 'EDPA', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR');
-INSERT INTO "dxb"."loading_plan_detail_local" VALUES ('303a2dd5-9caa-4fee-b234-25c1d83d581b', 'c53bca84-933d-46ba-b4aa-43db79d2597f', '122', '35b0c6e1-dba7-41f0-8081-a001910b6fad', 'AALBORG - AAL', '2024-07-09', '35b0c6e1-dba7-41f0-8081-a001910b6fad', 'AALBORG - AAL', '2024-07-10', 'AAL', 'AAL', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR');
+
+-- ----------------------------
+-- Table structure for loading_plan_document
+-- ----------------------------
+DROP TABLE IF EXISTS "dxb"."loading_plan_document";
+CREATE TABLE "dxb"."loading_plan_document" (
+  "loading_plan_document_id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+  "loading_id" uuid,
+  "type_document" varchar(255) COLLATE "pg_catalog"."default",
+  "name_file" varchar(255) COLLATE "pg_catalog"."default",
+  "date_created" date,
+  "date_modified" date,
+  "created_by" varchar(255) COLLATE "pg_catalog"."default",
+  "updated_by" varchar(255) COLLATE "pg_catalog"."default",
+  "status" varchar(255) COLLATE "pg_catalog"."default",
+  "loading_type" varchar(255) COLLATE "pg_catalog"."default",
+  "loading_plan_bl_id" uuid
+)
+;
+
+-- ----------------------------
+-- Records of loading_plan_document
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for loading_plan_local
@@ -919,11 +920,6 @@ COMMENT ON COLUMN "dxb"."loading_plan_local"."notes" IS 'untuk mencatat nomor ct
 -- ----------------------------
 -- Records of loading_plan_local
 -- ----------------------------
-INSERT INTO "dxb"."loading_plan_local" VALUES ('ec40a263-4a05-45ea-8feb-aa73dd42465c', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES', '17641241241', '2024-06-11', 'thomas@pamcargo.com', '2024-06-11', 'thomas@pamcargo.com', 3, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-06-11 14:25:00', NULL, NULL, NULL, 'AF-2406001', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan_local" VALUES ('cb877848-b430-475d-a2c8-130a23170753', 'b7bd1e94-ca3e-405e-b01c-49e0ec922fb5', 'EMIRATES', '17641241241', '2024-06-11', 'thomas@pamcargo.com', '2024-06-11', NULL, 3, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-06-12 14:28:00', NULL, NULL, NULL, 'AF-2406003', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan_local" VALUES ('4086e0a3-a7d4-4041-97a7-25dbb58272fb', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR', '83299999933', '2024-06-14', 'thomas@pamcargo.com', '2024-06-14', NULL, 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-06-14 15:14:00', NULL, NULL, NULL, 'AF-2406004', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."loading_plan_local" VALUES ('31c52960-bfbd-4c5d-a8bf-320db8f96a8f', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR', '83299999900', '2024-06-11', 'thomas@pamcargo.com', '2024-06-11', 'dubai@pamcargo.com', 1, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-06-30 14:26:00', NULL, NULL, NULL, 'AF-2406002', 'be6e0ecd-d2ca-482a-a4f9-4fb2a06d62e6', 'PAM INTERNATIONAL CARGO', NULL, 'c5ca58ff-a66e-4963-96fa-49f312d7d189', 'ABHINANDAN STEELS,', '<p><strong>A-113/2, WAZIRPUR INDUSTRIAL AREA,</strong></p><p><strong>DELHI-110052 INDIA</strong></p>', '56a21f4d-5947-441f-a6db-0b5f0c259e10', '4M SYSTEMS A.S.', '<p>SLEZANU 2296/9, 169 00, PRAHA 6</p><p>PRAGUE, CZECH REPUBLIC</p><p>TEL.:+420 778 728 744</p><p>EMAIL:KECLIKOVA@4MTACTICAL.COM</p>', 'test', NULL, '9999999', 'Prepaid', NULL, 'SA2406001');
-INSERT INTO "dxb"."loading_plan_local" VALUES ('c53bca84-933d-46ba-b4aa-43db79d2597f', '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR', '83299999900', '2024-07-08', 'thomas@pamcargo.com', '2024-07-08', 'thomas@pamcargo.com', 3, '533219ad-bfa1-4cf6-87f9-fce85748a647', '2024-07-08 11:24:00', NULL, NULL, NULL, 'AF-2407005', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for loading_report
@@ -957,12 +953,32 @@ CREATE TABLE "dxb"."loading_report" (
 -- ----------------------------
 -- Records of loading_report
 -- ----------------------------
-INSERT INTO "dxb"."loading_report" VALUES ('6c807dc5-60a6-4cf1-92b2-1a92ddc7c4fc', NULL, NULL, 'APL-002', 1, NULL, '533219ad-bfa1-4cf6-87f9-fce85748a647', 3, NULL, 'thomas@pamcargo.com', '2024-06-11 10:55:39.476855', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND', '2024-06-11', '2024-06-12', '11', NULL, NULL, '2024-06-12', 'SF-2406002');
-INSERT INTO "dxb"."loading_report" VALUES ('3edcb5f8-a4c5-4272-8261-633c4ab35941', NULL, NULL, '001', 1, NULL, '533219ad-bfa1-4cf6-87f9-fce85748a647', 3, NULL, 'thomas@pamcargo.com', '2024-06-11 00:00:00', 'thomas@pamcargo.com', '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND', '2024-06-11', '2024-06-12', '11', NULL, NULL, '2024-06-12', 'SF-2406001');
-INSERT INTO "dxb"."loading_report" VALUES ('c569f1ba-4694-46aa-9939-2986a4de8438', NULL, NULL, '111', 1, NULL, '533219ad-bfa1-4cf6-87f9-fce85748a647', 3, NULL, 'thomas@pamcargo.com', '2024-06-11 00:00:00', 'thomas@pamcargo.com', '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND', '2024-06-11', '2024-06-12', '11', NULL, NULL, '2024-06-12', 'SF-2406003');
-INSERT INTO "dxb"."loading_report" VALUES ('cfec6e4a-6ade-442b-802f-863abd7f78b6', NULL, NULL, '123456789', 1, NULL, '533219ad-bfa1-4cf6-87f9-fce85748a647', 1, NULL, 'thomas@pamcargo.com', '2024-07-08 00:00:00', 'thomas@pamcargo.com', '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND', '2024-06-11', '2024-06-12', '11', NULL, NULL, '2024-06-12', 'SF-2406004');
-INSERT INTO "dxb"."loading_report" VALUES ('ba3da292-19a9-4964-a522-9de7a61f717c', NULL, NULL, '324412', 1, NULL, '533219ad-bfa1-4cf6-87f9-fce85748a647', 3, NULL, 'thomas@pamcargo.com', '2024-07-08 10:10:00.146367', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', 'APL HOLLAND', '2024-06-11', '2024-06-12', '11', NULL, NULL, '2024-06-12', 'SF-2407005');
-INSERT INTO "dxb"."loading_report" VALUES ('816ea82b-14b7-4968-ad93-e0afd891beb0', NULL, NULL, '110011', 1, '1441', '533219ad-bfa1-4cf6-87f9-fce85748a647', 1, NULL, 'thomas@pamcargo.com', '2024-08-06 17:23:04.296372', NULL, '3212b041-21e7-4d31-b493-ec484ef935b3', 'SINAR BAJO', '2024-07-10', '2024-07-24', '234', NULL, NULL, '2024-07-04', 'SF-2408006');
+INSERT INTO "dxb"."loading_report" VALUES ('04118885-1e24-41ed-9c7c-dae53ee68fe8', NULL, NULL, '1234567', 1, '1234567', '533219ad-bfa1-4cf6-87f9-fce85748a647', 1, NULL, 'operations@pamcargo.com', '2024-10-21 16:18:39.633403', NULL, 'c8f148db-e9e3-4df8-9e6e-fce1fd4da075', 'CSCL GLOBE', '2024-10-22', '2024-10-22', '123456789', NULL, NULL, '2024-10-31', 'SF-2410001');
+INSERT INTO "dxb"."loading_report" VALUES ('b779df12-5ad3-450d-9905-ad14758a7676', NULL, NULL, 'BO12345', 2, '1241626', '533219ad-bfa1-4cf6-87f9-fce85748a647', 1, NULL, 'thomas@pamcargo.com', '2024-10-29 16:51:21.474163', NULL, '5fcd3c4f-7f61-48ab-a6a3-29751ee994c7', 'SAN LORENZO', '2024-10-31', '2024-11-01', 'FLYINGDUTCHMAN', NULL, NULL, '2024-11-01', 'SF-2410002');
+
+-- ----------------------------
+-- Table structure for loading_report_bl
+-- ----------------------------
+DROP TABLE IF EXISTS "dxb"."loading_report_bl";
+CREATE TABLE "dxb"."loading_report_bl" (
+  "loading_report_bl_id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+  "bl_number" varchar(255) COLLATE "pg_catalog"."default",
+  "loading_id" uuid,
+  "date_created" date DEFAULT now(),
+  "created_by" varchar(255) COLLATE "pg_catalog"."default",
+  "date_modified" date,
+  "modified_by" varchar(255) COLLATE "pg_catalog"."default",
+  "status" int2 DEFAULT 1,
+  "feeder_vessel_name" varchar(255) COLLATE "pg_catalog"."default",
+  "voyage_number_feeder" varchar(255) COLLATE "pg_catalog"."default",
+  "fcl_closing_time" timestamp(6),
+  "feeder_vessel_id" uuid
+)
+;
+
+-- ----------------------------
+-- Records of loading_report_bl
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for loading_report_detail
@@ -974,7 +990,8 @@ CREATE TABLE "dxb"."loading_report_detail" (
   "container_number" varchar(100) COLLATE "pg_catalog"."default",
   "seal_number" varchar(100) COLLATE "pg_catalog"."default",
   "container_type" varchar(100) COLLATE "pg_catalog"."default",
-  "status" int2
+  "status" int2,
+  "loading_report_bl_id" uuid
 )
 ;
 COMMENT ON COLUMN "dxb"."loading_report_detail"."container_type" IS '1. 40 ft 2, 25 ft ';
@@ -982,12 +999,9 @@ COMMENT ON COLUMN "dxb"."loading_report_detail"."container_type" IS '1. 40 ft 2,
 -- ----------------------------
 -- Records of loading_report_detail
 -- ----------------------------
-INSERT INTO "dxb"."loading_report_detail" VALUES ('632c9075-35c0-4c27-a368-c99b1046e758', '3edcb5f8-a4c5-4272-8261-633c4ab35941', NULL, NULL, '20 FT', 1);
-INSERT INTO "dxb"."loading_report_detail" VALUES ('6184e694-a2a2-47cf-a724-b3025c23be66', '6c807dc5-60a6-4cf1-92b2-1a92ddc7c4fc', NULL, NULL, NULL, 1);
-INSERT INTO "dxb"."loading_report_detail" VALUES ('dbf4e9a5-5d79-4773-b9e5-73a96118ae3c', 'c569f1ba-4694-46aa-9939-2986a4de8438', NULL, NULL, '20 FT', 1);
-INSERT INTO "dxb"."loading_report_detail" VALUES ('4207c4b9-916c-4a75-8b4a-47211f1015bb', 'ba3da292-19a9-4964-a522-9de7a61f717c', NULL, NULL, '20 FT', 1);
-INSERT INTO "dxb"."loading_report_detail" VALUES ('4faa9838-cc38-48af-8495-9876dd7262d0', 'cfec6e4a-6ade-442b-802f-863abd7f78b6', NULL, NULL, '20 FT', 1);
-INSERT INTO "dxb"."loading_report_detail" VALUES ('f018267f-de2d-4932-911b-53bc03d3cb8f', '816ea82b-14b7-4968-ad93-e0afd891beb0', '123', '123', '40 HC', 1);
+INSERT INTO "dxb"."loading_report_detail" VALUES ('0335370b-1b6b-48fd-8da5-7e5316b157f6', '04118885-1e24-41ed-9c7c-dae53ee68fe8', '2131313', 'sadadad', '20 FT', 1, NULL);
+INSERT INTO "dxb"."loading_report_detail" VALUES ('81ffa8a7-c0ab-447e-afff-cfb46e9fe07d', 'b779df12-5ad3-450d-9905-ad14758a7676', '123', '123', '20 FT', 1, NULL);
+INSERT INTO "dxb"."loading_report_detail" VALUES ('a3c8a5fe-4865-49b4-b63d-971ef46675b3', 'b779df12-5ad3-450d-9905-ad14758a7676', '1233', '1323', '40 FT', 1, NULL);
 
 -- ----------------------------
 -- Table structure for local_transport
@@ -1025,6 +1039,8 @@ INSERT INTO "dxb"."local_transport" VALUES ('9ec464ed-b355-47f5-a01f-1242e37ebc1
 INSERT INTO "dxb"."local_transport" VALUES ('c91ab53e-7b90-40fd-b449-72eb016ad7e4', 'b34f807d-0526-442f-8b25-a1134de5ab21', 'A787B', 'driver 1', '65654', NULL, '2024-06-25 14:35:00', NULL, '2024-06-25 14:35:00', NULL, 1, '454');
 INSERT INTO "dxb"."local_transport" VALUES ('95de5aac-4682-4ce2-b5b8-c8f3034b9144', '0aa9f735-d5c7-4b74-b8c8-2a6abcd6f593', 'B3554A', 'driver 1', '454643', NULL, '2024-06-26 11:59:10', NULL, '2024-06-26 11:59:10', NULL, 1, '23');
 INSERT INTO "dxb"."local_transport" VALUES ('def7e478-3779-4c26-aa5b-fb9682093a91', '6637d456-b568-452c-bf72-61f3afb3ddc1', 'B22424K', 'driver', '3453', NULL, '2024-07-22 15:51:12', NULL, '2024-07-22 15:51:12', NULL, 1, '3533');
+INSERT INTO "dxb"."local_transport" VALUES ('3a782939-7fe2-4da0-9a1e-22ee31cd7db9', '6e4821cf-169b-4dcc-9115-86d1a60073ed', 'B 2043 BT', 'Bambang Kentolet', '0812898373736', NULL, '2024-10-29 11:30:14', NULL, '2024-10-29 11:30:14', NULL, 1, 'Cawang');
+INSERT INTO "dxb"."local_transport" VALUES ('7ec2303c-7ed9-4def-bd01-354134eef51d', '6e4821cf-169b-4dcc-9115-86d1a60073ed', 'B 5555 JTX', 'Budi Sudarsono', '08998923099', NULL, '2024-10-29 11:30:14', NULL, '2024-10-29 11:30:14', NULL, 1, 'Kalibata');
 
 -- ----------------------------
 -- Table structure for mawb_stock_generation
@@ -1094,6 +1110,33 @@ INSERT INTO "dxb"."noted_section" VALUES ('cab91c0c-a810-409a-92cf-b62a553ec5f1'
 INSERT INTO "dxb"."noted_section" VALUES ('702259fe-49b6-42bb-9914-b5164ddeb27a', 'tes', '2024-06-25 14:10:36.07508', 2, NULL, 'dubai@pamcargo.com', 'b34f807d-0526-442f-8b25-a1134de5ab21');
 INSERT INTO "dxb"."noted_section" VALUES ('1c5aab50-1b31-4afb-a07c-447a27b9e827', 'test', '2024-06-26 11:27:18.319497', 2, NULL, 'dubai@pamcargo.com', '0aa9f735-d5c7-4b74-b8c8-2a6abcd6f593');
 INSERT INTO "dxb"."noted_section" VALUES ('6e2d6bd8-83cd-4038-a2cf-5dd4642273af', 'tes', '2024-07-22 15:50:53.129218', NULL, NULL, 'dubai@pamcargo.com', '6637d456-b568-452c-bf72-61f3afb3ddc1');
+INSERT INTO "dxb"."noted_section" VALUES ('e7a3eeaa-1261-4e6b-adf2-4b48f74bc516', 'test data input', '2024-10-29 16:32:32.931584', 2, NULL, 'dubai@pamcargo.com', 'cc0ddd3d-89a1-4283-9194-24a0b0eb6389');
+INSERT INTO "dxb"."noted_section" VALUES ('f0e3a0ac-1303-4bc7-9946-18c05e5794a6', 'cendol gan', '2024-10-29 16:35:56.99283', 2, NULL, 'dubai@pamcargo.com', 'cc0ddd3d-89a1-4283-9194-24a0b0eb6389');
+INSERT INTO "dxb"."noted_section" VALUES ('84275385-41c8-4d67-9bae-23304047ccaa', 'mari gan', '2024-10-29 16:39:10.998356', 2, NULL, 'dubai@pamcargo.com', '38d691ab-a093-4134-be2e-4f84ef05dde5');
+INSERT INTO "dxb"."noted_section" VALUES ('0607c412-2d72-4e49-ab4a-7dfcf4a06904', 'coba coba aja masbro', '2024-10-29 16:40:26.361807', 2, NULL, 'thomas@pamcargo.com', '38d691ab-a093-4134-be2e-4f84ef05dde5');
+INSERT INTO "dxb"."noted_section" VALUES ('22660520-9070-4033-a627-9cc8cbe937f8', 'yoo', '2024-10-31 10:24:25.922253', 2, NULL, 'thomas@pamcargo.com', '73321db0-997a-418a-8a4d-ee71f04bc8c8');
+
+-- ----------------------------
+-- Table structure for operation_chart
+-- ----------------------------
+DROP TABLE IF EXISTS "dxb"."operation_chart";
+CREATE TABLE "dxb"."operation_chart" (
+  "id" uuid DEFAULT uuid_generate_v4(),
+  "vessel_name_voyage" varchar(255) COLLATE "pg_catalog"."default",
+  "no_operation_chart" varchar(30) COLLATE "pg_catalog"."default",
+  "file_operation_chart" varchar(255) COLLATE "pg_catalog"."default",
+  "date_created" date,
+  "created_by" varchar(255) COLLATE "pg_catalog"."default",
+  "eta_dubai" date,
+  "gmt" varchar(255) COLLATE "pg_catalog"."default",
+  "name" varchar(255) COLLATE "pg_catalog"."default",
+  "city" varchar(255) COLLATE "pg_catalog"."default"
+)
+;
+
+-- ----------------------------
+-- Records of operation_chart
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for operation_document
@@ -1166,6 +1209,52 @@ INSERT INTO "dxb"."operation_document" VALUES ('8bed97e1-10e5-4d59-9ddc-a2db41fa
 INSERT INTO "dxb"."operation_document" VALUES ('85fbd60a-4f54-43ea-9ae2-3f82cd51f3a9', NULL, 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', '2024-08-07', 'dubai@pamcargo.com', NULL, NULL, NULL, NULL, NULL, 'de0c1081-1cb2-4e14-911f-9b37ce6b62c5', 'null');
 INSERT INTO "dxb"."operation_document" VALUES ('586c1163-0427-4493-99d8-d76483eb2af0', NULL, NULL, 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', '2024-06-27', 'dubai@pamcargo.com', NULL, NULL, NULL, NULL, NULL, '6cdb134e-962f-4b21-9552-616a5a07cab7', 'null');
 INSERT INTO "dxb"."operation_document" VALUES ('5536505d-869c-4dc8-b0ce-d4b482d0acf3', NULL, 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', '2024-08-07', 'dubai@pamcargo.com', NULL, NULL, NULL, NULL, NULL, '5dd07fd4-7471-402f-85ce-3a656f0ac20e', 'null');
+
+-- ----------------------------
+-- Table structure for order_document
+-- ----------------------------
+DROP TABLE IF EXISTS "dxb"."order_document";
+CREATE TABLE "dxb"."order_document" (
+  "order_document_id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+  "type_document" varchar(255) COLLATE "pg_catalog"."default",
+  "name_file" varchar(255) COLLATE "pg_catalog"."default",
+  "date_created" date,
+  "date_modified" date,
+  "created_by" varchar(255) COLLATE "pg_catalog"."default",
+  "updated_by" date,
+  "status" varchar(255) COLLATE "pg_catalog"."default",
+  "job_id" uuid,
+  "creating_by" varchar(255) COLLATE "pg_catalog"."default"
+)
+;
+
+-- ----------------------------
+-- Records of order_document
+-- ----------------------------
+INSERT INTO "dxb"."order_document" VALUES ('b9e9afd5-db93-41f4-9559-fd1dd3f81fec', 'si_doc', '30102024/si_CTD-RGNSA2410005_(3)_DXBSE2410001_1.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '3', '0211ca52-7c9a-4003-9623-0be52855cb6a', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('1b807bc4-0c16-494c-9d86-72419028afba', 'si_doc', '30102024/si_CTD-SRGSA2410016_(1)_DXBSE2410001_2.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '3', '0211ca52-7c9a-4003-9623-0be52855cb6a', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('9235a498-2ef3-4211-a1e3-54676a8fe334', 'cft_doc', '30102024/cft_CTD-SRGSA2410016_(2)_DXBSE2410001_1.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '3', '0211ca52-7c9a-4003-9623-0be52855cb6a', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('7dc11736-789e-49bb-ae30-09ee2410b88f', 'msds_doc', '30102024/msds_CTD-SRGSA2410016_(2)_DXBSE2410001_1.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '3', '0211ca52-7c9a-4003-9623-0be52855cb6a', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('3ebf4c88-da24-4b2b-be5f-5848ab7f20f4', 'mawb_doc', '30102024/mawb_CTD-SRGSA2410016_(3)_DXBSE2410001_1.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '3', '0211ca52-7c9a-4003-9623-0be52855cb6a', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('57afe4e9-51e3-4b60-8a86-c3a0c32b4b8f', 'com_invoices_doc', '30102024/com_invoices_CTD-SRGSA2410016_DXBSE2410001_1.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '1', '0211ca52-7c9a-4003-9623-0be52855cb6a', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('1f5983d9-3b12-4b03-a44a-6dfde6fdf232', 'com_invoices_doc', '30102024/com_invoices_CTD-SRGSA2410016_(2)_DXBSE2410001_2.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '1', '0211ca52-7c9a-4003-9623-0be52855cb6a', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('5f6f0d15-276a-4df8-a877-3aa051a022ee', 'msds_doc', '30102024/msds_CTD-RGNSA2410005_(1)_DXBSE2410001_1.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '1', '0211ca52-7c9a-4003-9623-0be52855cb6a', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('9b0d6ba8-8a8c-491d-8ab3-654482c8c3f2', 'ctd_doc', '30102024/ctd_CTD-SRGSA2410016_(2)_DXBSE2410001_1.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '3', '0211ca52-7c9a-4003-9623-0be52855cb6a', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('ed91714d-e27f-42d5-afa5-9f6447042dc0', 'packing_list_doc', '30102024/packing_list_CTD-SRGSA2410016_(2)_DXBSE2410001_1.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '1', '0211ca52-7c9a-4003-9623-0be52855cb6a', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('2f7b50cc-b4a4-4bbc-a5fb-9b282563ffe8', 'other_doc', '30102024/other_CTD-SRGSA2410016_(3)_DXBSE2410001_1.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '1', '0211ca52-7c9a-4003-9623-0be52855cb6a', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('2c5c22be-1bac-4006-8632-10c1ea7efe1b', 'other_doc', '30102024/other_CTD-SRGSA2410016_(2)_DXBSE2410001_2.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '1', '0211ca52-7c9a-4003-9623-0be52855cb6a', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('949a68e9-47e0-4fd5-af74-be792e4780aa', 'other_doc', '30102024/other_CTD-SRGSA2410016_(1)_DXBSE2410001_3.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '1', '0211ca52-7c9a-4003-9623-0be52855cb6a', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('2e0c8f78-9315-4458-bbd5-795a036f831b', 'other_doc', '30102024/other_CTD-SRGSA2410016_DXBSE2410001_4.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '1', '0211ca52-7c9a-4003-9623-0be52855cb6a', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('d62dbf02-fff7-44f6-9756-381ab1491c7f', 'cargo_manifest', '30102024/cargo_manifest_CTD-XMNSA2410001_(2)_DXBSE2410001_1.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '1', '0211ca52-7c9a-4003-9623-0be52855cb6a', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('c4718144-3614-400c-849a-f16f1f6818ee', 'cargo_manifest', '30102024/cargo_manifest_CTD-XMNSA2410001_(1)_DXBSE2410001_2.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '1', '0211ca52-7c9a-4003-9623-0be52855cb6a', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('14ea1d6f-a590-4ff4-a086-058d1071ed6b', 'cargo_manifest', '30102024/cargo_manifest_CTD-XMNSA2410001_DXBSE2410001_3.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '3', '0211ca52-7c9a-4003-9623-0be52855cb6a', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('df5bd0db-a999-41e4-98ed-acdb62f7b4a7', 'com_invoices_doc', '31102024/com_invoices_msds_CTD-RGNSA2410005_(1)_DXBSE2410001_1.pdf_DXBTC2410001_1.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '1', 'e9a82d7f-0ccf-4323-99e5-e1f9c3e16e0b', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('abfc236b-5bfa-4ae0-8a34-929cbe211618', 'si_doc', '31102024/si_CTD-SRGSA2410016_(2)_DXBTC2410001_1.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '1', 'e9a82d7f-0ccf-4323-99e5-e1f9c3e16e0b', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('f0d50045-006c-4d80-a3f0-fa8157a9248d', 'packing_list_doc', '31102024/packing_list_msds_CTD-RGNSA2410005_(1)_DXBSE2410001_1.pdf_DXBSI2410001_1.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '1', '2f34a1b1-b647-456b-88ec-d02962d04b16', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('13a08343-6e94-4367-8a8b-810789886129', 'msds_doc', '31102024/msds_CTD-RGNSA2410005_(3)_DXBSI2410001_1.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '1', '2f34a1b1-b647-456b-88ec-d02962d04b16', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('e2d2a694-35e7-4286-a81d-3f9f424d0f26', 'cft_doc', '31102024/cft_CTD-SRGSA2410016_DXBSI2410001_1.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '1', '2f34a1b1-b647-456b-88ec-d02962d04b16', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('87ea5ed8-0bf5-455c-b1ad-26756844253f', 'ctd_doc', '31102024/ctd_msds_CTD-RGNSA2410005_(3)_DXBSI2410001_1.pdf_DXBWH2410001_1.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '3', '38d691ab-a093-4134-be2e-4f84ef05dde5', NULL);
+INSERT INTO "dxb"."order_document" VALUES ('a68eba10-460b-4d94-b81c-50fcbce44f99', 'coo_doc', '31102024/coo_msds_CTD-RGNSA2410005_(3)_DXBSI2410001_1.pdf_DXBWH2410001_1.pdf', NULL, NULL, 'thomas@pamcargo.com', NULL, '1', '38d691ab-a093-4134-be2e-4f84ef05dde5', NULL);
 
 -- ----------------------------
 -- Table structure for quotation
@@ -1262,10 +1351,8 @@ COMMENT ON COLUMN "dxb"."schedule_vessel"."via_id" IS '1. DXB
 -- ----------------------------
 -- Records of schedule_vessel
 -- ----------------------------
-INSERT INTO "dxb"."schedule_vessel" VALUES ('b1cf0e18-8994-4244-9ec8-19b916b82ac3', NULL, 'EUROPE', NULL, 'APL HOLLAND', '123', '2024-05-31', '2024-05-30', NULL, '2024-06-01', NULL, NULL, NULL, '2024-05-30 00:00:00', 'thomas@pamcargo.com', '2024-05-30 00:00:00', 'thomas@pamcargo.com', 3, '119892d8-e20b-4833-a439-1e7ef3d08516', 3, 'ABU DHABI', 'BANGKOK', 'ALGERIA');
-INSERT INTO "dxb"."schedule_vessel" VALUES ('35fc2136-c5b1-48a0-81d8-9dfde28bbaf6', NULL, 'EUROPE', NULL, 'APL HOLLAND', '11', '2024-06-12', '2024-06-11', NULL, '2024-06-12', NULL, NULL, NULL, '2024-06-11 00:00:00', 'thomas@pamcargo.com', '2024-06-11 10:17:52.164211', NULL, 1, '119892d8-e20b-4833-a439-1e7ef3d08516', 2, 'BANGKOK', 'ABU DHABI', 'ALBANIA');
-INSERT INTO "dxb"."schedule_vessel" VALUES ('e7770708-c62a-4961-bd30-c2c66c224361', NULL, 'EUROPE', NULL, 'NORDOCELOT', '11', '2024-06-12', '2024-06-11', NULL, '2024-06-12', NULL, NULL, NULL, '2024-06-11 00:00:00', 'thomas@pamcargo.com', '2024-06-11 00:00:00', 'thomas@pamcargo.com', 3, 'c85ac3a8-7ffe-4bac-93a0-e73ccd56acb1', 1, 'ABU DHABI', 'BANGKOK', 'AFGHANISTAN');
-INSERT INTO "dxb"."schedule_vessel" VALUES ('385da1d5-e90e-41c3-a301-5217a8575f0f', NULL, NULL, NULL, 'SINAR BAJO', '234', '2024-07-11', '2024-07-10', NULL, '2024-07-09', NULL, NULL, NULL, '2024-07-09 00:00:00', 'thomas@pamcargo.com', '2024-07-09 11:28:25.874087', NULL, 1, '3212b041-21e7-4d31-b493-ec484ef935b3', 1, 'BUSAN', 'BANGKOK', 'AFGHANISTAN');
+INSERT INTO "dxb"."schedule_vessel" VALUES ('136ffd85-5160-4cc0-ac57-a727ada87358', NULL, 'EUROPE', NULL, 'CSCL GLOBE', '123456789', '2024-10-31', '2024-10-22', '2024-10-21', '2024-10-22', '123', '2024-10-31', NULL, '2024-10-21 00:00:00', 'operations@pamcargo.com', '2024-10-21 16:18:12.366866', NULL, 1, 'c8f148db-e9e3-4df8-9e6e-fce1fd4da075', 229, 'ABU DHABI', 'BUSAN', 'UNITED ARAB EMIRATES');
+INSERT INTO "dxb"."schedule_vessel" VALUES ('10ce5303-f46d-4c63-b0b8-029948a5604c', NULL, 'US/CANADA', NULL, 'SAN LORENZO', 'FLYINGDUTCHMAN', '2024-11-01', '2024-10-31', '2024-11-01', '2024-11-01', '12', '2024-11-02', '12', '2024-10-29 00:00:00', 'thomas@pamcargo.com', '2024-10-29 16:46:59.527682', NULL, 1, '5fcd3c4f-7f61-48ab-a6a3-29751ee994c7', 229, 'JEBEL ALI', 'LOS ANGELES', 'UNITED ARAB EMIRATES');
 
 -- ----------------------------
 -- Table structure for shipping_instruction
@@ -1333,7 +1420,13 @@ CREATE TABLE "dxb"."shipping_instruction" (
   "notes_destination" varchar(255) COLLATE "pg_catalog"."default",
   "shipping_instruction_type" varchar(30) COLLATE "pg_catalog"."default",
   "courir_tracking_resi" varchar(255) COLLATE "pg_catalog"."default",
-  "status_update" int2 DEFAULT 0
+  "status_update" int2 DEFAULT 0,
+  "customer_group_id" uuid,
+  "customer_group_name" varchar(255) COLLATE "pg_catalog"."default",
+  "customer_id" uuid,
+  "customer_name" varchar(255) COLLATE "pg_catalog"."default",
+  "customer_address" varchar(255) COLLATE "pg_catalog"."default",
+  "loading_report_bl_id" uuid
 )
 ;
 COMMENT ON COLUMN "dxb"."shipping_instruction"."status_shipment" IS '1. Booking receipt, 2. cargo transit dll';
@@ -1345,255 +1438,48 @@ COMMENT ON COLUMN "dxb"."shipping_instruction"."notes_destination" IS 'notes for
 -- ----------------------------
 -- Records of shipping_instruction
 -- ----------------------------
-INSERT INTO "dxb"."shipping_instruction" VALUES ('41e8e812-7143-455f-9fdf-0db22139a3b9', '553a2151-8cd0-420f-80c5-c90203caa630', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', '8b396746-5a30-4e39-84a4-89185a1ea96c', '8b396746-5a30-4e39-84a4-89185a1ea96c', NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', 'FCL', 'Collect', 'FOB', NULL, NULL, 'Booking Received', '2024-05-25', NULL, NULL, 'DUBAI', 'SEAIMPORT', 'ARMAT FZE', 'FC0401WS74, JEBEL ALI FREEZONE, DUBAI, UAE.', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'ABERDEEN', 'ABERDEEN', 'ABERDEEN', NULL, NULL, 'DXBSI2405001', 1, '2024-05-24 17:17:02.387362', 'dubai@pamcargo.com', '2024-05-24 17:17:02.387362', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('ab49df81-a7ed-4d0d-b519-7c3e976ca013', '32d9d644-0e53-4329-a455-05caf439b897', '60c1ad2c-b77b-4b9f-ab14-09c3d768c0df', '533219ad-bfa1-4cf6-87f9-fce85748a647', '216a40f2-26b3-494c-9cb7-6607e81398d4', '33a4b77d-792e-4498-9439-c10506695992', NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', 'FCL', 'Collect', 'EXW', NULL, NULL, 'Received by shipping line', '2024-05-26', NULL, NULL, 'DUBAI', 'SEAEXPORT', 'AVISH AQUATECH TRADING LLC', 'THE METROPOLIS TOWER
-BUSINESS B, DUBAI
-DUBAI, UAE', 'ANHUI IDEA IMP AND EXP CO LTD', 'HEIFEI, ANHUI CHINA', 'ABURATSU', 'ABURATSU', 'ABU DHABI', NULL, NULL, 'DXBSE2405001', 1, '2024-05-24 17:18:44.449362', 'dubai@pamcargo.com', '2024-05-24 17:18:44.449362', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 39, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('352b8464-7bc5-47a5-afce-07d6e052e360', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', '60c1ad2c-b77b-4b9f-ab14-09c3d768c0df', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', 'AIR IMPORT', 'Collect', 'CIP', NULL, NULL, 'Arrived in destination airport', '2024-05-26', NULL, NULL, 'DUBAI', 'AIRIMPORT', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'ANHUI IDEA IMP AND EXP CO LTD', 'HEIFEI, ANHUI CHINA', 'ABADAN', 'ABADAN', 'ABADAN', NULL, NULL, 'DXBAI2405001', 1, '2024-05-24 17:20:13.62219', 'dubai@pamcargo.com', '2024-05-24 17:20:13.62219', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, '423c8787-a4e5-4f8d-a33a-9ba50fb0a768', 'GARMENTS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('9c9f1fd0-ae9a-4ad9-95dd-13cac87dc057', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'a07992ba-02bf-49d1-966e-7a98755847ac', '33a4b77d-792e-4498-9439-c10506695992', NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', 'FCL', 'Collect', 'EXW', NULL, NULL, 'Booking Received', '2024-05-26', NULL, NULL, 'LA', 'SEAIMPORT', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'ÅBO (TURKU)', 'ÅBO (TURKU)', 'ABU DHABI', NULL, NULL, 'DXBSI2405002', 1, '2024-05-24 17:33:09.720467', 'dubai@pamcargo.com', '2024-05-24 17:33:09.720467', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '423c8787-a4e5-4f8d-a33a-9ba50fb0a768', 'GARMENTS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('365bcd71-518e-4c37-85b2-ef8fa3fd5ba0', '1e50f034-6862-4072-a05d-bb6008aa454f', 'd5ab17cd-467f-4c38-9860-5c83db803ade', '533219ad-bfa1-4cf6-87f9-fce85748a647', '9b084acc-61ab-4f05-b262-13ee1e329e50', '9b084acc-61ab-4f05-b262-13ee1e329e50', NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', 'LCL', 'Collect', 'FAS', NULL, NULL, 'Booking Received', '2024-06-01', NULL, NULL, 'DUBAI', 'SEAIMPORT', 'IGNITE SAFETY AND SECURITY W.L.L', 'BUILDING 1398 FLAT 3442 SEA FRONT 0 MANAMA/BAHARIN', 'DAYGLO', '23555 EUCLID AVE EUCLID OH 44117 US', 'RIO HAINA', 'RIO HAINA', 'RIO HAINA', NULL, NULL, 'DXBSI2406001', 1, '2024-05-24 17:35:17.394025', 'dubai@pamcargo.com', '2024-05-24 17:35:17.394025', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '974c70f8-8497-4b0b-9e64-0dd8cfe01c1f', 'MACHINERY', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('2f4b6724-4980-484c-8faf-58f24439a47f', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'f56521b2-6260-4cd7-82ca-440eb48ef835', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', 'AIR EXPORT', 'Collect', 'FAS', NULL, NULL, 'Booking Received', '2024-06-01', NULL, NULL, 'DUBAI', 'AIREXPORT', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
+INSERT INTO "dxb"."shipping_instruction" VALUES ('52668d09-c09d-4d5e-b922-ee5ceb9f133c', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'COURIER', 'FCL', NULL, NULL, NULL, NULL, 'Picked up by courier', NULL, NULL, NULL, NULL, '1', NULL, NULL, NULL, NULL, NULL, 'Jakarta', 'Semarang', NULL, NULL, 'DXBCO7001001', 1, '2024-10-21 13:52:50.591503', 'thomas@pamcargo.com', '2024-10-21 13:52:50.591503', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'COURIER', '232233', 1, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction" VALUES ('5a19eaf1-23e4-4515-807e-b52774b985b8', '6812bd03-a528-438b-ab89-0c01927a3da9', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', '8b396746-5a30-4e39-84a4-89185a1ea96c', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', 'FCL', 'Collect', 'EXW', 'Tes 1234567789', NULL, 'Cargo Airlifted', '2024-10-28', NULL, NULL, 'DUBAI', 'AIRIMPORT', 'AL NOUF BUILDING MATERIAL TRADING', 'LUCKU RA AJMAN
+UAE', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'ABERDEEN', 'ABERDEEN', 'AALEN-HEIDENHEIM', NULL, NULL, 'DXBAI2410001', 1, '2024-10-28 11:16:52.8427', 'dubai@pamcargo.com', '2024-10-29 00:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 36, NULL, NULL, NULL, '25de1a35-5c46-445b-919b-45a7ceeabc79', 'OTHER', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction" VALUES ('6e4821cf-169b-4dcc-9115-86d1a60073ed', '5acfbe3c-f97a-4d1e-aa4b-ed0efb4016ae', '3034c08d-a7b8-462e-b5c8-d88125a18755', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL, NULL, NULL, NULL, NULL, '2024-10-29', NULL, 'WAREHOUSE', 'FCL', 'Collect', 'EXW', NULL, '2024-10-30', 'Booking Confirmed', '2024-10-31', NULL, NULL, 'DUBAI', 'WAREHOUSE', 'WELDING GROUP SAMARA LLC', 'DZERJINSKOGO STR
+46D SAMARA 443070 SAMARSKAYA OBLAST
+RUSSIA
+TEL: +7 909 604 14 49
+Email: tatyana.mavrinkaya@gcvep.ru', 'PAM INTERNATIONAL CARGO LLC', 'OFFICE 813, AL FATTAN PLAZA
+AIRPORT ROAD, AL GARHOUD
+DUBAI, U.A.E
+TEL: +971 4 2852520', NULL, 'DXB', 'JEBEL ALI', NULL, NULL, 'DXBWH2410002', 1, '2024-10-29 10:41:14.987562', 'dubai@pamcargo.com', '2024-10-29 00:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 58, NULL, NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'WAREHOUSE', NULL, 1, 'ae4d0dda-a0cf-417c-9aae-04ccd23b0a84', 'HERPORT', '33c5d04b-0b92-4b7c-a392-73bb886db5fe', 'FOOM ETC', NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction" VALUES ('f8e943ae-2d78-45b6-bc0f-f04eb21ef740', '1226cd4e-8280-4475-9beb-a65d7179d487', '90056126-4d03-4c30-8eca-43f941372df6', '533219ad-bfa1-4cf6-87f9-fce85748a647', '95968342-6317-40b1-a513-7bbcfdef5b96', '23ca88f8-76fe-460a-b413-0b27b3cbf8ba', NULL, 'c8f148db-e9e3-4df8-9e6e-fce1fd4da075', NULL, NULL, NULL, 'SEAIMPORT', 'FCL', 'Prepaid', 'CFR', NULL, NULL, 'In Transit to other port', '2024-10-22', '2024-10-22', '2024-10-31', 'DUBAI', 'SEAIMPORT', 'AL NABOODAH LOGISTICS LLC', 'PO BOX 624255
+DUBAI WORLD TRADE CENTER
+DUBAI UAE', 'ARROW AVIATIONSERVICES FZE', 'KING FAISAL ROAD SHARJAH', 'BAIE D''URFé', 'BAIE D''URFé', 'ABBOT POINT', 'CSCL GLOBE', NULL, 'DXBSI2410002', 1, '2024-10-21 15:51:34.807495', 'dubai@pamcargo.com', '2024-10-28 00:00:00', NULL, '2024-10-31', '123456789', NULL, '2024-10-22', '04118885-1e24-41ed-9c7c-dae53ee68fe8', NULL, 11, '2024-10-22', NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 1, 'bf730ac2-efaa-4028-8cb6-95625996e726', 'BHB FASHION SERVICE GMBH', 'f5a7e244-31c7-4bde-9939-55072e48a2c8', 'Mulyono bin Slamet', '<p>Indonesia</p>', NULL);
+INSERT INTO "dxb"."shipping_instruction" VALUES ('e9a82d7f-0ccf-4323-99e5-e1f9c3e16e0b', '63a1f8b9-3112-43b7-ae76-91893f7c9d9b', 'aa67f617-efe6-44ed-9d6d-a35ae8c20218', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL, NULL, NULL, NULL, NULL, '2024-10-29', NULL, 'TRUCKING', 'FCL', 'Collect', 'EXW', NULL, '2024-10-30', 'Booking Received', '2024-10-30', NULL, NULL, 'DUBAI', 'TRUCKING', 'WGS MIDDLE EAST FZ LLC', 'AL JAZEERA AL HAMARA INDUSTRIAL ZONE SHED 19-09', 'UNIGRAF LLC', 'BADER AL QABANDI WAREHOUSE 29
+DUBAI INVESTMENT PARK-1
+DUBAI, UAE', NULL, 'KALIBATA', 'PANCORAN', NULL, NULL, 'DXBTC2410001', 1, '2024-10-29 14:48:41.473082', 'dubai@pamcargo.com', '2024-10-29 14:48:41.473082', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 63, NULL, NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', NULL, 1, 'bf730ac2-efaa-4028-8cb6-95625996e726', 'BHB FASHION SERVICE GMBH', 'aab15850-4c19-43d1-a525-043c901931b6', 'PT. Perusahaan Tukang', NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction" VALUES ('cc0ddd3d-89a1-4283-9194-24a0b0eb6389', 'c87ff41c-e06d-4fe3-919d-4c2b52d1a380', '8f3acd59-02b0-4119-9d5a-d2a00e5fcb5d', '533219ad-bfa1-4cf6-87f9-fce85748a647', '4b11aace-fafc-4d64-9495-345a47cd57e0', '0abdb950-0405-438e-ae1d-2a29e0fcf24c', NULL, 'c8f148db-e9e3-4df8-9e6e-fce1fd4da075', '123', '2024-10-29', NULL, 'SEAIMPORT', 'FCL', 'Prepaid', 'CIF', NULL, '2024-10-29', 'Booking Received', '2024-10-22', '2024-10-22', NULL, 'DUBAI', 'SEAIMPORT', 'INTELLIGENTS UK', 'UNIT D3 PHOENIX PARK VINEGAR HILL
+HATCH SANDY
+BEDFORDSHIRE,SG19 1PR
+GB,TL:+447510870787', 'JIANGXI ZHICUHU BAMBOO AND WOOD', 'SECOND FLOOR BUILDING C4 330000 NANCHANG JIANG', 'JAKARTA', 'JAKARTA', 'LOS ANGELES', 'CSCL GLOBE', NULL, 'DXBSI2410003', 1, '2024-10-29 10:03:07.118568', 'dubai@pamcargo.com', '2024-10-29 00:00:00', NULL, NULL, '123456789', NULL, '2024-10-22', '04118885-1e24-41ed-9c7c-dae53ee68fe8', NULL, 1, '2024-10-22', NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 1, 'b94cb759-d2e1-4740-a3b6-2049b77a1fd3', 'UHLSPORT GMBH', 'aab15850-4c19-43d1-a525-043c901931b6', 'PT. Perusahaan Tukang', NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction" VALUES ('2f34a1b1-b647-456b-88ec-d02962d04b16', '6812bd03-a528-438b-ab89-0c01927a3da9', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'a07992ba-02bf-49d1-966e-7a98755847ac', '33a4b77d-792e-4498-9439-c10506695992', NULL, 'c8f148db-e9e3-4df8-9e6e-fce1fd4da075', NULL, NULL, NULL, 'SEAIMPORT', 'FCL', 'Prepaid', 'CFR', NULL, NULL, 'Vessel Departed', '2024-10-22', '2024-10-22', NULL, 'DUBAI', 'SEAIMPORT', 'AL NOUF BUILDING MATERIAL TRADING', 'LUCKU RA AJMAN
+UAE', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
 PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'AARHUS', 'AARHUS', 'ABADAN', NULL, NULL, 'DXBAE2406001', 1, '2024-05-24 17:37:07.682689', 'dubai@pamcargo.com', '2024-05-24 17:37:07.682689', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 23, NULL, NULL, NULL, 'c322c5f4-51bc-4112-8d3e-40513a8b3cd0', 'ELECTRICAL', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('c17e7a19-95e1-4a91-898d-5d3c238003f9', 'e938d957-e550-4f5f-8ca9-f1c2e852b29d', 'f7d03dc5-fdc9-4db1-805d-2263e81de667', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'WAREHOUSE', 'FCL', 'Collect', 'FCA', NULL, NULL, 'Under storage at warehouse', '2024-05-30', NULL, NULL, 'DUBAI', 'WAREHOUSE', 'LBG LIMITED', 'KIANGWAN BUILDING,II 7FL WIRELESS ROAD
-LUMPINI
-PATUMWAN BANGKOK,10330
-TH,TL:00662651408185', 'PRIMA CHEMICALS', 'UNIT II PLOT NO 1904 PHASE IV GIDC VATVA AHMEDABAD, GJ 382445 IN', 'DUBAI', 'Jakarta', 'Surabaya', NULL, NULL, 'DXBWH2405001', 1, '2024-05-24 17:39:04.414805', 'dubai@pamcargo.com', '2024-05-24 17:39:04.414805', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 54, NULL, NULL, NULL, '423c8787-a4e5-4f8d-a33a-9ba50fb0a768', 'GARMENTS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'WAREHOUSE', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('3fec9603-a1c0-4f2c-aea8-bb2d41e762a9', 'df8332cb-2be0-4887-aa62-2e415f405299', '8987e9f1-3766-46d7-a0f4-e22abb3de0aa', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', 'LCL', 'Collect', 'FCA', NULL, NULL, 'Cargo received', '2024-06-01', NULL, NULL, 'LA', 'TRUCKING', 'KGL CARGO QATAR', 'NABEENA COMMERCIAL BUILDING
-STREET 270
-OLD AIRPORT AREA, BESIDE AL MATAR DOHA, QATAR', 'AUSAF AHMED BAIG', 'INDIGO GARMENTS
-PLOT NO. H1-03-04 &05
-PO BOX 8795, SAIF ZONE,
-SHARJAH, U.A.E', 'DUBAI', 'Bogor', 'Jakarta', NULL, NULL, 'DXBTC2406001', 1, '2024-05-24 17:40:14.760977', 'dubai@pamcargo.com', '2024-05-24 17:40:14.760977', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 56, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('410a3d15-5ae4-4c2c-a355-cb0f03ef8cb5', '9efeb78c-5b68-4247-8bc3-f25f4d635d14', 'd5bd4391-4e75-406d-94d0-58ed91b50310', '533219ad-bfa1-4cf6-87f9-fce85748a647', '216a40f2-26b3-494c-9cb7-6607e81398d4', '33a4b77d-792e-4498-9439-c10506695992', NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', 'FCL', 'Collect', 'EXW', NULL, NULL, 'Booking Received', '2024-05-31', NULL, NULL, 'DUBAI', 'SEAIMPORT', 'AWJ INVESTMENT LLC', 'WAREHOUSE 21 UNIT 23
-DUBAI UAE', 'BASF ITALIA SPA', 'VIA MARCONATO 8 CESANO MADERNO MB 20811 IT TEL NO:- +3903625121', 'ABURATSU', 'ABURATSU', 'ABU DHABI', NULL, NULL, 'DXBSI2405003', 1, '2024-05-27 10:57:04.934233', 'dubai@pamcargo.com', '2024-05-27 10:57:04.934233', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('69a5a94b-b7c5-405c-9d43-dd81280eae75', '553a2151-8cd0-420f-80c5-c90203caa630', 'e338c277-c2a6-4303-96d6-16a545a6c7dc', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'WAREHOUSE', 'FCL', 'Prepaid', 'CPT', NULL, NULL, 'Cargo received', '2024-05-30', NULL, NULL, 'DUBAI', 'WAREHOUSE', 'ARMAT FZE', 'FC0401WS74, JEBEL ALI FREEZONE, DUBAI, UAE.', '4EVAC', 'INDUSTRIEWEG 87 2651 BERKEL EN RODENRIJS', 'DUBAI', 'Pelabuhan Ratu', 'Anyer', NULL, NULL, 'DXBWH2405002', 1, '2024-05-30 14:07:06.943731', 'dubai@pamcargo.com', '2024-05-30 14:07:06.943731', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 53, NULL, NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'WAREHOUSE', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('8adc2a22-8a6b-4db5-b7f2-3d2c8ea11b67', '1226cd4e-8280-4475-9beb-a65d7179d487', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', '23779767-545b-42aa-9890-01c90c844600', '23779767-545b-42aa-9890-01c90c844600', NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', 'LCL', 'Collect', 'EXW', NULL, NULL, 'In transit other port', '2024-06-09', NULL, NULL, 'DUBAI', 'SEAIMPORT', 'AL NABOODAH LOGISTICS LLC', 'PO BOX 624255
+TEL: +971 6 5595271', 'ÅBO (TURKU)', 'ÅBO (TURKU)', 'ABU DHABI', 'CSCL GLOBE', NULL, 'DXBSI2410001', 1, '2024-10-21 14:02:54.019696', 'dubai@pamcargo.com', '2024-10-28 00:00:00', NULL, NULL, '123456789', NULL, '2024-10-22', '04118885-1e24-41ed-9c7c-dae53ee68fe8', NULL, 9, '2024-10-22', NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction" VALUES ('1cd2eaa9-ba27-4bec-a790-027610447cc7', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'COURIER', 'FCL', NULL, NULL, NULL, NULL, 'Picked up by courier', NULL, NULL, NULL, NULL, '1', NULL, NULL, NULL, NULL, NULL, 'Jalan Kalibata', 'Pancoran', NULL, NULL, 'DXBCO7001002', 1, '2024-10-29 14:42:04.997794', 'thomas@pamcargo.com', '2024-10-29 14:42:04.997794', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'COURIER', '1263712351', 1, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction" VALUES ('73321db0-997a-418a-8a4d-ee71f04bc8c8', '553a2151-8cd0-420f-80c5-c90203caa630', '90056126-4d03-4c30-8eca-43f941372df6', '533219ad-bfa1-4cf6-87f9-fce85748a647', '23779767-545b-42aa-9890-01c90c844600', 'f56521b2-6260-4cd7-82ca-440eb48ef835', NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', 'FCL', 'Prepaid', 'CFR', NULL, NULL, 'Booking Received', '2024-10-29', NULL, NULL, 'DUBAI', 'AIRIMPORT', 'ARMAT FZE', 'FC0401WS74, JEBEL ALI FREEZONE, DUBAI, UAE.', 'ARROW AVIATIONSERVICES FZE', 'KING FAISAL ROAD SHARJAH', 'ABIDJAN', 'ABIDJAN', 'AARHUS', NULL, NULL, 'DXBAI2410003', 1, '2024-10-29 15:31:08.016824', 'dubai@pamcargo.com', '2024-10-29 15:31:08.016824', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 29, NULL, NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', NULL, 1, '3a3201c6-f3a3-4235-a420-05249ed0e06e', 'OSPIG GMBH AND CO.KG', '33c5d04b-0b92-4b7c-a392-73bb886db5fe', 'FOOM ETC', NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction" VALUES ('226dd33d-0f65-4e2f-8601-1080143bb0f0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'COURIER', 'FCL', NULL, NULL, NULL, NULL, 'In Transit', NULL, NULL, NULL, NULL, '1', NULL, NULL, NULL, NULL, NULL, 'Jakarta', 'Surabaya', NULL, NULL, 'DXBCO', 1, '2024-10-30 13:59:36.735043', 'thomas@pamcargo.com', '2024-10-30 00:00:00', 'thomas@pamcargo.com', NULL, NULL, NULL, NULL, NULL, NULL, 74, NULL, NULL, NULL, '25de1a35-5c46-445b-919b-45a7ceeabc79', 'OTHER', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'COURIER', 'B12412', 1, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction" VALUES ('29f6a3fd-8a22-4dfd-9212-de4eaf9ccf47', '553a2151-8cd0-420f-80c5-c90203caa630', '60c1ad2c-b77b-4b9f-ab14-09c3d768c0df', '533219ad-bfa1-4cf6-87f9-fce85748a647', '8b396746-5a30-4e39-84a4-89185a1ea96c', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', 'FCL', 'Prepaid', 'CIF', NULL, NULL, 'Booking Confirmed', '2024-10-29', NULL, NULL, 'DUBAI', 'AIRIMPORT', 'ARMAT FZE', 'FC0401WS74, JEBEL ALI FREEZONE, DUBAI, UAE.', 'ANHUI IDEA IMP AND EXP CO LTD', 'HEIFEI, ANHUI CHINA', 'ABERDEEN', 'ABERDEEN', 'AALEN-HEIDENHEIM', NULL, NULL, 'DXBAI2410002', 1, '2024-10-29 15:26:28.916571', 'dubai@pamcargo.com', '2024-10-29 00:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 30, NULL, NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', NULL, 1, 'bf730ac2-efaa-4028-8cb6-95625996e726', 'BHB FASHION SERVICE GMBH', 'f5a7e244-31c7-4bde-9939-55072e48a2c8', 'Mulyono bin Slamet', NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction" VALUES ('0211ca52-7c9a-4003-9623-0be52855cb6a', '1226cd4e-8280-4475-9beb-a65d7179d487', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', '23ca88f8-76fe-460a-b413-0b27b3cbf8ba', '8b396746-5a30-4e39-84a4-89185a1ea96c', NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', 'FCL', 'Prepaid', 'CFR', 'TEST 12345', NULL, 'Loading Completed', '2024-10-26', NULL, NULL, 'SINGAPORE', 'SEAEXPORT', 'AL NABOODAH LOGISTICS LLC', 'PO BOX 624255
+DUBAI WORLD TRADE CENTER
+DUBAI UAE', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'ABBOT POINT', 'ABBOT POINT', 'ABERDEEN', NULL, NULL, 'DXBSE2410001', 1, '2024-10-22 10:31:57.244835', 'dubai@pamcargo.com', '2024-10-29 00:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 19, NULL, NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction" VALUES ('3e7352d5-854d-4367-a7dd-a14a895b0aa7', '1226cd4e-8280-4475-9beb-a65d7179d487', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', '23ca88f8-76fe-460a-b413-0b27b3cbf8ba', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', 'FCL', 'Prepaid', 'CFR', NULL, NULL, 'Booking Received', '2024-10-29', NULL, NULL, 'DUBAI', 'AIREXPORT', 'AL NABOODAH LOGISTICS LLC', 'PO BOX 624255
 DUBAI WORLD TRADE CENTER
 DUBAI UAE', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
 PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'ABIDJAN', 'ABIDJAN', 'ABIDJAN', NULL, NULL, 'DXBSI2406004', 1, '2024-06-04 09:43:51.874438', 'dubai@pamcargo.com', '2024-06-04 09:43:51.874438', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 8, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('6c8e8768-46b2-4209-ba8e-b03bc2c60113', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', 'd5bd4391-4e75-406d-94d0-58ed91b50310', '533219ad-bfa1-4cf6-87f9-fce85748a647', '8b396746-5a30-4e39-84a4-89185a1ea96c', '23779767-545b-42aa-9890-01c90c844600', NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', 'FCL', 'Collect', 'EXW', NULL, NULL, 'Received by shipping line', '2024-05-30', NULL, NULL, 'DUBAI', 'SEAEXPORT', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'BASF ITALIA SPA', 'VIA MARCONATO 8 CESANO MADERNO MB 20811 IT TEL NO:- +3903625121', 'ABERDEEN', 'ABERDEEN', 'ABIDJAN', NULL, NULL, 'DXBSE2405002', 1, '2024-05-27 10:11:33.302881', 'dubai@pamcargo.com', '2024-06-03 00:00:00', 'dubai@pamcargo.com', NULL, NULL, NULL, NULL, NULL, NULL, 39, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('d3bbf757-f4c1-4b09-9cf0-6ab399d9c7e0', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', '33a4b77d-792e-4498-9439-c10506695992', '23779767-545b-42aa-9890-01c90c844600', NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', 'FCL', 'Prepaid', 'DPU', NULL, NULL, 'Booking Received', '2024-06-08', NULL, NULL, 'SINGAPORE', 'SEAIMPORT', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
-PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'ABU DHABI', 'ABU DHABI', 'ABIDJAN', NULL, NULL, 'DXBSI2406003', 1, '2024-06-04 09:42:24.74117', 'dubai@pamcargo.com', '2024-06-04 09:42:24.74117', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 'c322c5f4-51bc-4112-8d3e-40513a8b3cd0', 'ELECTRICAL', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('6bcccf97-9c8d-4373-bde9-076a0caa0436', '1226cd4e-8280-4475-9beb-a65d7179d487', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', '23779767-545b-42aa-9890-01c90c844600', '8b396746-5a30-4e39-84a4-89185a1ea96c', NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', 'FCL', 'Collect', 'FCA', NULL, NULL, 'Under Custom Clereance', '2024-06-10', NULL, NULL, 'DUBAI', 'SEAIMPORT', 'AL NABOODAH LOGISTICS LLC', 'PO BOX 624255
-DUBAI WORLD TRADE CENTER
-DUBAI UAE', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'ABIDJAN', 'ABIDJAN', 'ABERDEEN', NULL, NULL, 'DXBSI2406005', 1, '2024-06-04 09:45:38.470733', 'dubai@pamcargo.com', '2024-06-04 09:45:38.470733', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 4, NULL, NULL, NULL, '423c8787-a4e5-4f8d-a33a-9ba50fb0a768', 'GARMENTS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('4e7ebbad-2d58-4cdf-ae5f-b8b5c39a23ab', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', '60c1ad2c-b77b-4b9f-ab14-09c3d768c0df', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'e494804a-07a1-4b78-afdf-ed890c144251', 'b3079b39-5d5c-48e5-b367-42858f215951', NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', 'LCL', 'Collect', 'FCA', NULL, NULL, 'Departured from transit port', '2024-06-10', NULL, NULL, 'DUBAI', 'SEAIMPORT', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'ANHUI IDEA IMP AND EXP CO LTD', 'HEIFEI, ANHUI CHINA', 'ABU DHABI', 'ABU DHABI', 'ÅGOTNES', NULL, NULL, 'DXBSI2406006', 1, '2024-06-04 09:47:23.588601', 'dubai@pamcargo.com', '2024-06-04 09:47:23.588601', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 12, NULL, NULL, NULL, '974c70f8-8497-4b0b-9e64-0dd8cfe01c1f', 'MACHINERY', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('6ab1464a-5895-41eb-b67c-19dd743c27f4', '6812bd03-a528-438b-ab89-0c01927a3da9', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', '8b396746-5a30-4e39-84a4-89185a1ea96c', 'e494804a-07a1-4b78-afdf-ed890c144251', NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', 'FCL', 'Split', 'DDP', NULL, NULL, 'Cargo airlifted', '2024-06-16', NULL, NULL, 'DUBAI', 'SEAIMPORT', 'AL NOUF BUILDING MATERIAL TRADING', 'LUCKU RA AJMAN
-UAE', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'ABERDEEN', 'ABERDEEN', 'ABU DHABI', NULL, NULL, 'DXBSI2406007', 1, '2024-06-04 09:49:11.688517', 'dubai@pamcargo.com', '2024-06-04 09:49:11.688517', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 16, NULL, NULL, NULL, 'c322c5f4-51bc-4112-8d3e-40513a8b3cd0', 'ELECTRICAL', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('56baf38e-6ff8-4bbd-81a4-20e64ca6f0a8', 'e2692903-34bd-4b91-a9e1-935fbb28a3f7', 'd5bd4391-4e75-406d-94d0-58ed91b50310', '533219ad-bfa1-4cf6-87f9-fce85748a647', '23779767-545b-42aa-9890-01c90c844600', '3df1313b-bcc8-4f3e-b41e-8aadef25b817', NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', 'FCL', 'Split', 'DPU', NULL, NULL, 'Vessel Departed', '2024-06-10', NULL, NULL, 'DUBAI', 'SEAIMPORT', 'BICO DRILLING TOOLS FZE', 'JEBEL ALI FREE ZONE
-DUBAI, UAE', 'BASF ITALIA SPA', 'VIA MARCONATO 8 CESANO MADERNO MB 20811 IT TEL NO:- +3903625121', 'ABIDJAN', 'ABIDJAN', 'AGUADILLA', NULL, NULL, 'DXBSI2406008', 1, '2024-06-04 09:50:49.178078', 'dubai@pamcargo.com', '2024-06-04 09:50:49.178078', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 7, NULL, NULL, NULL, '423c8787-a4e5-4f8d-a33a-9ba50fb0a768', 'GARMENTS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('6d9d4ea7-8547-4a76-93ba-f2fe31892701', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', '8b396746-5a30-4e39-84a4-89185a1ea96c', 'e494804a-07a1-4b78-afdf-ed890c144251', NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', 'LCL', 'Collect', 'FCA', NULL, NULL, 'Arrived in transit port', '2024-06-11', NULL, NULL, 'DUBAI', 'SEAEXPORT', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
-PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'ABERDEEN', 'ABERDEEN', 'ABU DHABI', NULL, NULL, 'DXBSE2406001', 1, '2024-06-04 10:01:28.118355', 'dubai@pamcargo.com', '2024-06-04 10:01:28.118355', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 43, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('0095a867-c7cd-480d-93f5-c12e61a8c7da', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', '23779767-545b-42aa-9890-01c90c844600', '23779767-545b-42aa-9890-01c90c844600', NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', 'FCL', 'Collect', 'EXW', NULL, NULL, 'Transit hub operations', '2024-06-11', NULL, NULL, 'DUBAI', 'SEAEXPORT', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
-PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'ABIDJAN', 'ABIDJAN', 'ABIDJAN', NULL, NULL, 'DXBSE2406002', 1, '2024-06-04 10:02:44.197596', 'dubai@pamcargo.com', '2024-06-04 10:02:44.197596', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 44, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('4de4babe-69d0-430a-8923-b8764a925ed0', '553a2151-8cd0-420f-80c5-c90203caa630', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', '33a4b77d-792e-4498-9439-c10506695992', '33a4b77d-792e-4498-9439-c10506695992', NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', 'LCL', 'Collect', 'FCA', NULL, NULL, 'In transit other port', '2024-06-09', NULL, NULL, 'DUBAI', 'SEAEXPORT', 'ARMAT FZE', 'FC0401WS74, JEBEL ALI FREEZONE, DUBAI, UAE.', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
-PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'ABU DHABI', 'ABU DHABI', 'ABU DHABI', NULL, NULL, 'DXBSE2406003', 1, '2024-06-04 10:04:06.630911', 'dubai@pamcargo.com', '2024-06-04 10:04:06.630911', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 42, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('a1d653c3-f716-4ce3-8469-6af1173ef79b', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'a07992ba-02bf-49d1-966e-7a98755847ac', 'a07992ba-02bf-49d1-966e-7a98755847ac', NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', 'LCL', 'Collect', 'FCA', NULL, NULL, 'Transit hub operations', '2024-06-11', NULL, NULL, 'DUBAI', 'SEAEXPORT', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
-PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'ÅBO (TURKU)', 'ÅBO (TURKU)', 'ÅBO (TURKU)', NULL, NULL, 'DXBSE2406004', 1, '2024-06-04 10:07:06.082421', 'dubai@pamcargo.com', '2024-06-04 10:07:06.082421', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 44, NULL, NULL, NULL, '423c8787-a4e5-4f8d-a33a-9ba50fb0a768', 'GARMENTS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('d54a473d-38f7-4df6-bc03-2ec06088d880', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', '60c1ad2c-b77b-4b9f-ab14-09c3d768c0df', '533219ad-bfa1-4cf6-87f9-fce85748a647', '23779767-545b-42aa-9890-01c90c844600', '33a4b77d-792e-4498-9439-c10506695992', NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', 'LCL', 'Collect', 'FAS', NULL, NULL, 'Received by shipping line', '2024-06-15', NULL, NULL, 'DUBAI', 'SEAEXPORT', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'ANHUI IDEA IMP AND EXP CO LTD', 'HEIFEI, ANHUI CHINA', 'ABIDJAN', 'ABIDJAN', 'ABU DHABI', NULL, NULL, 'DXBSE2406005', 1, '2024-06-04 10:09:25.088494', 'dubai@pamcargo.com', '2024-06-04 10:09:25.088494', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 39, NULL, NULL, NULL, '974c70f8-8497-4b0b-9e64-0dd8cfe01c1f', 'MACHINERY', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('40c393f6-a567-46f9-9b33-46774d70c484', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', '78546f7c-6171-4807-99b1-a29c9dd292e2', '533219ad-bfa1-4cf6-87f9-fce85748a647', '216a40f2-26b3-494c-9cb7-6607e81398d4', 'a07992ba-02bf-49d1-966e-7a98755847ac', NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', 'FCL', 'Collect', 'EXW', NULL, NULL, 'Departed from origin port', '2024-06-07', NULL, NULL, 'DUBAI', 'SEAEXPORT', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'CIAM SPA', 'VIALE DEI PINI 9
-06081 PETRIGNANO PG IT', 'ABURATSU', 'ABURATSU', 'ÅBO (TURKU)', NULL, NULL, 'DXBSE2406006', 1, '2024-06-04 10:13:00.791027', 'dubai@pamcargo.com', '2024-06-04 10:13:00.791027', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 41, NULL, NULL, NULL, '974c70f8-8497-4b0b-9e64-0dd8cfe01c1f', 'MACHINERY', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('2736ee27-1e47-43d4-bb1c-d8c3b1b6e3fa', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', 'd5ab17cd-467f-4c38-9860-5c83db803ade', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'e494804a-07a1-4b78-afdf-ed890c144251', 'a07992ba-02bf-49d1-966e-7a98755847ac', NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', 'FCL', 'Split', 'DPU', NULL, NULL, 'Arrived in destination airport', '2024-06-14', NULL, NULL, 'DUBAI', 'SEAEXPORT', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'DAYGLO', '23555 EUCLID AVE EUCLID OH 44117 US', 'ABU DHABI', 'ABU DHABI', 'ÅBO (TURKU)', NULL, NULL, 'DXBSE2406007', 1, '2024-06-04 10:14:27.070447', 'dubai@pamcargo.com', '2024-06-04 10:14:27.070447', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 46, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('07af919c-2586-452e-b021-c6de8a3c83a1', '44478d80-c139-41ff-919e-02ac795aec9b', '60c1ad2c-b77b-4b9f-ab14-09c3d768c0df', '533219ad-bfa1-4cf6-87f9-fce85748a647', '23779767-545b-42aa-9890-01c90c844600', '216a40f2-26b3-494c-9cb7-6607e81398d4', NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', 'FCL', 'Collect', 'FCA', NULL, NULL, 'Delivered to consignee', '2024-06-07', NULL, NULL, 'DUBAI', 'SEAEXPORT', 'Bell IT GmbH', 'Max-Abelshauser-Str. 10
-D-85653 Aying
-Telefon:+49 (0) 8095 87320-0', 'ANHUI IDEA IMP AND EXP CO LTD', 'HEIFEI, ANHUI CHINA', 'ABIDJAN', 'ABIDJAN', 'ABURATSU', NULL, NULL, 'DXBSE2406008', 1, '2024-06-04 10:15:34.446712', 'dubai@pamcargo.com', '2024-06-04 10:15:34.446712', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 48, NULL, NULL, NULL, '423c8787-a4e5-4f8d-a33a-9ba50fb0a768', 'GARMENTS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('b01f25e8-fed4-4190-87c1-640d6a084b7c', '553a2151-8cd0-420f-80c5-c90203caa630', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', 'AIR IMPORT', 'Collect', 'CIF', NULL, NULL, 'Cargo in transit', '2024-06-07', NULL, NULL, 'DUBAI', 'AIRIMPORT', 'ARMAT FZE', 'FC0401WS74, JEBEL ALI FREEZONE, DUBAI, UAE.', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'AALEN-HEIDENHEIM', 'AALEN-HEIDENHEIM', 'ABADAN', NULL, NULL, 'DXBAI2406001', 1, '2024-06-04 10:19:29.440201', 'dubai@pamcargo.com', '2024-06-04 10:19:29.440201', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 49, NULL, NULL, NULL, '25de1a35-5c46-445b-919b-45a7ceeabc79', 'OTHER', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('a0df10f1-6174-4dd5-adda-afc69cbdddd1', '32d9d644-0e53-4329-a455-05caf439b897', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', 'AIR IMPORT', 'Prepaid', 'DAP', NULL, NULL, 'Delivered to final consignee', '2024-06-07', NULL, NULL, 'DUBAI', 'AIRIMPORT', 'AVISH AQUATECH TRADING LLC', 'THE METROPOLIS TOWER
-BUSINESS B, DUBAI
-DUBAI, UAE', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'ABADAN', 'ABADAN', 'ABADAN', NULL, NULL, 'DXBAI2406002', 1, '2024-06-04 10:21:21.358395', 'dubai@pamcargo.com', '2024-06-04 10:21:21.358395', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 52, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('3117a224-6a04-458c-a624-f2a7f2037f56', '553a2151-8cd0-420f-80c5-c90203caa630', '90056126-4d03-4c30-8eca-43f941372df6', '533219ad-bfa1-4cf6-87f9-fce85748a647', '23779767-545b-42aa-9890-01c90c844600', '23779767-545b-42aa-9890-01c90c844600', NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', 'FCL', 'Collect', 'FCA', NULL, NULL, 'Loading Completed', '2024-06-07', NULL, NULL, 'DUBAI', 'SEAIMPORT', 'ARMAT FZE', 'FC0401WS74, JEBEL ALI FREEZONE, DUBAI, UAE.', 'ARROW AVIATIONSERVICES FZE', 'KING FAISAL ROAD SHARJAH', 'ABIDJAN', 'ABIDJAN', 'ABIDJAN', NULL, NULL, 'DXBSI2406009', 1, '2024-06-04 09:52:46.502642', 'dubai@pamcargo.com', '2024-06-04 09:52:46.502642', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('53d59b90-626c-4af8-a858-651186572d91', '553a2151-8cd0-420f-80c5-c90203caa630', '60c1ad2c-b77b-4b9f-ab14-09c3d768c0df', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'b3079b39-5d5c-48e5-b367-42858f215951', '23779767-545b-42aa-9890-01c90c844600', NULL, '3212b041-21e7-4d31-b493-ec484ef935b3', NULL, NULL, NULL, 'SEAIMPORT', 'FCL', 'Collect', 'FCA', NULL, NULL, 'Loading Completed', '2024-07-10', '2024-07-10', NULL, 'DUBAI', 'SEAIMPORT', 'ARMAT FZE', 'FC0401WS74, JEBEL ALI FREEZONE, DUBAI, UAE.', 'ANHUI IDEA IMP AND EXP CO LTD', 'HEIFEI, ANHUI CHINA', 'ÅGOTNES', 'ÅGOTNES', 'ABIDJAN', 'SINAR BAJO', NULL, 'DXBSI2406011', 1, '2024-06-04 09:57:21.861594', 'dubai@pamcargo.com', '2024-06-13 00:00:00', NULL, NULL, '234', NULL, '2024-07-10', '816ea82b-14b7-4968-ad93-e0afd891beb0', NULL, 5, '2024-07-24', NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('b053010e-4219-43a6-a56d-b292f39e25c5', '553a2151-8cd0-420f-80c5-c90203caa630', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'f56521b2-6260-4cd7-82ca-440eb48ef835', 'f56521b2-6260-4cd7-82ca-440eb48ef835', NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', 'AIR IMPORT', 'Split', 'CIF', NULL, NULL, 'Arrived in destination airport', '2024-06-09', NULL, NULL, 'DUBAI', 'AIRIMPORT', 'ARMAT FZE', 'FC0401WS74, JEBEL ALI FREEZONE, DUBAI, UAE.', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'AARHUS', 'AARHUS', 'AARHUS', NULL, NULL, 'DXBAI2406003', 1, '2024-06-04 10:23:15.166658', 'dubai@pamcargo.com', '2024-06-04 10:23:15.166658', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, '974c70f8-8497-4b0b-9e64-0dd8cfe01c1f', 'MACHINERY', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('eda254dc-bb8a-4800-a014-8330dbf0975b', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'f56521b2-6260-4cd7-82ca-440eb48ef835', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', 'AIR IMPOERT', 'Split', 'CIF', NULL, NULL, 'Arrived in destination airport', '2024-06-09', NULL, NULL, 'DUBAI', 'AIRIMPORT', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'AARHUS', 'AARHUS', 'ABADAN', NULL, NULL, 'DXBAI2406004', 1, '2024-06-04 10:25:14.575956', 'dubai@pamcargo.com', '2024-06-04 10:25:14.575956', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, '974c70f8-8497-4b0b-9e64-0dd8cfe01c1f', 'MACHINERY', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('b4bedcef-ea49-42e9-b3be-da59c36e166e', '553a2151-8cd0-420f-80c5-c90203caa630', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'f56521b2-6260-4cd7-82ca-440eb48ef835', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', 'SEA-IMPORT', 'Prepaid', 'CIP', NULL, NULL, 'Arrived in destination airport', '2024-06-08', NULL, NULL, 'DUBAI', 'AIRIMPORT', 'ARMAT FZE', 'FC0401WS74, JEBEL ALI FREEZONE, DUBAI, UAE.', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'AARHUS', 'AARHUS', 'AALEN-HEIDENHEIM', NULL, NULL, 'DXBAI2406005', 1, '2024-06-04 10:27:32.993385', 'dubai@pamcargo.com', '2024-06-04 10:27:32.993385', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('8923a3a6-109d-47e6-b7fa-f860c5eabe3d', '6812bd03-a528-438b-ab89-0c01927a3da9', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', 'AIR IMPORT', 'Split', 'FCA', NULL, NULL, 'Delivered to final consignee', '2024-06-08', NULL, NULL, 'DUBAI', 'AIRIMPORT', 'AL NOUF BUILDING MATERIAL TRADING', 'LUCKU RA AJMAN
-UAE', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
-PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'AALEN-HEIDENHEIM', 'AALEN-HEIDENHEIM', 'ABADAN', NULL, NULL, 'DXBAI2406006', 1, '2024-06-04 10:29:21.318494', 'dubai@pamcargo.com', '2024-06-04 10:29:21.318494', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 52, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('4fefff4e-e463-4393-b5a6-6c7f1f7ef265', 'e0d4f7df-7e9b-4849-88de-2c10abdbaed0', '3b577d36-7221-462f-88e0-564019a944cb', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'd75627f5-1f1c-4f1d-9dda-567f390ade2d', 'd5cdae85-0e42-4d49-9f3c-e0ff5fff8e38', NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', 'AIR IMPORT', 'Collect', 'FCA', NULL, NULL, 'Under destination customs clearance', '2024-06-14', NULL, NULL, 'DUBAI', 'AIRIMPORT', 'COPYMAT AG', 'BAAREE STRASSE 43
-CH-6300, ZUG, SWITZERLAND', 'BICO DRILLING TOOLS INC', 'HOUSTON, USA', 'ABHA', 'ABHA', 'ABBEVILLE', NULL, NULL, 'DXBAI2406007', 1, '2024-06-04 10:30:58.917916', 'dubai@pamcargo.com', '2024-06-04 10:30:58.917916', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 51, NULL, NULL, NULL, 'd9e10be1-d179-4515-9b8b-adcddc68e085', 'SHOES', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('c8687520-d7c8-4058-997c-961c713c18aa', '32d9d644-0e53-4329-a455-05caf439b897', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', '09b353de-f76a-43a9-8e56-c6b2bf9b38e6', 'a8ffb224-e0a3-4089-ac24-187fb7e8cc93', NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', 'AIR IMPORT', 'Split', 'DDP', NULL, NULL, 'Arrived in destination airport', '2024-06-08', NULL, NULL, 'DUBAI', 'AIRIMPORT', 'AVISH AQUATECH TRADING LLC', 'THE METROPOLIS TOWER
-BUSINESS B, DUBAI
-DUBAI, UAE', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'AGANA', 'AGANA', 'ADAK ISLAND', NULL, NULL, 'DXBAI2406008', 1, '2024-06-04 10:32:34.354292', 'dubai@pamcargo.com', '2024-06-04 10:32:34.354292', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, '974c70f8-8497-4b0b-9e64-0dd8cfe01c1f', 'MACHINERY', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('6e9e7ab4-b0cd-4eb4-b81a-4badbd7373a6', '32d9d644-0e53-4329-a455-05caf439b897', '60c1ad2c-b77b-4b9f-ab14-09c3d768c0df', '533219ad-bfa1-4cf6-87f9-fce85748a647', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', 'AIR IMPORT', 'Collect', 'CIF', NULL, NULL, 'Delivered to final consignee', '2024-06-06', NULL, NULL, 'DUBAI', 'AIRIMPORT', 'AVISH AQUATECH TRADING LLC', 'THE METROPOLIS TOWER
-BUSINESS B, DUBAI
-DUBAI, UAE', 'ANHUI IDEA IMP AND EXP CO LTD', 'HEIFEI, ANHUI CHINA', 'AALEN-HEIDENHEIM', 'AALEN-HEIDENHEIM', 'ABADAN', NULL, NULL, 'DXBAI2406009', 1, '2024-06-04 10:34:04.064282', 'dubai@pamcargo.com', '2024-06-04 10:34:04.064282', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 52, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('fe033103-040c-468f-91d8-cb934482c594', '553a2151-8cd0-420f-80c5-c90203caa630', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'f56521b2-6260-4cd7-82ca-440eb48ef835', '229eaa02-9568-4f59-b118-6409afbcb7b6', NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', 'AIR EXPORT', 'Prepaid', 'CPT', NULL, NULL, 'Booking Received', '2024-06-08', NULL, NULL, 'DUBAI', 'AIREXPORT', 'ARMAT FZE', 'FC0401WS74, JEBEL ALI FREEZONE, DUBAI, UAE.', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'AARHUS', 'AARHUS', 'ABAKAN', NULL, NULL, 'DXBAE2406002', 1, '2024-06-04 10:39:03.308399', 'dubai@pamcargo.com', '2024-06-04 10:39:03.308399', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 23, NULL, NULL, NULL, '423c8787-a4e5-4f8d-a33a-9ba50fb0a768', 'GARMENTS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('10f6d5dc-d708-4351-a1e3-35c62cfdc76c', '32d9d644-0e53-4329-a455-05caf439b897', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'f56521b2-6260-4cd7-82ca-440eb48ef835', '229eaa02-9568-4f59-b118-6409afbcb7b6', NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', 'AIR EXPORT', 'Collect', 'EXW', NULL, NULL, 'Received in airport warehouse', '2024-06-08', NULL, NULL, 'DUBAI', 'AIREXPORT', 'AVISH AQUATECH TRADING LLC', 'THE METROPOLIS TOWER
-BUSINESS B, DUBAI
-DUBAI, UAE', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
-PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'AARHUS', 'AARHUS', 'ABAKAN', NULL, NULL, 'DXBAE2406003', 1, '2024-06-04 10:40:28.693854', 'dubai@pamcargo.com', '2024-06-04 10:40:28.693854', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 25, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('677a92fe-283a-4518-a2d5-705feac53126', '32d9d644-0e53-4329-a455-05caf439b897', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'f56521b2-6260-4cd7-82ca-440eb48ef835', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', 'AIR EXPORT', 'Collect', 'FCA', NULL, NULL, 'Received in airport warehouse', '2024-06-07', NULL, NULL, 'DUBAI', 'AIREXPORT', 'AVISH AQUATECH TRADING LLC', 'THE METROPOLIS TOWER
-BUSINESS B, DUBAI
-DUBAI, UAE', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
-PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'AARHUS', 'AARHUS', 'AALEN-HEIDENHEIM', NULL, NULL, 'DXBAE2406004', 1, '2024-06-04 10:43:05.168356', 'dubai@pamcargo.com', '2024-06-04 10:43:05.168356', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 25, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('815a6c7a-38da-4598-b246-ce426cf58737', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', '35b0c6e1-dba7-41f0-8081-a001910b6fad', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', 'AIR EXPORT', 'Prepaid', 'CIF', NULL, NULL, 'Booking Received', '2024-06-07', NULL, NULL, 'DUBAI', 'AIREXPORT', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'AALBORG', 'AALBORG', 'ABADAN', NULL, NULL, 'DXBAE2406005', 1, '2024-06-04 10:45:03.56183', 'dubai@pamcargo.com', '2024-06-04 10:45:03.56183', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 23, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('08052673-0558-49ee-abb9-80f127ff8ac2', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', '4798b340-4c9f-467a-bdf3-a6435c059a6f', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', 'AIR EXPORT', 'Split', 'CIF', NULL, NULL, 'Booking Received', '2024-06-08', NULL, NULL, 'DUBAI', 'AIREXPORT', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'ABU DHABI', 'ABU DHABI', 'ABADAN', NULL, NULL, 'DXBAE2406006', 1, '2024-06-04 10:46:27.468065', 'dubai@pamcargo.com', '2024-06-04 10:46:27.468065', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 23, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('2468ea51-4c64-4bf9-816b-daf2c07d1aa6', 'ef70c955-53a2-4963-a3df-bd0e4ad78d55', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', '229eaa02-9568-4f59-b118-6409afbcb7b6', 'f56521b2-6260-4cd7-82ca-440eb48ef835', NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', 'AIR EXPORT', 'Split', 'CFR', NULL, NULL, 'Received in airport warehouse', '2024-06-08', NULL, NULL, 'DUBAI', 'AIREXPORT', 'ALFA-PHARM IMPORT CJSC', '1/68 SHIRAKI ST
-YERVAN 0043 RA
-ARMENIA, TEL: +374 11 700500', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'ABAKAN', 'ABAKAN', 'AARHUS', NULL, NULL, 'DXBAE2406007', 1, '2024-06-04 10:48:06.216439', 'dubai@pamcargo.com', '2024-06-04 10:48:06.216439', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 25, NULL, NULL, NULL, '974c70f8-8497-4b0b-9e64-0dd8cfe01c1f', 'MACHINERY', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('6bd85111-f46b-465f-8cb4-d1cdedad6da7', '5b03dfa5-fc48-416c-8d16-d81be3d1c682', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'f56521b2-6260-4cd7-82ca-440eb48ef835', '229eaa02-9568-4f59-b118-6409afbcb7b6', NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', 'AIR EXPORT', 'Prepaid', 'CFR', NULL, NULL, 'Truck departed from airport', '2024-06-09', NULL, NULL, 'DUBAI', 'AIREXPORT', 'B&S WORLD SUPPLY SOMALIA', 'WAREHOUSE 4 MOGADISHU SEAPORT
-(MSP)
-MOGADISHU SO
-TL: +252 61 985 3926', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'AARHUS', 'AARHUS', 'ABAKAN', NULL, NULL, 'DXBAE2406008', 1, '2024-06-04 10:49:56.123339', 'dubai@pamcargo.com', '2024-06-04 10:49:56.123339', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 34, NULL, NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('1b811059-ca80-4603-855e-86f9890a1805', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'f56521b2-6260-4cd7-82ca-440eb48ef835', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', NULL, '3f8950f0-3d54-47c3-8387-89550cb11714', NULL, NULL, NULL, 'AIRIMPORT', 'AIR IMPORT', 'Split', 'CPT', NULL, NULL, 'In transit', NULL, NULL, NULL, 'DUBAI', 'AIRIMPORT', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'AARHUS', 'AARHUS', 'ABADAN', 'ABX AIR', NULL, 'DXBAI2406010', 1, '2024-06-04 10:35:43.757259', 'dubai@pamcargo.com', '2024-06-04 10:35:43.757259', NULL, NULL, NULL, NULL, NULL, '4086e0a3-a7d4-4041-97a7-25dbb58272fb', NULL, 28, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR', '2024-06-14', NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('52fd6c66-4dd5-430c-bfde-7491110dab24', '6812bd03-a528-438b-ab89-0c01927a3da9', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', 'f56521b2-6260-4cd7-82ca-440eb48ef835', NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', 'AIR EXPORT', 'Prepaid', 'CIF', NULL, NULL, 'Manifested', '2024-06-08', NULL, NULL, 'DUBAI', 'AIREXPORT', 'AL NOUF BUILDING MATERIAL TRADING', 'LUCKU RA AJMAN
-UAE', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
-PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'AALEN-HEIDENHEIM', 'AALEN-HEIDENHEIM', 'AARHUS', NULL, NULL, 'DXBAE2406009', 1, '2024-06-04 10:51:32.711234', 'dubai@pamcargo.com', '2024-06-04 10:51:32.711234', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 26, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('abd29adf-78e7-48db-85c0-b346c8f3808e', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', 'FCL', 'Prepaid', 'CIF', NULL, NULL, 'Cargo received', '2024-06-09', NULL, NULL, 'DUBAI', 'TRUCKING', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'DUBAI', 'Bogor', 'Bojong', NULL, NULL, 'DXBTC2406002', 1, '2024-06-04 13:25:10.090755', 'dubai@pamcargo.com', '2024-06-04 13:25:10.090755', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 56, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('48a6111b-9244-4ea0-8c07-2350db07254d', '6812bd03-a528-438b-ab89-0c01927a3da9', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', 'LCL', 'Collect', 'EXW', NULL, NULL, 'Cargo received', '2024-06-07', NULL, NULL, 'DUBAI', 'TRUCKING', 'AL NOUF BUILDING MATERIAL TRADING', 'LUCKU RA AJMAN
-UAE', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
-PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'DUBAI', 'China', 'Korea Utara', NULL, NULL, 'DXBTC2406003', 1, '2024-06-04 13:26:24.021954', 'dubai@pamcargo.com', '2024-06-04 13:26:24.021954', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 56, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('a2e2282f-d196-4ba0-ad88-3e04b388b0de', '553a2151-8cd0-420f-80c5-c90203caa630', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', 'FCL', 'Collect', 'FOB', NULL, NULL, 'Loading completed', '2024-06-09', NULL, NULL, 'DUBAI', 'TRUCKING', 'ARMAT FZE', 'FC0401WS74, JEBEL ALI FREEZONE, DUBAI, UAE.', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'DUBAI', 'Jepang', 'Korea Selatan', NULL, NULL, 'DXBTC2406004', 1, '2024-06-04 13:27:52.662758', 'dubai@pamcargo.com', '2024-06-04 13:27:52.662758', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 57, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('3b848e3a-f9b1-4944-895e-f6a83f034bef', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', '90056126-4d03-4c30-8eca-43f941372df6', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', 'FCL', 'Split', 'DPU', NULL, NULL, 'In transit', '2024-06-09', NULL, NULL, 'DUBAI', 'TRUCKING', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'ARROW AVIATIONSERVICES FZE', 'KING FAISAL ROAD SHARJAH', 'DUBAI', 'Iran', 'Israel', NULL, NULL, 'DXBTC2406005', 1, '2024-06-04 13:28:55.498819', 'dubai@pamcargo.com', '2024-06-04 13:28:55.498819', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 58, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('abe1cc11-8667-4b0b-b9c6-a79272575402', '1226cd4e-8280-4475-9beb-a65d7179d487', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', 'FCL', 'Collect', 'EXW', NULL, NULL, 'Offloading completed', '2024-06-07', NULL, NULL, 'DUBAI', 'TRUCKING', 'AL NABOODAH LOGISTICS LLC', 'PO BOX 624255
-DUBAI WORLD TRADE CENTER
-DUBAI UAE', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'DUBAI', 'Cilebut', 'Depok', NULL, NULL, 'DXBTC2406006', 1, '2024-06-04 13:30:47.397973', 'dubai@pamcargo.com', '2024-06-04 13:30:47.397973', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 59, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('2088a818-0433-45b7-9110-1dbae3b9a9b9', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', '90056126-4d03-4c30-8eca-43f941372df6', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', 'FCL', 'Collect', 'FAS', NULL, NULL, 'Cargo delivered', '2024-06-09', NULL, NULL, 'DUBAI', 'TRUCKING', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'ARROW AVIATIONSERVICES FZE', 'KING FAISAL ROAD SHARJAH', 'DUBAI', 'Cianjur', 'Cicahem', NULL, NULL, 'DXBTC2406007', 1, '2024-06-04 13:32:14.064098', 'dubai@pamcargo.com', '2024-06-04 13:32:14.064098', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 60, NULL, NULL, NULL, 'c322c5f4-51bc-4112-8d3e-40513a8b3cd0', 'ELECTRICAL', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('ca1e6202-587a-4326-94cf-d3e161a273fa', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', '8b396746-5a30-4e39-84a4-89185a1ea96c', 'a07992ba-02bf-49d1-966e-7a98755847ac', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', NULL, NULL, NULL, 'SEAIMPORT', 'FCL', 'Collect', 'EXW', NULL, NULL, 'Container Onboard', '2024-06-11', '2024-06-11', NULL, 'DUBAI', 'SEAIMPORT', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
-PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'ABERDEEN', 'ABERDEEN', 'ÅBO (TURKU)', 'APL HOLLAND', NULL, 'DXBSI2406010', 1, '2024-06-04 09:54:38.129337', 'dubai@pamcargo.com', '2024-06-05 00:00:00', 'dubai@pamcargo.com', NULL, '11', NULL, '2024-06-11', 'cfec6e4a-6ade-442b-802f-863abd7f78b6', NULL, 6, '2024-06-12', NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('3c244936-60ba-4c50-a230-51ea58cd9427', '553a2151-8cd0-420f-80c5-c90203caa630', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'WAREHOUSE', 'LCL', 'Collect', 'EXW', NULL, NULL, 'Under storage at warehouse', '2024-06-16', NULL, NULL, 'SINGAPORE', 'WAREHOUSE', 'ARMAT FZE', 'FC0401WS74, JEBEL ALI FREEZONE, DUBAI, UAE.', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
-PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'DUBAI', 'TANJUNG BALAI', 'NUSAKAMBANGAN', NULL, NULL, 'DXBWH2406002', 1, '2024-06-04 11:22:09.458652', 'dubai@pamcargo.com', '2024-06-04 11:22:09.458652', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 54, NULL, NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'WAREHOUSE', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('09b7d475-b92c-43ca-87c6-e7ec070848e9', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', '35b0c6e1-dba7-41f0-8081-a001910b6fad', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', NULL, '3f8950f0-3d54-47c3-8387-89550cb11714', NULL, NULL, NULL, 'AIREXPORT', 'AIR EXPORT', 'Collect', 'FOB', NULL, NULL, 'Received in airport warehouse', NULL, NULL, NULL, 'DUBAI', 'AIREXPORT', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
-PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'AALBORG', 'AALBORG', 'ABADAN', 'ABX AIR', NULL, 'DXBAE2406011', 1, '2024-06-04 10:54:10.355179', 'dubai@pamcargo.com', '2024-06-04 10:54:10.355179', NULL, NULL, NULL, NULL, NULL, '4086e0a3-a7d4-4041-97a7-25dbb58272fb', NULL, 25, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('2412c9de-563d-4fed-8ac8-73e780621984', '79687282-0029-49f3-9870-907505eb8174', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'f56521b2-6260-4cd7-82ca-440eb48ef835', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', NULL, '3f8950f0-3d54-47c3-8387-89550cb11714', NULL, NULL, NULL, 'AIREXPORT', 'AIR EXPORT', 'Collect', 'EXW', NULL, NULL, 'Booking Received', NULL, NULL, NULL, 'DUBAI', 'AIREXPORT', 'EUROWINDOW JOINT STOCK COMPANY', 'LOT 15, QUANG MINH INDUSTRIAL ZONE
-QUANG MINH TOWN, ME LINH DISTRICT
-HANOI, VIETNAM', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'AARHUS', 'AARHUS', 'ABADAN', 'ABX AIR', NULL, 'DXBAE2406010', 1, '2024-06-04 10:52:59.806131', 'dubai@pamcargo.com', '2024-06-04 10:52:59.806131', NULL, NULL, NULL, NULL, NULL, '4086e0a3-a7d4-4041-97a7-25dbb58272fb', NULL, 23, NULL, NULL, NULL, '423c8787-a4e5-4f8d-a33a-9ba50fb0a768', 'GARMENTS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('3e9d64c1-1587-422c-b74f-49559eec819e', 'ef70c955-53a2-4963-a3df-bd0e4ad78d55', 'e338c277-c2a6-4303-96d6-16a545a6c7dc', '533219ad-bfa1-4cf6-87f9-fce85748a647', '8b396746-5a30-4e39-84a4-89185a1ea96c', '23779767-545b-42aa-9890-01c90c844600', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', NULL, NULL, NULL, 'SEAEXPORT', 'LCL', 'Prepaid', 'CFR', 'Notify party', NULL, 'Loading Completed', '2024-06-11', '2024-06-11', NULL, 'DUBAI', 'SEAEXPORT', 'ALFA-PHARM IMPORT CJSC', '1/68 SHIRAKI ST
-YERVAN 0043 RA
-ARMENIA, TEL: +374 11 700500', '4EVAC', 'INDUSTRIEWEG 87 2651 BERKEL EN RODENRIJS', 'ABERDEEN', 'ABERDEEN', 'ABIDJAN', 'APL HOLLAND', NULL, 'DXBSE2406010', 1, '2024-06-11 11:05:37.44531', 'dubai@pamcargo.com', '2024-06-11 11:05:37.44531', NULL, NULL, '11', NULL, '2024-06-11', 'cfec6e4a-6ade-442b-802f-863abd7f78b6', NULL, 5, '2024-06-12', '1e9f8683-8f6c-4e36-b984-7bfe95f0814b', 'PAM FRANCE', '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('bb619a92-9823-42a0-8466-7a60d7d21446', '6812bd03-a528-438b-ab89-0c01927a3da9', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'WAREHOUSE', 'FCL', 'Collect', 'EXW', NULL, NULL, 'Under storage at warehouse', '2024-06-09', NULL, NULL, 'DUBAI', 'WAREHOUSE', 'AL NOUF BUILDING MATERIAL TRADING', 'LUCKU RA AJMAN
-UAE', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'DUBAI', 'TANJUNG PRIOK', 'TANJUNG PINANG', NULL, NULL, 'DXBWH2406001', 1, '2024-06-04 11:20:25.609327', 'dubai@pamcargo.com', '2024-06-04 11:20:25.609327', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 54, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'WAREHOUSE', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('0ded26ec-a390-4b5e-8bfb-7d53d07b4a90', 'ef70c955-53a2-4963-a3df-bd0e4ad78d55', 'e338c277-c2a6-4303-96d6-16a545a6c7dc', '533219ad-bfa1-4cf6-87f9-fce85748a647', '23ca88f8-76fe-460a-b413-0b27b3cbf8ba', '23ca88f8-76fe-460a-b413-0b27b3cbf8ba', NULL, '3212b041-21e7-4d31-b493-ec484ef935b3', NULL, NULL, NULL, 'SEAIMPORT', 'FCL', 'Prepaid', 'CFR', 'Notify Party', NULL, 'Loading Completed', '2024-07-10', '2024-07-10', NULL, 'DUBAI', 'SEAIMPORT', 'ALFA-PHARM IMPORT CJSC', '1/68 SHIRAKI ST
-YERVAN 0043 RA
-ARMENIA, TEL: +374 11 700500', '4EVAC', 'INDUSTRIEWEG 87 2651 BERKEL EN RODENRIJS', 'ABBOT POINT', 'ABBOT POINT', 'ABBOT POINT', 'SINAR BAJO', NULL, 'DXBSI2406012', 1, '2024-06-10 16:51:52.948201', 'dubai@pamcargo.com', '2024-06-10 16:51:52.948201', NULL, NULL, '234', NULL, '2024-07-10', '816ea82b-14b7-4968-ad93-e0afd891beb0', NULL, 5, '2024-07-24', '1e9f8683-8f6c-4e36-b984-7bfe95f0814b', 'PAM FRANCE', '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('6ea5972e-7192-491b-b67b-1716a88eecb6', '1226cd4e-8280-4475-9beb-a65d7179d487', 'e338c277-c2a6-4303-96d6-16a545a6c7dc', '533219ad-bfa1-4cf6-87f9-fce85748a647', '229eaa02-9568-4f59-b118-6409afbcb7b6', 'f56521b2-6260-4cd7-82ca-440eb48ef835', NULL, '3f8950f0-3d54-47c3-8387-89550cb11714', NULL, NULL, NULL, 'AIRIMPORT', 'Test', 'Prepaid', 'CFR', NULL, NULL, 'In transit', NULL, NULL, NULL, 'DUBAI', 'AIRIMPORT', 'AL NABOODAH LOGISTICS LLC', 'PO BOX 624255
-DUBAI WORLD TRADE CENTER
-DUBAI UAE', '4EVAC', 'INDUSTRIEWEG 87 2651 BERKEL EN RODENRIJS', 'ABAKAN', 'ABAKAN', 'AARHUS', 'ABX AIR', NULL, 'DXBAI2406012', 1, '2024-06-11 11:52:32.592438', 'dubai@pamcargo.com', '2024-08-06 00:00:00', NULL, NULL, NULL, NULL, NULL, '4086e0a3-a7d4-4041-97a7-25dbb58272fb', NULL, 28, NULL, NULL, NULL, '974c70f8-8497-4b0b-9e64-0dd8cfe01c1f', 'MACHINERY', NULL, '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR', '2024-06-14', NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('e502484f-0d0b-45dc-b8c3-b221899db262', '6812bd03-a528-438b-ab89-0c01927a3da9', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'a07992ba-02bf-49d1-966e-7a98755847ac', '33a4b77d-792e-4498-9439-c10506695992', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', NULL, NULL, NULL, 'SEAIMPORT', 'FCL', 'Prepaid', 'CIF', NULL, NULL, 'Loading Completed', '2024-06-11', '2024-06-11', NULL, 'DUBAI', 'SEAIMPORT', 'AL NOUF BUILDING MATERIAL TRADING', 'LUCKU RA AJMAN
-UAE', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
-PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'ÅBO (TURKU)', 'ÅBO (TURKU)', 'ABU DHABI', 'APL HOLLAND', NULL, 'DXBSI2406014', 1, '2024-06-13 16:06:13.796728', 'dubai@pamcargo.com', '2024-06-13 16:06:13.796728', NULL, NULL, '11', NULL, '2024-06-11', 'cfec6e4a-6ade-442b-802f-863abd7f78b6', NULL, 5, '2024-06-12', NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('dc98c4da-32a6-4b86-b48a-0fbca09a1c18', 'ef70c955-53a2-4963-a3df-bd0e4ad78d55', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', 'FCL', 'Prepaid', 'CFR', NULL, NULL, 'Cargo received', '2024-06-25', NULL, NULL, 'DUBAI', 'TRUCKING', 'ALFA-PHARM IMPORT CJSC', '1/68 SHIRAKI ST
-YERVAN 0043 RA
-ARMENIA, TEL: +374 11 700500', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
-PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'DUBAI', 'JAKARTA', 'BALI', NULL, NULL, 'DXBTC2406009', 1, '2024-06-25 17:45:44.857262', 'dubai@pamcargo.com', '2024-06-25 17:45:44.857262', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 56, NULL, '1e9f8683-8f6c-4e36-b984-7bfe95f0814b', 'PAM FRANCE', '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('6007ef0b-34f7-4e90-b43b-6081c41b73b3', '1226cd4e-8280-4475-9beb-a65d7179d487', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'WAREHOUSE', 'FCL', 'Prepaid', 'CFR', NULL, NULL, 'Under storage at warehouse', '2024-06-11', NULL, NULL, 'DUBAI', 'WAREHOUSE', 'AL NABOODAH LOGISTICS LLC', 'PO BOX 624255
-DUBAI WORLD TRADE CENTER
-DUBAI UAE', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'DUBAI', 'Tanjung Perak', 'Muara Angke', NULL, NULL, 'DXBWH2406003', 1, '2024-06-11 13:19:18.267621', 'dubai@pamcargo.com', '2024-06-11 00:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 54, NULL, '96b2b385-74e3-451a-84f3-88fea05e1d42', 'PAM INDONESIA', '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'WAREHOUSE', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('39393fac-4390-4a21-ae1c-49d9eeb12671', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'a07992ba-02bf-49d1-966e-7a98755847ac', 'e494804a-07a1-4b78-afdf-ed890c144251', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', NULL, NULL, NULL, 'SEAEXPORT', 'LCL', 'Split', 'CIP', NULL, NULL, 'Arrived in destination airport', '2024-06-11', '2024-06-11', NULL, 'DUBAI', 'SEAEXPORT', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
-PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'ÅBO (TURKU)', 'ÅBO (TURKU)', 'ABU DHABI', 'APL HOLLAND', NULL, 'DXBSE2406009', 1, '2024-06-04 10:17:06.322347', 'dubai@pamcargo.com', '2024-06-11 00:00:00', NULL, NULL, '11', NULL, '2024-06-11', 'cfec6e4a-6ade-442b-802f-863abd7f78b6', NULL, 46, '2024-06-12', NULL, NULL, '25de1a35-5c46-445b-919b-45a7ceeabc79', 'OTHER', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('65571c6b-b369-4ca9-a27d-0feef90bfc5d', 'ef70c955-53a2-4963-a3df-bd0e4ad78d55', 'e338c277-c2a6-4303-96d6-16a545a6c7dc', '533219ad-bfa1-4cf6-87f9-fce85748a647', '8b396746-5a30-4e39-84a4-89185a1ea96c', '8b396746-5a30-4e39-84a4-89185a1ea96c', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', NULL, NULL, NULL, 'SEAIMPORT', 'FCL', 'Prepaid', 'CFR', NULL, NULL, 'Loading Completed', '2024-06-11', '2024-06-11', NULL, 'DUBAI', 'SEAIMPORT', 'ALFA-PHARM IMPORT CJSC', '1/68 SHIRAKI ST
-YERVAN 0043 RA
-ARMENIA, TEL: +374 11 700500', '4EVAC', 'INDUSTRIEWEG 87 2651 BERKEL EN RODENRIJS', 'ABERDEEN', 'ABERDEEN', 'ABERDEEN', 'APL HOLLAND', NULL, 'DXBSI2407002', 1, '2024-07-22 14:53:29.92534', 'dubai@pamcargo.com', '2024-08-06 00:00:00', NULL, NULL, '11', NULL, '2024-06-11', 'cfec6e4a-6ade-442b-802f-863abd7f78b6', NULL, 5, '2024-06-12', NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('a221ef20-676e-4701-a33d-da6d9a533008', '1226cd4e-8280-4475-9beb-a65d7179d487', 'e338c277-c2a6-4303-96d6-16a545a6c7dc', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'WAREHOUSE', 'FCL', 'Collect', 'FOB', NULL, NULL, 'Cargo delivered', '2024-06-25', NULL, NULL, 'DUBAI', 'WAREHOUSE', 'AL NABOODAH LOGISTICS LLC', 'PO BOX 624255
-DUBAI WORLD TRADE CENTER
-DUBAI UAE', '4EVAC', 'INDUSTRIEWEG 87 2651 BERKEL EN RODENRIJS', 'DUBAI', 'BEKASI', 'BANDUNG', NULL, NULL, 'DXBWH2406004', 1, '2024-06-25 10:56:51.981918', 'dubai@pamcargo.com', '2024-07-23 00:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 55, NULL, '1e9f8683-8f6c-4e36-b984-7bfe95f0814b', 'PAM FRANCE', '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'WAREHOUSE', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('9dcc3c1c-3d71-4145-8d4b-3ba33edff35b', '1226cd4e-8280-4475-9beb-a65d7179d487', '90056126-4d03-4c30-8eca-43f941372df6', '533219ad-bfa1-4cf6-87f9-fce85748a647', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', 'f56521b2-6260-4cd7-82ca-440eb48ef835', NULL, '3f8950f0-3d54-47c3-8387-89550cb11714', NULL, NULL, NULL, 'AIREXPORT', 'Loading Type', 'Prepaid', 'CIF', NULL, NULL, 'Booking Received', NULL, NULL, NULL, 'DUBAI', 'AIREXPORT', 'AL NABOODAH LOGISTICS LLC', 'PO BOX 624255
-DUBAI WORLD TRADE CENTER
-DUBAI UAE', 'ARROW AVIATIONSERVICES FZE', 'KING FAISAL ROAD SHARJAH', 'AALEN-HEIDENHEIM', 'AALEN-HEIDENHEIM', 'AARHUS', 'ABX AIR', NULL, 'DXBAE2406012', 1, '2024-06-11 12:03:23.100925', 'dubai@pamcargo.com', '2024-06-20 00:00:00', NULL, NULL, NULL, NULL, NULL, '4086e0a3-a7d4-4041-97a7-25dbb58272fb', NULL, 23, NULL, '2833624f-6b70-4b05-97d5-940a30379001', 'PAM SWEDEN', '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR', '2024-06-30', '2024-07-01', '2024-07-06', 'A001', NULL, NULL, 'AIREXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('e11dbcc7-4743-4ad7-a8e7-aff1323a1466', '1226cd4e-8280-4475-9beb-a65d7179d487', '60c1ad2c-b77b-4b9f-ab14-09c3d768c0df', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', 'LCL', 'Prepaid', 'CFR', NULL, NULL, 'Cargo received', '2024-06-11', NULL, NULL, 'DUBAI', 'TRUCKING', 'AL NABOODAH LOGISTICS LLC', 'PO BOX 624255
-DUBAI WORLD TRADE CENTER
-DUBAI UAE', 'ANHUI IDEA IMP AND EXP CO LTD', 'HEIFEI, ANHUI CHINA', 'DUBAI', 'Bekasi', 'Bandung', NULL, NULL, 'DXBTC2406008', 1, '2024-06-11 14:46:17.113544', 'dubai@pamcargo.com', '2024-06-11 00:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 56, NULL, NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('b34f807d-0526-442f-8b25-a1134de5ab21', '1226cd4e-8280-4475-9beb-a65d7179d487', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'a07992ba-02bf-49d1-966e-7a98755847ac', '23ca88f8-76fe-460a-b413-0b27b3cbf8ba', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', NULL, NULL, NULL, 'SEAEXPORT', 'FCL', 'Prepaid', 'CFR', NULL, NULL, 'Received by shipping line', '2024-06-11', '2024-06-11', NULL, 'DUBAI', 'SEAEXPORT', 'AL NABOODAH LOGISTICS LLC', 'PO BOX 624255
-DUBAI WORLD TRADE CENTER
-DUBAI UAE', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'ÅBO (TURKU)', 'ÅBO (TURKU)', 'ABBOT POINT', 'APL HOLLAND', NULL, 'DXBSE2406011', 1, '2024-06-11 11:43:58.203815', 'dubai@pamcargo.com', '2024-06-19 00:00:00', NULL, NULL, '11', NULL, '2024-06-11', 'cfec6e4a-6ade-442b-802f-863abd7f78b6', NULL, 39, '2024-06-12', NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('7cd31e9b-c624-479a-bd93-cc09a60a9ee6', '1226cd4e-8280-4475-9beb-a65d7179d487', 'e338c277-c2a6-4303-96d6-16a545a6c7dc', '533219ad-bfa1-4cf6-87f9-fce85748a647', '23779767-545b-42aa-9890-01c90c844600', '23779767-545b-42aa-9890-01c90c844600', NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', 'FCL', 'Prepaid', 'CFR', NULL, NULL, 'Closed/ Finish shipment', '2024-07-22', NULL, NULL, 'DUBAI', 'SEAIMPORT', 'AL NABOODAH LOGISTICS LLC', 'PO BOX 624255
-DUBAI WORLD TRADE CENTER
-DUBAI UAE', '4EVAC', 'INDUSTRIEWEG 87 2651 BERKEL EN RODENRIJS', 'ABIDJAN', 'ABIDJAN', 'ABIDJAN', NULL, NULL, 'DXBSI2407003', 1, '2024-07-22 14:55:23.889824', 'dubai@pamcargo.com', '2024-07-23 00:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 22, NULL, NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('0aa9f735-d5c7-4b74-b8c8-2a6abcd6f593', '1226cd4e-8280-4475-9beb-a65d7179d487', 'e338c277-c2a6-4303-96d6-16a545a6c7dc', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', 'FCL', 'Prepaid', 'CFR', NULL, NULL, 'Cargo received', '2024-06-26', NULL, NULL, 'DUBAI', 'TRUCKING', 'AL NABOODAH LOGISTICS LLC', 'PO BOX 624255
-DUBAI WORLD TRADE CENTER
-DUBAI UAE', '4EVAC', 'INDUSTRIEWEG 87 2651 BERKEL EN RODENRIJS', 'DUBAI', 'JAKARTA', 'BANDUNG', NULL, NULL, 'DXBTC2406010', 1, '2024-06-26 09:45:04.081977', 'dubai@pamcargo.com', '2024-06-26 00:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 56, NULL, '1e9f8683-8f6c-4e36-b984-7bfe95f0814b', 'PAM FRANCE', '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TRUCKING', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('b91e189f-9077-41bb-8b38-d82209f3b293', 'ef70c955-53a2-4963-a3df-bd0e4ad78d55', 'e338c277-c2a6-4303-96d6-16a545a6c7dc', '533219ad-bfa1-4cf6-87f9-fce85748a647', '23ca88f8-76fe-460a-b413-0b27b3cbf8ba', '23ca88f8-76fe-460a-b413-0b27b3cbf8ba', NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', 'FCL', 'Prepaid', 'CFR', NULL, NULL, 'Closed/ Finish shipment', '2024-07-22', NULL, NULL, 'DUBAI', 'SEAIMPORT', 'ALFA-PHARM IMPORT CJSC', '1/68 SHIRAKI ST
-YERVAN 0043 RA
-ARMENIA, TEL: +374 11 700500', '4EVAC', 'INDUSTRIEWEG 87 2651 BERKEL EN RODENRIJS', 'ABBOT POINT', 'ABBOT POINT', 'ABBOT POINT', NULL, NULL, 'DXBSI2407001', 1, '2024-07-22 14:36:25.183296', 'dubai@pamcargo.com', '2024-07-23 00:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 22, NULL, NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('41ccf845-9e64-4efb-859d-15395753657d', '6812bd03-a528-438b-ab89-0c01927a3da9', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', '23779767-545b-42aa-9890-01c90c844600', '23ca88f8-76fe-460a-b413-0b27b3cbf8ba', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', NULL, NULL, NULL, 'SEAIMPORT', 'FCL', 'Prepaid', 'CFR', 'Notify Party', NULL, 'Loading Completed', '2024-06-11', '2024-06-11', NULL, 'DUBAI', 'SEAIMPORT', 'AL NOUF BUILDING MATERIAL TRADING', 'LUCKU RA AJMAN
-UAE', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'ABIDJAN', 'ABIDJAN', 'ABBOT POINT', 'APL HOLLAND', NULL, 'DXBSI2406013', 1, '2024-06-11 10:35:35.232002', 'dubai@pamcargo.com', '2024-06-11 00:00:00', NULL, NULL, '11', NULL, '2024-06-11', 'cfec6e4a-6ade-442b-802f-863abd7f78b6', NULL, 5, '2024-06-12', '1e9f8683-8f6c-4e36-b984-7bfe95f0814b', 'PAM FRANCE', '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('537f09e9-a2db-4bc4-91a2-0f3c1557eb78', '50152892-6fc5-463c-b996-4baccfe6c793', '69d40226-3e81-4822-8785-899c088394c2', '533219ad-bfa1-4cf6-87f9-fce85748a647', '1c5b2bbf-efd4-498f-86b2-d01d558e6a81', 'c5da1852-9b88-46ef-848b-b0a98cddd2f1', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', NULL, NULL, NULL, 'SEAIMPORT', 'LCL', 'Split', 'CIF', NULL, NULL, 'Container Onboard', '2024-06-01', '2024-06-11', '2024-06-12', 'DUBAI', 'SEAIMPORT', 'DAILY BLUE', '1300 FACTORY PLACE UNIT 308 
-LOS ANGELES, CA 90013                                                           
-(323) 868-8192', 'CVL COSMETIC MIDDLE EAST DMCC', 'PLOT NO.JLT-PH1-N1,THE DOME TOWER DUBAI AE,TL:971561600408', 'CASABLANCA', 'CASABLANCA', 'AMSTERDAM', 'APL HOLLAND', NULL, 'DXBSI2406002', 1, '2024-05-27 11:09:16.248624', 'dubai@pamcargo.com', '2024-08-07 00:00:00', NULL, '2024-06-12', '11', NULL, '2024-06-11', 'cfec6e4a-6ade-442b-802f-863abd7f78b6', NULL, 6, '2024-06-12', NULL, NULL, '423c8787-a4e5-4f8d-a33a-9ba50fb0a768', 'GARMENTS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('6637d456-b568-452c-bf72-61f3afb3ddc1', '1226cd4e-8280-4475-9beb-a65d7179d487', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', '8b396746-5a30-4e39-84a4-89185a1ea96c', '23ca88f8-76fe-460a-b413-0b27b3cbf8ba', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', NULL, NULL, NULL, 'SEAEXPORT', 'FCL', 'Prepaid', 'CFR', NULL, NULL, 'Delivered to consignee', '2024-07-22', '2024-06-11', '2024-06-12', 'DUBAI', 'SEAEXPORT', 'AL NABOODAH LOGISTICS LLC', 'PO BOX 624255
-DUBAI WORLD TRADE CENTER
-DUBAI UAE', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
-PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'ABERDEEN', 'ABERDEEN', 'ABBOT POINT', 'APL HOLLAND', NULL, 'DXBSE2407001', 1, '2024-07-22 14:58:42.071785', 'dubai@pamcargo.com', '2024-07-23 00:00:00', NULL, '2024-06-12', '11', NULL, '2024-06-11', 'cfec6e4a-6ade-442b-802f-863abd7f78b6', NULL, 48, '2024-06-12', NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAEXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('db6374b7-a237-4d38-9525-5fc87e03c8b9', '6812bd03-a528-438b-ab89-0c01927a3da9', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', 'FCL', 'Prepaid', 'CIF', NULL, NULL, 'Delivered to final consignee', '2024-06-13', NULL, NULL, 'DUBAI', 'AIRIMPORT', 'AL NOUF BUILDING MATERIAL TRADING', 'LUCKU RA AJMAN
-UAE', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
-PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'AALEN-HEIDENHEIM', 'AALEN-HEIDENHEIM', 'AALEN-HEIDENHEIM', NULL, NULL, 'DXBAI2406013', 1, '2024-06-13 14:30:48.072185', 'dubai@pamcargo.com', '2024-07-23 00:00:00', NULL, NULL, NULL, NULL, NULL, '4086e0a3-a7d4-4041-97a7-25dbb58272fb', NULL, 52, NULL, NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR', '2024-06-14', '2024-06-15', '2024-06-15', '212', NULL, NULL, 'AIRIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('3217d8fb-8c52-445d-a870-ac91a6d33135', '1226cd4e-8280-4475-9beb-a65d7179d487', 'e338c277-c2a6-4303-96d6-16a545a6c7dc', '533219ad-bfa1-4cf6-87f9-fce85748a647', '35b0c6e1-dba7-41f0-8081-a001910b6fad', '76d2cfe8-c1a4-4c7e-a8d5-a6839d0075e5', NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', 'Loading Type', 'Prepaid', 'CFR', NULL, NULL, 'Closed/ Finish Shipment', '2024-06-20', NULL, NULL, 'DUBAI', 'AIREXPORT', 'AL NABOODAH LOGISTICS LLC', 'PO BOX 624255
-DUBAI WORLD TRADE CENTER
-DUBAI UAE', '4EVAC', 'INDUSTRIEWEG 87 2651 BERKEL EN RODENRIJS', 'AALBORG', 'AALBORG', 'AALEN-HEIDENHEIM', NULL, NULL, 'DXBAE2406013', 1, '2024-06-20 17:38:18.740707', 'dubai@pamcargo.com', '2024-07-23 00:00:00', NULL, NULL, NULL, NULL, NULL, '4086e0a3-a7d4-4041-97a7-25dbb58272fb', NULL, 36, NULL, '1e9f8683-8f6c-4e36-b984-7bfe95f0814b', 'PAM FRANCE', '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR', '2024-06-14', '2024-06-15', '2024-06-15', '212', NULL, NULL, 'AIREXPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('b5c3b066-2b07-4a63-a664-587413519156', '6812bd03-a528-438b-ab89-0c01927a3da9', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', '8b396746-5a30-4e39-84a4-89185a1ea96c', '23ca88f8-76fe-460a-b413-0b27b3cbf8ba', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', NULL, NULL, NULL, 'SEAIMPORT', 'FCL', 'Prepaid', 'CFR', NULL, NULL, 'Cancel', '2024-07-22', '2024-06-11', '2024-06-12', 'DUBAI', 'SEAIMPORT', 'AL NOUF BUILDING MATERIAL TRADING', 'LUCKU RA AJMAN
-UAE', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'ABERDEEN', 'ABERDEEN', 'ABBOT POINT', 'APL HOLLAND', NULL, 'DXBSI2407004', 1, '2024-07-22 15:02:09.077137', 'dubai@pamcargo.com', '2024-07-23 00:00:00', NULL, '2024-06-12', '11', NULL, '2024-06-11', 'cfec6e4a-6ade-442b-802f-863abd7f78b6', NULL, 11, '2024-06-12', NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('d81d596f-2c74-46b6-9d44-b94e96693a4f', 'ef70c955-53a2-4963-a3df-bd0e4ad78d55', 'b31db435-cc65-4ffe-922b-ecd68cf64d24', '533219ad-bfa1-4cf6-87f9-fce85748a647', '8b396746-5a30-4e39-84a4-89185a1ea96c', '33a4b77d-792e-4498-9439-c10506695992', NULL, '119892d8-e20b-4833-a439-1e7ef3d08516', NULL, NULL, NULL, 'SEAIMPORT', 'FCL', 'Prepaid', 'CFR', NULL, NULL, 'Cancel', '2024-07-22', '2024-06-11', '2024-06-12', 'DUBAI', 'SEAIMPORT', 'ALFA-PHARM IMPORT CJSC', '1/68 SHIRAKI ST
-YERVAN 0043 RA
-ARMENIA, TEL: +374 11 700500', 'AIRGAS USA LLC', '9030 NW 58TH STREET DORAL FL 33178 US', 'ABERDEEN', 'ABERDEEN', 'ABU DHABI', 'APL HOLLAND', NULL, 'DXBSI2407005', 1, '2024-07-22 17:38:16.092267', 'dubai@pamcargo.com', '2024-07-22 00:00:00', NULL, '2024-06-12', '11', NULL, '2024-06-11', 'cfec6e4a-6ade-442b-802f-863abd7f78b6', NULL, 11, '2024-06-12', NULL, NULL, '25de1a35-5c46-445b-919b-45a7ceeabc79', 'OTHER', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SEAIMPORT', NULL, 0);
-INSERT INTO "dxb"."shipping_instruction" VALUES ('912bd056-3711-487a-a1d5-a884046fc254', 'f7059d20-7cb0-46bb-83e6-1df4f8311aff', 'dec0fb34-79fe-48bd-b336-8322dbdcc459', '533219ad-bfa1-4cf6-87f9-fce85748a647', 'd5cdae85-0e42-4d49-9f3c-e0ff5fff8e38', 'b2e2490e-8a3a-4483-9461-fe4278f8c5b9', NULL, '3f8950f0-3d54-47c3-8387-89550cb11714', NULL, NULL, NULL, 'AIRIMPORT', 'AIR IMPORT', 'Split', 'CIF', NULL, NULL, 'In transit', NULL, NULL, NULL, 'DUBAI', 'AIRIMPORT', 'AVISH AQUATECH TRADING LLC', 'UNIT NO. 03-2101 21ST FLOOR，THE METROPOLIS TOWER,
-BUSINESS BAY，DUBAI. UAE
-TEL:+971 4 285 2520', 'AL ABBAS TRADING CO LLC', 'KING FAISAL STREET
-PO BOX 5423, SHARJAH, UAE
-TEL: +971 6 5595271', 'ABBEVILLE', 'ABBEVILLE', 'ABADAN', 'ABX AIR', NULL, 'DXBAI2406011', 1, '2024-06-04 10:37:00.620352', 'dubai@pamcargo.com', '2024-08-06 00:00:00', NULL, NULL, NULL, NULL, NULL, '31c52960-bfbd-4c5d-a8bf-320db8f96a8f', NULL, 28, NULL, NULL, NULL, '25de1a35-5c46-445b-919b-45a7ceeabc79', 'OTHER', NULL, '3f8950f0-3d54-47c3-8387-89550cb11714', 'ABX AIR', '2024-06-30', NULL, NULL, NULL, NULL, NULL, 'AIRIMPORT', NULL, 0);
+TEL: +971 6 5595271', 'ABBOT POINT', 'ABBOT POINT', 'AALEN-HEIDENHEIM', NULL, NULL, 'DXBAE2410001', 1, '2024-10-29 15:52:35.725978', 'dubai@pamcargo.com', '2024-10-29 15:52:35.725978', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 43, NULL, NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AIREXPORT', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction" VALUES ('38d691ab-a093-4134-be2e-4f84ef05dde5', '6812bd03-a528-438b-ab89-0c01927a3da9', '60c1ad2c-b77b-4b9f-ab14-09c3d768c0df', '533219ad-bfa1-4cf6-87f9-fce85748a647', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'WAREHOUSE', 'FCL', 'Prepaid', 'CPT', NULL, NULL, 'Booking Confirmed', '2024-10-28', NULL, NULL, 'DUBAI', 'WAREHOUSE', 'AL NOUF BUILDING MATERIAL TRADING', 'LUCKU RA AJMAN
+UAE', 'ANHUI IDEA IMP AND EXP CO LTD', 'HEIFEI, ANHUI CHINA', NULL, 'JAKARTA', 'SURABAYA', NULL, NULL, 'DXBWH2410001', 1, '2024-10-28 09:56:43.294385', 'dubai@pamcargo.com', '2024-10-28 09:56:43.294385', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 58, NULL, NULL, NULL, '25de1a35-5c46-445b-919b-45a7ceeabc79', 'OTHER', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'WAREHOUSE', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction" VALUES ('6c3d38d4-f2eb-4652-b1ee-9229bb2676eb', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'COURIER', 'FCL', NULL, NULL, NULL, NULL, 'In Transit', NULL, NULL, NULL, NULL, '1', NULL, NULL, NULL, NULL, NULL, 'EGYPT', 'JAPAN', NULL, NULL, 'DXBCO', 1, '2024-10-29 15:06:43.490749', 'thomas@pamcargo.com', '2024-10-29 00:00:00', 'thomas@pamcargo.com', NULL, NULL, NULL, NULL, NULL, NULL, 74, NULL, NULL, NULL, '25de1a35-5c46-445b-919b-45a7ceeabc79', 'OTHER', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'COURIER', 'B4122', 1, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction" VALUES ('c2c95c41-caa7-437e-b2e7-8fc3bea08038', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'COURIER', 'LCL', NULL, NULL, NULL, NULL, 'Booking Received', NULL, NULL, NULL, NULL, '1', NULL, NULL, NULL, NULL, NULL, 'Jakarta', 'Japan', NULL, NULL, 'DXBCO', 1, '2024-10-30 14:14:08.015565', 'thomas@pamcargo.com', '2024-10-30 00:00:00', 'thomas@pamcargo.com', NULL, NULL, NULL, NULL, NULL, NULL, 71, NULL, NULL, NULL, '2fdc8d90-b6be-4854-a84d-f9c71ab88b41', 'ELECTRONICS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'COURIER', 'CTN1512412', 1, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction" VALUES ('a5bd22c7-c19b-4253-9eb7-64ce65a8c3be', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'COURIER', 'LCL', NULL, NULL, NULL, NULL, 'In Transit', NULL, NULL, NULL, NULL, '1', NULL, NULL, NULL, NULL, NULL, 'Jakarta Kalibata', 'India China', NULL, NULL, 'DXBCO7001003', 1, '2024-10-30 14:16:16.201038', 'thomas@pamcargo.com', '2024-10-30 00:00:00', 'thomas@pamcargo.com', NULL, NULL, NULL, NULL, NULL, NULL, 74, NULL, NULL, NULL, '02a57c44-49a9-4536-8ab1-59de83e45f16', 'FOOTWEAR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'COURIER', 'CTN1412512', 1, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for shipping_instruction_detail
@@ -1616,85 +1502,21 @@ CREATE TABLE "dxb"."shipping_instruction_detail" (
 -- ----------------------------
 -- Records of shipping_instruction_detail
 -- ----------------------------
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('41e8e812-7143-455f-9fdf-0db22139a3b9', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('ab49df81-a7ed-4d0d-b519-7c3e976ca013', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('352b8464-7bc5-47a5-afce-07d6e052e360', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('9c9f1fd0-ae9a-4ad9-95dd-13cac87dc057', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('365bcd71-518e-4c37-85b2-ef8fa3fd5ba0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('2f4b6724-4980-484c-8faf-58f24439a47f', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('c17e7a19-95e1-4a91-898d-5d3c238003f9', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('3fec9603-a1c0-4f2c-aea8-bb2d41e762a9', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('6c8e8768-46b2-4209-ba8e-b03bc2c60113', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('410a3d15-5ae4-4c2c-a355-cb0f03ef8cb5', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('537f09e9-a2db-4bc4-91a2-0f3c1557eb78', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('69a5a94b-b7c5-405c-9d43-dd81280eae75', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('d3bbf757-f4c1-4b09-9cf0-6ab399d9c7e0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('8adc2a22-8a6b-4db5-b7f2-3d2c8ea11b67', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('6bcccf97-9c8d-4373-bde9-076a0caa0436', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('4e7ebbad-2d58-4cdf-ae5f-b8b5c39a23ab', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('6ab1464a-5895-41eb-b67c-19dd743c27f4', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('56baf38e-6ff8-4bbd-81a4-20e64ca6f0a8', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('3117a224-6a04-458c-a624-f2a7f2037f56', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('ca1e6202-587a-4326-94cf-d3e161a273fa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('53d59b90-626c-4af8-a858-651186572d91', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('6d9d4ea7-8547-4a76-93ba-f2fe31892701', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('0095a867-c7cd-480d-93f5-c12e61a8c7da', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('4de4babe-69d0-430a-8923-b8764a925ed0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('a1d653c3-f716-4ce3-8469-6af1173ef79b', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('d54a473d-38f7-4df6-bc03-2ec06088d880', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('40c393f6-a567-46f9-9b33-46774d70c484', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('2736ee27-1e47-43d4-bb1c-d8c3b1b6e3fa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('07af919c-2586-452e-b021-c6de8a3c83a1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('39393fac-4390-4a21-ae1c-49d9eeb12671', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('b01f25e8-fed4-4190-87c1-640d6a084b7c', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('a0df10f1-6174-4dd5-adda-afc69cbdddd1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('b053010e-4219-43a6-a56d-b292f39e25c5', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('eda254dc-bb8a-4800-a014-8330dbf0975b', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('b4bedcef-ea49-42e9-b3be-da59c36e166e', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('8923a3a6-109d-47e6-b7fa-f860c5eabe3d', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('4fefff4e-e463-4393-b5a6-6c7f1f7ef265', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('c8687520-d7c8-4058-997c-961c713c18aa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('6e9e7ab4-b0cd-4eb4-b81a-4badbd7373a6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('1b811059-ca80-4603-855e-86f9890a1805', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('912bd056-3711-487a-a1d5-a884046fc254', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('fe033103-040c-468f-91d8-cb934482c594', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('10f6d5dc-d708-4351-a1e3-35c62cfdc76c', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('677a92fe-283a-4518-a2d5-705feac53126', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('815a6c7a-38da-4598-b246-ce426cf58737', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('08052673-0558-49ee-abb9-80f127ff8ac2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('2468ea51-4c64-4bf9-816b-daf2c07d1aa6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('6bd85111-f46b-465f-8cb4-d1cdedad6da7', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('52fd6c66-4dd5-430c-bfde-7491110dab24', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('2412c9de-563d-4fed-8ac8-73e780621984', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('09b7d475-b92c-43ca-87c6-e7ec070848e9', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('bb619a92-9823-42a0-8466-7a60d7d21446', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('3c244936-60ba-4c50-a230-51ea58cd9427', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('abd29adf-78e7-48db-85c0-b346c8f3808e', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('48a6111b-9244-4ea0-8c07-2350db07254d', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('a2e2282f-d196-4ba0-ad88-3e04b388b0de', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('3b848e3a-f9b1-4944-895e-f6a83f034bef', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('abe1cc11-8667-4b0b-b9c6-a79272575402', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('2088a818-0433-45b7-9110-1dbae3b9a9b9', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('0ded26ec-a390-4b5e-8bfb-7d53d07b4a90', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('41ccf845-9e64-4efb-859d-15395753657d', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('3e9d64c1-1587-422c-b74f-49559eec819e', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('b34f807d-0526-442f-8b25-a1134de5ab21', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('6ea5972e-7192-491b-b67b-1716a88eecb6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('9dcc3c1c-3d71-4145-8d4b-3ba33edff35b', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('6007ef0b-34f7-4e90-b43b-6081c41b73b3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('e11dbcc7-4743-4ad7-a8e7-aff1323a1466', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('db6374b7-a237-4d38-9525-5fc87e03c8b9', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('e502484f-0d0b-45dc-b8c3-b221899db262', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('3217d8fb-8c52-445d-a870-ac91a6d33135', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('a221ef20-676e-4701-a33d-da6d9a533008', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('dc98c4da-32a6-4b86-b48a-0fbca09a1c18', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('0aa9f735-d5c7-4b74-b8c8-2a6abcd6f593', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('b91e189f-9077-41bb-8b38-d82209f3b293', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('65571c6b-b369-4ca9-a27d-0feef90bfc5d', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('7cd31e9b-c624-479a-bd93-cc09a60a9ee6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('6637d456-b568-452c-bf72-61f3afb3ddc1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('b5c3b066-2b07-4a63-a664-587413519156', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('d81d596f-2c74-46b6-9d44-b94e96693a4f', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('2f34a1b1-b647-456b-88ec-d02962d04b16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('f8e943ae-2d78-45b6-bc0f-f04eb21ef740', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('0211ca52-7c9a-4003-9623-0be52855cb6a', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('38d691ab-a093-4134-be2e-4f84ef05dde5', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('5a19eaf1-23e4-4515-807e-b52774b985b8', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('cc0ddd3d-89a1-4283-9194-24a0b0eb6389', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('6e4821cf-169b-4dcc-9115-86d1a60073ed', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('e9a82d7f-0ccf-4323-99e5-e1f9c3e16e0b', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('6c3d38d4-f2eb-4652-b1ee-9229bb2676eb', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('29f6a3fd-8a22-4dfd-9212-de4eaf9ccf47', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('73321db0-997a-418a-8a4d-ee71f04bc8c8', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('3e7352d5-854d-4367-a7dd-a14a895b0aa7', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('226dd33d-0f65-4e2f-8601-1080143bb0f0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('c2c95c41-caa7-437e-b2e7-8fc3bea08038', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."shipping_instruction_detail" VALUES ('a5bd22c7-c19b-4253-9eb7-64ce65a8c3be', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for si_order
@@ -1734,7 +1556,9 @@ CREATE TABLE "dxb"."si_order" (
   "ctd_doc" varchar(255) COLLATE "pg_catalog"."default",
   "file_bebas" varchar(255) COLLATE "pg_catalog"."default",
   "chw" float8,
-  "vol_weight" float8
+  "vol_weight" float8,
+  "attachment_goods" varchar(255) COLLATE "pg_catalog"."default",
+  "additional_description" text COLLATE "pg_catalog"."default"
 )
 ;
 COMMENT ON COLUMN "dxb"."si_order"."status" IS '1. active
@@ -1764,90 +1588,23 @@ COMMENT ON COLUMN "dxb"."si_order"."file_bebas" IS 'dokument_agent';
 -- ----------------------------
 -- Records of si_order
 -- ----------------------------
-INSERT INTO "dxb"."si_order" VALUES ('876dcf06-84fb-4828-b1c3-d46d7ae22481', '41e8e812-7143-455f-9fdf-0db22139a3b9', 20, 'PCS', NULL, 100, 0.16, 'Testing new shipment (SEA-IMPORT)', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 100, 26.665);
-INSERT INTO "dxb"."si_order" VALUES ('406e280e-f5e2-490b-8895-34c362da5261', 'ab49df81-a7ed-4d0d-b519-7c3e976ca013', 10, 'COLLIE', NULL, 100, 0.06, 'Testing new shipment (SEA-EXPORT)', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 100, 9.999);
-INSERT INTO "dxb"."si_order" VALUES ('b0b6d33b-cf06-4d75-a8a4-a4a45bca04cf', '352b8464-7bc5-47a5-afce-07d6e052e360', 30, 'COLLIE', NULL, 10, 530.64, 'Testing new shipment (AIR-IMPORT)', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 88436.5, 88436.462);
-INSERT INTO "dxb"."si_order" VALUES ('2f5b85a1-5c37-4b6c-b554-5c931409fdee', '9c9f1fd0-ae9a-4ad9-95dd-13cac87dc057', 20, 'BOX', NULL, 200, 0.24, 'Testing', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 200, 39.998);
-INSERT INTO "dxb"."si_order" VALUES ('9e718f88-9683-439f-97e5-f0ad89ac100c', '365bcd71-518e-4c37-85b2-ef8fa3fd5ba0', 10, 'PALLETS', NULL, 30, 0.02, 'Testing new shipment', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 30, 3.333);
-INSERT INTO "dxb"."si_order" VALUES ('70c51374-591e-463d-8990-7ecd6517df5c', '2f4b6724-4980-484c-8faf-58f24439a47f', 30, 'BOX', NULL, 25, 0.054, 'Testing new shipment', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 25, 8.999);
-INSERT INTO "dxb"."si_order" VALUES ('bc763b99-e4f9-4fc8-9792-6adfb03e580c', 'c17e7a19-95e1-4a91-898d-5d3c238003f9', 100, 'BOX', NULL, 10, 0.2, 'Testing warehouse', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 33.5, 33.332);
-INSERT INTO "dxb"."si_order" VALUES ('35f6f933-a9d8-4092-81fd-0ef6dc093480', '3fec9603-a1c0-4f2c-aea8-bb2d41e762a9', 10, 'BOX', NULL, 25, 0.03, 'Teseting trucking', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 25, 4.999);
-INSERT INTO "dxb"."si_order" VALUES ('40a61c7a-b3e5-4548-8a88-a0e0083edb04', '6c8e8768-46b2-4209-ba8e-b03bc2c60113', 10, 'COLLIE', NULL, 100, 0.016, 'Testing', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 100, 2.666);
-INSERT INTO "dxb"."si_order" VALUES ('128ff7f4-f0fd-4dbb-b39f-d6a9ede1d37b', '410a3d15-5ae4-4c2c-a355-cb0f03ef8cb5', 10, 'CARTON', NULL, 20, 0.02, 'Testing', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 20, 3.333);
-INSERT INTO "dxb"."si_order" VALUES ('7e54e5ab-717b-4607-9cea-6e03645f0f86', '537f09e9-a2db-4bc4-91a2-0f3c1557eb78', 100, 'COLLIE', NULL, 20, 0.2, 'Testing', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 33.5, 33.332);
-INSERT INTO "dxb"."si_order" VALUES ('1cc5adee-dd19-4939-a636-d11b880052dc', '69a5a94b-b7c5-405c-9d43-dd81280eae75', 10, 'CARTON', NULL, 10, 0.02, 'Testing', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 10, 3.333);
-INSERT INTO "dxb"."si_order" VALUES ('d8858a4f-3436-4c94-ba77-074faacd42e2', 'd3bbf757-f4c1-4b09-9cf0-6ab399d9c7e0', 10, 'CARTON', NULL, 20, 0.04, 'Testing new shipment localbusiness SEA-IMPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 20, 6.666);
-INSERT INTO "dxb"."si_order" VALUES ('ca2603f7-da3b-48cc-aa92-c5d2bfd7106c', '8adc2a22-8a6b-4db5-b7f2-3d2c8ea11b67', 20, 'BOX', NULL, 20, 0.12, 'Testing new shipment localbusiness SEA-IMPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 20, 19.999);
-INSERT INTO "dxb"."si_order" VALUES ('f92d0808-923e-446f-9f0a-93da2845f2db', '6bcccf97-9c8d-4373-bde9-076a0caa0436', 20, 'COLLIE', NULL, 30, 14.96, 'Testing new shipment localbusiness SEA-IMPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2493.5, 2493.233);
-INSERT INTO "dxb"."si_order" VALUES ('0603cc31-7b01-4a3e-9217-e0d838c6dfc7', '4e7ebbad-2d58-4cdf-ae5f-b8b5c39a23ab', 20, 'CASES', NULL, 20, 0.24, 'Testing new shipment localbusiness SEA-IMPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 40, 39.998);
-INSERT INTO "dxb"."si_order" VALUES ('72c4297a-016e-4f29-b584-31412cf0d2db', '6ab1464a-5895-41eb-b67c-19dd743c27f4', 20, 'CARTON', NULL, 30, 0.16, 'Testing new shipment', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 30, 26.665);
-INSERT INTO "dxb"."si_order" VALUES ('2559079a-d038-4626-b198-7255aa159763', '56baf38e-6ff8-4bbd-81a4-20e64ca6f0a8', 30, 'BAGS', NULL, 30, 0.81, 'Testing new shipment localbusiness', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 135, 134.994);
-INSERT INTO "dxb"."si_order" VALUES ('48716ad0-4e1f-4a1a-8bc1-373c5d5834a2', '3117a224-6a04-458c-a624-f2a7f2037f56', 30, 'COLLIE', NULL, 20, 0.36, 'Testing new shipment', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 60, 59.997);
-INSERT INTO "dxb"."si_order" VALUES ('e65a46be-a477-42b8-8273-aa854aad6051', '53d59b90-626c-4af8-a858-651186572d91', 20, 'ROLLS', NULL, 40, 0.16, 'Tesiing new shipment localbusiness', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 40, 26.665);
-INSERT INTO "dxb"."si_order" VALUES ('1e15bfab-e590-40d1-92f2-f7cdcc04041d', '6d9d4ea7-8547-4a76-93ba-f2fe31892701', 30, 'COLLIE', NULL, 30, 0.36, 'Testign new shipment SEA-EXPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 60, 59.997);
-INSERT INTO "dxb"."si_order" VALUES ('aa573ce9-cae2-45cd-af62-25e586207e86', '0095a867-c7cd-480d-93f5-c12e61a8c7da', 30, 'ROLLS', NULL, 30, 0.81, 'Testing new shipment SEA-EXPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 135, 134.994);
-INSERT INTO "dxb"."si_order" VALUES ('0c9140c8-9f02-4b98-b0ac-fd82b8cbb97b', '4de4babe-69d0-430a-8923-b8764a925ed0', 40, 'PALLETS', NULL, 40, 2.56, 'Testing new shipment localbusiness SEA_EXPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 427, 426.649);
-INSERT INTO "dxb"."si_order" VALUES ('d5973718-5b8a-4654-af65-db085da164ce', 'a1d653c3-f716-4ce3-8469-6af1173ef79b', 30, 'BAILS', NULL, 60, 0.24, 'Testing new shipment localbusiness SEA-EXPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 60, 39.998);
-INSERT INTO "dxb"."si_order" VALUES ('1a990df0-7a5d-4f74-90b4-5813c7e47f7e', 'd54a473d-38f7-4df6-bc03-2ec06088d880', 30, 'COLLIE', NULL, 50, 0.18, 'Testing new shipment', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 50, 29.998);
-INSERT INTO "dxb"."si_order" VALUES ('39697b16-22d7-47f3-a2cb-cc2cab41eea7', '40c393f6-a567-46f9-9b33-46774d70c484', 40, 'ROLLS', NULL, 30, 0.48, 'Testing new shipment', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 80, 79.996);
-INSERT INTO "dxb"."si_order" VALUES ('7c76bb03-6020-46af-81a5-2e8dab1df5b3', '2736ee27-1e47-43d4-bb1c-d8c3b1b6e3fa', 20, 'CASES', NULL, 30, 0.24, 'Testing', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 40, 39.998);
-INSERT INTO "dxb"."si_order" VALUES ('2eaed15d-a459-4a18-aa45-6d4a4d89ab8f', '07af919c-2586-452e-b021-c6de8a3c83a1', 20, 'BOX', NULL, 40, 18.48, 'Testing new shipment', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3080, 3079.876);
-INSERT INTO "dxb"."si_order" VALUES ('912a74df-6bfa-4921-a98d-dd47b57a0d0b', 'b01f25e8-fed4-4190-87c1-640d6a084b7c', 20, 'BOX', NULL, 20, 0.16, 'Testing new shipment AIR-IMPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 27, 26.665);
-INSERT INTO "dxb"."si_order" VALUES ('843d9ae3-ebc3-4e5a-9897-f0820c61a1e4', 'a0df10f1-6174-4dd5-adda-afc69cbdddd1', 30, 'BOX', NULL, 30, 0.12, 'Testing', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 30, 19.999);
-INSERT INTO "dxb"."si_order" VALUES ('577686de-d905-46d7-8779-a9eb899f255d', 'b053010e-4219-43a6-a56d-b292f39e25c5', 20, 'BOX', NULL, 50, 0.16, 'Testing new shipment localbusiness AIR-IMPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 50, 26.665);
-INSERT INTO "dxb"."si_order" VALUES ('18dac94f-31ae-4b44-977d-188a531001c8', 'eda254dc-bb8a-4800-a014-8330dbf0975b', 10, 'COLLIE', NULL, 30, 0.08, 'Testing new shipment localbusiness AIR-IMPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 30, 13.332);
-INSERT INTO "dxb"."si_order" VALUES ('c54842c4-9d81-4b6f-b364-12cac7be4921', 'b4bedcef-ea49-42e9-b3be-da59c36e166e', 200, 'PALLETS', NULL, 20, 0.4, 'Testing new shipment localbusiness AIR-IMPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 67, 66.664);
-INSERT INTO "dxb"."si_order" VALUES ('2df3e5ca-cfe9-4bda-9863-fd5a71a5614d', '8923a3a6-109d-47e6-b7fa-f860c5eabe3d', 20, 'COLLIE', NULL, 40, 0.06, 'Testing new shipment localbusiness AIR-IMPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 40, 9.999);
-INSERT INTO "dxb"."si_order" VALUES ('a47a8527-f997-459e-9f91-9ed16502b42a', '4fefff4e-e463-4393-b5a6-6c7f1f7ef265', 20, 'COLLIE', NULL, 30, 0.54, 'Testing new shipment localbusiness AIR-IMPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 90, 89.996);
-INSERT INTO "dxb"."si_order" VALUES ('0df50384-6a2d-4045-b09b-72a553aafd1e', 'c8687520-d7c8-4058-997c-961c713c18aa', 30, 'COLLIE', NULL, 50, 0.81, 'Testing new shipment localbusiness AIR-IMPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 135, 134.994);
-INSERT INTO "dxb"."si_order" VALUES ('0c0da666-2e82-43fd-99c5-809a3ba5ae72', '6e9e7ab4-b0cd-4eb4-b81a-4badbd7373a6', 10, 'COLLIE', NULL, 20, 0.01, 'Testing new shipment localbusiness AIR-IMPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 20, 1.666);
-INSERT INTO "dxb"."si_order" VALUES ('926a1992-03be-41db-b610-464fe7b4456c', '1b811059-ca80-4603-855e-86f9890a1805', 20, 'COLLIE', NULL, 20, 0.16, 'Testing new shipment localbusiness AIR-IMPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 27, 26.665);
-INSERT INTO "dxb"."si_order" VALUES ('6f064c91-897e-4ce1-80f7-04449286d4a2', 'fe033103-040c-468f-91d8-cb934482c594', 200, 'BOX', NULL, 40, 0.4, 'Testing new shipment localbusiness AIR-EXPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 67, 66.664);
-INSERT INTO "dxb"."si_order" VALUES ('dbe69db8-1505-45bb-ac49-825403241eb5', '10f6d5dc-d708-4351-a1e3-35c62cfdc76c', 200, 'BOX', NULL, 30, 3.6, 'Testing new shipment', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 600, 599.976);
-INSERT INTO "dxb"."si_order" VALUES ('05099895-b17e-442a-b836-3dc80f4c0166', '677a92fe-283a-4518-a2d5-705feac53126', 300, 'PALLETS', NULL, 30, 1.8, 'Testing new shipment localbusiness AIR-EXPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 300, 299.988);
-INSERT INTO "dxb"."si_order" VALUES ('d49217bc-a889-4435-8446-24b5f0e008d5', '815a6c7a-38da-4598-b246-ce426cf58737', 20, 'COLLIE', NULL, 30, 0.16, 'Testing new shipment localbusiness AIR-EXPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 30, 26.665);
-INSERT INTO "dxb"."si_order" VALUES ('d070a836-ebbe-4e26-9c2b-4abb284e3358', '08052673-0558-49ee-abb9-80f127ff8ac2', 20, 'PALLETS', NULL, 30, 0.12, 'Testing new shipment localbusiness AIR-EXPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 30, 19.999);
-INSERT INTO "dxb"."si_order" VALUES ('f4164c13-dac1-4abe-97d0-e12d3647572d', '39393fac-4390-4a21-ae1c-49d9eeb12671', 30, 'CARTON', NULL, 20, 0.72, 'Testing new shipment', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, 'test', '11062024/si_doc - 110620241718081301.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 120, 119.995);
-INSERT INTO "dxb"."si_order" VALUES ('2fcd941f-35fc-4410-86fd-d0170311a582', '2468ea51-4c64-4bf9-816b-daf2c07d1aa6', 20, 'COLLIE', NULL, 30, 0.16, 'Testing new shipment localbusiness', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 30, 26.665);
-INSERT INTO "dxb"."si_order" VALUES ('7608d702-778d-496d-92b7-a82adc410801', '6bd85111-f46b-465f-8cb4-d1cdedad6da7', 20, 'BOX', NULL, 30, 0.16, 'Testing', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 30, 26.665);
-INSERT INTO "dxb"."si_order" VALUES ('6239cd20-d753-4224-8cdd-326fc06e78a3', '52fd6c66-4dd5-430c-bfde-7491110dab24', 20, 'PCS', NULL, 40, 0.24, 'Testing new shipment', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 40, 39.998);
-INSERT INTO "dxb"."si_order" VALUES ('b8147d58-ca51-4c9a-8194-801d735aed02', '2412c9de-563d-4fed-8ac8-73e780621984', 20, 'BOX', NULL, 30, 0.08, 'Testing new shipment', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 30, 13.332);
-INSERT INTO "dxb"."si_order" VALUES ('77ecccdf-3c3f-4286-a141-546eaff65b74', '09b7d475-b92c-43ca-87c6-e7ec070848e9', 30, 'COLLIE', NULL, 20, 0.81, 'Testing new shipment localbusiness AIR-EXPORT', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 135, 134.994);
-INSERT INTO "dxb"."si_order" VALUES ('de65e7d0-cf2e-4243-a6e0-1fe0e7a6039a', 'bb619a92-9823-42a0-8466-7a60d7d21446', 20, 'PCS', NULL, 20, 0.16, 'Testing new shipment warehouse', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 27, 26.665);
-INSERT INTO "dxb"."si_order" VALUES ('87cf799d-eda8-4ef2-97d3-48e964caf597', '3c244936-60ba-4c50-a230-51ea58cd9427', 20, 'BOX', NULL, 20, 0.16, 'Testing new shipment warehouse', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 27, 26.665);
-INSERT INTO "dxb"."si_order" VALUES ('dc7cad37-03ac-4044-b342-6e9b58436c3b', 'abd29adf-78e7-48db-85c0-b346c8f3808e', 20, 'BOX', NULL, 20, 0.16, 'Testing shipment trucking', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 27, 26.665);
-INSERT INTO "dxb"."si_order" VALUES ('1313216f-db1f-4384-8f53-2b65cbf31670', '48a6111b-9244-4ea0-8c07-2350db07254d', 30, 'PCS', NULL, 20, 0.81, 'Testing', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 135, 134.994);
-INSERT INTO "dxb"."si_order" VALUES ('66cd5ccd-b130-47d4-a733-b3ab0c9f58d6', 'a2e2282f-d196-4ba0-ad88-3e04b388b0de', 30, 'CARTON', NULL, 20, 0.36, 'Testing', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 60, 59.997);
-INSERT INTO "dxb"."si_order" VALUES ('62a19a3a-179a-43b1-939d-c8b659d12e92', '3b848e3a-f9b1-4944-895e-f6a83f034bef', 20, 'PCS', NULL, 20, 0.16, 'Testing shipment trucking', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 27, 26.665);
-INSERT INTO "dxb"."si_order" VALUES ('ee87cb2a-ded4-4eca-b81d-46d2137eb484', 'abe1cc11-8667-4b0b-b9c6-a79272575402', 40, 'PCS', NULL, 40, 2.56, 'Testing new shipment', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 427, 426.649);
-INSERT INTO "dxb"."si_order" VALUES ('d12d975a-a5aa-47b2-8da6-b789002c4dda', '2088a818-0433-45b7-9110-1dbae3b9a9b9', 30, 'CARTON', NULL, 30, 0.81, 'Testing', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 135, 134.994);
-INSERT INTO "dxb"."si_order" VALUES ('90972585-4458-40c9-a9c5-9d0907b4b6e1', 'ca1e6202-587a-4326-94cf-d3e161a273fa', 20, 'COLLIE', NULL, 30, 0.16, 'Testing new shipment', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, '05062024/si_doc - 050620241717557061.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 30, 26.665);
-INSERT INTO "dxb"."si_order" VALUES ('7424bc8f-3a0f-4ccd-a2d0-90d58cfe523c', '3e9d64c1-1587-422c-b74f-49559eec819e', 50, 'CARTON', NULL, 90, 6.25, 'desc', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1042, 1041.625);
-INSERT INTO "dxb"."si_order" VALUES ('6afe7c1d-56b0-4227-9259-b23499a125e4', '0ded26ec-a390-4b5e-8bfb-7d53d07b4a90', 10, 'CARTON', NULL, 45, 0.104, 'test', NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 45, 17.332);
-INSERT INTO "dxb"."si_order" VALUES ('d87ee431-72f9-4a8d-b431-f6c35147f9fc', 'b91e189f-9077-41bb-8b38-d82209f3b293', 34, 'CARTON', NULL, 43, 1.336, 'test', NULL, NULL, NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 223, 222.657);
-INSERT INTO "dxb"."si_order" VALUES ('451a5a58-18e1-45fa-aa5b-0d29a76ed22c', '3217d8fb-8c52-445d-a870-ac91a6d33135', 10, 'CARTON', NULL, 10, 0.01, 'test', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, 'test', '24062024/si_doc - 240620241719213810.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 10, 1.666);
-INSERT INTO "dxb"."si_order" VALUES ('92f1bf28-3d50-4f97-a5a1-c41571825410', 'a221ef20-676e-4701-a33d-da6d9a533008', 10, 'CARTON', NULL, 10, 0.01, 'test', NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, NULL, '25062024/si_doc - 250620241719291130.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 10, 1.666);
-INSERT INTO "dxb"."si_order" VALUES ('b580660d-92fb-491f-b5ce-727e3618b97c', 'b34f807d-0526-442f-8b25-a1134de5ab21', 10, 'CARTON', NULL, 10, 0.06, 'desc', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, '19062024/si_doc - 190620241718787097.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 10, 9.999);
-INSERT INTO "dxb"."si_order" VALUES ('a2ae2e8a-0a75-4032-be15-5d4d3e791baa', 'dc98c4da-32a6-4b86-b48a-0fbca09a1c18', 45, 'CARTON', NULL, 64, 4.101, 'test', NULL, NULL, NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 683.5, 683.472);
-INSERT INTO "dxb"."si_order" VALUES ('794aeea0-4c8b-44d3-b62c-c1b13e32e2c8', '9dcc3c1c-3d71-4145-8d4b-3ba33edff35b', 20, 'CARTON', NULL, 20, 0.16, 'desc', NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, NULL, '11062024/si_doc - 110620241718082659.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 27, 26.665);
-INSERT INTO "dxb"."si_order" VALUES ('5f3096ee-4401-4620-a48b-d68181660ece', 'db6374b7-a237-4d38-9525-5fc87e03c8b9', 10, 'CARTON', NULL, 10, 0.552, 'test', NULL, NULL, NULL, 'dubai@pamcargo.com', 1, 'tes', '20062024/si_doc - 200620241718851891.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 92, 91.996);
-INSERT INTO "dxb"."si_order" VALUES ('14054b1e-4770-4cd1-b136-6b89bd7a9881', '6007ef0b-34f7-4e90-b43b-6081c41b73b3', 24, 'CARTON', NULL, 21, 595.947, 'test', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, 'notes', '11062024/si_doc - 110620241718090873.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 99321, 99320.527);
-INSERT INTO "dxb"."si_order" VALUES ('a524b2fd-3636-44c4-b4a1-75e952a927d9', '6ea5972e-7192-491b-b67b-1716a88eecb6', 12, 'CARTON', NULL, 50, 0.142, 'test', NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, 'test', '11062024/si_doc - 110620241718081740.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 50, 23.665);
-INSERT INTO "dxb"."si_order" VALUES ('e98498e4-a3fa-40d9-9095-e134283531fe', '912bd056-3711-487a-a1d5-a884046fc254', 10, 'COLLIE', NULL, 20, 0.01, 'Testing new shipment localbusiness AIR-IMPORT', NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, 'test', '10062024/si_doc - 100620241717990651.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 20, 1.666);
-INSERT INTO "dxb"."si_order" VALUES ('681cc3f0-d5f6-48f8-a20f-a1fdf5a5c264', 'e11dbcc7-4743-4ad7-a8e7-aff1323a1466', 10, 'CARTON', NULL, 10, 0.01, 'desc', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, '11062024/si_doc - 110620241718092174.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 10, 1.666);
-INSERT INTO "dxb"."si_order" VALUES ('c565c9ea-35fd-4ab0-a794-4c1d0dbdd713', 'db6374b7-a237-4d38-9525-5fc87e03c8b9', 10, 'CARTON', NULL, 10, 0.552, 'test', NULL, NULL, NULL, 'dubai@pamcargo.com', 1, 'tes', '20062024/si_doc - 200620241718851891.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 92, 91.996);
-INSERT INTO "dxb"."si_order" VALUES ('8f967a95-c589-46c3-879b-8fecabf2c25e', '41ccf845-9e64-4efb-859d-15395753657d', 100, 'CARTON', NULL, 10, 100, 'desc test', NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, NULL, '11062024/si_doc - 110620241718079270.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 16666, 16666);
-INSERT INTO "dxb"."si_order" VALUES ('d6f43590-5837-4b45-8acc-e84321043ea3', 'b5c3b066-2b07-4a63-a664-587413519156', 34, 'CARTON', NULL, 12, 1.336, 'test', NULL, NULL, NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 223, 222.657);
-INSERT INTO "dxb"."si_order" VALUES ('b4550b0b-ac18-4c38-ac70-24488db90488', 'dc98c4da-32a6-4b86-b48a-0fbca09a1c18', 45, 'CARTON', NULL, 64, 4.101, 'test', NULL, NULL, NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 683.5, 683.472);
-INSERT INTO "dxb"."si_order" VALUES ('b7719202-7b2b-4411-96c3-650bfcd96b8a', '0aa9f735-d5c7-4b74-b8c8-2a6abcd6f593', 100, 'CARTON', NULL, 10, 27.611, 'test', NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, NULL, '26062024/si_doc - 260620241719375284.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 4602, 4601.649);
-INSERT INTO "dxb"."si_order" VALUES ('f0296b56-1b90-4d04-bad2-b7f6f7eb2809', '6637d456-b568-452c-bf72-61f3afb3ddc1', 54, 'CARTON', NULL, 34, 7.489, 'test', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1248.5, 1248.116);
-INSERT INTO "dxb"."si_order" VALUES ('b6df8aba-655e-4724-8080-b57f0c54a88e', 'e502484f-0d0b-45dc-b8c3-b221899db262', 45, 'CARTON', NULL, 56, 4.101, 'test', NULL, NULL, NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 683.5, 683.472);
-INSERT INTO "dxb"."si_order" VALUES ('dbff4250-d73e-4096-87f5-1ff653e88d66', '7cd31e9b-c624-479a-bd93-cc09a60a9ee6', 56, 'CARTON', NULL, 56, 9.834, 'test', NULL, NULL, NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1639, 1638.934);
-INSERT INTO "dxb"."si_order" VALUES ('6d09e882-2764-47b5-81fd-2cfec4c0a9d5', '7cd31e9b-c624-479a-bd93-cc09a60a9ee6', 56, 'CARTON', NULL, 56, 9.834, 'test', NULL, NULL, NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1639, 1638.934);
-INSERT INTO "dxb"."si_order" VALUES ('29569b57-bbc4-4332-88ea-6d1fb2a8a04a', 'e502484f-0d0b-45dc-b8c3-b221899db262', 45, 'CARTON', NULL, 56, 4.101, 'test', NULL, NULL, NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 683.5, 683.472);
-INSERT INTO "dxb"."si_order" VALUES ('883c7f64-9a3e-4526-a8e2-90e819443aea', 'd81d596f-2c74-46b6-9d44-b94e96693a4f', 0, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order" VALUES ('7136c11b-b515-45c7-8328-8e3c3413f2c9', '65571c6b-b369-4ca9-a27d-0feef90bfc5d', 56, 'CARTON', NULL, 56, 13.575, 'test', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, '06082024/si_doc - 060820241722941965.pdf', '06082024/com_invoices_doc - 060820241722940189.pdf', '06082024/bil_doc - 060820241722941965.pdf', NULL, '06082024/final_alert_doc-060820241722941965.pdf', NULL, NULL, '06082024/packing_list_doc - 060820241722941872.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '05082024/ctd_doc - 050820241722840450.pdf', NULL, 2262.5, 2262.409);
-INSERT INTO "dxb"."si_order" VALUES ('47904051-59d1-4514-84e1-63c4abddebd2', 'd81d596f-2c74-46b6-9d44-b94e96693a4f', 0, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."si_order" VALUES ('df9195ab-20ab-452f-be73-83bb995778fa', '52668d09-c09d-4d5e-b922-ee5ceb9f133c', 123, 'PCS', NULL, 123, 228.887, 'TESSA', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 38146.5, 38146.307, NULL, NULL);
+INSERT INTO "dxb"."si_order" VALUES ('ff9104be-cf3a-4ea8-934f-0ad681158db4', '2f34a1b1-b647-456b-88ec-d02962d04b16', 123, 'CARTON', NULL, 123, 228.887, 'GOODS', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 38146.5, 38146.307, NULL, NULL);
+INSERT INTO "dxb"."si_order" VALUES ('b0a0c26a-3fbb-4638-b1d7-902c8f0940ad', 'f8e943ae-2d78-45b6-bc0f-f04eb21ef740', 100, 'CARTON', NULL, 100, 100, 'tes', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 16666, 16666, NULL, NULL);
+INSERT INTO "dxb"."si_order" VALUES ('1f9d8e40-0331-4719-b429-925d372f3752', '0211ca52-7c9a-4003-9623-0be52855cb6a', 100, 'CARTON', NULL, 10, 2, 'Testing new shipment localbusiness', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 333.5, 333.32, NULL, NULL);
+INSERT INTO "dxb"."si_order" VALUES ('5d933eb2-8739-403b-a465-350a59f0965c', '5a19eaf1-23e4-4515-807e-b52774b985b8', 123, 'CARTON', NULL, 123, 228.887, 'Desc', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 38146.5, 38146.307, NULL, NULL);
+INSERT INTO "dxb"."si_order" VALUES ('a85907be-25a4-4b0a-b99f-7db2e91e3f26', 'cc0ddd3d-89a1-4283-9194-24a0b0eb6389', 200, 'CARTON', NULL, 2000, 1.6, 'test data', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2000, 266.656, NULL, NULL);
+INSERT INTO "dxb"."si_order" VALUES ('5bb0c861-d754-4b5f-ab8c-c9186df8237f', '6e4821cf-169b-4dcc-9115-86d1a60073ed', 100, 'CARTON', NULL, 1200, 100, 'Shoes', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, 'Berangkat jam 12', '29102024/si_doc - 291020241730174615.pdf', '29102024/com_invoices_doc - 291020241730174473.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 16666, 16666, NULL, NULL);
+INSERT INTO "dxb"."si_order" VALUES ('d580a032-8f54-4146-a5ab-16e0de8bca49', '1cd2eaa9-ba27-4bec-a790-027610447cc7', 1200, 'CARTON', NULL, 1200, 1.2, 'Barang Rahasia', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1200, 199.992, NULL, NULL);
+INSERT INTO "dxb"."si_order" VALUES ('2d507425-e3b1-40d5-8d8a-f145acc3f661', 'e9a82d7f-0ccf-4323-99e5-e1f9c3e16e0b', 10, 'CARTON', NULL, 1500, 10, 'Men Shoes', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1667, 1666.6, NULL, NULL);
+INSERT INTO "dxb"."si_order" VALUES ('fa6844ba-2b2f-4c76-9746-50c696f4abea', '6c3d38d4-f2eb-4652-b1ee-9229bb2676eb', 123, 'CARTON', NULL, 123, 228.887, 'TES', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 38146.5, 38146.307, NULL, NULL);
+INSERT INTO "dxb"."si_order" VALUES ('64f5ab3c-ab6f-40d0-82c7-5026cc2c1820', '29f6a3fd-8a22-4dfd-9212-de4eaf9ccf47', 23, 'BOX', NULL, 123, 0.004, 'tes', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 123, 0.666, NULL, NULL);
+INSERT INTO "dxb"."si_order" VALUES ('219b3a7f-6f3e-4917-8c78-dcef85de2568', '73321db0-997a-418a-8a4d-ee71f04bc8c8', 11, 'CARTON', NULL, 55, 0.015, 'tes', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 55, 2.499, NULL, NULL);
+INSERT INTO "dxb"."si_order" VALUES ('7a04bd7d-271e-4c4c-be83-c6656306b04a', '3e7352d5-854d-4367-a7dd-a14a895b0aa7', 123, 'BOX', NULL, 123, 228.887, 'Tes', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 38146.5, 38146.307, NULL, NULL);
+INSERT INTO "dxb"."si_order" VALUES ('31f17ab6-892f-4cf3-8415-580086f57271', '38d691ab-a093-4134-be2e-4f84ef05dde5', 0, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."si_order" VALUES ('f080855a-def6-4cd1-973f-70c9797b0ed6', '226dd33d-0f65-4e2f-8601-1080143bb0f0', 0, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "dxb"."si_order" VALUES ('c8b12f4f-2737-4b84-9cf4-65d228397c33', 'c2c95c41-caa7-437e-b2e7-8fc3bea08038', 123, 'CARTON', NULL, 123, 228.887, 'Goods', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 38146.5, 38146.307, NULL, NULL);
+INSERT INTO "dxb"."si_order" VALUES ('bde0f10c-2726-45a9-b26f-af0f22d4af7c', 'a5bd22c7-c19b-4253-9eb7-64ce65a8c3be', 44, 'BOX', NULL, 444, 3.748, 'Tes', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 625, 624.641, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for si_order_detail
@@ -1874,87 +1631,63 @@ COMMENT ON COLUMN "dxb"."si_order_detail"."description" IS 'description untuk ma
 -- ----------------------------
 -- Records of si_order_detail
 -- ----------------------------
-INSERT INTO "dxb"."si_order_detail" VALUES ('df6b68da-cdd4-4951-8f20-3e00e482ab11', '41e8e812-7143-455f-9fdf-0db22139a3b9', '001', '001', '001', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '001', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('8fde719c-7368-450c-b7e0-d0c880d94d61', 'ab49df81-a7ed-4d0d-b519-7c3e976ca013', '002', '0043', '012023', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '0398', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('79a1906c-e322-4e94-a54a-b3d6c382673d', '352b8464-7bc5-47a5-afce-07d6e052e360', '001', '001', '01', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '1', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('bd9cc90c-575f-4a73-a6c5-be5c42ca9bdc', '9c9f1fd0-ae9a-4ad9-95dd-13cac87dc057', '001', '001', '001', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '001', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('9f145ea5-db3c-4348-a1cf-fd324e904d51', '365bcd71-518e-4c37-85b2-ef8fa3fd5ba0', '001', '001', '001', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '001', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('2822ccb2-95be-4896-8c0f-02c80a6e7b3b', '2f4b6724-4980-484c-8faf-58f24439a47f', '001', '001', '001', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '001', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('3b05bf1f-9ec1-4d7f-a89c-07a68637f273', 'c17e7a19-95e1-4a91-898d-5d3c238003f9', '001', '001', '001', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '001', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('18eae611-11d3-4a3c-a832-0d6e19e45fd0', '3fec9603-a1c0-4f2c-aea8-bb2d41e762a9', '001', '001', '001', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '001', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('788c4c4a-3102-4f5b-8947-69ecb7c01ff8', '6c8e8768-46b2-4209-ba8e-b03bc2c60113', '001', '001', '001', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '001', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('62b2528f-aac2-4e1e-b6cd-2227c2359a08', '410a3d15-5ae4-4c2c-a355-cb0f03ef8cb5', '001', '001', '001', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '001', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('1186d0fc-1dbe-4691-b3d7-9cf6fe5288dd', '537f09e9-a2db-4bc4-91a2-0f3c1557eb78', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('31d38a72-cc69-432b-a900-b957a47b7b6b', '69a5a94b-b7c5-405c-9d43-dd81280eae75', '001', '001', '001', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '001', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('b4a395a9-6e49-4c9e-b7b7-d3ddb2b395a9', 'd3bbf757-f4c1-4b09-9cf0-6ab399d9c7e0', '001', '001', '001', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '001', NULL, '0');
-INSERT INTO "dxb"."si_order_detail" VALUES ('c8948ce3-4604-45a8-bf64-a1afdd85a8da', '8adc2a22-8a6b-4db5-b7f2-3d2c8ea11b67', '001', '001', '001', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '001', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('d847f776-b65e-4d30-b853-79d208d6ac98', '6bcccf97-9c8d-4373-bde9-076a0caa0436', '0022', '002', '0002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '0002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('6614f720-4f7a-4390-8373-8ffe696325b8', '4e7ebbad-2d58-4cdf-ae5f-b8b5c39a23ab', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('0ff6f1b8-e6bd-40c5-aa92-78c388067a0e', '6ab1464a-5895-41eb-b67c-19dd743c27f4', '003', '003', '003', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '003', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('197ed620-500b-4ea5-8f1d-5ccbc78be2cb', '56baf38e-6ff8-4bbd-81a4-20e64ca6f0a8', '003', '003', '003', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '003', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('afda025d-51d1-41f6-942b-cdbff0470ead', '3117a224-6a04-458c-a624-f2a7f2037f56', '002', '003', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '003', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('64a573e2-7712-4d45-a50b-17258fdbdda1', 'ca1e6202-587a-4326-94cf-d3e161a273fa', '003', '003', '003', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '003', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('0148d9a8-d9d6-4fee-8914-874c47821617', '53d59b90-626c-4af8-a858-651186572d91', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('572e0dac-5a21-41a0-97c7-8f999a2348a1', '6d9d4ea7-8547-4a76-93ba-f2fe31892701', '003', '003', '003', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '003', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('1191c52f-ec10-42f0-b610-752f480e8397', '0095a867-c7cd-480d-93f5-c12e61a8c7da', '004', '004', '004', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '004', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('4b96ccff-dff4-4773-a8c9-683318aee478', '4de4babe-69d0-430a-8923-b8764a925ed0', '004', '004', '004', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '004', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('474780cb-e253-46d3-bea4-26530721e01d', 'a1d653c3-f716-4ce3-8469-6af1173ef79b', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('72dd182a-0804-48d8-afe0-67e5b6a69271', 'd54a473d-38f7-4df6-bc03-2ec06088d880', '003', '003', '003', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '003', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('bcb2d6f9-9085-47cd-a2da-42f785ed923f', '40c393f6-a567-46f9-9b33-46774d70c484', '004', '004', '004', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '004', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('c3750072-a4b3-4d79-b956-de47a615e726', '2736ee27-1e47-43d4-bb1c-d8c3b1b6e3fa', '003', '003', '003', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '003', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('08aa6970-b159-4a2a-b86b-e5377815910f', '07af919c-2586-452e-b021-c6de8a3c83a1', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('a9ebd34e-1bcd-4366-9c2a-7c4a3c428934', 'b01f25e8-fed4-4190-87c1-640d6a084b7c', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '0002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('11d0a6e5-cc39-4e2a-baa7-4ad80833c3ec', 'a0df10f1-6174-4dd5-adda-afc69cbdddd1', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('50c8d653-0d4d-44fb-9e7a-3ec404cce7e4', 'b053010e-4219-43a6-a56d-b292f39e25c5', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('47c79b06-293f-47fb-9257-8a8aacb67bf6', 'eda254dc-bb8a-4800-a014-8330dbf0975b', '002', '003', '003', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '003', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('58349ab2-0545-48f7-9eb2-51b7ea1a1828', 'b4bedcef-ea49-42e9-b3be-da59c36e166e', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('65e2504b-98d6-44b7-9a4a-20e67dea8c61', '8923a3a6-109d-47e6-b7fa-f860c5eabe3d', '001', '001', '001', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '001', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('0b6713c6-d746-4aae-ba83-f59e9d9828e8', '4fefff4e-e463-4393-b5a6-6c7f1f7ef265', '003', '003', '003', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '003', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('333a9949-12e1-4462-b1aa-d5b5b43d5ad9', 'c8687520-d7c8-4058-997c-961c713c18aa', '003', '003', '003', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '003', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('aa7e2b15-201a-492a-a5a6-823d80cdd015', '6e9e7ab4-b0cd-4eb4-b81a-4badbd7373a6', '001', '001', '001', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '001', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('a068a4e6-e8f8-4c71-9609-7c1f2fe41404', '1b811059-ca80-4603-855e-86f9890a1805', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('b7bdb4e3-d24e-48dc-a498-16871acccedf', 'fe033103-040c-468f-91d8-cb934482c594', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('c78d47c6-198a-424a-ae70-3fc69a7f33e0', '10f6d5dc-d708-4351-a1e3-35c62cfdc76c', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('bfe7e975-0220-4f49-a2e6-c5c8d42a221d', '677a92fe-283a-4518-a2d5-705feac53126', '003', '003', '003', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '003', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('894967d9-809e-497c-8cf4-6fa8c61add89', '815a6c7a-38da-4598-b246-ce426cf58737', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('dc041767-d872-43e5-bea9-fdd844b46742', '08052673-0558-49ee-abb9-80f127ff8ac2', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('eb56da8f-f892-4c39-9880-89d5b94a3fcd', '2468ea51-4c64-4bf9-816b-daf2c07d1aa6', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('0084c461-20f4-40e4-b3fa-49521e537f6a', '6bd85111-f46b-465f-8cb4-d1cdedad6da7', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('8f6c4e64-c217-497c-9cc4-1520bac9819f', '52fd6c66-4dd5-430c-bfde-7491110dab24', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('2e25bfa2-25b7-4b5f-97fe-0a9b4ff47ee6', '2412c9de-563d-4fed-8ac8-73e780621984', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('51d67d5c-8daf-462f-b79d-ece35f20ee09', '09b7d475-b92c-43ca-87c6-e7ec070848e9', '003', '003', '003', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '003', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('9196d716-9d5e-4fa0-bf35-b55bcf9d3175', 'bb619a92-9823-42a0-8466-7a60d7d21446', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('b8fa3a92-20c7-45b1-b52a-820f82a42912', '3c244936-60ba-4c50-a230-51ea58cd9427', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('69720440-bbee-4c77-82b8-b39bf3ff1dd0', 'abd29adf-78e7-48db-85c0-b346c8f3808e', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('0d235cfa-705a-4b82-addc-6f298b14674c', '48a6111b-9244-4ea0-8c07-2350db07254d', '001', '001', '001', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '001', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('ec5b5b7a-9a16-405b-ae9b-1aaa8d8a78d3', 'a2e2282f-d196-4ba0-ad88-3e04b388b0de', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('357c57cd-0280-4b62-b7c8-26245391d413', '3b848e3a-f9b1-4944-895e-f6a83f034bef', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('5dbdf3a9-ad29-41a7-9b70-9b73bf729643', 'abe1cc11-8667-4b0b-b9c6-a79272575402', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('a30240ce-3de3-4d2c-b1b3-be83bbec002c', '2088a818-0433-45b7-9110-1dbae3b9a9b9', '003', '003', '003', NULL, 'dubai@pamcargo.com', NULL, NULL, 1, '003', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('23063926-b78e-46d5-bca9-5cc6386e1d8c', 'b34f807d-0526-442f-8b25-a1134de5ab21', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('b770d409-03a6-4461-bd72-8e95be10c6e9', '912bd056-3711-487a-a1d5-a884046fc254', '001', '001', '001', NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, '001', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('9671721d-2e69-4f6d-bd87-7f86c8460834', '3e9d64c1-1587-422c-b74f-49559eec819e', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('8067695c-ef70-479d-b4cf-61f8f4a15fec', '39393fac-4390-4a21-ae1c-49d9eeb12671', '002', '002', '002', NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, '002', NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('0903d0f0-0ee3-42d3-b23d-6562d78127de', '9dcc3c1c-3d71-4145-8d4b-3ba33edff35b', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('527a6503-1da0-4f36-8618-bb234f7f0a44', '6007ef0b-34f7-4e90-b43b-6081c41b73b3', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('44b18f6f-4ba5-413b-b9f5-87005b40efb4', 'e11dbcc7-4743-4ad7-a8e7-aff1323a1466', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('a674b442-0d9f-4c0c-9a71-8a1a42d89ead', '41ccf845-9e64-4efb-859d-15395753657d', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('566d2f22-9a98-4e8f-8565-a3d7c37b52e5', '6ea5972e-7192-491b-b67b-1716a88eecb6', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('2f81cfd5-83f4-4fc0-b33a-3212a5118cd9', '3217d8fb-8c52-445d-a870-ac91a6d33135', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('2537987b-f300-4019-b942-835739fd1fc8', 'a221ef20-676e-4701-a33d-da6d9a533008', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('2909ad53-237e-4023-a9f7-2b1d21064096', 'b91e189f-9077-41bb-8b38-d82209f3b293', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('ecedee16-b953-4358-9678-7fd856039799', 'b91e189f-9077-41bb-8b38-d82209f3b293', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('22b27b1c-6e78-4d99-b07c-ab9795e9de2c', 'b91e189f-9077-41bb-8b38-d82209f3b293', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('520c965c-5fae-4e87-9503-4ab5e9e98c0f', '65571c6b-b369-4ca9-a27d-0feef90bfc5d', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('fd02e50c-8970-404a-af63-4a43c88dad89', '0aa9f735-d5c7-4b74-b8c8-2a6abcd6f593', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('755f5867-fac3-4eb3-8fe9-62c26efa6662', '7cd31e9b-c624-479a-bd93-cc09a60a9ee6', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('dd347de5-1d0b-4dec-b28f-d6972f86de26', '7cd31e9b-c624-479a-bd93-cc09a60a9ee6', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('eac5ba73-ba31-4f77-97fb-ac5530bff731', '7cd31e9b-c624-479a-bd93-cc09a60a9ee6', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('58c6e905-c195-4f97-9da3-f029bb0baa1c', '6637d456-b568-452c-bf72-61f3afb3ddc1', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('b70d9caf-99cd-4f45-9fe8-a05c5f382c66', '0ded26ec-a390-4b5e-8bfb-7d53d07b4a90', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('e82bd496-0056-42c9-983d-3d58ca587b70', 'e502484f-0d0b-45dc-b8c3-b221899db262', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('ff263017-57c7-40cb-88f4-982caca927e2', 'dc98c4da-32a6-4b86-b48a-0fbca09a1c18', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
-INSERT INTO "dxb"."si_order_detail" VALUES ('35139b75-44a0-4847-bf50-efee8b2065bd', 'b5c3b066-2b07-4a63-a664-587413519156', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, 'dubai@pamcargo.com', 1, NULL, NULL, NULL);
+INSERT INTO "dxb"."si_order_detail" VALUES ('b32f0c6f-6d32-49a1-9785-ca1328e3e453', '52668d09-c09d-4d5e-b922-ee5ceb9f133c', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
+INSERT INTO "dxb"."si_order_detail" VALUES ('f61fdd6d-ae0a-41ea-ad58-fa2f0fa575ea', '2f34a1b1-b647-456b-88ec-d02962d04b16', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
+INSERT INTO "dxb"."si_order_detail" VALUES ('fab68f59-8671-4e43-9968-b1ab52321080', 'f8e943ae-2d78-45b6-bc0f-f04eb21ef740', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
+INSERT INTO "dxb"."si_order_detail" VALUES ('c6e6ab72-1916-4837-bd89-1753f4f63825', '0211ca52-7c9a-4003-9623-0be52855cb6a', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
+INSERT INTO "dxb"."si_order_detail" VALUES ('5209df96-cc46-46e4-b1e3-6dc823aa7917', '5a19eaf1-23e4-4515-807e-b52774b985b8', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
+INSERT INTO "dxb"."si_order_detail" VALUES ('cfa5a4dc-ac79-4634-ae42-83045098cd85', 'cc0ddd3d-89a1-4283-9194-24a0b0eb6389', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
+INSERT INTO "dxb"."si_order_detail" VALUES ('c7385b2e-b5b4-481b-b999-1739c808143c', '6e4821cf-169b-4dcc-9115-86d1a60073ed', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
+INSERT INTO "dxb"."si_order_detail" VALUES ('76d0249e-9e28-4682-bb7c-3e5663a531bd', '1cd2eaa9-ba27-4bec-a790-027610447cc7', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
+INSERT INTO "dxb"."si_order_detail" VALUES ('bd1a088c-9a98-4739-8b1f-a807610d7366', 'e9a82d7f-0ccf-4323-99e5-e1f9c3e16e0b', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
+INSERT INTO "dxb"."si_order_detail" VALUES ('f5fa1686-d1f8-41f3-9256-a179c885b694', '6c3d38d4-f2eb-4652-b1ee-9229bb2676eb', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
+INSERT INTO "dxb"."si_order_detail" VALUES ('c6d2c9c9-056d-465a-b226-4cf8c70733b8', '29f6a3fd-8a22-4dfd-9212-de4eaf9ccf47', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
+INSERT INTO "dxb"."si_order_detail" VALUES ('a40f3172-8d18-43df-a3cf-f7888ebb2e16', '73321db0-997a-418a-8a4d-ee71f04bc8c8', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
+INSERT INTO "dxb"."si_order_detail" VALUES ('2a6359ca-feb8-498b-8cd2-fedcb889b8df', '3e7352d5-854d-4367-a7dd-a14a895b0aa7', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
+INSERT INTO "dxb"."si_order_detail" VALUES ('e502f474-fadb-4b2c-b4be-6927bd0f5f76', 'c2c95c41-caa7-437e-b2e7-8fc3bea08038', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
+INSERT INTO "dxb"."si_order_detail" VALUES ('19755a26-1f6e-49a2-b18c-a7aa65c283e0', 'a5bd22c7-c19b-4253-9eb7-64ce65a8c3be', NULL, NULL, NULL, NULL, 'dubai@pamcargo.com', NULL, NULL, 1, NULL, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for si_sales_office
+-- ----------------------------
+DROP TABLE IF EXISTS "dxb"."si_sales_office";
+CREATE TABLE "dxb"."si_sales_office" (
+  "si_sales_office_id" uuid NOT NULL DEFAULT uuid_generate_v7(),
+  "job_id" uuid,
+  "sales_office_id" uuid,
+  "status" int2 DEFAULT 1,
+  "date_created" timestamp(6),
+  "date_modified" timestamp(6),
+  "created_by" varchar(255) COLLATE "pg_catalog"."default",
+  "modified_by" varchar(255) COLLATE "pg_catalog"."default",
+  "sales_office_name" varchar(255) COLLATE "pg_catalog"."default"
+)
+;
+
+-- ----------------------------
+-- Records of si_sales_office
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for si_sales_person
+-- ----------------------------
+DROP TABLE IF EXISTS "dxb"."si_sales_person";
+CREATE TABLE "dxb"."si_sales_person" (
+  "si_sales_person_id" uuid NOT NULL DEFAULT uuid_generate_v7(),
+  "job_id" uuid,
+  "sales_person_id" uuid,
+  "status" int2 DEFAULT 1,
+  "date_created" timestamp(6),
+  "date_modified" timestamp(6),
+  "created_by" varchar(255) COLLATE "pg_catalog"."default",
+  "modified_by" varchar(255) COLLATE "pg_catalog"."default",
+  "sales_person_name" varchar(255) COLLATE "pg_catalog"."default"
+)
+;
+
+-- ----------------------------
+-- Records of si_sales_person
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for status
@@ -1968,73 +1701,91 @@ CREATE TABLE "dxb"."status" (
   "date_modified" timestamp(0) DEFAULT now(),
   "modified_by" varchar(255) COLLATE "pg_catalog"."default",
   "role_id" varchar(32) COLLATE "pg_catalog"."default",
-  "shipment_type" varchar(12) COLLATE "pg_catalog"."default"
+  "shipment_type" varchar(12) COLLATE "pg_catalog"."default",
+  "no_urut" int4
 )
 ;
 
 -- ----------------------------
 -- Records of status
 -- ----------------------------
-INSERT INTO "dxb"."status" VALUES (1, 'Booking Received', '2023-01-31 00:00:00', NULL, NULL, 'admin@gmail.com', '16', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (2, 'Booking Confirmed/Approved', '2023-02-28 00:00:00', 'admin@gmail.com', '2023-02-28 07:24:02', NULL, '16', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (3, 'Cargo Received CFS', '2023-01-31 00:00:00', NULL, NULL, 'admin@gmail.com', '16', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (4, 'Under Custom Clereance', '2023-01-31 00:00:00', NULL, NULL, NULL, '16', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (5, 'Loading Completed', '2023-01-31 00:00:00', NULL, NULL, NULL, '16', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (6, 'Container Onboard', '2023-02-17 00:00:00', NULL, '2023-02-17 03:08:28', NULL, '16', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (7, 'Vessel Departed', '2023-02-17 00:00:00', NULL, '2023-02-17 03:09:05', NULL, '16', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (8, 'In transit other port', '2023-01-31 00:00:00', NULL, NULL, NULL, '17,18', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (9, 'Arrived in transit port', '2023-01-31 00:00:00', NULL, NULL, 'admin@gmail.com', '17,18', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (10, 'Vessel Delay', '2023-01-31 00:00:00', NULL, NULL, NULL, '16', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (11, 'Cancel', '2023-02-02 00:00:00', NULL, NULL, NULL, '16', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (12, 'Departured from transit port', '2023-04-04 08:31:21', NULL, '2023-04-04 08:31:21', NULL, '17,18', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (13, 'Arrived in Jebel Ali', '2023-03-28 15:32:15', NULL, '2023-04-04 08:32:16', NULL, '17,18', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (14, 'Transit hub operations', '2023-04-04 08:32:53', NULL, '2023-04-04 08:32:53', NULL, '17,18', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (15, 'Received by airline', '2023-04-04 08:33:14', NULL, '2023-04-04 08:33:14', NULL, '17,18', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (16, 'Cargo airlifted', '2023-04-04 08:33:36', NULL, '2023-04-04 08:33:36', NULL, '17,18', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (17, 'In transit other airport', '2023-04-04 08:33:56', NULL, '2023-04-04 08:33:56', NULL, '17,18', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (18, 'Arrived in destination airport', '2023-04-04 08:34:23', NULL, '2023-04-04 08:34:23', NULL, '17,18', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (19, 'Under customs clearance', '2023-04-04 08:35:03', NULL, '2023-04-04 08:35:03', NULL, '19', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (20, 'Truck departed from airport', '2023-04-04 08:35:33', NULL, '2023-04-04 08:35:33', NULL, '19', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (21, 'Delivered to consignee', '2023-04-04 08:35:59', NULL, '2023-04-04 08:35:59', NULL, '19', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (22, 'Closed/ Finish shipment', '2023-04-04 08:36:23', NULL, '2023-04-04 08:36:23', NULL, '19', 'SEAAIR');
-INSERT INTO "dxb"."status" VALUES (23, 'Booking Received', '2023-03-08 16:09:27', NULL, '2023-03-08 09:09:46', NULL, '16', 'AIR');
-INSERT INTO "dxb"."status" VALUES (24, 'Booking Confirmed/Approved', '2023-03-08 16:10:17', NULL, '2023-03-08 09:10:32', NULL, '16', 'AIR');
-INSERT INTO "dxb"."status" VALUES (25, 'Received in airport warehouse', '2023-03-08 16:10:55', NULL, '2023-03-08 09:11:04', NULL, '16', 'AIR');
-INSERT INTO "dxb"."status" VALUES (26, 'Manifested', '2023-03-08 09:11:18', NULL, '2023-03-08 09:11:18', NULL, '16', 'AIR');
-INSERT INTO "dxb"."status" VALUES (27, 'Departure', '2023-03-08 16:11:55', NULL, '2023-03-08 09:12:02', NULL, '16', 'AIR');
-INSERT INTO "dxb"."status" VALUES (28, 'In transit', '2023-03-08 16:12:19', NULL, '2023-03-08 09:12:28', NULL, '17,18', 'AIR');
-INSERT INTO "dxb"."status" VALUES (29, 'Transit hub operations', '2023-03-08 16:12:44', NULL, '2023-03-08 09:12:53', NULL, '17,18', 'AIR');
-INSERT INTO "dxb"."status" VALUES (30, 'Cargo airlifted', '2023-04-04 08:39:32', NULL, '2023-04-04 08:39:32', NULL, '17,18', 'AIR');
-INSERT INTO "dxb"."status" VALUES (31, 'In transit other air port', '2023-03-08 16:13:14', NULL, '2023-03-08 09:13:34', NULL, '17,18', 'AIR');
-INSERT INTO "dxb"."status" VALUES (32, 'Arrived in destination port', '2023-04-04 08:37:08', NULL, '2023-04-04 08:37:08', NULL, '17,18', 'AIR');
-INSERT INTO "dxb"."status" VALUES (33, 'Under custom clearance', '2023-04-14 10:13:04', NULL, '2023-04-14 10:13:10', NULL, '19', 'AIR');
-INSERT INTO "dxb"."status" VALUES (34, 'Truck departed from airport', '2023-04-14 03:13:28', NULL, '2023-04-14 03:13:28', NULL, '19', 'AIR');
-INSERT INTO "dxb"."status" VALUES (35, 'Delivered to consignee', '2023-04-14 03:13:55', NULL, '2023-04-14 03:13:55', NULL, '19', 'AIR');
-INSERT INTO "dxb"."status" VALUES (36, 'Closed/ Finish Shipment', '2023-04-14 03:14:11', NULL, '2023-04-14 03:14:11', NULL, '19', 'AIR');
-INSERT INTO "dxb"."status" VALUES (37, 'Cancel', '2023-04-14 03:17:17', NULL, '2023-04-14 03:17:17', NULL, '16', 'AIR');
-INSERT INTO "dxb"."status" VALUES (38, 'Delay', '2023-04-14 03:17:38', NULL, '2023-04-14 03:17:38', NULL, '16', 'AIR');
-INSERT INTO "dxb"."status" VALUES (39, 'Received by shipping line', '2023-05-23 10:06:47', NULL, '2023-05-23 10:06:47', NULL, '18', 'SEAEXPORT');
-INSERT INTO "dxb"."status" VALUES (40, 'Under origin Custom Clearance', '2023-05-23 10:07:19', NULL, '2023-05-23 10:07:19', NULL, '18', 'SEAEXPORT');
-INSERT INTO "dxb"."status" VALUES (41, 'Departed from origin port', '2023-05-23 10:08:59', NULL, '2023-05-23 10:08:59', NULL, '18', 'SEAEXPORT');
-INSERT INTO "dxb"."status" VALUES (42, 'In transit other port', '2023-05-23 10:09:21', NULL, '2023-05-23 10:09:21', NULL, '18', 'SEAEXPORT');
-INSERT INTO "dxb"."status" VALUES (43, 'Arrived in transit port', '2023-05-23 10:09:40', NULL, '2023-05-23 10:09:40', NULL, '18', 'SEAEXPORT');
-INSERT INTO "dxb"."status" VALUES (44, 'Transit hub operations', '2023-05-23 10:10:12', NULL, '2023-05-23 10:10:12', NULL, '18', 'SEAEXPORT');
-INSERT INTO "dxb"."status" VALUES (45, 'Departured from transit port', '2023-05-23 10:10:28', NULL, '2023-05-23 10:10:28', NULL, '18', 'SEAEXPORT');
-INSERT INTO "dxb"."status" VALUES (46, 'Arrived in destination airport', '2023-05-23 10:10:49', NULL, '2023-05-23 10:10:49', NULL, '18', 'SEAEXPORT');
-INSERT INTO "dxb"."status" VALUES (47, 'Under destination customs clearance', '2023-05-23 10:11:26', NULL, '2023-05-23 10:11:26', NULL, '18', 'SEAEXPORT');
-INSERT INTO "dxb"."status" VALUES (48, 'Delivered to consignee', '2023-05-23 10:11:40', NULL, '2023-05-23 10:11:40', NULL, '18', 'SEAEXPORT');
-INSERT INTO "dxb"."status" VALUES (49, 'Cargo in transit', '2023-05-23 10:12:51', NULL, '2023-05-23 10:12:51', NULL, '18', 'AIRIMPORT');
-INSERT INTO "dxb"."status" VALUES (50, 'Arrived in destination airport', '2023-05-23 10:13:41', NULL, '2023-05-23 10:13:41', NULL, '18', 'AIRIMPORT');
-INSERT INTO "dxb"."status" VALUES (51, 'Under destination customs clearance', '2023-05-23 10:14:06', NULL, '2023-05-23 10:14:06', NULL, '18', 'AIRIMPORT');
-INSERT INTO "dxb"."status" VALUES (52, 'Delivered to final consignee', '2023-05-23 10:14:47', NULL, '2023-05-23 10:14:47', NULL, '18', 'AIRIMPORT');
-INSERT INTO "dxb"."status" VALUES (53, 'Cargo received', '2023-05-23 10:15:22', NULL, '2023-05-23 10:15:22', NULL, '18', 'WAREHOUSE');
-INSERT INTO "dxb"."status" VALUES (54, 'Under storage at warehouse', '2023-05-23 10:15:45', NULL, '2023-05-23 10:15:45', NULL, '18', 'WAREHOUSE');
-INSERT INTO "dxb"."status" VALUES (55, 'Cargo delivered', '2023-05-23 10:15:59', NULL, '2023-05-23 10:15:59', NULL, '18', 'WAREHOUSE');
-INSERT INTO "dxb"."status" VALUES (56, 'Cargo received', '2023-05-23 10:16:36', NULL, '2023-05-23 10:16:36', NULL, '18', 'TRUCKING');
-INSERT INTO "dxb"."status" VALUES (57, 'Loading completed', '2023-05-23 10:16:52', NULL, '2023-05-23 10:16:52', NULL, '18', 'TRUCKING');
-INSERT INTO "dxb"."status" VALUES (58, 'In transit', '2023-05-23 10:17:04', NULL, '2023-05-23 10:17:04', NULL, '18', 'TRUCKING');
-INSERT INTO "dxb"."status" VALUES (59, 'Offloading completed', '2023-05-23 10:17:21', NULL, '2023-05-23 10:17:21', NULL, '18', 'TRUCKING');
-INSERT INTO "dxb"."status" VALUES (60, 'Cargo delivered', '2023-05-23 10:17:31', NULL, '2023-05-23 10:17:31', NULL, '18', 'TRUCKING');
+INSERT INTO "dxb"."status" VALUES (1, 'Booking Received', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAIMPORT', 1);
+INSERT INTO "dxb"."status" VALUES (2, 'Booking Confirmed', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAIMPORT', 2);
+INSERT INTO "dxb"."status" VALUES (3, 'Cargo Received CFS', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAIMPORT', 3);
+INSERT INTO "dxb"."status" VALUES (4, 'Under Customs Clearance', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAIMPORT', 4);
+INSERT INTO "dxb"."status" VALUES (5, 'Loading Completed', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAIMPORT', 5);
+INSERT INTO "dxb"."status" VALUES (6, 'Container Onboard', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAIMPORT', 6);
+INSERT INTO "dxb"."status" VALUES (7, 'Vessel Delay', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAIMPORT', 7);
+INSERT INTO "dxb"."status" VALUES (8, 'Cancel', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAIMPORT', 8);
+INSERT INTO "dxb"."status" VALUES (9, 'Vessel Departed', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAIMPORT', 9);
+INSERT INTO "dxb"."status" VALUES (10, 'Arrived in transit Port', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAIMPORT', 10);
+INSERT INTO "dxb"."status" VALUES (11, 'In Transit to other port', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAIMPORT', 11);
+INSERT INTO "dxb"."status" VALUES (12, 'Arrived in Destination port', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAIMPORT', 12);
+INSERT INTO "dxb"."status" VALUES (13, 'Delivered to Consignee', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAIMPORT', 13);
+INSERT INTO "dxb"."status" VALUES (14, 'Closed Shipment', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAIMPORT', 14);
+INSERT INTO "dxb"."status" VALUES (15, 'Booking Received', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAEXPORT', 15);
+INSERT INTO "dxb"."status" VALUES (16, 'Booking Confirmed', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAEXPORT', 16);
+INSERT INTO "dxb"."status" VALUES (17, 'Cargo Received CFS', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAEXPORT', 17);
+INSERT INTO "dxb"."status" VALUES (18, 'Under Customs Clearance', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAEXPORT', 18);
+INSERT INTO "dxb"."status" VALUES (19, 'Loading Completed', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAEXPORT', 19);
+INSERT INTO "dxb"."status" VALUES (20, 'Container Onboard', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAEXPORT', 20);
+INSERT INTO "dxb"."status" VALUES (21, 'Vessel Delay', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAEXPORT', 21);
+INSERT INTO "dxb"."status" VALUES (22, 'Cancel', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAEXPORT', 22);
+INSERT INTO "dxb"."status" VALUES (23, 'Vessel Departed', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAEXPORT', 23);
+INSERT INTO "dxb"."status" VALUES (24, 'Arrived in transit Port', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAEXPORT', 24);
+INSERT INTO "dxb"."status" VALUES (25, 'In Transit to other port', '2024-10-18 13:56:36', NULL, '2024-10-18 13:56:36', NULL, NULL, 'SEAEXPORT', 25);
+INSERT INTO "dxb"."status" VALUES (26, 'Arrived in Destination port', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'SEAEXPORT', 26);
+INSERT INTO "dxb"."status" VALUES (27, 'Delivered to Consignee', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'SEAEXPORT', 27);
+INSERT INTO "dxb"."status" VALUES (28, 'Closed Shipment', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'SEAEXPORT', 28);
+INSERT INTO "dxb"."status" VALUES (29, 'Booking Received', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIRIMPORT', 29);
+INSERT INTO "dxb"."status" VALUES (30, 'Booking Confirmed', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIRIMPORT', 30);
+INSERT INTO "dxb"."status" VALUES (32, 'Manifested', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIRIMPORT', 32);
+INSERT INTO "dxb"."status" VALUES (31, 'Received in Airport Warehouse', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIRIMPORT', 31);
+INSERT INTO "dxb"."status" VALUES (33, 'Cancel', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIRIMPORT', 33);
+INSERT INTO "dxb"."status" VALUES (34, 'Cargo partially Airlifted', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIRIMPORT', 34);
+INSERT INTO "dxb"."status" VALUES (35, 'Delay', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIRIMPORT', 35);
+INSERT INTO "dxb"."status" VALUES (36, 'Cargo Airlifted', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIRIMPORT', 36);
+INSERT INTO "dxb"."status" VALUES (37, 'In Transit another Airport', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIRIMPORT', 37);
+INSERT INTO "dxb"."status" VALUES (38, 'Arrived in destination Airport', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIRIMPORT', 38);
+INSERT INTO "dxb"."status" VALUES (39, 'Under Customs Clearance', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIRIMPORT', 39);
+INSERT INTO "dxb"."status" VALUES (40, 'Truck departed from airport', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIRIMPORT', 40);
+INSERT INTO "dxb"."status" VALUES (41, 'Delivered to Consignee', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIRIMPORT', 41);
+INSERT INTO "dxb"."status" VALUES (42, 'Closed Shipment', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIRIMPORT', 42);
+INSERT INTO "dxb"."status" VALUES (43, 'Booking Received', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIREXPORT', 43);
+INSERT INTO "dxb"."status" VALUES (44, 'Booking Confirmed', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIREXPORT', 44);
+INSERT INTO "dxb"."status" VALUES (45, 'Received in Airport Warehouse', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIREXPORT', 45);
+INSERT INTO "dxb"."status" VALUES (46, 'Manifested', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIREXPORT', 46);
+INSERT INTO "dxb"."status" VALUES (47, 'Cancel', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIREXPORT', 47);
+INSERT INTO "dxb"."status" VALUES (48, 'Cargo partially Airlifted', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIREXPORT', 48);
+INSERT INTO "dxb"."status" VALUES (49, 'Delay', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIREXPORT', 49);
+INSERT INTO "dxb"."status" VALUES (50, 'Cargo Airlifted', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIREXPORT', 50);
+INSERT INTO "dxb"."status" VALUES (51, 'In Transit another Airport', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIREXPORT', 51);
+INSERT INTO "dxb"."status" VALUES (52, 'Arrived in destination Airport', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIREXPORT', 52);
+INSERT INTO "dxb"."status" VALUES (53, 'Under Customs Clearance', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIREXPORT', 53);
+INSERT INTO "dxb"."status" VALUES (54, 'Truck departed from airport', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIREXPORT', 54);
+INSERT INTO "dxb"."status" VALUES (55, 'Delivered to Consignee', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIREXPORT', 55);
+INSERT INTO "dxb"."status" VALUES (56, 'Closed Shipment', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'AIREXPORT', 56);
+INSERT INTO "dxb"."status" VALUES (57, 'Booking Received', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'WAREHOUSE', 57);
+INSERT INTO "dxb"."status" VALUES (58, 'Booking Confirmed', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'WAREHOUSE', 58);
+INSERT INTO "dxb"."status" VALUES (59, 'Cargo Received', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'WAREHOUSE', 59);
+INSERT INTO "dxb"."status" VALUES (60, 'Under Storage at Warehouse', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'WAREHOUSE', 60);
+INSERT INTO "dxb"."status" VALUES (61, 'Cargo Delivered', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'WAREHOUSE', 61);
+INSERT INTO "dxb"."status" VALUES (62, 'Closed Shipment', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'WAREHOUSE', 62);
+INSERT INTO "dxb"."status" VALUES (63, 'Booking Received', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'TRUCKING', 63);
+INSERT INTO "dxb"."status" VALUES (64, 'Booking Confirmed', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'TRUCKING', 64);
+INSERT INTO "dxb"."status" VALUES (65, 'Cargo Received', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'TRUCKING', 65);
+INSERT INTO "dxb"."status" VALUES (66, 'Loading Completed', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'TRUCKING', 66);
+INSERT INTO "dxb"."status" VALUES (67, 'In Transit', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'TRUCKING', 67);
+INSERT INTO "dxb"."status" VALUES (68, 'Offloading Completed', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'TRUCKING', 68);
+INSERT INTO "dxb"."status" VALUES (69, 'Cargo Delivered', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'TRUCKING', 69);
+INSERT INTO "dxb"."status" VALUES (70, 'Closed Shipment', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'TRUCKING', 70);
+INSERT INTO "dxb"."status" VALUES (71, 'Booking Received', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'COURIER', 71);
+INSERT INTO "dxb"."status" VALUES (72, 'Booking Confirmed', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'COURIER', 72);
+INSERT INTO "dxb"."status" VALUES (73, 'Picked Up by Courier', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'COURIER', 73);
+INSERT INTO "dxb"."status" VALUES (74, 'In Transit', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'COURIER', 74);
+INSERT INTO "dxb"."status" VALUES (75, 'Under Customs Clearance', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'COURIER', 75);
+INSERT INTO "dxb"."status" VALUES (76, 'Delivered by courier', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'COURIER', 76);
+INSERT INTO "dxb"."status" VALUES (77, 'Closed Shipment', '2024-10-18 13:56:37', NULL, '2024-10-18 13:56:37', NULL, NULL, 'COURIER', 77);
 
 -- ----------------------------
 -- Function structure for auto_ctd
@@ -2185,6 +1936,29 @@ END; $BODY$
   COST 100;
 
 -- ----------------------------
+-- Function structure for code_local_billing_customer
+-- ----------------------------
+DROP FUNCTION IF EXISTS "dxb"."code_local_billing_customer"();
+CREATE OR REPLACE FUNCTION "dxb"."code_local_billing_customer"()
+  RETURNS "pg_catalog"."text" AS $BODY$
+
+DECLARE hasil INT; 
+DECLARE tahun varchar(2);
+DECLARE bulan varchar(2);
+	
+	BEGIN
+    SELECT TO_CHAR(CURRENT_DATE, 'YY') INTO tahun;
+		SELECT TO_CHAR(CURRENT_DATE, 'MM') INTO  bulan;
+		
+   		 
+	SELECT CAST(MAX(RIGHT(TRIM(customer_code),1)) AS INT4) INTO hasil  from "dxb".customer  where LEFT(customer_code,6) = CONCAT('LOC',tahun,bulan) ;
+	RETURN concat('LOC',tahun,bulan,lpad((coalesce(hasil,0) + 1)::varchar,4,'0'));
+
+END$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+-- ----------------------------
 -- Function structure for generate_quotation
 -- ----------------------------
 DROP FUNCTION IF EXISTS "dxb"."generate_quotation"();
@@ -2300,6 +2074,29 @@ END; $BODY$
   COST 100;
 
 -- ----------------------------
+-- Function structure for job_order_number
+-- ----------------------------
+DROP FUNCTION IF EXISTS "dxb"."job_order_number"("p_prefix" varchar);
+CREATE OR REPLACE FUNCTION "dxb"."job_order_number"("p_prefix" varchar)
+  RETURNS "pg_catalog"."text" AS $BODY$
+DECLARE hasil INT; 
+DECLARE tahun varchar(2);
+DECLARE bulan varchar(2);
+	
+	BEGIN
+	  SELECT TO_CHAR(CURRENT_DATE, 'YY') INTO tahun;
+		SELECT TO_CHAR(CURRENT_DATE, 'MM') INTO  bulan;
+		
+		
+	SELECT CAST(MAX(RIGHT(TRIM(job_order_code),1)) AS INT4) INTO hasil  from "origin".job_order_air  where LEFT(job_order_code,6) = CONCAT('CA',tahun,bulan) ;
+	RETURN concat(p_prefix,tahun,bulan,lpad((coalesce(hasil,0) + 1)::varchar,3,'0'));
+	
+	
+END$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+-- ----------------------------
 -- Function structure for loading_pnumber
 -- ----------------------------
 DROP FUNCTION IF EXISTS "dxb"."loading_pnumber"();
@@ -2399,6 +2196,30 @@ END; $BODY$
   COST 100;
 
 -- ----------------------------
+-- Function structure for no_operation
+-- ----------------------------
+DROP FUNCTION IF EXISTS "dxb"."no_operation"();
+CREATE OR REPLACE FUNCTION "dxb"."no_operation"()
+  RETURNS "pg_catalog"."text" AS $BODY$
+DECLARE hasil INT; 
+DECLARE tahun varchar(2);
+DECLARE bulan varchar(2);
+	
+	BEGIN
+    SELECT TO_CHAR(CURRENT_DATE, 'YY') INTO tahun;
+		SELECT TO_CHAR(CURRENT_DATE, 'MM') INTO  bulan;
+		
+   		 
+	SELECT CAST(MAX(RIGHT(TRIM(no_operation_chart),4)) AS INT4) INTO hasil  from "dxb".operation_chart  where LEFT(no_operation_chart,6) = CONCAT('OC',tahun,bulan) ;
+	RETURN concat('OC',tahun,bulan,lpad((coalesce(hasil,0) + 1)::varchar,4,'0'));
+
+
+
+END; $BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+-- ----------------------------
 -- Function structure for tes
 -- ----------------------------
 DROP FUNCTION IF EXISTS "dxb"."tes"("p_prefix" varchar);
@@ -2432,9 +2253,14 @@ END; $BODY$
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
+SELECT setval('"dxb"."courir_shipment_mode_id_seq"', 1, true);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
 ALTER SEQUENCE "dxb"."status_id_seq"
 OWNED BY "dxb"."status"."status_id";
-SELECT setval('"dxb"."status_id_seq"', 60, true);
+SELECT setval('"dxb"."status_id_seq"', 62, true);
 
 -- ----------------------------
 -- Primary Key structure for table agreed_rate
@@ -2472,9 +2298,29 @@ ALTER TABLE "dxb"."control_office" ADD CONSTRAINT "control_office_pkey" PRIMARY 
 ALTER TABLE "dxb"."courir_shipment_mode" ADD CONSTRAINT "courir_shipment_mode_pkey" PRIMARY KEY ("id");
 
 -- ----------------------------
+-- Primary Key structure for table customer
+-- ----------------------------
+ALTER TABLE "dxb"."customer" ADD CONSTRAINT "customer_pkey" PRIMARY KEY ("customer_id");
+
+-- ----------------------------
+-- Primary Key structure for table customer_group
+-- ----------------------------
+ALTER TABLE "dxb"."customer_group" ADD CONSTRAINT "customer_group_pkey" PRIMARY KEY ("customer_group_id");
+
+-- ----------------------------
 -- Primary Key structure for table dimension
 -- ----------------------------
 ALTER TABLE "dxb"."dimension" ADD CONSTRAINT "dimension_pkey" PRIMARY KEY ("dimension_id");
+
+-- ----------------------------
+-- Primary Key structure for table final_alert
+-- ----------------------------
+ALTER TABLE "dxb"."final_alert" ADD CONSTRAINT "final_alert_pkey" PRIMARY KEY ("id");
+
+-- ----------------------------
+-- Primary Key structure for table final_alert_crossair
+-- ----------------------------
+ALTER TABLE "dxb"."final_alert_crossair" ADD CONSTRAINT "final_alert_copy1_pkey" PRIMARY KEY ("id");
 
 -- ----------------------------
 -- Primary Key structure for table histori_job
@@ -2490,6 +2336,11 @@ ALTER TABLE "dxb"."job_order" ADD CONSTRAINT "job_order_pkey" PRIMARY KEY ("job_
 -- Primary Key structure for table job_order_detail
 -- ----------------------------
 ALTER TABLE "dxb"."job_order_detail" ADD CONSTRAINT "job_order_detail_pkey" PRIMARY KEY ("job_order_detail_id");
+
+-- ----------------------------
+-- Primary Key structure for table job_order_document
+-- ----------------------------
+ALTER TABLE "dxb"."job_order_document" ADD CONSTRAINT "job_order_document_pkey" PRIMARY KEY ("document_id");
 
 -- ----------------------------
 -- Primary Key structure for table job_order_vendor
@@ -2512,6 +2363,11 @@ ALTER TABLE "dxb"."loading_plan_detail" ADD CONSTRAINT "loading_plan_detail_pkey
 ALTER TABLE "dxb"."loading_plan_detail_local" ADD CONSTRAINT "loading_plan_detail_local_pkey" PRIMARY KEY ("loading_detail_id");
 
 -- ----------------------------
+-- Primary Key structure for table loading_plan_document
+-- ----------------------------
+ALTER TABLE "dxb"."loading_plan_document" ADD CONSTRAINT "loading_plan_document_pkey" PRIMARY KEY ("loading_plan_document_id");
+
+-- ----------------------------
 -- Primary Key structure for table loading_plan_local
 -- ----------------------------
 ALTER TABLE "dxb"."loading_plan_local" ADD CONSTRAINT "loading_plan_local_pkey" PRIMARY KEY ("plan_id");
@@ -2520,6 +2376,11 @@ ALTER TABLE "dxb"."loading_plan_local" ADD CONSTRAINT "loading_plan_local_pkey" 
 -- Primary Key structure for table loading_report
 -- ----------------------------
 ALTER TABLE "dxb"."loading_report" ADD CONSTRAINT "loading_report_pkey" PRIMARY KEY ("loading_id");
+
+-- ----------------------------
+-- Primary Key structure for table loading_report_bl
+-- ----------------------------
+ALTER TABLE "dxb"."loading_report_bl" ADD CONSTRAINT "loading_report_bl_pkey" PRIMARY KEY ("loading_report_bl_id");
 
 -- ----------------------------
 -- Primary Key structure for table loading_report_detail
@@ -2545,6 +2406,11 @@ ALTER TABLE "dxb"."noted_section" ADD CONSTRAINT "noted_section_pkey" PRIMARY KE
 -- Primary Key structure for table operation_document
 -- ----------------------------
 ALTER TABLE "dxb"."operation_document" ADD CONSTRAINT "operation_document_pkey" PRIMARY KEY ("document_id");
+
+-- ----------------------------
+-- Primary Key structure for table order_document
+-- ----------------------------
+ALTER TABLE "dxb"."order_document" ADD CONSTRAINT "order_document_pkey" PRIMARY KEY ("order_document_id");
 
 -- ----------------------------
 -- Primary Key structure for table quotation
@@ -2580,6 +2446,16 @@ ALTER TABLE "dxb"."si_order" ADD CONSTRAINT "si_order_pkey" PRIMARY KEY ("order_
 -- Primary Key structure for table si_order_detail
 -- ----------------------------
 ALTER TABLE "dxb"."si_order_detail" ADD CONSTRAINT "si_order_detail_pkey" PRIMARY KEY ("si_order_detail");
+
+-- ----------------------------
+-- Primary Key structure for table si_sales_office
+-- ----------------------------
+ALTER TABLE "dxb"."si_sales_office" ADD CONSTRAINT "si_sales_office_pkey" PRIMARY KEY ("si_sales_office_id");
+
+-- ----------------------------
+-- Primary Key structure for table si_sales_person
+-- ----------------------------
+ALTER TABLE "dxb"."si_sales_person" ADD CONSTRAINT "si_sales_person_pkey" PRIMARY KEY ("si_sales_person_id");
 
 -- ----------------------------
 -- Primary Key structure for table status

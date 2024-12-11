@@ -19,10 +19,21 @@ return new class extends Migration
                 ->references('id')
                 ->on('finance.customer')
                 ->onDelete('cascade');
-            $table->string('account_code')->nullable();
-            $table->integer('accout')->nullable();
-            $table->string('account_name')->nullable();
-            $table->uuid('currency')->nullable();
+
+            $table->foreignUuid('chart_of_account_id')
+                ->nullable()
+                ->references('id')
+                ->on('finance.chart_of_accounts')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreignUuid('currency_id')
+                ->nullable()
+                ->references('id')
+                ->on('finance.currencies')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
             $table->string('lov_status')->nullable();
             $table->text('notes')->nullable();
 

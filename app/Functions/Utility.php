@@ -2,6 +2,8 @@
 
 namespace App\Functions;
 
+use Illuminate\Support\Facades\DB;
+
 final class Utility
 {
     public static function generateTableActions(array $actions)
@@ -43,5 +45,29 @@ final class Utility
         }
 
         return $button;
+    }
+
+    public static function generateUniqueCode(
+        $table,
+        $field,
+        $length,
+        $prefix,
+    ) {
+        // Dapatkan ID terakhir berdasarkan skema, tabel, dan kolom tertentu
+        $lastRecord = DB::table("$table")
+            ->select($field)
+            ->orderBy($field, 'desc')
+            ->first();
+
+        // Ambil angka terakhir dari ID sebelumnya
+        $lastNumber = $lastRecord ? (int) str_replace($prefix . '-', '', $lastRecord->$field) : 0;
+
+        // Hitung ID berikutnya
+        $nextNumber = $lastNumber + 1;
+
+        // Format ID baru dengan padding
+        $newId = $prefix . '-' . str_pad($nextNumber, $length - strlen($prefix) - 1, '0', STR_PAD_LEFT);
+
+        return $newId;
     }
 }

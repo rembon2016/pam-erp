@@ -23,12 +23,32 @@ To set up the Leave Request system, follow these steps:
 5. Run migrations and seeders
 6. Start the application
 
-## Custom Artisan Commands
-```
-php artisan pds:sql-migrate --dbusername= --dbname= --filename=
+## Advanced Instructions
 
-Notes:
-- `--dbusername` is the username of the database
-- `--dbname` is the name of the database
-- `--filename` is the name of the file to be migrated located in the `database/sql` folder. ex: accounting/crm/master/etc..
+If you want to dump all SQL files in the directory: database/sql/, please run the following command:
+```
+php artisan db:seed DumpSqlFileSeeder
+```
+Adjust the array in the following function according to the file name contained in the directory: database/sql/:
+```php
+/**
+ * Returns a list of SQL file names to be processed.
+ *
+ * @return array The list of SQL file names.
+ */
+private function getSqlList(): array
+{
+    return [
+        'accounting',
+        'crm',
+        'dxb',
+        'hrm',
+        'master',
+        'origin',
+        'public',
+        'user',
+        'usr',
+        'usrs'
+    ];
+}
 ```

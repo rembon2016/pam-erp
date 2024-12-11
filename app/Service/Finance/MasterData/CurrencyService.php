@@ -6,6 +6,7 @@ namespace App\Service\Finance\MasterData;
 
 use App\Models\Finance\Currency;
 use App\Functions\ObjectResponse;
+use Illuminate\Database\Eloquent\Collection;
 
 final class CurrencyService
 {
@@ -13,6 +14,12 @@ final class CurrencyService
      * Create a new class instance.
      */
     public function __construct(){}
+
+
+    public function getCurrencies(): Collection
+    {
+        return Currency::orderBy('currency_code', 'ASC')->get();
+    }
 
     /**
      * Creates a new currency record in the database.

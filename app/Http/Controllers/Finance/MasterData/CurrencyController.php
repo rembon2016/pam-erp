@@ -48,7 +48,7 @@ final class CurrencyController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            $currencies = Currency::orderBy('currency_code', 'ASC')->get();
+            $currencies = $this->currencyService->getCurrencies();
             return DataTables::of($currencies)
                 ->addIndexColumn()
                 ->editColumn('currency_date', function ($item) {

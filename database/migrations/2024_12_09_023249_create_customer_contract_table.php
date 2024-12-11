@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 use App\Functions\TableTimestamps;
 use Illuminate\Support\Facades\Schema;

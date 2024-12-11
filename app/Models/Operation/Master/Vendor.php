@@ -3,20 +3,66 @@
 namespace App\Models\Operation\Master;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Vendor extends Model
 {
-
+    /**
+     * The database table name for the bank informations.
+     *
+     * @var string
+     */
     protected $table = 'master.vendor';
+
+    /**
+     * Indicates that this model does not have created_at and updated_at timestamp columns.
+     *
+     * @var bool
+     */
     public $timestamps = false;
+
+    /**
+     * The primary key column for the model.
+     *
+     * @var string
+     */
     protected $primaryKey = 'vendor_id';
-    protected $keyType = 'string';
-    static $rules = [];
-    protected $fillable = ['vendor_id','vendor_name','vendor_address','vendor_cp','vendor_email','vendor_phone','vendor_telp','created_date','created_by','modified_by','status','vendor_type_id','country_id','date_modified','segment','vendor_code'];
+
+    /**
+     * Indicates that all fields are guarded from mass assignment except for the 'id' field.
+     *
+     * @var array
+     */
+    protected $fillable = ['id'];
+
+    /**
+     * Appends the specific attribute to the model.
+     *
+     * @var array
+     */
     protected $appends = ['type'];
 
-    public function getTypeAttribute()
+    /**
+     * Accessor method that returns the customer type name for the vendor.
+     *
+     * @return string
+     */
+    public function getTypeAttribute(): string
     {
         return $this->customer_type->customer_type_name ?? "";
+    }
+
+    /**
+     * Retrieves the customer type detail for the vendor.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function customerTypeDetail(): BelongsTo
+    {
+        return $this->belongsTo(
+            related: CustomerType::class,
+            foreignKey: 'vendor_type_id',
+            ownerKey: 'customer_type_id'
+        );
     }
 }

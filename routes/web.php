@@ -22,6 +22,12 @@ use App\Http\Controllers\Finance\MasterData\ChartOfAccountController;
 use App\Http\Controllers\Finance\MasterData\CustomerContractController;
 use App\Http\Controllers\Finance\GeneralWise\Shipment\ShipmentController;
 use App\Http\Controllers\Finance\MasterData\CustomerForBillingController;
+use Illuminate\Support\Facades\Schema;
+
+Route::get('/', function () {
+
+    dd(Schema::getConnection());
+});
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -309,7 +315,6 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/filter/eta', [ShipmentController::class, 'etamerge'])->name('eta');
                 Route::get('/list', [ShipmentController::class, 'list'])->name('list');
                 Route::get('/{type}', [ShipmentController::class, 'index'])->name('index');
-
             });
         });
     });
@@ -337,5 +342,4 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/export/csv', [RolePermissionController::class, 'exportCsv'])->name('export.csv');
         });
     });
-
 });

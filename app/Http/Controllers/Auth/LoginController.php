@@ -10,6 +10,7 @@ use App\Service\Auth\LoginService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Schema;
 
 final class LoginController extends Controller
 {
@@ -29,6 +30,7 @@ final class LoginController extends Controller
      */
     public function login(): View
     {
+        // dd(Schema::getConnection());
         return view('auth.login');
     }
 

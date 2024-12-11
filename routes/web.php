@@ -16,11 +16,12 @@ use App\Http\Controllers\Finance\MasterData\CustomerController;
 use App\Http\Controllers\Finance\MasterData\FixedAssetController;
 use App\Http\Controllers\Finance\MasterData\ServiceTypeController;
 use App\Http\Controllers\Finance\Settings\RolePermissionController;
+use App\Http\Controllers\Finance\MasterData\AgentContractController;
 use App\Http\Controllers\Finance\MasterData\PaymentMethodController;
 use App\Http\Controllers\Finance\MasterData\ChartOfAccountController;
 use App\Http\Controllers\Finance\MasterData\CustomerContractController;
-use App\Http\Controllers\Finance\MasterData\CustomerForBillingController;
 use App\Http\Controllers\Finance\GeneralWise\Shipment\ShipmentController;
+use App\Http\Controllers\Finance\MasterData\CustomerForBillingController;
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -73,6 +74,24 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/export/pdf', [CustomerContractController::class, 'exportPdf'])->name('export.pdf');
                 Route::get('/export/excel', [CustomerContractController::class, 'exportExcel'])->name('export.excel');
                 Route::get('/export/csv', [CustomerContractController::class, 'exportCsv'])->name('export.csv');
+            });
+
+            Route::group([
+                'prefix' => 'agent-contract',
+                'as' => 'agent-contract.'
+            ], function () {
+                Route::get('/', [AgentContractController::class, 'index'])->name('index');
+                Route::get('/list', [AgentContractController::class, 'list'])->name('list');
+                Route::get('/create', [AgentContractController::class, 'create'])->name('create');
+                Route::post('/', [AgentContractController::class, 'store'])->name('store');
+                Route::get('/{id}/edit', [AgentContractController::class, 'edit'])->name('edit');
+                Route::put('/{id}', [AgentContractController::class, 'update'])->name('update');
+                Route::get('/{id}/delete', [AgentContractController::class, 'destroy'])->name('destroy');
+
+                // Export Route
+                Route::get('/export/pdf', [AgentContractController::class, 'exportPdf'])->name('export.pdf');
+                Route::get('/export/excel', [AgentContractController::class, 'exportExcel'])->name('export.excel');
+                Route::get('/export/csv', [AgentContractController::class, 'exportCsv'])->name('export.csv');
             });
 
             Route::group([

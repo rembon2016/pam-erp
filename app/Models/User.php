@@ -27,7 +27,7 @@ final class User extends Authenticatable
     /**
      * The database table name for the User model.
      */
-    protected $table = 'usrs.users';
+    protected $table = 'usr.users';
 
     /**
      * The attributes that are mass assignable.

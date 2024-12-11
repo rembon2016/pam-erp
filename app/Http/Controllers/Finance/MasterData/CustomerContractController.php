@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
+use App\Service\Finance\MasterData\CustomerService;
 use Illuminate\View\View;
 use App\Functions\Utility;
 use Illuminate\Http\Request;
@@ -30,7 +31,8 @@ final class CustomerContractController extends Controller
     public function __construct(
         protected CustomerContractService $customerContractService,
         protected ChargeService $chargeService,
-        protected CurrencyService $currencyService
+        protected CurrencyService $currencyService,
+        protected CustomerService $customerService
     ) {}
 
     /**
@@ -94,7 +96,7 @@ final class CustomerContractController extends Controller
          ];
 
         $customer_contract = new CustomerContract;
-        $customers = Customer::orderBy('customer_code', 'asc')->get();
+        $customers = $this->customerService->getCustomers();
         $charges = $this->chargeService->getCharges();
         $currencies = $this->currencyService->getCurrencies();
         $units = Unit::orderBy('unit_name', 'asc')->get();
@@ -125,7 +127,7 @@ final class CustomerContractController extends Controller
         $getCustomerContractResponse = $this->customerContractService->getCustomerContractById($id);
         if (!$getCustomerContractResponse->success) return to_route('finance.master-data.customer-contract.index')->with('toastError', $getCustomerContractResponse->message);
 
-        $customers = Customer::orderBy('customer_code', 'asc')->get();
+        $customers = $this->customerService->getCustomers();
         $charges = $this->chargeService->getCharges();
         $currencies = $this->currencyService->getCurrencies();
         $units = Unit::orderBy('unit_name', 'asc')->get();

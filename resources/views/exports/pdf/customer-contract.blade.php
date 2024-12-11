@@ -1,4 +1,4 @@
-resources/views/pages/finance/master-data/payment-method<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -56,7 +56,8 @@ resources/views/pages/finance/master-data/payment-method<!DOCTYPE html>
             <tr>
                 <th>No</th>
                 <th>Contract No</th>
-                <th>Customer</th>
+                <th>Customer Code</th>
+                <th>Customer Name</th>
                 <th>Contract Validity To</th>
                 <th>Contract Validity From</th>
                 <th>Description</th>
@@ -67,6 +68,7 @@ resources/views/pages/finance/master-data/payment-method<!DOCTYPE html>
                 <tr>
                     <td align="center">{{ $loop->iteration }}</td>
                     <td align="center">{{ $item->contract_no }}</td>
+                    <td>{{ $item->customer?->customer_code }}</td>
                     <td>{{ $item->customer?->customer_name }}</td>
                     <td align="center">{{ $item->contract_start?->format('d/m/Y') }}</td>
                     <td align="center">{{ $item->contract_end?->format('d/m/Y') }}</td>

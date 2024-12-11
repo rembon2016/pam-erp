@@ -17,7 +17,11 @@ use App\Models\Finance\AgentContract;
 use Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\Facades\DataTables;
 use App\Exports\MasterData\AgentContractExport;
+use App\Service\Finance\MasterData\UnitService;
+use App\Service\Finance\MasterData\ChargeService;
+use App\Service\Finance\MasterData\CountryService;
 use App\Service\Finance\MasterData\CustomerService;
+use App\Service\Finance\MasterData\ServiceTypeService;
 use App\Service\Finance\MasterData\AgentContractService;
 use App\Http\Requests\Finance\MasterData\AgentContract\StoreAgentContractRequest;
 use App\Http\Requests\Finance\MasterData\AgentContract\UpdateAgentContractRequest;
@@ -26,7 +30,11 @@ final class AgentContractController extends Controller
 {
     public function __construct(
         protected AgentContractService $agentContractService,
-        protected CustomerService $customerService
+        protected CustomerService $customerService,
+        protected ServiceTypeService $serviceTypeService,
+        protected CountryService $countryService,
+        protected ChargeService $chargeService,
+        protected UnitService $unitService
     ) {}
 
     /**
@@ -93,8 +101,23 @@ final class AgentContractController extends Controller
 
         $agent_contract = new AgentContract;
         $customers = $this->customerService->getCustomers();
+        $serviceVendors = $this->serviceTypeService->getServiceTypes();
+        $countries = $this->countryService->getCountries();
+        $charges = $this->chargeService->getCharges();
+        $units = $this->unitService->getUnitCollections();
+        $carriers = [];
+        $routedTransits = [
+            ['label' => 'DUBAI', 'value' => 'DUBAI'],
+            ['label' => 'SINGAPORE', 'value' => 'SINGAPORE'],
+            ['label' => 'LA', 'value' => 'LOS ANGELES'],
+            ['label' => 'SEATTLE', 'value' => 'SEATTLE'],
+            ['label' => 'None of above (manual input)', 'value' => 'NONE'],
+        ];
 
-         return view('pages.finance.master-data.agent-contract.form', compact('data', 'agent_contract', 'customers'));
+         return view(
+            'pages.finance.master-data.agent-contract.form',
+            compact('data', 'agent_contract', 'customers', 'serviceVendors', 'countries', 'routedTransits', 'carriers', 'charges', 'units')
+        );
     }
 
     /**
@@ -127,11 +150,29 @@ final class AgentContractController extends Controller
          ];
 
         $customers = $this->customerService->getCustomers();
+        $serviceVendors = $this->serviceTypeService->getServiceTypes();
+        $countries = $this->countryService->getCountries();
+        $charges = $this->chargeService->getCharges();
+        $units = $this->unitService->getUnitCollections();
+        $carriers = [];
+        $routedTransits = [
+            ['label' => 'DUBAI', 'value' => 'DUBAI'],
+            ['label' => 'SINGAPORE', 'value' => 'SINGAPORE'],
+            ['label' => 'LA', 'value' => 'LOS ANGELES'],
+            ['label' => 'SEATTLE', 'value' => 'SEATTLE'],
+            ['label' => 'None of above (manual input)', 'value' => 'NONE'],
+        ];
 
          return view('pages.finance.master-data.agent-contract.form', [
             'data' => $data,
             'agent_contract' => $getAgentContractResponse->data,
             'customers' => $customers,
+            'serviceVendors' => $serviceVendors,
+            'countries' => $countries,
+            'routedTransits' => $routedTransits,
+            'carriers' => $carriers,
+            'charges' => $charges,
+            'units' => $units
          ]);
     }
 

@@ -1,4 +1,78 @@
 @extends('layout.app')
+
+@push('css')
+<style>
+    body {
+        overflow-x: hidden;
+    }
+
+    /* .tableChargeForm, .tableChargeForm td, .tableChargeForm th {
+        border: 1px solid #ddd;
+    }
+
+    .tableServiceForm, .tableServiceForm td, .tableServiceForm th {
+        border: 1px solid #ddd;
+    } */
+
+    .tableServiceForm, .tableChargeForm {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+    }
+
+    .tableServiceForm {
+        overflow-x: hidden;
+    }
+
+    .tableChargeForm {
+        margin: 0 15px;
+    }
+
+    .tableServiceForm :is(.form-control) {
+        padding: 0.5rem 0.75rem;
+        font-size: 1rem;
+    }
+
+    .tableServiceForm :is(.form-select) {
+        padding: 0.5rem 3rem 0.5rem 0.75rem;
+        font-size: 1rem;
+    }
+
+    .tableServiceForm .tableServiceForm-content::-webkit-scrollbar, .tableChargeForm::-webkit-scrollbar {
+        height: 3px;
+        width: 3px;
+    }
+
+    .tableServiceForm .tableServiceForm-content::-webkit-scrollbar-track, .tableChargeForm::-webkit-scrollbar-tra{
+        background-color: #000;
+    }
+
+    .tableServiceForm .tableServiceForm-content {
+        overflow-x: scroll;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .tableServiceForm :is(.tableServiceForm-heading, .tableServiceForm-body .tableServiceForm-body-row), .tableChargeForm :is(.tableChargeForm-heading, .tableChargeForm-body .tableChargeForm-body-row) {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+    }
+
+    .tableServiceForm .tableServiceForm-box, .tableChargeForm .tableChargeForm-box {
+        flex: 1;
+        /* border: 1px solid #ededed; */
+        min-width: 200px;
+        padding: 5px;
+    }
+
+    .tableChargeForm .tableChargeForm-box .tableChargeForm-heading-text {
+        font-size: 12px;
+    }
+</style>
+@endpush
+
 @section('body')
     <x:layout.breadcrumb.wrapper module="Master Data" pageName="{!! $data['page'] !!}">
         <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />
@@ -33,6 +107,9 @@
             <div class="col-12">
                 <x:form.textarea label="Description" name="contract_description" placeholder="Type Description of Contract" required="true" :model="$agent_contract" />
             </div>
+            <div class="col-12 mb-10">
+                @include('pages.finance.master-data.agent-contract.service-contract-form')
+            </div>
         </div>
         <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px">
             <x:form.cancel-button href="{{ route('finance.master-data.agent-contract.index') }}" label="Cancel" />
@@ -40,3 +117,5 @@
         </div>
     </x:form.wrapper>
 @endsection
+
+@include('pages.finance.master-data.agent-contract.contract-agent-form-jquery')

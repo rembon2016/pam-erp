@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
-use App\Models\Finance\ServiceType;
 use App\Functions\ObjectResponse;
+use App\Models\Finance\ServiceType;
+use Illuminate\Database\Eloquent\Collection;
 
 final class ServiceTypeService
 {
@@ -13,6 +14,11 @@ final class ServiceTypeService
      * Create a new class instance.
      */
     public function __construct(){}
+
+    public function getServiceTypes(): Collection
+    {
+        return ServiceType::orderBy('service_code', 'ASC')->get();
+    }
 
     /**
      * Creates a new service type record in the database.

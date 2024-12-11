@@ -36,6 +36,7 @@
                     if (count($existingCharges) < 1) {
                         $existingCharges = [
                                 [
+                                    'id' => null,
                                     "charge_id" => null,
                                     "currency_id" => null,
                                     "rate" => null,
@@ -46,7 +47,8 @@
                 @endphp
                 @foreach ($existingCharges as $index => $item)
                     <div class="dynamic-row-item row mb-3">
-                        <input type="hidden" name="charges[{{ $index     }}][customer_contract_charge_id]" value="{{ $item['id'] }}">
+                        <input type="hidden" name="charges[{{ $index }}][customer_contract_charge_id]" value="{{ $item['id'] }}">
+
                         <div class="col-3">
                             <label for="charge_id" class="form-label required">Charge</label>
                             <select name="charges[{{ $index }}][charge_id]" id="charge_id" class="form-select @error('charges.{{ $index }}.charge_id') is-invalid @enderror" required>

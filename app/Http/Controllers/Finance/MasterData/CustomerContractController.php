@@ -55,8 +55,9 @@ final class CustomerContractController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([
-                        'edit' => route('finance.master-data.customer-contract.edit', $item->id),
-                        'delete' => route('finance.master-data.customer-contract.destroy', $item->id),
+                        // 'edit' => route('finance.master-data.customer-contract.edit', $item->id),
+                        // 'delete' => route('finance.master-data.customer-contract.destroy', $item->id),
+                        'download' => '/',
                     ]);
                 })
                 ->addColumn('customer_code', function ($item) {

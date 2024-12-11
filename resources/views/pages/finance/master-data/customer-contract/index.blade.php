@@ -20,7 +20,8 @@
                     <x:layout.table.row>
                         <x:layout.table.heading widthPixel="50" title="No" />
                         <x:layout.table.heading widthPixel="100" title="Contract No" />
-                        <x:layout.table.heading widthPixel="100" title="Customer" />
+                        <x:layout.table.heading widthPixel="100" title="Customer Code" />
+                        <x:layout.table.heading widthPixel="100" title="Customer Name" />
                         <x:layout.table.heading widthPixel="100" title="Validity Date From" />
                         <x:layout.table.heading widthPixel="100" title="Validity Date To" />
                         <x:layout.table.heading widthPixel="100" customClass="text-center" title="Action" />
@@ -47,6 +48,10 @@
         [
             "data" => "contract_no",
             "name" => "contract_no",
+        ],
+        [
+            "data" => "customer_code",
+            "name" => "customer_code",
         ],
         [
             "data" => "customer_id",

@@ -28,6 +28,7 @@ class CustomerContractExport implements FromCollection, WithHeadings, WithMappin
     {
         return [
             $item->contract_no,
+            $item->customer?->customer_code,
             $item->customer?->customer_name,
             $item->contract_start?->format('d/m/Y'),
             $item->contract_end?->format('d/m/Y'),
@@ -39,7 +40,8 @@ class CustomerContractExport implements FromCollection, WithHeadings, WithMappin
     {
         return [
             'Contract No',
-            'Customer',
+            'Customer Code',
+            'Customer Name',
             'Contract Validity From',
             'Contract Validity To',
             'Description'

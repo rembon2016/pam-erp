@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>List Daybook</title>
+    <title>List Agent Contract</title>
     <style>
         html {
             margin: 0;
@@ -49,15 +49,18 @@
 
 <body>
 
-    <h1 align="center" style="margin-bottom: 30px;">List Daybook</h1>
+    <h1 align="center" style="margin-bottom: 30px;">List Agent Contract</h1>
 
     <table border="1" cellpadding="5">
         <thead>
             <tr>
                 <th>No</th>
-                <th>Daybook Code</th>
-                <th>Daybook Name</th>
-                <th>Type</th>
+                <th>Contract No</th>
+                <th>Customer Code</th>
+                <th>Customer Name</th>
+                <th>Contract Date</th>
+                <th>Contract Start Date</th>
+                <th>Contract End Date</th>
                 <th>Description</th>
             </tr>
         </thead>
@@ -65,10 +68,13 @@
             @foreach ($data as $item)
                 <tr>
                     <td align="center">{{ $loop->iteration }}</td>
-                    <td align="center">{{ $item->code }}</td>
-                    <td>{{ $item->name }}</td>
-                    <td>{{ $item->type }}</td>
-                    <td>{{ $item->description }}</td>
+                    <td align="center">{{ $item->contract_no }}</td>
+                    <td>{{ $item->customer?->customer_code }}</td>
+                    <td>{{ $item->customer?->customer_name }}</td>
+                    <td align="center">{{ $item->contract_date?->format('d/m/Y') }}</td>
+                    <td align="center">{{ $item->contract_start?->format('d/m/Y') }}</td>
+                    <td align="center">{{ $item->contract_end?->format('d/m/Y') }}</td>
+                    <td>{{ $item->contract_description }}</td>
                 </tr>
             @endforeach
         </tbody>

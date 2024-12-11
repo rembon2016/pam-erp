@@ -13,7 +13,7 @@ final class PaymentMethodService
 {
     public function getPaymentMethods(): Collection
     {
-        return PaymentMethod::orderBy('payment_terms', 'ASC')->get();
+        return PaymentMethod::orderBy('payment_terms', 'DESC')->get();
     }
 
     public function getPaymentMethodById(string $id): object

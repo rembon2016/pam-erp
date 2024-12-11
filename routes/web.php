@@ -24,10 +24,6 @@ use App\Http\Controllers\Finance\GeneralWise\Shipment\ShipmentController;
 use App\Http\Controllers\Finance\MasterData\CustomerForBillingController;
 use Illuminate\Support\Facades\Schema;
 
-Route::get('/', function () {
-
-    dd(Schema::getConnection());
-});
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

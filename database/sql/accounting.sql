@@ -888,49 +888,8 @@ CREATE TABLE "accounting"."contract_agents" (
   "updated_at" timestamp(0),
   "contract_code" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
   "notes" text COLLATE "pg_catalog"."default" NOT NULL
-)
-;
+);
 
--- ----------------------------
--- Records of contract_agents
--- ----------------------------
-INSERT INTO "accounting"."contract_agents" VALUES ('9d2096b0-a96c-4d56-82df-9fc040c84d61', 'shippingline', '12513594-22da-4cd7-88dc-abf658890a81', 'SENORIAL SHIPPING SERVICES LLC', '2024-09-20', '2024-09-21', '2024-09-30', '2024-09-19 03:24:32', '2024-09-19 03:24:32', 'CA-20240919032432-T4A', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('ec88c3c5-95b7-4771-b9b8-f30c1abaa3b1', 'shippingline', '466fe9b7-1d5c-4a44-94ca-8c8733031bef', 'MSM SHIPPING LINES LLC', '2024-08-29', '2024-08-29', '2024-08-31', '2024-08-29 10:53:20', '2024-08-29 10:53:20', 'CA-20240829105320-ICU', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('bf6c4bd1-3500-4c72-906d-d9b089eb3dcc', 'shippingline', 'cc03810e-ae64-4a4d-bc1b-e76d0567fc3d', 'A N C EXPRESS SHIPPING LINE LLC', '2024-09-18', '2024-09-18', '2024-09-20', '2024-09-18 02:46:20', '2024-09-18 07:05:20', 'CA-20240918024620-L5D', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('65ea5bf8-3fa0-4302-aad8-c79b6609c6ee', 'shippingline', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', '2024-09-01', '2024-09-01', '2024-09-30', '2024-09-04 07:06:49', '2024-09-04 07:06:49', 'CA-20240904070649-LQS', 'Please look at this contract');
-INSERT INTO "accounting"."contract_agents" VALUES ('79f34603-6864-42bb-b185-2091384391dc', 'shippingline', '12513594-22da-4cd7-88dc-abf658890a81', 'SENORIAL SHIPPING SERVICES LLC', '2024-09-15', '2024-09-17', '2024-09-21', '2024-09-18 07:41:19', '2024-09-18 07:41:19', 'CA-20240918074119-LXS', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('85c26f6c-a7f3-49a4-bfd2-1ef7da4c577f', 'shippingline', '12513594-22da-4cd7-88dc-abf658890a81', 'SENORIAL SHIPPING SERVICES LLC', '2024-09-19', '2024-09-20', '2024-09-20', '2024-09-18 08:04:02', '2024-09-18 08:04:02', 'CA-20240918080402-K2V', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('39305fca-5bad-452a-932a-d35eef42266d', 'shippingline', '808fe7df-b3e8-4900-b8bf-60de0afb8d88', 'KMTC LINE', '2024-09-18', '2024-09-19', '2024-09-19', '2024-09-18 03:55:28', '2024-09-18 08:10:58', 'CA-20240918035528-BPQ', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('d217d84a-d8e4-40dc-b411-d26d813c6c96', 'shippingline', '238af942-5d77-4f8b-94d6-7eb48b3ec36b', 'SC LINES LLC', '2024-09-15', '2024-09-16', '2024-09-25', '2024-09-18 08:14:24', '2024-09-18 08:14:24', 'CA-20240918081424-C6Y', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('8ea0628d-9181-4e3d-a4f4-352b9b6c7ca3', 'shippingline', '12513594-22da-4cd7-88dc-abf658890a81', 'SENORIAL SHIPPING SERVICES LLC', '2024-09-20', '2024-09-21', '2024-10-01', '2024-09-18 08:39:51', '2024-09-18 08:39:51', 'CA-20240918083951-YG7', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('662b6729-2cf4-42a1-9dca-8b34d1a66f22', 'shippingline', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', '2024-09-01', '2024-09-02', '2024-09-03', '2024-09-18 10:39:18', '2024-09-18 10:39:18', 'CA-20240918103918-LFA', 'njkbubuiygyu');
-INSERT INTO "accounting"."contract_agents" VALUES ('cdcf6fe5-3669-484b-8517-8bc4caef7dae', 'shippingline', '466fe9b7-1d5c-4a44-94ca-8c8733031bef', 'MSM SHIPPING LINES LLC', '2024-09-21', '2024-09-21', '2024-09-30', '2024-09-19 03:33:39', '2024-09-19 03:33:39', 'CA-20240919033339-QOC', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('428b6e36-e12a-4418-8146-82f887526fa4', 'shippingline', '9c49c4f0-6958-4302-acee-207978b12c84', 'WAN HAI LINES', '2024-09-21', '2024-09-20', '2024-09-21', '2024-09-19 04:02:37', '2024-09-19 04:02:37', 'CA-20240919040237-8Q7', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('60ab54f5-7af7-41f3-8958-1d973648087e', 'shippingline', '714c672a-859f-400d-9717-2c6a282d4888', 'EVERGREEN LINE', '2024-09-18', '2024-09-19', '2024-09-20', '2024-09-18 11:02:12', '2024-09-18 11:02:12', 'CA-20240918110212-AWY', 'dsdandjbads');
-INSERT INTO "accounting"."contract_agents" VALUES ('df8e1781-c445-4e9a-a06c-b5446bd6f388', 'shippingline', '2bbdf6bc-d651-4258-8907-083a334896bb', 'MSC - MEDI', '2024-09-20', '2024-09-20', '2024-09-28', '2024-09-19 02:45:35', '2024-09-19 02:45:35', 'CA-20240919024535-RLZ', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('4fc9fe8c-fab8-4277-ae61-32a8beedea7e', 'shippingline', '4248bff7-acf8-4f11-ab50-2df4993c31ca', 'HYUNDAI MERCHANT MARINE', '2024-09-20', '2024-09-21', '2024-09-30', '2024-09-19 02:54:24', '2024-09-19 02:54:24', 'CA-20240919025424-MIH', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('00ecd526-f1ab-423e-83b3-5ae2b4288c60', 'shippingline', 'cc03810e-ae64-4a4d-bc1b-e76d0567fc3d', 'A N C EXPRESS SHIPPING LINE LLC', '2024-09-16', '2024-09-19', '2024-09-30', '2024-09-19 02:57:46', '2024-09-19 02:57:46', 'CA-20240919025746-5FI', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('0305c87b-1fe9-4ed1-b1c1-c253fb081145', 'shippingline', '466fe9b7-1d5c-4a44-94ca-8c8733031bef', 'MSM SHIPPING LINES LLC', '2024-09-20', '2024-09-21', '2024-10-01', '2024-09-19 03:02:04', '2024-09-19 03:02:04', 'CA-20240919030204-XJA', 'asdrawrs');
-INSERT INTO "accounting"."contract_agents" VALUES ('534ad214-8f1b-4409-a37b-d9a4fd656df7', 'shippingline', '238af942-5d77-4f8b-94d6-7eb48b3ec36b', 'SC LINES LLC', '2024-09-21', '2024-09-21', '2024-09-22', '2024-09-19 03:04:27', '2024-09-19 03:04:27', 'CA-20240919030427-9U9', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('e52b0496-923e-4866-a259-160d0802237e', 'localvendor', 'e2db5667-a25f-4935-9551-46e89a79b2aa', 'GLOBAL FEEDER SERVICE', '2024-09-19', '2024-09-19', '2024-09-21', '2024-09-19 03:10:17', '2024-09-19 03:10:17', 'CA-20240919031017-DWB', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('303167d6-2472-460f-86cc-3df274cb90a7', 'shippingline', 'db3a59b3-5f30-4a06-8e1b-256a3e393e98', 'ZIM INTEGRATED SHIPPING SERVICES LTD', '2024-09-27', '2024-09-20', '2024-09-30', '2024-09-19 03:17:25', '2024-09-19 03:17:25', 'CA-20240919031725-2MJ', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('6c27b723-7ea5-4c86-b378-c93c55f39929', 'shippingline', 'cc03810e-ae64-4a4d-bc1b-e76d0567fc3d', 'A N C EXPRESS SHIPPING LINE LLC', '2024-09-04', '2024-09-05', '2024-09-05', '2024-09-04 09:56:49', '2024-09-04 09:56:49', 'CA-20240904095649-P5U', 'anc e s l llc');
-INSERT INTO "accounting"."contract_agents" VALUES ('c09068ee-09ed-4627-9fc5-ce1fde612428', 'shippingline', '33ee0bac-be75-4576-8a39-ec946ff9228c', 'BRIGHT LINE SHIPPING LLC', '2024-09-05', '2024-09-06', '2024-09-07', '2024-09-05 04:42:05', '2024-09-05 04:42:05', 'CA-20240905044205-UYB', 'agent contract notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('965cdd54-aa46-4f4b-9957-6c46ceb4de1d', 'shippingline', '3a705900-2534-4e74-a6ba-83ba8f0fa153', 'SHIPNER SHIPPING LINE LLC', '2024-09-05', '2024-09-06', '2024-09-11', '2024-09-05 04:51:10', '2024-09-05 04:51:10', 'CA-20240905045110-SVB', 'notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('0bde4ead-7f67-4e25-a114-01113cc88650', 'shippingline', '9f6c3ed8-0a23-49fc-b85e-a1cc26f8f185', 'ALLIED SHIPPLING LINE L.L.C', '2024-09-05', '2024-09-06', '2024-09-07', '2024-09-05 04:54:47', '2024-09-05 04:54:47', 'CA-20240905045447-6Z3', 'alied notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('de855056-1765-48f5-8ce7-df5131cc08a5', 'shippingline', '42937d55-4a98-4494-a237-0947954ec5ac', 'TRANSWORLD SHIPPING AND LOGISTICS LLC', '2024-09-05', '2024-09-06', '2024-09-06', '2024-09-05 08:44:22', '2024-09-05 08:44:22', 'CA-20240905084422-YBQ', 'notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('8eef8902-d7e0-40cf-912b-cf8c4caef547', 'shippingline', '7b045039-7a10-48c8-a752-f3edd3399107', 'COSCO Shipping Lines Co', '2024-09-05', '2024-09-05', '2024-09-30', '2024-09-05 08:55:38', '2024-09-05 08:55:38', 'CA-20240905085538-RCJ', 'tes');
-INSERT INTO "accounting"."contract_agents" VALUES ('1bd3b83f-97a7-42c9-bcfa-9fb42661fdaf', 'shippingline', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', '2024-09-05', '2024-09-05', '2024-09-07', '2024-09-05 10:04:27', '2024-09-05 10:04:27', 'CA-20240905100427-OGD', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('062eacf6-d15d-4621-8847-3ae930126528', 'shippingline', '33ee0bac-be75-4576-8a39-ec946ff9228c', 'BRIGHT LINE SHIPPING LLC', '2024-09-05', '2024-09-09', '2024-09-14', '2024-09-05 10:08:23', '2024-09-05 10:08:23', 'CA-20240905100823-GCS', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('363cc595-988d-40d7-b359-5091ad0e4172', 'shippingline', '466fe9b7-1d5c-4a44-94ca-8c8733031bef', 'MSM SHIPPING LINES LLC', '2024-09-05', '2024-09-07', '2024-09-17', '2024-09-05 10:23:07', '2024-09-05 10:23:07', 'CA-20240905102307-J0T', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('a9138d11-ddb9-408d-ad78-e9c111da2a3e', 'shippingline', '9c49c4f0-6958-4302-acee-207978b12c84', 'WAN HAI LINES', '2024-09-19', '2024-09-14', '2024-09-26', '2024-09-05 10:32:42', '2024-09-05 10:32:42', 'CA-20240905103242-VOF', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('0a3e4b26-bcf6-4823-bbbf-5938dbfbcd37', 'carrier', '0fccce3b-67a1-41b9-9989-124d70732df9', ' CATHAY PACIFIC AIRWAYS', '2024-09-05', '2024-09-07', '2024-09-12', '2024-09-05 10:37:32', '2024-09-05 10:37:32', 'CA-20240905103732-GAI', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('2653232f-f6c7-4c13-9310-36ae9c3c55de', 'shippingline', '3a705900-2534-4e74-a6ba-83ba8f0fa153', 'SHIPNER SHIPPING LINE LLC', '2024-09-05', '2024-09-06', '2024-09-07', '2024-09-05 10:39:49', '2024-09-05 10:39:49', 'CA-20240905103949-HEJ', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('1e062107-391c-409a-986b-68784c2a0c44', 'shippingline', '808fe7df-b3e8-4900-b8bf-60de0afb8d88', 'KMTC LINE', '2024-09-05', '2024-09-05', '2024-09-14', '2024-09-05 10:51:46', '2024-09-05 10:51:46', 'CA-20240905105146-1BE', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('96192b40-a310-4a80-802e-7b13c1a29841', 'shippingline', 'a64117ae-70ae-449e-9eb3-aa7b536816d5', 'KOKO SARANG', '2024-09-09', '2024-09-09', '2024-09-14', '2024-09-09 04:27:49', '2024-09-09 04:27:49', 'CA-20240909042749-JKW', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('5c3d8a53-d2a5-4245-9cbb-d09066f5f443', 'shippingline', '466fe9b7-1d5c-4a44-94ca-8c8733031bef', 'MSM SHIPPING LINES LLC', '2024-09-19', '2024-09-19', '2024-09-20', '2024-09-18 03:09:00', '2024-09-18 03:09:00', 'CA-20240918030900-VP6', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('81568e5c-324f-47fd-b433-5a7d73d2dc69', 'shippingline', '466fe9b7-1d5c-4a44-94ca-8c8733031bef', 'MSM SHIPPING LINES LLC', '2024-09-18', '2024-09-19', '2024-09-20', '2024-09-18 03:11:39', '2024-09-18 03:11:39', 'CA-20240918031139-LVU', 'Notes');
-INSERT INTO "accounting"."contract_agents" VALUES ('b3593b6c-ce3e-46cf-aeb8-16d1f036fd75', 'shippingline', '466fe9b7-1d5c-4a44-94ca-8c8733031bef', 'MSM SHIPPING LINES LLC', '2024-09-19', '2024-09-20', '2024-09-21', '2024-09-18 04:19:27', '2024-09-18 04:19:27', 'CA-20240918041927-M8M', 'Notes');
 
 -- ----------------------------
 -- Table structure for cost
@@ -953,8 +912,7 @@ CREATE TABLE "accounting"."cost" (
   "job_order_type" varchar(255) COLLATE "pg_catalog"."default",
   "charge_type" varchar(255) COLLATE "pg_catalog"."default",
   "position" int4
-)
-;
+);
 
 -- ----------------------------
 -- Records of cost
@@ -992,8 +950,7 @@ CREATE TABLE "accounting"."cost_details" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-)
-;
+);
 COMMENT ON COLUMN "accounting"."cost_details"."status_payment" IS '0:unpaid, 1:paid';
 
 -- ----------------------------
@@ -1017,8 +974,7 @@ CREATE TABLE "accounting"."cost_job_order" (
   "date_modified" timestamp(6),
   "modified_by" varchar(255) COLLATE "pg_catalog"."default",
   "status" int4
-)
-;
+);
 
 -- ----------------------------
 -- Records of cost_job_order
@@ -1044,8 +1000,7 @@ CREATE TABLE "accounting"."costs" (
   "charge_name" varchar(255) COLLATE "pg_catalog"."default",
   "type" varchar(255) COLLATE "pg_catalog"."default",
   "job_id" uuid
-)
-;
+);
 
 -- ----------------------------
 -- Records of costs
@@ -1065,8 +1020,7 @@ CREATE TABLE "accounting"."countries" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-)
-;
+);
 
 -- ----------------------------
 -- Records of countries
@@ -1100,32 +1054,8 @@ CREATE TABLE "accounting"."customer" (
   "city" varchar(255) COLLATE "pg_catalog"."default",
   "zip_code" varchar(255) COLLATE "pg_catalog"."default",
   "vendor_id" uuid
-)
-;
+);
 
--- ----------------------------
--- Records of customer
--- ----------------------------
-INSERT INTO "accounting"."customer" VALUES ('6c958c5e-b3a6-4693-98cd-b1aa394bfc9d', 'Customer 001', 'Jakarta', NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-08-28 17:59:27', 'user@pamcargo.com', '2024-08-28 18:00:36', NULL, 3, '0daa95fa-9cf4-4448-b31e-99f241f2fd39', NULL, 'b4df4caa-ec8b-4471-8eb6-e72fc76a4224', NULL, '0c84f351-40cf-499b-8914-969d89ae56df', NULL, NULL, NULL);
-INSERT INTO "accounting"."customer" VALUES ('33c5d04b-0b92-4b7c-a392-73bb886db5fe', 'FOOM ETC', '<p>Indonesia</p>', 'foometc@gmail.com', '81251251', NULL, '081212', '512', NULL, 102, '2024-10-17 10:30:26', 'admin@rembon.com', '2024-10-17 10:30:26', 'thomas@pamcargo.com', 1, '1115bd80-47e8-48f7-a4f6-917dd3ff65ce', 'SSF2', '68ae0095-a143-4b7f-99db-ea98616d343f', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "accounting"."customer" VALUES ('0f9833fa-71fc-41f3-9893-a7e64cf0b84c', 'tes', 'tes', NULL, NULL, NULL, NULL, NULL, NULL, 102, '2024-11-18 11:30:25', NULL, '2024-11-18 11:30:25', NULL, 1, '2fa1ad4c-6cb1-4c61-9858-4949a33b8eea', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "accounting"."customer" VALUES ('e61b5257-4f1d-42ad-a960-8fbe79e73ba1', 'Test', 'Kp manggis rt 04 rw 04 no. 122
-Dramaga', NULL, '085966670173', NULL, NULL, NULL, 'tegar', NULL, '2024-09-18 04:40:16', 'user@pamcargo.com', '2024-09-18 06:35:51', NULL, 3, '2fa1ad4c-6cb1-4c61-9858-4949a33b8eea', NULL, NULL, NULL, NULL, NULL, NULL, '41fb4714-aca3-41a9-a004-87f1a49b8d5b');
-INSERT INTO "accounting"."customer" VALUES ('de21ef29-4f96-42f3-ab33-17cab38e2780', 'Customer 001', 'Jakarta', NULL, NULL, NULL, NULL, NULL, NULL, 12, '2024-08-28 18:01:12', 'user@pamcargo.com', '2024-08-28 18:01:12', NULL, 3, '0daa95fa-9cf4-4448-b31e-99f241f2fd39', 'C-001', 'b4df4caa-ec8b-4471-8eb6-e72fc76a4224', NULL, '5b62d2b4-0e8e-4d5e-a47b-f977e058b9ae', NULL, NULL, NULL);
-INSERT INTO "accounting"."customer" VALUES ('1c63741c-00e2-4c2d-a826-5c442a01f086', 'BANTENG MERAH', '<p>Jakarta, Indonesia</p>', 'banteng@merah.com', '+62123456789', NULL, '08123456789', '112233', 'MEGA', 102, '2024-10-14 10:47:53', 'admin@rembon.com', '2024-10-14 10:47:53', NULL, 3, '717cdbef-dccb-4235-a00b-a26cf682658f', NULL, 'b4df4caa-ec8b-4471-8eb6-e72fc76a4224', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "accounting"."customer" VALUES ('54bc4831-a71c-4ab6-b2bf-340f56360a8a', 'PUTRA MULYONO', '<p>Solo</p>', 'halo@testing.com', '+123456789', NULL, '08987654321', '444', 'MULYONO', 102, '2024-10-14 10:51:12', 'admin@rembon.com', '2024-10-14 10:51:12', 'admin@rembon.com', 3, '1115bd80-47e8-48f7-a4f6-917dd3ff65ce', 'pmy', '5e413180-7d24-41f6-8e3b-d0a71d3f29f9', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "accounting"."customer" VALUES ('ff2a9440-54e5-4efe-9a08-784867ccad91', 'BILL GATES', '<p>New York</p>', 'halo@bill.com', '+981234567890', NULL, '882345678', '333', 'BILL GATES', NULL, '2024-10-14 11:18:37', 'admin@rembon.com', '2024-10-14 11:18:37', NULL, 3, '0daa95fa-9cf4-4448-b31e-99f241f2fd39', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "accounting"."customer" VALUES ('b8612cba-96e2-4833-907a-aac1532e83ca', 'LADUSING COMPANY CORP', 'Paris Saint Germany', 'sales@ladusing.com', '23434444', '234234234', '43234234', NULL, '24234', 82, '2024-09-04 08:19:08', 'user@pamcargo.com', '2024-09-04 08:19:08', NULL, 3, 'f65e068e-a3bf-4a7d-bc80-875c27eee1a2', '345345', 'd97b4586-6346-4cd1-bc61-98f70f624468', '345345', '12c46c87-dd6d-4310-bfaf-6c674b47d5c3', 'PARIS', '345345', NULL);
-INSERT INTO "accounting"."customer" VALUES ('71966173-f8ed-4ff1-8e63-ddb82eb18042', 'KUDA MERAH', 'Jalan Jalak Harupat Kel. Gedebage Kec. Tegal Gundil Kota Bandung', NULL, '08998921009', NULL, NULL, NULL, 'Aang Wiadi', NULL, '2024-09-18 06:18:26', 'user@pamcargo.com', '2024-09-18 06:18:26', NULL, 3, '2fa1ad4c-6cb1-4c61-9858-4949a33b8eea', NULL, NULL, NULL, NULL, NULL, NULL, '54ed7b23-800e-4292-b3fa-f1b38a2d0cc3');
-INSERT INTO "accounting"."customer" VALUES ('2ac0f861-4a1c-436a-bd54-79a009c40942', 'Lamborghini', 'Sant''Agata Bolognese, Italy', NULL, '01928927837', NULL, NULL, NULL, 'Michael Tajur', NULL, '2024-09-18 06:31:41', 'user@pamcargo.com', '2024-09-18 06:36:55', NULL, 3, '2fa1ad4c-6cb1-4c61-9858-4949a33b8eea', NULL, NULL, NULL, NULL, NULL, NULL, '54c2a1f3-6280-42da-881a-b366a01e51a5');
-INSERT INTO "accounting"."customer" VALUES ('5149bedd-c507-447e-ad34-0f649ee30197', 'VASCO DA GAMMA', 'Kp manggis rt 04 rw 04 no. 122
-Dramaga', NULL, '085966670173', NULL, NULL, NULL, 'tegar sianipar', NULL, '2024-09-18 06:44:41', 'user@pamcargo.com', '2024-09-18 06:45:03', NULL, 3, '2fa1ad4c-6cb1-4c61-9858-4949a33b8eea', NULL, NULL, NULL, NULL, NULL, NULL, '59372cf0-55a3-4c55-8c15-674150671564');
-INSERT INTO "accounting"."customer" VALUES ('ab69c8e9-dd6e-4f94-afd4-2b809e430ac8', 'KING MU', '<p>Manchester</p>', 'halo@mu.com', '+7777123456789', NULL, '0773456788', '777', 'ANTHONY', 230, '2024-10-14 11:40:21', 'admin@rembon.com', '2024-10-14 11:40:21', NULL, 3, '717cdbef-dccb-4235-a00b-a26cf682658f', NULL, '5e413180-7d24-41f6-8e3b-d0a71d3f29f9', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "accounting"."customer" VALUES ('f5a7e244-31c7-4bde-9939-55072e48a2c8', 'Mulyono bin Slamet', '<p>Indonesia</p>', 'halo@dinasti.com', '+6211987633', NULL, '082256755', 'MLYNO-2K24', 'Mulyono', 102, '2024-10-14 13:32:41', 'admin@rembon.com', '2024-10-14 13:32:41', 'admin@rembon.com', 1, 'f65e068e-a3bf-4a7d-bc80-875c27eee1a2', 'mulyn', '3f0a240e-784b-4799-852f-b6339a5a8e7c', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "accounting"."customer" VALUES ('aab15850-4c19-43d1-a525-043c901931b6', 'PT. Perusahaan Tukang', '<p>Jakarta</p>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-14 15:31:22', 'admin@rembon.com', '2024-10-14 15:31:22', NULL, 1, '0daa95fa-9cf4-4448-b31e-99f241f2fd39', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "accounting"."customer" VALUES ('459fe69d-e85f-474d-9749-0f606ad02405', 'OXVA', '<p>JAKARTA</p>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-17 09:32:02', 'admin@rembon.com', '2024-10-17 09:32:02', NULL, 1, '1115bd80-47e8-48f7-a4f6-917dd3ff65ce', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "accounting"."customer" VALUES ('6d687f40-42f3-4497-970b-d648e20b952b', 'ASD', '<p>ad</p>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-17 09:45:21', 'admin@rembon.com', '2024-10-17 09:45:21', NULL, 3, '0daa95fa-9cf4-4448-b31e-99f241f2fd39', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "accounting"."customer" VALUES ('2d6cfaf0-4a6c-4189-b8d1-760a58d08ce7', 'FOOM', '<p>jAKARTA</p>', NULL, NULL, NULL, NULL, NULL, NULL, 3, '2024-10-17 10:01:11', 'admin@rembon.com', '2024-10-17 10:01:11', NULL, 3, '1115bd80-47e8-48f7-a4f6-917dd3ff65ce', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for customer_groups
@@ -1145,8 +1075,7 @@ CREATE TABLE "accounting"."customer_groups" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-)
-;
+);
 
 -- ----------------------------
 -- Records of customer_groups
@@ -1165,8 +1094,7 @@ CREATE TABLE "accounting"."customer_types" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-)
-;
+);
 
 -- ----------------------------
 -- Records of customer_types
@@ -1199,8 +1127,7 @@ CREATE TABLE "accounting"."customers" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-)
-;
+);
 
 -- ----------------------------
 -- Records of customers
@@ -1221,8 +1148,7 @@ CREATE TABLE "accounting"."group_charges" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-)
-;
+);
 
 -- ----------------------------
 -- Records of group_charges
@@ -1247,18 +1173,8 @@ CREATE TABLE "accounting"."invoices" (
   "invoices_number" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
   "created_at" timestamp(0),
   "updated_at" timestamp(0)
-)
-;
+);
 
--- ----------------------------
--- Records of invoices
--- ----------------------------
-INSERT INTO "accounting"."invoices" VALUES ('725036cc-f9fa-4669-8089-8688e9714ed5', 'b8612cba-96e2-4833-907a-aac1532e83ca', 'LADUSING COMPANY CORP', '2024-09-05', '7f100b41-5fa1-4fe9-af2b-66d7c4d93db5', '2024-09-05', NULL, NULL, 1, 0, '', '2409-001', NULL, NULL);
-INSERT INTO "accounting"."invoices" VALUES ('90be2e06-ef8a-4157-92a6-b65c7cd1e696', 'de21ef29-4f96-42f3-ab33-17cab38e2780', 'Customer 001', '2024-09-05', '7f100b41-5fa1-4fe9-af2b-66d7c4d93db5', '2024-09-05', NULL, NULL, 1, 0, '', '2409-002', NULL, NULL);
-INSERT INTO "accounting"."invoices" VALUES ('4ac78c3c-95d7-480e-84b0-01ab02fa0a8d', 'b8612cba-96e2-4833-907a-aac1532e83ca', 'LADUSING COMPANY CORP', '2024-09-05', '7f100b41-5fa1-4fe9-af2b-66d7c4d93db5', '2024-09-05', NULL, NULL, 1, 0, '', '2409-003', NULL, NULL);
-INSERT INTO "accounting"."invoices" VALUES ('63657da9-c435-4147-9968-c771f0ba60e8', 'b8612cba-96e2-4833-907a-aac1532e83ca', 'LADUSING COMPANY CORP', '2024-09-05', '7f100b41-5fa1-4fe9-af2b-66d7c4d93db5', '2024-09-05', NULL, NULL, 1, 0, '', '2409-004', NULL, NULL);
-INSERT INTO "accounting"."invoices" VALUES ('f04826c0-6c72-4fcb-9b3d-075b9d6784b2', 'b8612cba-96e2-4833-907a-aac1532e83ca', 'LADUSING COMPANY CORP', '2024-09-19', '7f100b41-5fa1-4fe9-af2b-66d7c4d93db5', '2024-09-19', NULL, NULL, 1, 0, 'tes invoices', '2409-005', NULL, NULL);
-INSERT INTO "accounting"."invoices" VALUES ('5da2183d-cb1e-4654-adf6-f9e46f83517a', '33c5d04b-0b92-4b7c-a392-73bb886db5fe', 'FOOM ETC', '2024-11-19', '7f100b41-5fa1-4fe9-af2b-66d7c4d93db5', '2024-11-19', NULL, NULL, 1, 0, 'sadad', '2411-001', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for invoices_detail
@@ -1273,40 +1189,8 @@ CREATE TABLE "accounting"."invoices_detail" (
   "ctd_number" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
   "created_at" timestamp(0),
   "updated_at" timestamp(0)
-)
-;
+);
 
--- ----------------------------
--- Records of invoices_detail
--- ----------------------------
-INSERT INTO "accounting"."invoices_detail" VALUES ('b7c6ebe8-5dd1-4994-b29a-4ab279957c38', '61b5769a-0a3d-44a3-b6ef-bf1deaca8a03', '1dfc9387-daf8-42a4-9e83-5988441ab31a', 'SHANGHAI', 'DIADORA SPA', 'SHASA2409006', '2024-09-05 05:24:41', '2024-09-05 05:24:41');
-INSERT INTO "accounting"."invoices_detail" VALUES ('69aa1b10-4ec7-4460-a809-af863a59650b', '3cc88247-ebb2-4eec-bebd-415e03e6846a', '51f13c8d-91f5-4fa3-9ef6-d67dce596be3', 'SHANGHAI', 'AP NEDERLAND B.V.', 'SHASA2409005', '2024-09-05 05:42:23', '2024-09-05 05:42:23');
-INSERT INTO "accounting"."invoices_detail" VALUES ('742da147-304c-44ea-b8f4-313b69aeec16', '09301b6c-2a85-4337-bfff-b37945ead22b', 'de50ad41-f048-40e5-9c27-42413c98e9a6', 'SHANGHAI', 'DOMETIC GERMANY GMBH', 'SHASA2409001', '2024-09-05 05:47:29', '2024-09-05 05:47:29');
-INSERT INTO "accounting"."invoices_detail" VALUES ('3193a71c-0fd0-4631-8b4f-1da167a5bd2a', '4ecfebc1-7b6f-48de-8168-d0aaca21f690', 'de50ad41-f048-40e5-9c27-42413c98e9a6', 'SHANGHAI', 'DOMETIC GERMANY GMBH', 'SHASA2409001', '2024-09-05 05:48:10', '2024-09-05 05:48:10');
-INSERT INTO "accounting"."invoices_detail" VALUES ('8f7da7f6-aebb-48e0-9883-2e05373af23c', 'e703cbdf-e8d3-4f0c-894d-a6723a0c67e1', 'de50ad41-f048-40e5-9c27-42413c98e9a6', 'SHANGHAI', 'DOMETIC GERMANY GMBH', 'SHASA2409001', '2024-09-05 05:52:50', '2024-09-05 05:52:50');
-INSERT INTO "accounting"."invoices_detail" VALUES ('c32932c5-b1f7-49e3-bbd2-3b7106d326fa', 'e703cbdf-e8d3-4f0c-894d-a6723a0c67e1', 'adbbaa57-c4a6-429f-9e2c-73aecfe792bf', 'JAKARTA', 'LACOSTE', 'JKTSA2409001', '2024-09-05 05:52:50', '2024-09-05 05:52:50');
-INSERT INTO "accounting"."invoices_detail" VALUES ('41a0737d-f795-44a3-9d3b-ce73b2a203aa', '7c744709-5150-4a23-b732-d7f08695abce', '4d6cc804-1577-44b5-952f-fc49cf16bedf', 'JAKARTA', 'LACOSTE', 'JKTSA2409002', '2024-09-05 05:54:57', '2024-09-05 05:54:57');
-INSERT INTO "accounting"."invoices_detail" VALUES ('1ed8ae60-baa5-4fde-9e3c-a3899cf45de5', '725036cc-f9fa-4669-8089-8688e9714ed5', 'de50ad41-f048-40e5-9c27-42413c98e9a6', 'SHANGHAI', 'DOMETIC GERMANY GMBH', 'SHASA2409001', '2024-09-05 05:56:43', '2024-09-05 05:56:43');
-INSERT INTO "accounting"."invoices_detail" VALUES ('fc9b6002-94a4-4bdd-88b2-6a87c8473228', '0a7d9d70-e037-4010-a8ef-f508916f613c', 'adbbaa57-c4a6-429f-9e2c-73aecfe792bf', 'JAKARTA', 'LACOSTE', 'JKTSA2409001', '2024-09-05 06:05:44', '2024-09-05 06:05:44');
-INSERT INTO "accounting"."invoices_detail" VALUES ('1c9accf9-f60b-46c5-a423-1cbd8f4eb2b0', '90be2e06-ef8a-4157-92a6-b65c7cd1e696', 'adbbaa57-c4a6-429f-9e2c-73aecfe792bf', 'JAKARTA', 'LACOSTE', 'JKTSA2409001', '2024-09-05 06:06:35', '2024-09-05 06:06:35');
-INSERT INTO "accounting"."invoices_detail" VALUES ('e7d723bb-af14-4882-8d86-c96f8e1e5424', '4ac78c3c-95d7-480e-84b0-01ab02fa0a8d', '51f13c8d-91f5-4fa3-9ef6-d67dce596be3', 'SHANGHAI', 'AP NEDERLAND B.V.', 'SHASA2409005', '2024-09-05 06:07:12', '2024-09-05 06:07:12');
-INSERT INTO "accounting"."invoices_detail" VALUES ('5104bb7d-e2b1-46ad-b09e-68c6c2c96fdf', '63657da9-c435-4147-9968-c771f0ba60e8', '51f13c8d-91f5-4fa3-9ef6-d67dce596be3', 'SHANGHAI', 'AP NEDERLAND B.V.', 'SHASA2409005', '2024-09-05 09:07:09', '2024-09-05 09:07:09');
-INSERT INTO "accounting"."invoices_detail" VALUES ('3fd8c5c4-cf7a-4c4e-9761-6780c0df2a16', '63657da9-c435-4147-9968-c771f0ba60e8', '1dfc9387-daf8-42a4-9e83-5988441ab31a', 'SHANGHAI', 'DIADORA SPA', 'SHASA2409006', '2024-09-05 09:07:09', '2024-09-05 09:07:09');
-INSERT INTO "accounting"."invoices_detail" VALUES ('3226cf51-d3f4-4264-9aaa-40d4eceb1f02', 'f04826c0-6c72-4fcb-9b3d-075b9d6784b2', '1dfc9387-daf8-42a4-9e83-5988441ab31a', 'SHANGHAI', 'DIADORA SPA', 'SHASA2409006', '2024-09-19 04:30:47', '2024-09-19 04:30:47');
-INSERT INTO "accounting"."invoices_detail" VALUES ('3cf49075-66b8-4215-99d6-441bdf45c0d1', 'f04826c0-6c72-4fcb-9b3d-075b9d6784b2', 'de50ad41-f048-40e5-9c27-42413c98e9a6', 'SHANGHAI', 'DOMETIC GERMANY GMBH', 'SHASA2409001', '2024-09-19 04:30:47', '2024-09-19 04:30:47');
-INSERT INTO "accounting"."invoices_detail" VALUES ('196ec078-decf-4280-8488-dfa6fa2fbe99', 'f04826c0-6c72-4fcb-9b3d-075b9d6784b2', '55266cd6-7933-4fa5-9b5b-f04225430d24', 'SHANGHAI', 'DEVRED SAS', 'SHASA2409003', '2024-09-19 04:30:47', '2024-09-19 04:30:47');
-INSERT INTO "accounting"."invoices_detail" VALUES ('39c844b2-6e23-4869-9d17-88c336671729', '5cb4c391-7a54-49c1-bafa-7fe1a79b858c', '022206fc-875e-412a-b6ff-839c100c654f', 'SHANGHAI', 'JAS WORLDWIDE SWEDEN AB', 'SHASA2409049', '2024-11-01 10:22:43', '2024-11-01 10:22:43');
-INSERT INTO "accounting"."invoices_detail" VALUES ('e083d0c8-2732-4810-a1ec-526a360fff56', '5cb4c391-7a54-49c1-bafa-7fe1a79b858c', '09a4063a-0414-450f-98b8-f65f77daebfc', 'HO CHI MINH', 'ASICS EUROPE BV / EDC', 'HCMSA2410012', '2024-11-01 10:22:43', '2024-11-01 10:22:43');
-INSERT INTO "accounting"."invoices_detail" VALUES ('41343275-bf6e-4bac-b7a6-0e011111e741', '5cb4c391-7a54-49c1-bafa-7fe1a79b858c', '0a5ffdfc-4ee5-4b7d-83c4-caa3c593b950', 'SHANGHAI', 'DEUTSCHE BANK', 'SHASA2410001', '2024-11-01 10:22:43', '2024-11-01 10:22:43');
-INSERT INTO "accounting"."invoices_detail" VALUES ('77ed088a-0999-423c-9ebc-9466e955f5e0', '5cb4c391-7a54-49c1-bafa-7fe1a79b858c', '0cd0b7f5-6b32-4303-a095-0348d88b5192', 'SHENZHEN', 'BLASER GROUP GMBH', 'SZXSA2410005', '2024-11-01 10:22:43', '2024-11-01 10:22:43');
-INSERT INTO "accounting"."invoices_detail" VALUES ('41e1337b-c9e9-4042-97d5-e7cac092294f', '5cb4c391-7a54-49c1-bafa-7fe1a79b858c', '139d4f2a-a916-495f-9d6c-f5aa2ad6fcf9', 'CHITTAGONG', 'JACK WOLFSKIN AUSRUESTUNG FUER DRAUSSEN GMBH & AND CO. KGAA', 'CGPSA2410006', '2024-11-01 10:22:43', '2024-11-01 10:22:43');
-INSERT INTO "accounting"."invoices_detail" VALUES ('36e2af4a-d9bd-4c65-b226-85855bdba4f9', '5cb4c391-7a54-49c1-bafa-7fe1a79b858c', '141bb955-bf50-4545-a0f2-8700d43e98b3', 'CHENNAI', 'AMB Industri AB', 'MAASA2410001', '2024-11-01 10:22:43', '2024-11-01 10:22:43');
-INSERT INTO "accounting"."invoices_detail" VALUES ('c9c7685e-42e1-415f-bb9b-777d595c71eb', '5cb4c391-7a54-49c1-bafa-7fe1a79b858c', '15df90d4-2535-43af-9cdb-42df048b9730', 'HO CHI MINH', 'ASICS EUROPE B.V./ DCS', 'HCMSA2410005', '2024-11-01 10:22:43', '2024-11-01 10:22:43');
-INSERT INTO "accounting"."invoices_detail" VALUES ('7923b4d8-dbb6-4079-a003-9d0c83dc2dfe', '5cb4c391-7a54-49c1-bafa-7fe1a79b858c', '1c4381e8-a899-4729-bc6d-a006dab1f737', 'CHITTAGONG', 'OSPIG GMBH', 'CGPSA2409089', '2024-11-01 10:22:43', '2024-11-01 10:22:43');
-INSERT INTO "accounting"."invoices_detail" VALUES ('887dedd8-2743-4923-b480-e86118e8a924', '5cb4c391-7a54-49c1-bafa-7fe1a79b858c', '1d08d5f8-876d-4cd5-bf68-8b980a78eeba', 'HO CHI MINH', 'ASICS EUROPE B.V./ DCS', 'HCMSA2410008', '2024-11-01 10:22:43', '2024-11-01 10:22:43');
-INSERT INTO "accounting"."invoices_detail" VALUES ('4f1b8916-2bd6-49f0-8ac3-0c623d43b571', '5cb4c391-7a54-49c1-bafa-7fe1a79b858c', 'b3037327-aa86-43c2-ad66-111666d5cc98', 'HAIPHONG', 'ASICS EUROPE BV / EDC', 'HPHSA2410001', '2024-11-01 10:22:43', '2024-11-01 10:22:43');
-INSERT INTO "accounting"."invoices_detail" VALUES ('2ef18917-862a-4cc0-a235-36d24eb204fc', '5da2183d-cb1e-4654-adf6-f9e46f83517a', '1d5e2ad1-71cc-4df0-8144-5cd2b0bf2cc2', 'CHITTAGONG', 'VAN DER HELM AIR & OCEAN AMSTERDAM BV', 'CGPSA2409090', '2024-11-19 02:54:33', '2024-11-19 02:54:33');
-INSERT INTO "accounting"."invoices_detail" VALUES ('5502d1b2-62b6-406b-b70d-447ba450efac', '5da2183d-cb1e-4654-adf6-f9e46f83517a', 'b3037327-aa86-43c2-ad66-111666d5cc98', 'HAIPHONG', 'ASICS EUROPE BV / EDC', 'HPHSA2410001', '2024-11-19 02:54:33', '2024-11-19 02:54:33');
 
 -- ----------------------------
 -- Table structure for invoices_rate
@@ -1323,22 +1207,8 @@ CREATE TABLE "accounting"."invoices_rate" (
   "invoices_id" uuid NOT NULL,
   "created_at" timestamp(0),
   "updated_at" timestamp(0)
-)
-;
+);
 
--- ----------------------------
--- Records of invoices_rate
--- ----------------------------
-INSERT INTO "accounting"."invoices_rate" VALUES ('db556491-0425-4b67-9758-d9eebf2312ab', '709e113a-c8e9-47ae-a0ca-89f7b92ed6eb', 'EXW', 'EX_WORK', 1.00, 'USD', '', '61b5769a-0a3d-44a3-b6ef-bf1deaca8a03', '2024-09-05 05:24:41', '2024-09-05 05:24:41');
-INSERT INTO "accounting"."invoices_rate" VALUES ('1682811a-314d-4386-b5a4-0a512dcf5171', '709e113a-c8e9-47ae-a0ca-89f7b92ed6eb', 'EXW', 'EX_WORK', 1.00, 'USD', '', 'e703cbdf-e8d3-4f0c-894d-a6723a0c67e1', '2024-09-05 05:52:50', '2024-09-05 05:52:50');
-INSERT INTO "accounting"."invoices_rate" VALUES ('0b6959ed-ba01-4c54-af40-f9b3d1fcc8ef', '511e66d7-4a63-447f-920b-1182219b8c78', 'HF', 'HANDLING FEE', 1.00, 'USD', '', '7c744709-5150-4a23-b732-d7f08695abce', '2024-09-05 05:54:57', '2024-09-05 05:54:57');
-INSERT INTO "accounting"."invoices_rate" VALUES ('7ad2c82b-7e6f-41e1-b83d-45b902e50939', '709e113a-c8e9-47ae-a0ca-89f7b92ed6eb', 'EXW', 'EX_WORK', 1.00, 'USD', '', '725036cc-f9fa-4669-8089-8688e9714ed5', '2024-09-05 05:56:43', '2024-09-05 05:56:43');
-INSERT INTO "accounting"."invoices_rate" VALUES ('60fccf18-8354-448e-94c5-39499d3dd32d', '5561c96e-1813-4531-9426-28fc8ef2b241', 'FRC', 'FREIGHT RATE COLLECT', 1.00, 'USD', 'saad', '90be2e06-ef8a-4157-92a6-b65c7cd1e696', '2024-09-05 06:06:35', '2024-09-05 06:06:35');
-INSERT INTO "accounting"."invoices_rate" VALUES ('79a921dd-72d9-4c24-b569-91195a27a6c2', 'b7e1b951-bd2c-479b-a538-408b57135977', 'FRP', 'FREIGHT RATE PREPAID', 100.00, 'USD', 'TES', '4ac78c3c-95d7-480e-84b0-01ab02fa0a8d', '2024-09-05 06:07:12', '2024-09-05 06:07:12');
-INSERT INTO "accounting"."invoices_rate" VALUES ('22a7dbdf-278c-4d8a-89ce-e9f2dd3ac931', '709e113a-c8e9-47ae-a0ca-89f7b92ed6eb', 'EXW', 'EX_WORK', 1.00, 'USD', '', '63657da9-c435-4147-9968-c771f0ba60e8', '2024-09-05 09:07:09', '2024-09-05 09:07:09');
-INSERT INTO "accounting"."invoices_rate" VALUES ('2676b777-5b90-4c9a-ae88-d55a72b5bfd6', '5561c96e-1813-4531-9426-28fc8ef2b241', 'FRC', 'FREIGHT RATE COLLECT', 1.00, 'USD', '', 'f04826c0-6c72-4fcb-9b3d-075b9d6784b2', '2024-09-19 04:30:47', '2024-09-19 04:30:47');
-INSERT INTO "accounting"."invoices_rate" VALUES ('5e6d59ed-2085-4598-b00c-3febfd2d6bf1', '709e113a-c8e9-47ae-a0ca-89f7b92ed6eb', 'EXW', 'EX_WORK', 1.00, 'USD', '', 'f04826c0-6c72-4fcb-9b3d-075b9d6784b2', '2024-09-19 04:30:47', '2024-09-19 04:30:47');
-INSERT INTO "accounting"."invoices_rate" VALUES ('de7da4ac-0e66-4128-b8d9-d62f05620cc6', '5561c96e-1813-4531-9426-28fc8ef2b241', 'FRC', 'FREIGHT RATE COLLECT', 1.00, 'USD', 'sadad', '5da2183d-cb1e-4654-adf6-f9e46f83517a', '2024-11-19 02:54:33', '2024-11-19 02:54:33');
 
 -- ----------------------------
 -- Table structure for journal
@@ -1357,8 +1227,7 @@ CREATE TABLE "accounting"."journal" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-)
-;
+);
 
 -- ----------------------------
 -- Records of journal
@@ -1381,8 +1250,7 @@ CREATE TABLE "accounting"."journal_details" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-)
-;
+);
 
 -- ----------------------------
 -- Records of journal_details
@@ -1396,8 +1264,7 @@ CREATE TABLE "accounting"."journal_has_file_storages" (
   "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
   "journal_id" uuid NOT NULL,
   "file_storage_id" uuid NOT NULL
-)
-;
+);
 
 -- ----------------------------
 -- Records of journal_has_file_storages
@@ -1427,8 +1294,7 @@ CREATE TABLE "accounting"."offices" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-)
-;
+);
 
 -- ----------------------------
 -- Records of offices
@@ -1447,8 +1313,7 @@ CREATE TABLE "accounting"."regions" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-)
-;
+);
 
 -- ----------------------------
 -- Records of regions
@@ -1474,8 +1339,7 @@ CREATE TABLE "accounting"."sales_offices" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-)
-;
+);
 
 -- ----------------------------
 -- Records of sales_offices
@@ -1503,77 +1367,8 @@ CREATE TABLE "accounting"."service_contracts" (
   "contract_agent_id" uuid NOT NULL,
   "party" varchar(255) COLLATE "pg_catalog"."default",
   "manual_input_transit" varchar(255) COLLATE "pg_catalog"."default"
-)
-;
+);
 
--- ----------------------------
--- Records of service_contracts
--- ----------------------------
-INSERT INTO "accounting"."service_contracts" VALUES ('bf6dda8f-b125-4484-ab09-0e4ac1f6c368', 'air', '2', 'b44a4f9b-e7db-401d-afdc-b1cbfc1f58e1', '2', 'b44a4f9b-e7db-401d-afdc-b1cbfc1f58e1', 'TOS', 'TOS Name', 'DUBAI', '7f2c5e7f-8596-49ec-abe9-a531d245760d', 'CHICAGO EXPRESS AIRLINES', 'Notes', '2024-08-29 10:53:20', '2024-08-29 10:53:20', 'ec88c3c5-95b7-4771-b9b8-f30c1abaa3b1', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('e99ebfab-6f5f-4e21-b22d-6062b5eca60b', 'lcl_and_fcl', '44', 'd177586c-62a7-4170-b5f7-1d236d1f74c2', '82', '120ebedb-b5f5-4ef7-8202-a0a0331c24ad', 'TOS DULU GAES', 'TOS AJA DULU', 'DUBAI', 'ae307878-e20a-444c-823b-1de4b1df36d4', 'LUFTHANSA CARGO AG', NULL, '2024-09-04 07:06:49', '2024-09-04 07:06:49', '65ea5bf8-3fa0-4302-aad8-c79b6609c6ee', NULL, NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('f8059546-13aa-47ae-9fbf-b1a152dfb0a2', 'lcl_and_fcl', '1', '3b061b94-9963-4a5c-9e60-636f32c617b3', '2', 'b44a4f9b-e7db-401d-afdc-b1cbfc1f58e1', 'tos', 'tos name', 'DUBAI', '5fe89109-ef47-4c63-b7ef-5f361c794fed', 'GARUDA INDONESIA', 'notes', '2024-09-04 09:56:49', '2024-09-04 09:56:49', '6c27b723-7ea5-4c86-b378-c93c55f39929', 'party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('9fb1ec81-b66b-4885-ab4c-b0524ba9ba91', 'air', '191', '8212138f-c42b-4d1c-bddc-7a4eccca2a78', '44', 'bd0e0eca-8d08-4a03-9a25-d568d8f3dd79', 'tos', 'tos name', 'DUBAI', '6010d9bb-03d7-4c75-8ab7-c6c173250e0e', 'DHL WORLDWIDE EXPRESS', 'notes', '2024-09-05 04:42:05', '2024-09-05 04:42:05', 'c09068ee-09ed-4627-9fc5-ce1fde612428', 'party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('5d89644d-5e9d-4d26-84b8-93c51355e1dd', 'air', '13', '58e2e0b4-6b19-4083-8d90-8c417f024c48', '109', 'c1a95a6e-5e97-45f1-95ee-1b7ea478fa00', 'tos t', 'tos name', 'DUBAI', '03ae285c-dafe-46a9-89b4-df644114dc0b', 'CALM AIR', 'notes', '2024-09-05 04:51:10', '2024-09-05 04:51:10', '965cdd54-aa46-4f4b-9957-6c46ceb4de1d', 'party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('f6937207-7775-429f-b4aa-d23d87f5d175', 'lcl_and_fcl', '2', '9805c7c5-e6a0-4d09-bcf6-4d9c94c223d0', '109', '68a64431-4e90-49e8-8529-2fa305646bef', 'tos', 'tos name', 'DUBAI', '5c7ab7d7-4d95-4f91-a08e-5ff3cdc95b2c', 'CANBERRA', 'notes', '2024-09-05 04:54:47', '2024-09-05 04:54:47', '0bde4ead-7f67-4e25-a114-01113cc88650', 'party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('4921cb38-eb09-4899-8f96-60eb2f5689aa', 'lcl_and_fcl', '109', 'c1a95a6e-5e97-45f1-95ee-1b7ea478fa00', '44', 'd177586c-62a7-4170-b5f7-1d236d1f74c2', 'tos', 'tos name', 'DUBAI', '7f2c5e7f-8596-49ec-abe9-a531d245760d', 'CHICAGO EXPRESS AIRLINES', 'notes', '2024-09-05 04:54:47', '2024-09-05 04:54:47', '0bde4ead-7f67-4e25-a114-01113cc88650', 'party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('a08837b6-2257-41f9-a88e-63515afbac60', 'lcl_and_fcl', '1', '1672bc78-9f89-4f36-9195-87a3f6a1af26', '4', 'f6bf0d3e-42b8-43fc-b5c0-15b1ec9fe1ac', 'tos', 'tos name', 'DUBAI', '0431136a-17e9-47ae-a81b-9a2b9278d3d3', 'ESTONIAN AIR', 'notes', '2024-09-05 08:44:22', '2024-09-05 08:44:22', 'de855056-1765-48f5-8ce7-df5131cc08a5', 'party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('576a0f27-2044-42a0-83df-37297a19df7f', 'lcl_and_fcl', '30', 'cb6530ab-f612-4529-b07a-41d931726cc7', '20', '5aab7907-7e11-4b0b-a33b-37085adef01f', 'tos', 'tos name', 'DUBAI', '0431136a-17e9-47ae-a81b-9a2b9278d3d3', 'ESTONIAN AIR', 'notes', '2024-09-05 08:44:22', '2024-09-05 08:44:22', 'de855056-1765-48f5-8ce7-df5131cc08a5', 'party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('cf935d85-4274-45d6-88b7-3abb0a212e70', 'lcl_and_fcl', '102', '7f3a2989-b7d3-4cc6-8121-a553a40eeb0e', '229', '0562a989-3a20-4cdf-bb1f-81c5e467e5b0', 'tes', 'tes', 'DUBAI', '5fe89109-ef47-4c63-b7ef-5f361c794fed', 'GARUDA INDONESIA', 'tes', '2024-09-05 08:55:38', '2024-09-05 08:55:38', '8eef8902-d7e0-40cf-912b-cf8c4caef547', '123', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('2b8821cc-fdbf-4bd7-8ab8-5df19dda184d', 'land', '102', 'c4e644bf-531f-4079-80fc-4387f7a1150d', '132', '1d4565b4-fe38-4f38-8d0f-f2d6da51bdf2', 'TOS', 'TOS Name', 'DUBAI', '6010d9bb-03d7-4c75-8ab7-c6c173250e0e', 'DHL WORLDWIDE EXPRESS', 'Notes', '2024-09-05 10:04:27', '2024-09-05 10:04:27', '1bd3b83f-97a7-42c9-bcfa-9fb42661fdaf', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('5a933611-865a-44c8-8abe-bc016658ba33', 'lcl_and_fcl', '196', 'ca8802f6-9e99-4b5f-850c-92d97298f480', '217', '632baff3-86f8-4ddb-a2f3-2cb909b770c7', 'TOS', 'TOS Name', 'SINGAPORE', '023b1135-3814-4c0d-8180-67aefefc14bb', 'POLAR AIR CARGO', 'Notes', '2024-09-05 10:08:23', '2024-09-05 10:08:23', '062eacf6-d15d-4621-8847-3ae930126528', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('0e75a0b9-5c09-4cd6-a2f0-02762e513db6', 'air', '102', '4b11aace-fafc-4d64-9495-345a47cd57e0', '82', '9574c1f2-aa2d-430a-aff0-ff7f841e0893', 'tes', 'tes', 'DUBAI', '5fe89109-ef47-4c63-b7ef-5f361c794fed', 'GARUDA INDONESIA', 'sadad', '2024-09-05 10:09:24', '2024-09-05 10:09:24', '8eef8902-d7e0-40cf-912b-cf8c4caef547', '2121', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('70bd4b87-cda9-4d3d-ab96-cec3f1f43e23', 'air', '30', 'b2cbe192-8cac-453d-a078-44fb4cc66218', '3', '6e007669-5d02-44ae-8510-893f8f314191', 'TOS', 'TOS Name', 'Transit', '5fe89109-ef47-4c63-b7ef-5f361c794fed', 'GARUDA INDONESIA', NULL, '2024-09-05 10:23:07', '2024-09-05 10:23:07', '363cc595-988d-40d7-b359-5091ad0e4172', NULL, NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('0027c242-9c7e-4dac-b503-75e106b9bef5', 'land', '3', '6e007669-5d02-44ae-8510-893f8f314191', '38', '8f2b59be-9106-4404-8819-61d24b5d4480', 'TOS', 'TOS Name', 'LOS ANGELES', '264da7ca-07ae-4a08-a075-84f89373d394', 'ICELANDAIR', 'Notes', '2024-09-05 10:32:42', '2024-09-05 10:32:42', 'a9138d11-ddb9-408d-ad78-e9c111da2a3e', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('8a9948eb-136d-48bd-8d36-c297bdbafaa4', 'land', '44', 'af1b3f59-6950-4bba-b473-575c963220cb', '37', '838ffcfa-d30c-46e0-ae4e-83ec6d5f27d9', 'TOS', 'TOS Neme', 'Transit', '5fe89109-ef47-4c63-b7ef-5f361c794fed', 'GARUDA INDONESIA', 'Notes', '2024-09-05 10:32:42', '2024-09-05 10:32:42', 'a9138d11-ddb9-408d-ad78-e9c111da2a3e', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('2f565f3b-0840-419c-abed-57e449250669', 'air', '1', '46eba779-ab9f-4fcb-9ab4-e0fa5f579fc1', '2', 'b44a4f9b-e7db-401d-afdc-b1cbfc1f58e1', 'TOS', 'TOS Name', 'DUBAI', '5c7ab7d7-4d95-4f91-a08e-5ff3cdc95b2c', 'CANBERRA', 'Notes', '2024-09-05 10:37:32', '2024-09-05 10:37:32', '0a3e4b26-bcf6-4823-bbbf-5938dbfbcd37', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('f9d0dcde-b5ab-4ef3-a0a9-e9aff04cc245', 'lcl_and_fcl', '3', '7cb01a46-d53b-4efa-b1f6-a9d088d1796d', '18', '760d5c6d-3cab-4b94-826b-31aaea94f0c8', 'TOS', 'TOS Neme', 'SINGAPORE', '5c7ab7d7-4d95-4f91-a08e-5ff3cdc95b2c', 'CANBERRA', 'Notes', '2024-09-05 10:37:32', '2024-09-05 10:37:32', '0a3e4b26-bcf6-4823-bbbf-5938dbfbcd37', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('4d21f10d-57bd-424d-90ee-62e22b81231d', 'air', '6', '50ffcb47-5cec-41ec-ae2b-00c552d4fe53', '2', 'b44a4f9b-e7db-401d-afdc-b1cbfc1f58e1', 'TOS', 'TOS Name', 'SEATTLE', '023b1135-3814-4c0d-8180-67aefefc14bb', 'POLAR AIR CARGO', 'Notes', '2024-09-05 10:39:49', '2024-09-05 10:39:49', '2653232f-f6c7-4c13-9310-36ae9c3c55de', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('01c47107-b9cd-4a7e-9ce8-391ea6087976', 'lcl_and_fcl', '32', '1430c238-a89e-4cdd-bba2-7b2147664265', '38', '9441ad74-9f16-49d2-ab0e-f812bd749047', 'TOS', 'TOS Name', 'LOS ANGELES', '5c7ab7d7-4d95-4f91-a08e-5ff3cdc95b2c', 'CANBERRA', 'Notes', '2024-09-05 10:51:46', '2024-09-05 10:51:46', '1e062107-391c-409a-986b-68784c2a0c44', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('2f5b200a-1c95-4fec-86a8-8017f498afd1', 'lcl_and_fcl', '132', '1e64c324-a84c-4382-a46e-8732efc3843c', '2', 'b44a4f9b-e7db-401d-afdc-b1cbfc1f58e1', 'TOS', 'TOS Name', 'LOS ANGELES', '7f2c5e7f-8596-49ec-abe9-a531d245760d', 'CHICAGO EXPRESS AIRLINES', 'Notes', '2024-09-09 04:27:49', '2024-09-09 04:27:49', '96192b40-a310-4a80-802e-7b13c1a29841', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('db52e88a-75f8-445f-982f-f5d5153a0bc8', 'lcl_and_fcl', '38', '9441ad74-9f16-49d2-ab0e-f812bd749047', '82', '6d240974-bf1f-407d-bead-8fe81ff4fb27', 'TOS', 'TOS Name', 'DUBAI', '5fe89109-ef47-4c63-b7ef-5f361c794fed', 'GARUDA INDONESIA', 'Notes', '2024-09-18 02:46:20', '2024-09-18 02:46:20', 'bf6c4bd1-3500-4c72-906d-d9b089eb3dcc', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('d9045aac-8b8b-4a2c-8258-ee13deafe229', 'air', '12', 'c765c771-be11-41ee-819e-5be84525452d', '4', 'f6bf0d3e-42b8-43fc-b5c0-15b1ec9fe1ac', 'TOS', 'TOS Name', 'DUBAI', '5fe89109-ef47-4c63-b7ef-5f361c794fed', 'GARUDA INDONESIA', 'Notes', '2024-09-18 03:09:00', '2024-09-18 03:09:00', '5c3d8a53-d2a5-4245-9cbb-d09066f5f443', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('918a87fa-fa0c-459a-9860-6b27bff6b1ce', 'lcl_and_fcl', '4', 'f6bf0d3e-42b8-43fc-b5c0-15b1ec9fe1ac', '3', '7cb01a46-d53b-4efa-b1f6-a9d088d1796d', 'TOS', 'TOS Name', NULL, '5fe89109-ef47-4c63-b7ef-5f361c794fed', 'GARUDA INDONESIA', 'Notes', '2024-09-18 03:11:39', '2024-09-18 03:11:39', '81568e5c-324f-47fd-b433-5a7d73d2dc69', 'Party', 'JAKARTA');
-INSERT INTO "accounting"."service_contracts" VALUES ('85af2f52-29e6-4ab1-bd87-3ebc149bc273', 'lcl_and_fcl', '27', '69d7ec30-3819-4ffb-b98b-11d563038dd4', '2', '9805c7c5-e6a0-4d09-bcf6-4d9c94c223d0', 'TOS', 'TOS Name', 'SINGAPORE', '5c7ab7d7-4d95-4f91-a08e-5ff3cdc95b2c', 'CANBERRA', 'Notes', '2024-09-18 03:55:28', '2024-09-18 03:55:28', '39305fca-5bad-452a-932a-d35eef42266d', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('7132bdd9-8006-4611-9244-02bcd9fc96cb', 'air', '35', '4dc97af1-5195-419f-891f-5b5186e17131', '99', 'f561a8b5-c317-4722-881c-389ae996016d', 'TOS', 'TOS Neme', 'JAKARTA', '023b1135-3814-4c0d-8180-67aefefc14bb', 'POLAR AIR CARGO', 'Notes', '2024-09-18 03:55:28', '2024-09-18 03:55:28', '39305fca-5bad-452a-932a-d35eef42266d', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('99d54c41-47dc-49e2-80f3-91f804a63d89', 'air', '3', '7cb01a46-d53b-4efa-b1f6-a9d088d1796d', '4', 'f6bf0d3e-42b8-43fc-b5c0-15b1ec9fe1ac', 'TOS', 'TOS Name', 'SINGAPORE', '5c7ab7d7-4d95-4f91-a08e-5ff3cdc95b2c', 'CANBERRA', 'Notes', '2024-09-18 04:19:27', '2024-09-18 04:19:27', 'b3593b6c-ce3e-46cf-aeb8-16d1f036fd75', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('04c0e312-bd9b-4e02-8934-a119818f5651', 'land', '1', '3b061b94-9963-4a5c-9e60-636f32c617b3', '3', '7cb01a46-d53b-4efa-b1f6-a9d088d1796d', 'TOS', 'TOS Name', 'SEATTLE', '5fe89109-ef47-4c63-b7ef-5f361c794fed', 'GARUDA INDONESIA', 'Notes', '2024-09-18 04:19:27', '2024-09-18 04:19:27', 'b3593b6c-ce3e-46cf-aeb8-16d1f036fd75', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('470ea3f2-b92c-40b9-b4c5-9b47daa0fe87', 'lcl_and_fcl', '38', '9441ad74-9f16-49d2-ab0e-f812bd749047', '82', '6d240974-bf1f-407d-bead-8fe81ff4fb27', 'TOS', 'TOS Name', 'DUBAI', '5fe89109-ef47-4c63-b7ef-5f361c794fed', 'GARUDA INDONESIA', 'Notes', '2024-09-18 07:05:20', '2024-09-18 07:05:20', 'bf6c4bd1-3500-4c72-906d-d9b089eb3dcc', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('4eb7db4d-2b02-446b-9896-3ec6acb096bd', 'lcl_and_fcl', '132', '1e64c324-a84c-4382-a46e-8732efc3843c', '2', 'b44a4f9b-e7db-401d-afdc-b1cbfc1f58e1', 'TOS', 'TOS Name', 'LOS ANGELES', '7f2c5e7f-8596-49ec-abe9-a531d245760d', 'CHICAGO EXPRESS AIRLINES', 'Notes', '2024-09-18 07:09:31', '2024-09-18 07:09:31', '96192b40-a310-4a80-802e-7b13c1a29841', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('e6d6da24-c96d-4434-975d-2b31e2549291', 'air', '132', '40025863-a2bd-4ca5-bf37-a519f4700376', '2', '0aea5f64-2e9d-462c-aba8-ed643d6a0717', 'TOS', 'TOS Name', 'DUBAI', '7f2c5e7f-8596-49ec-abe9-a531d245760d', 'CHICAGO EXPRESS AIRLINES', 'Notes', '2024-09-18 07:09:42', '2024-09-18 07:09:42', '96192b40-a310-4a80-802e-7b13c1a29841', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('421927d0-d46c-43ef-bf95-7e235e40d8db', 'land', '4', 'f6bf0d3e-42b8-43fc-b5c0-15b1ec9fe1ac', '3', 'd7d7f1d7-db24-4ef8-920f-f525d94d746a', 'TOS', 'TOS Name', 'DUBAI', '5fe89109-ef47-4c63-b7ef-5f361c794fed', 'GARUDA INDONESIA', 'Notes', '2024-09-18 07:19:10', '2024-09-18 07:19:10', '81568e5c-324f-47fd-b433-5a7d73d2dc69', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('d3533570-ac05-4f1d-8b7e-aabaf9292ef3', 'air', '4', 'f6bf0d3e-42b8-43fc-b5c0-15b1ec9fe1ac', '3', '7cb01a46-d53b-4efa-b1f6-a9d088d1796d', 'TOS', 'TOS Name', 'DUBAI', '7f2c5e7f-8596-49ec-abe9-a531d245760d', 'CHICAGO EXPRESS AIRLINES', 'Notes', '2024-09-18 07:41:19', '2024-09-18 07:41:19', '79f34603-6864-42bb-b185-2091384391dc', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('6bb6bf13-441f-4ab6-83d0-9eebe256d496', 'air', '4', 'f6bf0d3e-42b8-43fc-b5c0-15b1ec9fe1ac', '3', '7cb01a46-d53b-4efa-b1f6-a9d088d1796d', 'TOS', 'TOS Name', 'DUBAI', '7f2c5e7f-8596-49ec-abe9-a531d245760d', 'CHICAGO EXPRESS AIRLINES', 'Notes', '2024-09-18 07:43:39', '2024-09-18 07:43:39', '79f34603-6864-42bb-b185-2091384391dc', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('7324ede4-0713-4bd6-9bab-3f5210d1ed5b', 'land', '36', '60ce009b-e6de-43ab-b425-158e0098f064', '34', '706ca1e7-13e2-4685-b8ec-02d4ecfca4af', 'TOS', 'TOS Name', 'JAKARTA', '5c7ab7d7-4d95-4f91-a08e-5ff3cdc95b2c', 'CANBERRA', 'Notes', '2024-09-18 07:43:39', '2024-09-18 07:43:39', '79f34603-6864-42bb-b185-2091384391dc', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('befd988f-4f15-4052-bf10-a2ca2b672cbc', 'air', '12', 'c765c771-be11-41ee-819e-5be84525452d', '4', 'f6bf0d3e-42b8-43fc-b5c0-15b1ec9fe1ac', 'TOS', 'TOS Name', 'DUBAI', '5fe89109-ef47-4c63-b7ef-5f361c794fed', 'GARUDA INDONESIA', 'Notes', '2024-09-18 07:48:32', '2024-09-18 07:48:32', '5c3d8a53-d2a5-4245-9cbb-d09066f5f443', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('efa0e487-c7d7-4f85-b586-afb38ba3b273', 'air', '69', '73b61e67-e8ea-4721-ad0b-ad7c286538dd', '12', 'c765c771-be11-41ee-819e-5be84525452d', 'TOS', 'TOS Name', 'SEATTLE', '7f2c5e7f-8596-49ec-abe9-a531d245760d', 'CHICAGO EXPRESS AIRLINES', 'Notes', '2024-09-18 08:04:02', '2024-09-18 08:04:02', '85c26f6c-a7f3-49a4-bfd2-1ef7da4c577f', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('0fac5074-a693-40ea-aa5f-b776a46fed96', 'air', '69', '73b61e67-e8ea-4721-ad0b-ad7c286538dd', '12', 'c765c771-be11-41ee-819e-5be84525452d', 'TOS', 'TOS Name', 'SEATTLE', '7f2c5e7f-8596-49ec-abe9-a531d245760d', 'CHICAGO EXPRESS AIRLINES', 'Notes', '2024-09-18 08:10:04', '2024-09-18 08:10:04', '85c26f6c-a7f3-49a4-bfd2-1ef7da4c577f', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('8c0c6b3f-6af6-49a4-ad37-15587b78e23c', 'lcl_and_fcl', '35', '4dc97af1-5195-419f-891f-5b5186e17131', '2', 'b44a4f9b-e7db-401d-afdc-b1cbfc1f58e1', 'TOS', 'TOS Name', 'DUBAI', '5fe89109-ef47-4c63-b7ef-5f361c794fed', 'GARUDA INDONESIA', 'Notes', '2024-09-18 08:10:04', '2024-09-18 08:10:04', '85c26f6c-a7f3-49a4-bfd2-1ef7da4c577f', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('2b4df19f-dc7d-40c3-b7db-00d4d2ff7ea1', 'lcl_and_fcl', '27', '69d7ec30-3819-4ffb-b98b-11d563038dd4', '2', '9805c7c5-e6a0-4d09-bcf6-4d9c94c223d0', 'TOS', 'TOS Name', 'SINGAPORE', '5c7ab7d7-4d95-4f91-a08e-5ff3cdc95b2c', 'CANBERRA', 'Notes', '2024-09-18 08:10:58', '2024-09-18 08:10:58', '39305fca-5bad-452a-932a-d35eef42266d', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('1ae2a07d-f107-4d1b-80ee-6cdd9762ce16', 'air', '35', '4dc97af1-5195-419f-891f-5b5186e17131', '99', 'f561a8b5-c317-4722-881c-389ae996016d', 'TOS', 'TOS Neme', 'SEATTLE', '023b1135-3814-4c0d-8180-67aefefc14bb', 'POLAR AIR CARGO', 'Notes', '2024-09-18 08:10:58', '2024-09-18 08:10:58', '39305fca-5bad-452a-932a-d35eef42266d', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('1f977567-d488-4c7e-9baf-3f68e9201674', 'air', '6', '2aba8880-1392-438f-9418-1eef1adc2835', '3', '6e007669-5d02-44ae-8510-893f8f314191', 'TOS', 'TOS Name', 'DUBAI', '5fe89109-ef47-4c63-b7ef-5f361c794fed', 'GARUDA INDONESIA', 'Notes', '2024-09-18 08:14:24', '2024-09-18 08:14:24', 'd217d84a-d8e4-40dc-b411-d26d813c6c96', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('42c1502f-393c-4550-a036-4669097f2f1e', 'air', '6', '2aba8880-1392-438f-9418-1eef1adc2835', '3', '6e007669-5d02-44ae-8510-893f8f314191', 'TOS', 'TOS Name', 'DUBAI', '5fe89109-ef47-4c63-b7ef-5f361c794fed', 'GARUDA INDONESIA', 'Notes', '2024-09-18 08:38:10', '2024-09-18 08:38:10', 'd217d84a-d8e4-40dc-b411-d26d813c6c96', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('cbae7eaf-36aa-4eef-a363-2112c97a7841', 'land', '38', 'fc7dc58e-963f-49d6-a373-d688e2c76e48', '33', 'c50e384f-88d1-4ea7-a11d-820e607418b4', 'TOS', 'TOS Name', 'JAKARTA', '6010d9bb-03d7-4c75-8ab7-c6c173250e0e', 'DHL WORLDWIDE EXPRESS', 'Notes', '2024-09-18 08:38:10', '2024-09-18 08:38:10', 'd217d84a-d8e4-40dc-b411-d26d813c6c96', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('49d391f9-2ea9-4533-a341-c16acf974f48', 'lcl_and_fcl', '3', '6e007669-5d02-44ae-8510-893f8f314191', '3', '8639a1eb-1eae-4b0e-bed5-ff9c2d181d0d', 'TOS', 'TOS Name', 'SINGAPORE', '5c7ab7d7-4d95-4f91-a08e-5ff3cdc95b2c', 'CANBERRA', 'Notes', '2024-09-18 08:39:51', '2024-09-18 08:39:51', '8ea0628d-9181-4e3d-a4f4-352b9b6c7ca3', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('a6c4f036-a62d-4e84-a118-63876801813a', 'lcl_and_fcl', '1', '1672bc78-9f89-4f36-9195-87a3f6a1af26', '1', '1672bc78-9f89-4f36-9195-87a3f6a1af26', 'TOS', 'TOS Name', 'SINGAPORE', '6010d9bb-03d7-4c75-8ab7-c6c173250e0e', 'DHL WORLDWIDE EXPRESS', 'Notes', '2024-09-18 10:39:18', '2024-09-18 10:39:18', '662b6729-2cf4-42a1-9dca-8b34d1a66f22', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('f1439c26-3b22-46dd-bcca-bbf912391a0b', 'lcl_and_fcl', '1', '1672bc78-9f89-4f36-9195-87a3f6a1af26', '1', '1672bc78-9f89-4f36-9195-87a3f6a1af26', 'TOS', 'TOS Name', 'SINGAPORE', '6010d9bb-03d7-4c75-8ab7-c6c173250e0e', 'DHL WORLDWIDE EXPRESS', 'Notes', '2024-09-18 10:58:09', '2024-09-18 10:58:09', '662b6729-2cf4-42a1-9dca-8b34d1a66f22', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('b6094940-3df7-4959-964c-1e6a85955a44', 'lcl_and_fcl', '39', 'cd0e381d-06e1-44aa-88f8-cada88e778f4', '4', 'f6bf0d3e-42b8-43fc-b5c0-15b1ec9fe1ac', 'TOS', 'TOS Name', NULL, '050eca09-d234-4e8f-a1df-03c142b20379', 'CROATIA AIRLINES', 'Notes', '2024-09-19 02:45:35', '2024-09-19 02:45:35', 'df8e1781-c445-4e9a-a06c-b5446bd6f388', 'Party', 'JAKARTA');
-INSERT INTO "accounting"."service_contracts" VALUES ('be88aaa2-afc4-4641-8408-0b42e8505c4e', 'land', '38', '9441ad74-9f16-49d2-ab0e-f812bd749047', '32', '74d97706-d473-404d-8a09-a2a915047721', 'TOS', 'TOS Name', 'DUBAI', '7f2c5e7f-8596-49ec-abe9-a531d245760d', 'CHICAGO EXPRESS AIRLINES', 'Notes', '2024-09-19 02:54:24', '2024-09-19 02:54:24', '4fc9fe8c-fab8-4277-ae61-32a8beedea7e', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('cdc8311a-f05a-4621-91af-8bc978eaa86f', 'lcl_and_fcl', '75', '2197ab38-d1bb-458e-aae6-bb3ef9f9d8c7', '36', '60ce009b-e6de-43ab-b425-158e0098f064', 'TOS', 'TOS Name', 'SINGAPORE', '1b08eb0c-dfb1-4478-ae84-05a1d0ae294d', 'AIR MAURITIUS', 'Notes', '2024-09-19 02:57:46', '2024-09-19 02:57:46', '00ecd526-f1ab-423e-83b3-5ae2b4288c60', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('370938e3-05fb-4a72-a0ae-5262cf28cf59', 'air', '32', '7c41669c-dc04-4da3-a2de-239e3942bc74', '69', 'b7dce098-220e-4cb8-aca4-333dd6b4412c', 'TOS', 'TOS Name', 'DUBAI', '0a6d2749-64e3-4a5b-b2e1-3ebafa9c36f1', 'RAYA AIRWAYS', 'Notes', '2024-09-19 03:02:04', '2024-09-19 03:02:04', '0305c87b-1fe9-4ed1-b1c1-c253fb081145', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('2bf6b582-833c-43ce-b2e4-cd39c23fef6f', 'lcl_and_fcl', '4', 'f6bf0d3e-42b8-43fc-b5c0-15b1ec9fe1ac', '35', '4dc97af1-5195-419f-891f-5b5186e17131', 'TOS', 'TOS Name', 'SINGAPORE', '164f2127-ee3b-47c9-9d56-4b236505f395', 'RWAND AIR', 'Notes', '2024-09-19 03:04:27', '2024-09-19 03:04:27', '534ad214-8f1b-4409-a37b-d9a4fd656df7', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('3679941f-e2bc-495c-b608-46b4cb1e5f98', 'air', '37', '33394dc0-48fe-4f2d-b01c-517f023ff26e', '3', 'cec1e518-d166-4233-9243-5e3efdc5cfd1', 'TOS', 'TOS Name', 'DUBAI', '29d7ca5c-bf21-49c0-b490-4c10cc45f3ac', 'CARGOLUX AIRLINES', 'Notes', '2024-09-19 03:10:17', '2024-09-19 03:10:17', 'e52b0496-923e-4866-a259-160d0802237e', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('2d071270-b0b7-4abb-a817-fd76c1c4e008', 'air', '81', 'cf955428-f530-4a28-9c09-ffde3dc5a4ba', '102', '1201ec35-10a4-409c-b832-c3bc2ed0956a', 'TOS', 'TOS Name', NULL, '164f2127-ee3b-47c9-9d56-4b236505f395', 'RWAND AIR', 'Notes', '2024-09-19 03:10:17', '2024-09-19 03:10:17', 'e52b0496-923e-4866-a259-160d0802237e', 'Party', 'JAKARTA');
-INSERT INTO "accounting"."service_contracts" VALUES ('000109b3-cda8-4e3a-b911-dbddb0ad8724', 'air', '36', '60ce009b-e6de-43ab-b425-158e0098f064', '3', 'cec1e518-d166-4233-9243-5e3efdc5cfd1', 'TOS', 'TOS Name', 'SINGAPORE', '6010d9bb-03d7-4c75-8ab7-c6c173250e0e', 'DHL WORLDWIDE EXPRESS', 'Notes', '2024-09-19 03:17:25', '2024-09-19 03:17:25', '303167d6-2472-460f-86cc-3df274cb90a7', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('ef1beee0-09aa-4d8d-957a-273bff325ad8', 'lcl_and_fcl', '38', '8f2b59be-9106-4404-8819-61d24b5d4480', '35', '4dc97af1-5195-419f-891f-5b5186e17131', 'TOS', 'TOS Name', 'DUBAI', '5c7ab7d7-4d95-4f91-a08e-5ff3cdc95b2c', 'CANBERRA', 'Notes', '2024-09-19 03:17:25', '2024-09-19 03:17:25', '303167d6-2472-460f-86cc-3df274cb90a7', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('fbfa8240-b517-4152-8bb0-7e20182a0022', 'air', '38', 'b3927629-c431-4a55-90a0-52efaa422f83', '33', 'c50e384f-88d1-4ea7-a11d-820e607418b4', 'TOS', 'TOS Name', 'LOS ANGELES', '04a7d9ac-8c62-4e73-a4cd-611bdcbc8c47', 'SHANGHAI AIRLINES', 'Notes', '2024-09-19 03:20:20', '2024-09-19 03:20:20', 'df8e1781-c445-4e9a-a06c-b5446bd6f388', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('f45bb73a-6508-489a-959f-34035dde9303', 'air', '38', '7d594aef-cd35-48ad-ba82-b9c569101253', '113', '3a9928d9-a1f5-4fd2-ba7a-24933aa644c0', 'TOS', 'TOS Name', 'DUBAI', '7f2c5e7f-8596-49ec-abe9-a531d245760d', 'CHICAGO EXPRESS AIRLINES', 'Notes', '2024-09-19 03:21:41', '2024-09-19 03:21:41', '4fc9fe8c-fab8-4277-ae61-32a8beedea7e', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('0c67d8bb-cd8d-4156-8247-4448c84f7d25', 'lcl_and_fcl', '41', 'dd8988e2-aba0-4f26-bb67-38a0acb88e36', '33', 'faaabfb4-a04f-4dc7-b6a4-b227a243be52', 'TOS', 'TOS Name', 'SINGAPORE', '6010d9bb-03d7-4c75-8ab7-c6c173250e0e', 'DHL WORLDWIDE EXPRESS', 'Notes', '2024-09-19 03:24:32', '2024-09-19 03:24:32', '9d2096b0-a96c-4d56-82df-9fc040c84d61', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('4f60ebf8-3bac-45d1-af53-ebc4e4f5ca9e', 'air', '41', '48432307-d126-4176-b404-53120b299645', '33', 'faaabfb4-a04f-4dc7-b6a4-b227a243be52', 'TOS', 'TOS Name', 'SINGAPORE', '6010d9bb-03d7-4c75-8ab7-c6c173250e0e', 'DHL WORLDWIDE EXPRESS', 'Notes', '2024-09-19 03:25:18', '2024-09-19 03:25:18', '9d2096b0-a96c-4d56-82df-9fc040c84d61', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('87a35cde-0a38-4d9b-ac8c-9ebe451e8fee', 'air', '2', '9805c7c5-e6a0-4d09-bcf6-4d9c94c223d0', '15', '9120c251-1234-4351-8ff5-9844a5c3f630', 'TOS', 'TOS Name', 'DUBAI', '6010d9bb-03d7-4c75-8ab7-c6c173250e0e', 'DHL WORLDWIDE EXPRESS', 'Notes', '2024-09-19 03:33:39', '2024-09-19 03:33:39', 'cdcf6fe5-3669-484b-8517-8bc4caef7dae', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('15ec24db-4f9e-4524-ad86-7d06f733fe69', 'air', '2', '9805c7c5-e6a0-4d09-bcf6-4d9c94c223d0', '15', '9120c251-1234-4351-8ff5-9844a5c3f630', 'TOS', 'TOS Name', 'DUBAI', '6010d9bb-03d7-4c75-8ab7-c6c173250e0e', 'DHL WORLDWIDE EXPRESS', 'Notes', '2024-09-19 03:38:02', '2024-09-19 03:38:02', 'cdcf6fe5-3669-484b-8517-8bc4caef7dae', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('8a481c8d-ec8d-4069-af6c-2c8302e9bad7', 'lcl_and_fcl', '35', '4dc97af1-5195-419f-891f-5b5186e17131', '51', '7627aafe-cda0-4661-9c32-4b89e7c12b44', 'TOS', 'TOS Name', 'DUBAI', '6010d9bb-03d7-4c75-8ab7-c6c173250e0e', 'DHL WORLDWIDE EXPRESS', 'Notes', '2024-09-19 03:38:02', '2024-09-19 03:38:02', 'cdcf6fe5-3669-484b-8517-8bc4caef7dae', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('f53f7b7e-9823-4e78-af52-2cf27e06fdc1', 'land', '33', 'b540048f-fe0e-440f-ad89-657fab22caa8', '38', '86d6ea81-3911-4574-bf2e-b6d9b0baaa2b', 'TOS', 'TOS Name', 'SINGAPORE', '6010d9bb-03d7-4c75-8ab7-c6c173250e0e', 'DHL WORLDWIDE EXPRESS', 'Notes', '2024-09-19 04:02:37', '2024-09-19 04:38:24', '428b6e36-e12a-4418-8146-82f887526fa4', 'Party', NULL);
-INSERT INTO "accounting"."service_contracts" VALUES ('01e5ba2c-7a82-4b89-aee8-60edba7b97c5', 'air', '35', '4dc97af1-5195-419f-891f-5b5186e17131', '35', '4dc97af1-5195-419f-891f-5b5186e17131', 'TOS', 'TOS Name', NULL, '5c7ab7d7-4d95-4f91-a08e-5ff3cdc95b2c', 'CANBERRA', 'Notes', '2024-09-19 04:17:34', '2024-09-19 04:38:25', '428b6e36-e12a-4418-8146-82f887526fa4', 'Party', 'JAKARTA');
 
 -- ----------------------------
 -- Table structure for statement_cashflow
@@ -1587,8 +1382,7 @@ CREATE TABLE "accounting"."statement_cashflow" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-)
-;
+);
 
 -- ----------------------------
 -- Records of statement_cashflow
@@ -1609,8 +1403,7 @@ CREATE TABLE "accounting"."statement_financial" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-)
-;
+);
 
 -- ----------------------------
 -- Records of statement_financial
@@ -1631,8 +1424,7 @@ CREATE TABLE "accounting"."transaction_recurring" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-)
-;
+);
 
 -- ----------------------------
 -- Records of transaction_recurring
@@ -1653,8 +1445,7 @@ CREATE TABLE "accounting"."transaction_recurring_detail" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-)
-;
+);
 
 -- ----------------------------
 -- Records of transaction_recurring_detail
@@ -1678,8 +1469,7 @@ CREATE TABLE "accounting"."vendor_rates" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-)
-;
+);
 
 -- ----------------------------
 -- Records of vendor_rates
@@ -1704,8 +1494,7 @@ CREATE TABLE "accounting"."vendors" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-)
-;
+);
 
 -- ----------------------------
 -- Records of vendors

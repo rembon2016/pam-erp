@@ -620,10 +620,9 @@
 </div>
 
 <script>
-     const API_ORIGIN = '{{ env('API_ORIGIN') }}';
+    const API_ORIGIN = `${window.location.protocol}//${'{!! env('API_ORIGIN') !!}'}`;
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => {
-            // You can add a toast notification here if desired
             alert('CTD Number copied to clipboard!');
         });
     }
@@ -675,7 +674,7 @@
 
     async function downloadFinalAlert(ctdNumber, motherVesselId, voyageNumberMother, originId, createdBy, element) {
         // Return if no mother vessel id
-        if (!motherVesselId) return;
+        // if (!motherVesselId) return;
 
         // Get the icon element
         const icon = element.querySelector('.fas');

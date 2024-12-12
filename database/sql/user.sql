@@ -1,7 +1,7 @@
 /*
- Navicat Premium Data Transfer
+ Navicat Premium Dump SQL
 
- Source Server         : Rembon Development Connection
+ Source Server         : Dev-203.175.10.178
  Source Server Type    : PostgreSQL
  Source Server Version : 140012 (140012)
  Source Host           : 203.175.10.178:2408
@@ -12,7 +12,7 @@
  Target Server Version : 140012 (140012)
  File Encoding         : 65001
 
- Date: 09/09/2024 11:29:55
+ Date: 09/12/2024 18:37:11
 */
 
 
@@ -101,8 +101,8 @@ INSERT INTO "user"."account" VALUES ('63d4fea2-b6b6-4ad0-91e5-dfc7b8d63ae0', 'mu
 INSERT INTO "user"."account" VALUES ('65153dc2-d9a1-4d90-a9e8-99ac5ae58c98', 'jakarta@pamcargo.com', '$2y$10$MHrFY6TmkTqCw1H.R.W.YuQmRUkWnTQmvS1LTnTrUwtdzwsatOL3q', 16, '2023-02-02 08:05:22', NULL, '2023-03-20 06:52:38', NULL, 1, NULL);
 INSERT INTO "user"."account" VALUES ('2699b09d-37ab-41d5-a82f-64e17b38a06c', 'vivek@pamcargo.com', '$2y$10$Ov0JN68W/sNp4xGfUr7Myeu5eoDCoiQZ1c9a.eNXh25jbUv0bK.U.', 14, '2023-02-09 03:18:55', NULL, NULL, NULL, 1, NULL);
 INSERT INTO "user"."account" VALUES ('51a9c59c-6f88-4153-912c-a672d5741875', 'operations@pamcargo.com', '$2y$10$wS/J3AcyIRfo9844djebF.Y.RBERM.e2ClX8wVDHz54NiyCyes6xy', 17, '2023-11-23 11:09:33', 'vivek@pamcargo.com', '2024-05-08 08:12:15', 'vivek@pamcargo.com', 1, NULL);
-INSERT INTO "user"."account" VALUES ('5fb0b1ba-c3b9-416d-94b1-1d0ca40c2456', 'marc@pamcargo.com', '$2y$10$K1e9bC7576dz/g3WXMaCCuliwWS7DI/q94Q8ScMKoRl4OQj.a9Lsy', 19, '2023-03-23 06:48:51', 'admin@gmail.com', '2023-04-14 04:15:56', NULL, 1, NULL);
 INSERT INTO "user"."account" VALUES ('6404a947-fdba-448f-b613-99652dc1100c', 'razick@pamcargo.com', '$2y$10$eRJ8nwpYr.IJXSXr6fJ1sOk0vpIbnpVditR6qCwu/9LAZW13jsYjG', 17, '2023-05-11 02:29:00', 'admin@gmail.com', '2024-04-19 10:52:07', 'vivek@pamcargo.com', 1, NULL);
+INSERT INTO "user"."account" VALUES ('5fb0b1ba-c3b9-416d-94b1-1d0ca40c2456', 'marc@pamcargo.com', '$2y$10$K1e9bC7576dz/g3WXMaCCuliwWS7DI/q94Q8ScMKoRl4OQj.a9Lsy', 19, '2023-03-23 06:48:51', 'admin@gmail.com', '2024-10-28 08:34:42', 'admin@rembon.com', 1, NULL);
 INSERT INTO "user"."account" VALUES ('6c862b65-b11f-494e-9151-25e86740cb7b', 'korea@pamcargo.com', '$2y$10$getnzMA3KvyorWI0aZr.eui0ZvTizVvU6uC9YfEZSJkUAeijYmYm6', 16, '2023-03-08 07:46:42', 'admin@gmail.com', '2023-08-31 11:25:41', 'admin@rembon.com', 1, NULL);
 INSERT INTO "user"."account" VALUES ('72d06924-98ff-40c3-81f7-51042b05fcb3', 'canadapam@logichain.com', '$2y$10$wOkT6OVypPcic213HqlR/u5tI9iynzuipkN.iyghqkPuTFcp2MjYS', 16, '2023-05-15 05:25:56', 'admin@gmail.com', NULL, NULL, 1, NULL);
 INSERT INTO "user"."account" VALUES ('73274e6b-fa30-4f0b-8e7b-4e832d2b9a7f', 'jerry@gmail.com', '$2y$10$avsQoszu6ex7NAqf1oIU0Ovq56F16O7Uvxaq.gV6Zxp//lpwh0mWu', 19, '2023-03-21 09:16:28', 'admin@gmail.com', NULL, NULL, 1, NULL);
@@ -201,7 +201,12 @@ INSERT INTO "user"."account" VALUES ('02db270a-a5a7-4fff-a717-6d0bbb51ff45', 'ge
 INSERT INTO "user"."account" VALUES ('849e7449-1c30-4785-9686-41cb2f4d4d4a', 'willy@pamcargo.com', '$2y$10$WlN6rthMWGTtHMicUBlOKO9Vxf.Le5pw5AL1mdtQC/YVZUPPdrrw.', 30, '2023-03-08 05:25:18', 'admin@gmail.com', '2023-12-06 03:37:08', 'admin@rembon.com', 1, NULL);
 INSERT INTO "user"."account" VALUES ('3c6ce50e-55e0-4328-b965-093bc096762d', 'jhonydoe@gmail.com', '$2y$10$5iUApLFbmB/y5Qu1w0qjc.0K4iShYZQSyWSl35w5SoVAnPEyt.85K', 31, '2024-06-07 13:25:33', 'admin@rembon.com', '2024-06-07 08:31:35', 'admin@rembon.com', 1, NULL);
 INSERT INTO "user"."account" VALUES ('328c383f-e3b8-44f0-bf9a-da442b8c1a8f', 'aang.wiadi@gmail.com', '$2y$10$WPWy3FxSlHwt.FNkjq3JL.kuy/zREZ9vvWic.GH/4t3Dqn4.QYJve', 29, '2024-07-24 11:46:57', 'admin@rembon.com', NULL, NULL, 1, NULL);
-INSERT INTO "user"."account" VALUES ('69880162-6f4b-461d-a424-e05d48a24bb0', 'junaedi@example.com', '$2y$10$QQ3eu5tD6sEMRTH5zpnXAepE1XT7p7LHY6rkx6qsqiLhTwtHbrHYK', 30, '2024-07-17 13:37:33', 'admin@rembon.com', '2024-09-04 08:24:08', 'admin@rembon.com', 1, NULL);
+INSERT INTO "user"."account" VALUES ('69880162-6f4b-461d-a424-e05d48a24bb0', 'junaedi@example.com', '$2y$10$QQ3eu5tD6sEMRTH5zpnXAepE1XT7p7LHY6rkx6qsqiLhTwtHbrHYK', 29, '2024-07-17 13:37:33', 'admin@rembon.com', '2024-09-25 09:04:10', 'admin@rembon.com', 1, NULL);
+INSERT INTO "user"."account" VALUES ('c750817d-248f-47ff-84e1-198ceb5b0da3', 'suneo@gmail.com', '$2y$10$8dUxjlHzKSB97/Si7U3Vm.IiGxQ4AByIcQwVE6GPTeBgW72xhn4qq', 25, '2024-10-09 14:55:32', 'admin@rembon.com', '2024-10-09 08:04:31', 'admin@rembon.com', 1, NULL);
+INSERT INTO "user"."account" VALUES ('74cf9776-72e5-40bb-8224-deccd27f3ce0', 'tegar@rembon.com', '$2y$10$byQ8wnQIYYXIj1DQ2fSXQOrBCPD7sh/CMfTgzy.SdcfbX8hRbOvj.', 25, '2024-10-09 15:07:44', 'admin@rembon.com', NULL, NULL, 1, NULL);
+INSERT INTO "user"."account" VALUES ('1fb84c4b-a60f-49a3-a400-56630158f743', 'adeyusuf@pamcargo.com', '$2y$10$DHAntjCJ09Byf5vXh.11deXnODFrAPpoOAzeILhHmF0GExdna/CVW', 25, '2024-10-11 10:06:57', 'admin@rembon.com', NULL, NULL, 1, NULL);
+INSERT INTO "user"."account" VALUES ('bca5574b-3101-4784-96f2-7b45b97f81d9', 'hi@wira.com', '$2y$10$qvGuSF3cc2fJkhcj6kwbQe3aIO/uP.9RWlrQfVDONgtcMvaS/7.WW', 29, '2024-09-25 15:57:46', 'admin@rembon.com', '2024-10-11 03:10:48', 'admin@rembon.com', 1, NULL);
+INSERT INTO "user"."account" VALUES ('a85bcf75-7173-4b72-a045-d471ac506949', 'temon@gmail.com', '$2y$10$5NcnfPV8IH2XMi7ZqrRao.08yOxZg6weQH/ZJ0.bYj96k9YTz1Ak6', 28, '2024-10-28 15:34:13', 'admin@rembon.com', NULL, NULL, 1, NULL);
 
 -- ----------------------------
 -- Table structure for customer
@@ -393,10 +398,11 @@ INSERT INTO "user"."role" VALUES (25, 'DXB Executive', 'Dubai Boss', '2023-05-23
 INSERT INTO "user"."role" VALUES (15, 'DXB Supervisor', 'DUBAI', '2023-09-19 04:04:17', NULL, NULL, NULL, 1);
 INSERT INTO "user"."role" VALUES (27, 'Destination Agent', NULL, '2023-10-31 06:48:20', NULL, NULL, NULL, 1);
 INSERT INTO "user"."role" VALUES (28, 'Sales Offices', NULL, '2023-10-31 06:48:25', NULL, NULL, NULL, 1);
-INSERT INTO "user"."role" VALUES (29, 'Sales', NULL, '2023-11-13 11:21:36', NULL, '2023-11-13 11:21:51', NULL, 1);
 INSERT INTO "user"."role" VALUES (30, 'Executive', NULL, '2023-11-29 02:50:38', NULL, NULL, NULL, 1);
 INSERT INTO "user"."role" VALUES (26, 'Group Customer', NULL, '2023-07-30 09:07:01', NULL, NULL, NULL, 1);
 INSERT INTO "user"."role" VALUES (31, 'Operation', NULL, '2024-06-05 14:55:25', NULL, NULL, NULL, 1);
+INSERT INTO "user"."role" VALUES (29, 'Sales Person', NULL, '2023-11-13 11:21:36', NULL, '2023-11-13 11:21:51', NULL, 1);
+INSERT INTO "user"."role" VALUES (32, 'Staff Local Business', NULL, '2024-11-06 09:51:02', NULL, NULL, NULL, 1);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -410,7 +416,7 @@ SELECT setval('"user"."password_reset_id_seq"', 36, true);
 -- ----------------------------
 ALTER SEQUENCE "user"."role_role_id_seq"
 OWNED BY "user"."role"."role_id";
-SELECT setval('"user"."role_role_id_seq"', 26, true);
+SELECT setval('"user"."role_role_id_seq"', 27, true);
 
 -- ----------------------------
 -- Primary Key structure for table account

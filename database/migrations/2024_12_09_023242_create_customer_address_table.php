@@ -32,6 +32,8 @@ return new class extends Migration
             $table->string('fax_number')->nullable();
             $table->string('warehouse_provider')->nullable();
 
+            $table->json('contact_informations')->nullable();
+
             TableTimestamps::set(table: $table);
         });
     }

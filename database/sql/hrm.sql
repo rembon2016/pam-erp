@@ -1,7 +1,7 @@
 /*
- Navicat Premium Data Transfer
+ Navicat Premium Dump SQL
 
- Source Server         : Rembon Development Connection
+ Source Server         : Dev-203.175.10.178
  Source Server Type    : PostgreSQL
  Source Server Version : 140012 (140012)
  Source Host           : 203.175.10.178:2408
@@ -12,7 +12,7 @@
  Target Server Version : 140012 (140012)
  File Encoding         : 65001
 
- Date: 09/09/2024 11:17:53
+ Date: 09/12/2024 18:37:56
 */
 
 
@@ -139,6 +139,7 @@ CREATE TABLE "hrm"."city" (
 -- ----------------------------
 -- Records of city
 -- ----------------------------
+INSERT INTO "hrm"."city" VALUES ('a2ec57a7-9287-4c8d-9c8d-1536f2ab514a', '1.1', 'Bogor', '81504248-b380-422b-91db-ebfc0b8586e2', '7f100b41-5fa1-4fe9-af2b-66d7c4d93db5', NULL, '2024-09-27 06:27:48', '2024-09-27 06:27:48', NULL);
 
 -- ----------------------------
 -- Table structure for company
@@ -162,6 +163,7 @@ CREATE TABLE "hrm"."company" (
 -- ----------------------------
 -- Records of company
 -- ----------------------------
+INSERT INTO "hrm"."company" VALUES ('541bbead-708b-4230-ad33-527ead914ce1', '1.0', 'PT Rembon Karya Digital', 'admin@rembon.com', '123', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for company_address
@@ -258,6 +260,7 @@ CREATE TABLE "hrm"."contract" (
 -- ----------------------------
 -- Records of contract
 -- ----------------------------
+INSERT INTO "hrm"."contract" VALUES ('046d7beb-dc2d-4a1d-8143-3b01fac79797', 'client', '1212313131313231', 'Contract Tegar', 'sadad', '2024-09-27', '2049-09-16', '2024-09-27', '[{"value":"contract"}]', NULL, '7f100b41-5fa1-4fe9-af2b-66d7c4d93db5', NULL, '2024-09-27 06:28:42', '2024-09-27 06:28:42', NULL);
 
 -- ----------------------------
 -- Table structure for department
@@ -279,6 +282,7 @@ CREATE TABLE "hrm"."department" (
 -- ----------------------------
 -- Records of department
 -- ----------------------------
+INSERT INTO "hrm"."department" VALUES ('90113bdc-5c60-4d83-b5a1-73b1dda6c6b8', '1.1.1', 'IT', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for education_institute
@@ -298,6 +302,7 @@ CREATE TABLE "hrm"."education_institute" (
 -- ----------------------------
 -- Records of education_institute
 -- ----------------------------
+INSERT INTO "hrm"."education_institute" VALUES ('f05d2956-19e5-4860-a7a0-03050918f95e', 'UNBIN', '7f100b41-5fa1-4fe9-af2b-66d7c4d93db5', NULL, '2024-09-27 06:26:42', '2024-09-27 06:26:42', NULL);
 
 -- ----------------------------
 -- Table structure for education_title
@@ -318,6 +323,7 @@ CREATE TABLE "hrm"."education_title" (
 -- ----------------------------
 -- Records of education_title
 -- ----------------------------
+INSERT INTO "hrm"."education_title" VALUES ('e59e954c-65c1-4c9d-9407-60a6224997d1', 'S1', 'Sarjana', '7f100b41-5fa1-4fe9-af2b-66d7c4d93db5', NULL, '2024-09-27 06:26:57', '2024-09-27 06:26:57', NULL);
 
 -- ----------------------------
 -- Table structure for employee
@@ -360,6 +366,7 @@ CREATE TABLE "hrm"."employee" (
 -- ----------------------------
 -- Records of employee
 -- ----------------------------
+INSERT INTO "hrm"."employee" VALUES ('bb4afcd0-d79b-4227-9a80-ad0138d01667', '1.0', 'Muhamad Tegar Kurniawan', 'M', 'Bogor', '1996-10-03', 'nr', '1212313131313', 'Single', 'tegarkurniawan145@gmail.com', NULL, NULL, NULL, NULL, NULL, '2024-09-27', 'Aktif', 'image_profile-20240927063757jpg', '0fe50161-631a-4c6c-90ad-87799959b8c0', '046d7beb-dc2d-4a1d-8143-3b01fac79797', '541bbead-708b-4230-ad33-527ead914ce1', NULL, '77a753f9-ab29-431b-a951-544404f02c81', '83daf1c7-f490-4e05-b84d-317a4155e2a7', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for employee_address
@@ -406,6 +413,7 @@ CREATE TABLE "hrm"."holiday" (
 -- ----------------------------
 -- Records of holiday
 -- ----------------------------
+INSERT INTO "hrm"."holiday" VALUES ('564e4e9c-b14d-445b-8204-713705535b41', '2024-09-30', 'Libur', '7f100b41-5fa1-4fe9-af2b-66d7c4d93db5', NULL, '2024-09-27 06:29:03', '2024-09-27 06:29:03', NULL);
 
 -- ----------------------------
 -- Table structure for job_level
@@ -427,6 +435,7 @@ CREATE TABLE "hrm"."job_level" (
 -- ----------------------------
 -- Records of job_level
 -- ----------------------------
+INSERT INTO "hrm"."job_level" VALUES ('77a753f9-ab29-431b-a951-544404f02c81', '1.0', 'IT', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for job_title
@@ -448,6 +457,7 @@ CREATE TABLE "hrm"."job_title" (
 -- ----------------------------
 -- Records of job_title
 -- ----------------------------
+INSERT INTO "hrm"."job_title" VALUES ('83daf1c7-f490-4e05-b84d-317a4155e2a7', '77a753f9-ab29-431b-a951-544404f02c81', '1.1', 'Backend', NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for leave
@@ -662,6 +672,7 @@ CREATE TABLE "hrm"."region" (
 -- ----------------------------
 -- Records of region
 -- ----------------------------
+INSERT INTO "hrm"."region" VALUES ('81504248-b380-422b-91db-ebfc0b8586e2', '1.0', 'Jawa Barat', '7f100b41-5fa1-4fe9-af2b-66d7c4d93db5', NULL, '2024-09-27 06:27:33', '2024-09-27 06:27:33', NULL);
 
 -- ----------------------------
 -- Table structure for salary_allowances
@@ -686,6 +697,8 @@ CREATE TABLE "hrm"."salary_allowances" (
 -- ----------------------------
 -- Records of salary_allowances
 -- ----------------------------
+INSERT INTO "hrm"."salary_allowances" VALUES ('5aa91e7e-d0f0-4fc2-ab23-99517ec3a322', 'bb4afcd0-d79b-4227-9a80-ad0138d01667', 2024, 1, '1000', NULL, NULL, NULL, '2024-09-27 06:40:24', '2024-09-27 06:40:24', NULL, 'ca463124-61db-4991-961e-d90896bc9e83');
+INSERT INTO "hrm"."salary_allowances" VALUES ('1630bbbd-b690-47f5-8a54-c9a2b31f7dd6', 'bb4afcd0-d79b-4227-9a80-ad0138d01667', 2024, 1, '10000000', NULL, NULL, NULL, '2024-09-27 06:43:16', '2024-09-27 06:43:16', NULL, '20b3807e-d70f-4b66-bf1e-62a4ac03e85a');
 
 -- ----------------------------
 -- Table structure for salary_benefit_histories
@@ -733,6 +746,7 @@ CREATE TABLE "hrm"."salary_benefits" (
 -- ----------------------------
 -- Records of salary_benefits
 -- ----------------------------
+INSERT INTO "hrm"."salary_benefits" VALUES ('026bcee9-05d6-4918-b318-5a741c5777d2', 'bb4afcd0-d79b-4227-9a80-ad0138d01667', '15000', NULL, NULL, NULL, '2024-09-27 06:39:56', '2024-09-27 06:39:56', NULL, 'cf0fce31-4691-48c1-ba0e-2ba31c234952');
 
 -- ----------------------------
 -- Table structure for salary_component
@@ -755,6 +769,9 @@ CREATE TABLE "hrm"."salary_component" (
 -- ----------------------------
 -- Records of salary_component
 -- ----------------------------
+INSERT INTO "hrm"."salary_component" VALUES ('ca463124-61db-4991-961e-d90896bc9e83', '1.0', 'Gaji', 'i', 'f', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "hrm"."salary_component" VALUES ('20b3807e-d70f-4b66-bf1e-62a4ac03e85a', '2.0', 'BPJS', 'd', 'f', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "hrm"."salary_component" VALUES ('cf0fce31-4691-48c1-ba0e-2ba31c234952', '3.0', 'Uang Makan', 'i', 't', NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for shiftment
@@ -797,6 +814,7 @@ CREATE TABLE "hrm"."skill_groups" (
 -- ----------------------------
 -- Records of skill_groups
 -- ----------------------------
+INSERT INTO "hrm"."skill_groups" VALUES ('ab149ace-79ce-4189-8d81-6698dd208b99', 'Android', '7f100b41-5fa1-4fe9-af2b-66d7c4d93db5', NULL, '2024-09-27 06:27:10', '2024-09-27 06:27:10', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for skills
@@ -817,6 +835,7 @@ CREATE TABLE "hrm"."skills" (
 -- ----------------------------
 -- Records of skills
 -- ----------------------------
+INSERT INTO "hrm"."skills" VALUES ('af4bbf5f-3b94-45f6-9a9a-981747af3e79', 'ab149ace-79ce-4189-8d81-6698dd208b99', 'Flutter', '7f100b41-5fa1-4fe9-af2b-66d7c4d93db5', NULL, '2024-09-27 06:27:20', '2024-09-27 06:27:20', NULL);
 
 -- ----------------------------
 -- Table structure for tax_group_history

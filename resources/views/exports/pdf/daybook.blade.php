@@ -1,4 +1,4 @@
-resources/views/pages/finance/master-data/payment-method<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>

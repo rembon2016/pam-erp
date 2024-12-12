@@ -20,21 +20,21 @@
             <div class='col-md-6'>
                 <x:form.select2 label="Unit" name="unit_id" placeholder="Select Unit" required="true" :model="$charge">
                     @foreach ($units as $unit)
-                        <option value="{{ $unit->unit_id }}">{{ $unit->unit_name }}</option>
+                        <option value="{{ $unit->unit_id }}" @selected(old('unit_id', $charge->unit_id) == $unit->unit_id)>{{ $unit->unit_name }}</option>
                     @endforeach
                 </x:form.select2>
             </div>
             <div class='col-md-6'>
                 <x:form.select2 label="Revenue Account Name" name="revenue_id" placeholder="Select Account" required="true" :model="$charge">
                     @foreach ($revenues as $account)
-                        <option value="{{ $account->id }}">{{ $account->account_name }}</option>
+                        <option value="{{ $account->id }}" @selected(old('revenue_id', $charge->revenue_id) == $account_id)>{{ $account->account_name }}</option>
                     @endforeach
                 </x:form.select2>
             </div>
             <div class='col-md-6'>
                 <x:form.select2 label="Cost Account Name" name="cost_id" placeholder="Select Account" required="true" :model="$charge">
                     @foreach ($costs as $account)
-                        <option value="{{ $account->id }}">{{ $account->account_name }}</option>
+                        <option value="{{ $account->id }}" @selected(old('cost_id', $charge->cost_id) == $account_id)>{{ $account->account_name }}</option>
                     @endforeach
                 </x:form.select2>
             </div>

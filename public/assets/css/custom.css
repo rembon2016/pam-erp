@@ -1051,3 +1051,27 @@ table#shipment_table .btn-view-shipment:hover {
 .form-check-label {
     cursor: pointer;
 }
+
+.cstm-f-color-blue {
+    background: #6259ca;
+    border-radius: 5px;
+    color: #fff;
+    padding: 8px 13px !important;
+}
+
+.cstm-f-color-magenta {
+    background: #f1388b;
+    border-radius: 5px;
+    color: #fff;
+    padding: 8px 13px !important;
+}
+
+.cstm-f-color-blue:hover {
+    background: #403fad;
+    color: #fff;
+}
+
+.cstm-f-color-magenta:hover {
+    background: #ec3487;
+    color: #fff;
+}

@@ -251,7 +251,7 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/filter/eta', [ShipmentController::class, 'etamerge'])->name('eta');
                 Route::get('/list', [ShipmentController::class, 'list'])->name('list');
                 Route::get('/{type}', [ShipmentController::class, 'index'])->name('index');
-
+                Route::get('/{type}/{uuid}', [ShipmentController::class, 'detail'])->name('detail');
             });
         });
     });

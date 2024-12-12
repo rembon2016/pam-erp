@@ -266,6 +266,169 @@ final class ShipmentController extends Controller
 
     }
 
+    public function detail(string $type, string $uuid): View
+    {
+        $base = ($type == "seaair" || $type == "crossair") ? env('API_ORIGIN') : env('API_DXB');
+        
+        $shipmentResponse = Http::get($base . "/api/shippinginstruction/{$uuid}");
+        
+        if (!$shipmentResponse->successful()) {
+            abort(404);
+        }
+
+        $shipment = $shipmentResponse->json()['data'];
+
+        $orderDetailResponse = Http::get($base . "/api/orderdetail/{$uuid}");
+        
+        if (!$orderDetailResponse->successful()) {
+            abort(404);
+        }
+
+        $dimensionResponse = Http::get($base . "/api/dimension/{$uuid}");
+
+        if (!$dimensionResponse->successful()) {
+            abort(404);
+        }
+
+        // Get loading plan ID from shipment response
+        $loadingPlanId = $shipment['loading_plan_dxb'] ?? null;
+        
+        if ($loadingPlanId) {
+            $url = env('API_DXB') . "/api/loadingplan/{$loadingPlanId}";
+            $loadingPlanResponse = Http::get($url);
+
+            if (!$loadingPlanResponse->successful()) {
+                abort(404); 
+            }
+            $loadingPlan = $loadingPlanResponse->json()['data'] ?? null;
+
+            // Get loading plan detail
+            $loadingPlanDetailUrl = env('API_DXB') . "/api/loadingplandetail/{$loadingPlanId}";
+            $loadingPlanDetailResponse = Http::get($loadingPlanDetailUrl);
+
+            if (!$loadingPlanDetailResponse->successful()) {
+                $loadingPlanDetail = null;
+            } else {
+                $loadingPlanDetail = $loadingPlanDetailResponse->json()['data'] ?? null;
+            }
+        } else {
+            $loadingPlan = null;
+            $loadingPlanDetail = null;
+        }
+
+        $ctdNumber = $shipment['ctd_number'] ?? null;
+
+        if($ctdNumber){
+            $jobtruckdeliveryResponse = Http::get($base . "/api/jobtruckdelivery?ctd_number={$ctdNumber}");
+            if($jobtruckdeliveryResponse->successful()){
+                $jobtruckdelivery = $jobtruckdeliveryResponse->json()['data'] ?? null;
+            }
+        }
+
+        // Get destination handling agent data
+        $controlOfficeResponse = Http::get($base . "/api/controloffice/{$uuid}");
+        if ($controlOfficeResponse->successful()) {
+            $controlOffice = $controlOfficeResponse->json()['data'] ?? null;
+        } else {
+            $controlOffice = null;
+        }
+
+        // Get destination partner data
+        $destinationPartnerResponse = Http::get($base . "/api/patner/{$uuid}");
+        if ($destinationPartnerResponse->successful()) {
+            $destinationPartner = $destinationPartnerResponse->json()['data'] ?? null;
+        } else {
+            $destinationPartner = null;
+        }
+
+        // Get sales office data
+        $salesOfficeResponse = Http::get($base . "/api/salesoffice/{$uuid}");
+        if ($salesOfficeResponse->successful()) {
+            $salesOffice = $salesOfficeResponse->json()['data'] ?? null;
+        } else {
+            $salesOffice = null;
+        }
+
+        // Get sales person data
+        $salesPersonResponse = Http::get($base . "/api/salesperson/{$uuid}");
+        if ($salesPersonResponse->successful()) {
+            $salesPerson = $salesPersonResponse->json()['data'] ?? null;
+        } else {
+            $salesPerson = null;
+        }
+
+        // Get order document data
+        $orderDocumentResponse = Http::get($base . "/api/orderdocument?job_id={$uuid}");
+        if ($orderDocumentResponse->successful()) {
+            $orderDocument = $orderDocumentResponse->json()['data'] ?? null;
+        } else {
+            $orderDocument = null;
+        }
+
+        // Get chat section data
+        $chatOriginResponse = Http::get($base . "/api/notedsection?job_id={$uuid}&chat_section=1");
+        if ($chatOriginResponse->successful()) {
+            $chatOrigin = $chatOriginResponse->json()['data'] ?? null;
+        } else {
+            $chatOrigin = null;
+        }
+
+        $chatDxbResponse = Http::get($base . "/api/notedsection?job_id={$uuid}&chat_section=2"); 
+        if ($chatDxbResponse->successful()) {
+            $chatDxb = $chatDxbResponse->json()['data'] ?? null;
+        } else {
+            $chatDxb = null;
+        }
+
+        $chatAgentResponse = Http::get($base . "/api/notedsection?job_id={$uuid}&chat_section=3");
+        if ($chatAgentResponse->successful()) {
+            $chatAgent = $chatAgentResponse->json()['data'] ?? null;
+        } else {
+            $chatAgent = null;
+        }
+
+        // Get onboard date (status_id = 7, Vessel Departed)
+        $onboardResponse = Http::get($base . "/api/historijob", [
+            'status_id' => '7',
+            'job_id' => $uuid,
+            'is_deleted' => 'false'
+        ]);
+        if ($onboardResponse->successful()) {
+            $onboardData = $onboardResponse->json()['data'][0] ?? null;
+            $shipment['onBoardDate'] = $onboardData['tgl_aktual'] ?? null;
+        }
+
+        // Get actual arrival date (status_id = 30, Arrived In Jebel Ali/Arrived in Transit Hub) 
+        $actualArrivalResponse = Http::get($base . "/api/historijob", [
+            'status_id' => '30',
+            'job_id' => $uuid,
+            'is_deleted' => 'false'
+        ]);
+        if ($actualArrivalResponse->successful()) {
+            $actualArrivalData = $actualArrivalResponse->json()['data'][0] ?? null;
+            $shipment['actualArrivalDate'] = $actualArrivalData['tgl_aktual'] ?? null;
+        }
+
+        $orderDetail = $orderDetailResponse->json()['data'];
+        $dimension = $dimensionResponse->json()['data'];
+        
+        $shipment['order_detail'] = $orderDetail;
+        $shipment['dimension'] = $dimension;
+        $shipment['loading_plan'] = $loadingPlan;
+        $shipment['loading_plan_detail'] = $loadingPlanDetail;
+        $shipment['jobtruckdelivery'] = $jobtruckdelivery;
+        $shipment['destination_handling_agent'] = $controlOffice;
+        $shipment['destination_partner'] = $destinationPartner;
+        $shipment['sales_office'] = $salesOffice;
+        $shipment['sales_person'] = $salesPerson;
+        $shipment['order_document'] = $orderDocument;
+        $shipment['chat_origin'] = $chatOrigin;
+        $shipment['chat_dxb'] = $chatDxb;
+        $shipment['chat_agent'] = $chatAgent;
+        
+        return view('pages.finance.general-wise.shipment.detail', compact('shipment', 'type'));
+    }
+
 
 
 }

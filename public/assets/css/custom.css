@@ -79,7 +79,7 @@ table.text-normal :is(td, tr){
     display: block;
     height: 40px;
     width: 40px;
-    border: 2px solid transparent;
+    border: 1px solid transparent;
     border-right-color: #f5f8fa;
     border-bottom-color: #f5f8fa;
     position: absolute;
@@ -481,4 +481,573 @@ table.text-normal :is(td, tr){
 
 .pagination .page-item:hover:not(.active):not(.offset):not(.disabled) .page-link .previous, .pagination .page-item:hover:not(.active):not(.offset):not(.disabled) .page-link .next {
     background-color: #13BA18 !important;
+}
+
+/* Disable arrow sorting data table */
+.sorting_disabled.dt-body-center.no-sort::before,
+.sorting_disabled.dt-body-center.no-sort::after {
+    display: none !important;
+}
+
+/* Filter Shipment */
+.filter-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 15px;
+    padding-top: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    flex-wrap: nowrap;
+    width: 100%;
+    background-color: rgb(244, 244, 244);
+    border: 1px solid rgb(247, 239, 239);
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 110px;
+    max-width: none;
+    margin-top: 6px;
+}
+
+.filter-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #000000;
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+}
+
+.filter-select {
+    width: 100%;
+    min-height: 39px;
+    padding: 4px 4px;
+    padding-left: 13px;
+    border: 1px solid #e4e6ef;
+    border-radius: 4px;
+    background: white;
+    color: #5e6278;
+    font-size: 11px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9L12 15L18 9' stroke='%235E6278' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 4px center;
+    background-size: 12px;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #009ef7;
+}
+
+.filter-date {
+    width: 100%;
+    min-height: 39px;
+    padding: 4px 4px;
+    padding-left: 13px;
+    border: 1px solid #e4e6ef;
+    border-radius: 4px;
+    color: #5e6278;
+    font-size: 11px;
+}
+
+.btn-clear,
+.btn-filter {
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    height: 26px;
+    min-width: 70px;
+}
+
+.btn-clear {
+    background: none;
+    width: 80%;
+    color: #545adc;
+    font-weight: 600;
+    border: 1px solid #545adc;
+    cursor: pointer;
+    border-radius: 20px;
+    margin-bottom: 5px;
+    transition: 0.7s;
+}
+
+.btn-filter {
+    font-size: 13px;
+    background-color: #11c21a;
+    color: #ffffff;
+    border-radius: 3px;
+    transition: 0.7s;
+    height: 39px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.05);
+    margin-top: 2px;
+    font-weight: 500;
+    border: none;
+}
+
+.btn-filter:hover {
+    background: #7cd32c;
+}
+
+@media (max-width: 1366px) {
+    .filter-group {
+        min-width: 90px;
+    }
+
+    .filter-select,
+    .filter-date {
+        font-size: 10px;
+    }
+
+    .filter-label {
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .filter-group {
+        min-width: 70px;
+    }
+
+    .filter-container {
+        gap: 6px;
+    }
+}
+
+@media (max-width: 768px) {
+    .filter-container {
+        gap: 10px;
+    }
+
+    .filter-group {
+        min-width: calc(50% - 10px);
+        flex: 0 0 calc(50% - 10px);
+    }
+
+    .d-flex.flex-column {
+        width: 100%;
+        display: flex;
+        flex-direction: row !important;
+        gap: 10px;
+    }
+
+    .btn-clear,
+    .btn-filter {
+        flex: 1;
+        margin: 0;
+        height: 39px;
+    }
+}
+
+/* Toolbar Shipment */
+.button-export {
+    border: none;
+    font-size: 13px;
+    background-color: #21a366;
+    color: #ffffff;
+    border-radius: 3px;
+    transition: 0.7s;
+    padding: 10px 15px 10px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.05);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.button-export:hover {
+    background-color: #33c481;
+}
+
+.button-download-multiple-doc {
+    border: none;
+    font-size: 13px;
+    background-color: rgb(47, 80, 219);
+    color: #ffffff;
+    border-radius: 3px;
+    transition: 0.7s;
+    padding: 10px 15px 10px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.05);
+    font-weight: 500;
+}
+
+.button-download-multiple-doc:hover {
+    background-color: rgb(29, 55, 165);
+}
+
+.search-input {
+    max-width: 188px;
+    max-height: 38px;
+}
+
+/* Datatable shipment */
+table#shipment_table {
+    border: 1px solid #EEEEEE !important;
+}
+
+table#shipment_table tr {
+    border-bottom: 1px solid #eeeeee !important;
+}
+
+table#shipment_table  td,  table#shipment_table th {
+    padding: 8px !important;
+    font-size: .95rem;
+}
+
+table#shipment_table thead th {
+    padding: 15px !important;
+}
+
+table#shipment_table .sa-class {
+    color: rgb(9, 158, 22);
+    font-weight: 600;
+    background-color: rgb(214, 255, 217);
+    padding: 8px;
+    border-radius: 4px;
+}
+
+table#shipment_table .ca-class {
+    color: #214ed4;
+    font-weight: 600;
+    background-color: #d6e0ff;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+table#shipment_table .first-vessel {
+    background-color: #e7e8ff;
+    padding: 0 5px;
+    border-radius: 3px;
+    color: #0c1160;
+    font-weight: 500;
+}
+
+table#shipment_table .second-vessel {
+    background-color: #ffefee;
+    padding: 0 5px;
+    border-radius: 3px;
+    color: #5b1009;
+    font-weight: 500;
+}
+
+table#shipment_table .badge {
+    cursor: pointer;
+    font-weight: 500;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    padding: 4px 6px 5px !important;
+    display: inline-block;
+    font-size: .88rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 3px;
+    letter-spacing: -0.5px;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+table#shipment_table .btn-view-shipment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 12px;
+    background-color: #30c051;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: 0.7s;
+}
+
+table#shipment_table .btn-view-shipment:hover {
+    background-color: #5ae27a;
+}
+
+.ctd-number-text {
+    color: #3e60cd !important;
+}
+
+#shipment_table_wrapper .form-select.form-select-solid {
+   background-color: #ffffff !important;
+   border: none !important;
+}
+
+.th-datatable-checkbox-all {
+    padding-left: 16px !important;
+}
+
+.td-ctd_number {
+    font-weight: 600 !important;
+    color: #3E60CD !important;
+}
+
+/* Shipment Detail */
+.my-card-padding {
+    padding: 10px 30px;
+}
+
+.my-card-padding .bg-light-success {
+    padding: 20px;
+    background: #bcffcc;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 10px solid rgb(41, 142, 65);
+    margin-bottom: 20px;
+    background-color: #BCFFCC !important;
+}
+
+.header-shipment-detail {
+    margin-top: 40px;
+}
+
+.ctd-mini-info {
+    font-size: 13px;
+    color: #000000;
+    font-weight: 500;
+}
+
+.ctd-big-info {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 0;
+}
+
+.status-ship {
+    font-size: 14px;
+    color: green;
+    background: #eef7f0;
+    padding: 4px 10px;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+.btn-ctd-download-detail {
+    background: #168b16 !important;
+    border-radius: 4px !important;
+    margin-top: 6px;
+}
+
+.box-list {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    cursor: default;
+    border-radius: 10px;
+    padding: 12px 15px;
+    border: 1px solid rgba(0, 0, 0, 0.09);
+}
+
+.box-list.download {
+    padding: 21px;
+
+}
+
+.box-list:hover {
+    background-color: #fff;
+    border: 1px solid #d3d3d3;
+    box-shadow: 0 7px 80px rgba(0, 0, 0, .03), 0 2.55512px 29.2013px rgba(0, 0, 0, .066), 0 1.24046px 14.1767px rgba(0, 0, 0, .05), 0 .608097px 6.94968px rgba(0, 0, 0, .037), 0 .240442px 2.74791px rgba(0, 0, 0, .023);
+    transition: all .5s ease-in;
+}
+
+
+.box-list.download i, .box-list.download span {
+    color: green !important;
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.box-list.download i:hover, .box-list.download span:hover {
+    color: #31c931;
+}
+
+
+.box-list-icon {
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    margin-right: 10px;
+}
+
+.box-list-icon i {
+    color: rgb(62, 62, 62);
+    font-size: 20px;
+}
+
+.box-list-title {
+    color: #3e3e3e !important;
+    font-size: 13px !important;
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+
+.box-list-value {
+    font-weight: 400;
+    font-size: 14px;
+    color: #5c628f;
+}
+
+.box-list-value:hover span, .box-list-value:hover i {
+    color: #31c931 !important;
+}
+
+.title-head-shipping-detail {
+    margin-bottom: 20px;
+    margin-top: 50px;
+}
+
+.title-head-shipping-detail h4 {
+    color: #0a7c15;
+    font-weight: 800;
+    font-size: 20px;
+    margin: 20px 0px;
+}
+
+.table.shipment-detail {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #E4E6EF;
+}
+
+.table.shipment-detail .custom-th {
+    padding: 12px 16px;
+    background-color: #FFFFFF;
+    border: 1px solid #E4E6EF;
+    color: #3F4254;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.table.shipment-detail .custom-td {
+    padding: 12px 16px;
+    border: 1px solid #E4E6EF;
+    color: #3F4254;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.table.shipment-detail .custom-tr:nth-child(odd) {
+    background-color: #EFEEFA;
+}
+
+.table.shipment-detail .custom-tr:hover {
+    background-color: #F5F8FA;
+}
+
+.table.shipment-detail .table-responsive {
+    margin: 20px 0;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.btn-close-shipment-detail {
+    background-color: #dc3545;
+    color: #fff;
+    border-radius: 3px;
+    transition: .7s;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .1), 0 3px 6px rgba(0, 0, 0, .05);
+    font-weight: 500;
+}
+
+.btn-close-shipment-detail:hover {
+    background-color: #d47f88;
+    color: #fff;
+}
+
+.view-notes {
+    display: flex;
+    flex-direction: column;
+}
+
+.view-notes .title {
+    margin-top: 17px;
+}
+
+.view-notes span {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.note-view {
+    border: 1px solid #87cefa;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+.note-view-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.note-view-content-text {
+    font-size: 14px;
+    margin-top: 8px;
+    color: #4682b4;
+    font-weight: 500;
+}
+
+.note-view-header-sender {
+    margin-right: 50px;
+}
+
+.note-view.no-border {
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+}
+
+
+.selected-ctd-item {
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
+}
+
+#selectedCTDList {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.document-types-section {
+    border-top: 1px solid #dee2e6;
+    padding-top: 1rem;
+}
+
+.form-check-input:checked {
+    background-color: #009ef7;
+    border-color: #009ef7;
+}
+
+.form-check-label {
+    cursor: pointer;
 }

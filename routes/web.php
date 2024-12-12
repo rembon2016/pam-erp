@@ -22,6 +22,7 @@ use App\Http\Controllers\Finance\MasterData\ChartOfAccountController;
 use App\Http\Controllers\Finance\MasterData\CustomerContractController;
 use App\Http\Controllers\Finance\GeneralWise\Shipment\ShipmentController;
 use App\Http\Controllers\Finance\MasterData\CustomerForBillingController;
+use App\Http\Controllers\Finance\Settings\UserController;
 use Illuminate\Support\Facades\Schema;
 
 
@@ -337,6 +338,22 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/export/pdf', [RolePermissionController::class, 'exportPdf'])->name('export.pdf');
             Route::get('/export/excel', [RolePermissionController::class, 'exportExcel'])->name('export.excel');
             Route::get('/export/csv', [RolePermissionController::class, 'exportCsv'])->name('export.csv');
+        });
+
+        Route::group([
+            'prefix' => 'user',
+            'as' => 'user.'
+        ], function () {
+            Route::get('/', [UserController::class, 'index'])->name('index');
+            Route::get('/list', [UserController::class, 'list'])->name('list');
+            Route::get('/create', [UserController::class, 'create'])->name('create');
+            Route::post('/', [UserController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [UserController::class, 'update'])->name('update');
+            Route::get('/{id}/delete', [UserController::class, 'destroy'])->name('destroy');
+
+            // Export Route
+            Route::get('/export/csv', [UserController::class, 'exportCsv'])->name('export.csv');
         });
     });
 });

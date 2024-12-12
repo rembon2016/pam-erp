@@ -27,7 +27,7 @@ final class User extends Authenticatable
     /**
      * The database table name for the User model.
      */
-    protected $table = 'usr.users';
+    protected $table = 'usrs.users';
 
     /**
      * The attributes that are mass assignable.
@@ -101,4 +101,5 @@ final class User extends Authenticatable
         self::ADMIN_ROLE, self::HR_ROLE, self::ACCOUNTING_ROLE,
         self::SALES_ROLE, self::FINANCE_ROLE
     ];
+    
 }

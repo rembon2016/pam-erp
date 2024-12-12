@@ -70,8 +70,7 @@
             let condition = rawId[0]
             let id = rawId[rawId.length - 1]
             let countryId = $(this).find(':selected').val()
-            let portListApiUrl = "{{ route('api.accounting.master.country.port_list', ['id' => ':id']) }}"
-            portListApiUrl = portListApiUrl.replace(':id', countryId)
+            let portListApiUrl = `{{ route('api.finance.master-data.port.list') }}?country=${countryId}`
 
             $.ajax({
                 url: portListApiUrl,
@@ -102,7 +101,7 @@
             let chargeId = rawId[rawId.length -1]
 
             let vendorName = $(this).find(':selected').data('charge-name')
-            let findChargeApiUrl = "{{ route('api.accounting.master.charge.show', ['id' => ':id']) }}"
+            let findChargeApiUrl = "{{ route('api.finance.master-data.charge.show', ['id' => ':id']) }}"
             findChargeApiUrl = findChargeApiUrl.replace(':id', $(this).find(':selected').val())
 
             $.ajax({
@@ -114,10 +113,10 @@
                 success: function(res) {
                     $(`#charge_name_${serviceId}_${chargeId}`).val(`${vendorName}`)
 
-                    $(`#currency_id_${serviceId}_${chargeId}`).empty()
-                    $(`#currency_id_${serviceId}_${chargeId}`).append(`
-                        <option value="${res.data.currency_code}" selected>${res.data.currency_code}</option>
-                    `)
+                    // $(`#currency_id_${serviceId}_${chargeId}`).empty()
+                    // $(`#currency_id_${serviceId}_${chargeId}`).append(`
+                    //     <option value="${res.data.currency_code}" selected>${res.data.currency_code}</option>
+                    // `)
 
                     // Edit Kode Disini
                     if ($(`#service_id_${serviceId}`).find(':selected').val() == 'lcl_and_fcl' && res.data.charge_code == 'THC') {
@@ -219,8 +218,8 @@
                         </option>
                         @foreach ($serviceVendors as $serviceVendor)
                             <option
-                                value="{{ $serviceVendor['value'] }}">
-                                {{ $serviceVendor['label'] }}
+                                value="{{ $serviceVendor->id }}">
+                                {{ $serviceVendor->service_code }}
                             </option>
                         @endforeach
                     </select>
@@ -641,15 +640,11 @@
                             <option value="" selected hidden>
                                 Currency
                             </option>
-                            <option value="USD">
-                                USD
-                            </option>
-                            <option value="IDR">
-                                IDR
-                            </option>
-                            <option value="AED">
-                                AED
-                            </option>
+                            @foreach ($currencies as $currency)
+                                <option value="{{ $currency->id }}">
+                                    {{ $currency->currency_name }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="tableChargeForm-box">

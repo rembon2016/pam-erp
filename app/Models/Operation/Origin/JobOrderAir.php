@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Operation\Models\Origin;
+namespace App\Models\Operation\Origin;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Operation\Master\Office;
@@ -35,5 +35,15 @@ class JobOrderAir extends Model
     {
         return $this->belongsTo(Office::class, 'origin_id', 'office_id');
 
+    }
+
+    function lpdetail(){
+        return $this->hasOne(LoadingPlanDetail::class, 'loading_plan_id', 'loading_plan_id')
+                    ->orderBy('date_departure', 'asc');
+    }
+
+    function lparrival(){
+        return $this->hasOne(LoadingPlanDetail::class, 'loading_plan_id', 'loading_plan_id')
+                    ->orderBy('date_arival', 'desc');
     }
 }

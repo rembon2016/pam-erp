@@ -108,6 +108,17 @@
                 <x:form.textarea label="Description" name="contract_description" placeholder="Type Description of Contract" required="true" :model="$agent_contract" />
             </div>
             <div class="col-12 mb-10">
+                <div class="d-flex align-items-center justify-content-between mb-5">
+                    <h4 class="mb-5 mt-5">Add Services</h4>
+                    <div>
+                        <button type="button" id="addServices" class="btn btn-icon btn-success rounded" style="height: 30px; width: 30px;">
+                            <i class="fa fa-plus pe-0"></i>
+                        </button>
+                        <button type="button" id="removeServices" class="btn btn-icon btn-warning rounded" style="height: 30px; width: 30px;" disabled>
+                            <i class="fa fa-minus pe-0"></i>
+                        </button>
+                    </div>
+                </div>
                 @include('pages.finance.master-data.agent-contract.service-contract-form')
             </div>
         </div>

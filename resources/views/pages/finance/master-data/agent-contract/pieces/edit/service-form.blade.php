@@ -20,7 +20,7 @@
         </thead>
         <tbody>
 
-            @foreach (@$contractAgent->serviceContract as $index => $service)
+            @foreach (@$agent_contract->serviceContract as $index => $service)
                 <tr class="serviceTableRow">
                     <td scope="row" class="accordion-toggle" data-bs-toggle="collapse" data-bs-target="#r{{$index + 1}}" aria-expanded="true">
                         <input type="text" value="{{$index + 1}} ↓" class="form-control" style="min-width:200px;" readonly>
@@ -309,7 +309,7 @@
             </div>
         </div>
         <div class="tableServiceForm-body">
-            @foreach (@$contractAgent->serviceContract as $index => $service)
+            @foreach (@$agent_contract->serviceContract as $index => $service)
                 <div class="serviceTableRow">
                     <div class="tableServiceForm-body-row">
                         <div class="accordion-toggle tableServiceForm-box" data-bs-toggle="collapse" data-bs-target="#r{{ $index + 1 }}" aria-expanded="false" style="min-width: 80px;">
@@ -329,7 +329,7 @@
                                 @foreach ($serviceVendors as $serviceVendor)
                                     <option
                                         value="{{ $serviceVendor->id }}"
-                                        @selected($service->service_name == $serviceVendor->id)>
+                                        @selected($service->service_type_id == $serviceVendor->id)>
                                         {{ $serviceVendor->service_code }}
                                     </option>
                                 @endforeach
@@ -349,7 +349,7 @@
                                 @foreach ($countries as $country)
                                     <option
                                         value="{{ $country->country_id }}"
-                                        @selected($service->por_country == $country->country_id)>
+                                        @selected($service->por_country_id == $country->country_id)>
                                         {{ $country->country_name }}
                                     </option>
                                 @endforeach
@@ -366,7 +366,7 @@
                                 @foreach($ports as $port)
                                     <option
                                         value="{{$port->port_id}}"
-                                        @selected($service->por_port == $port->port_id)>
+                                        @selected($service->por_port_id == $port->port_id)>
                                         {{ $port->port_code.'-'.$port->port_name }}
                                     </option>
                                 @endforeach
@@ -386,7 +386,7 @@
                                 @foreach ($countries as $country)
                                     <option
                                         value="{{ $country->country_id }}"
-                                        @selected($service->fdc_country == $country->country_id)>
+                                        @selected($service->fdc_country_id == $country->country_id)>
                                         {{ $country->country_name }}
                                     </option>
                                 @endforeach
@@ -403,7 +403,7 @@
                                 @foreach($ports as $port)
                                     <option
                                         value="{{$port->port_id}}"
-                                        @selected($service->fdc_port == $port->port_id)>
+                                        @selected($service->fdc_port_id == $port->port_id)>
                                         {{ $port->port_code.'-'.$port->port_name }}
                                     </option>
                                 @endforeach
@@ -439,7 +439,7 @@
                                 </option>
                                 @foreach ($routedTransits as $data)
                                     <option value="{{ $data['value'] }}"
-                                        @selected($service->transit == $data['value'])>
+                                        @selected($service->transit_via == $data['value'])>
                                         {{ $data['label'] }}
                                     </option>
                                 @endforeach

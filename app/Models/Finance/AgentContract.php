@@ -6,8 +6,10 @@ namespace App\Models\Finance;
 
 use App\Models\Finance\Customer;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Finance\AgentContractService;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 final class AgentContract extends Model
@@ -36,6 +38,8 @@ final class AgentContract extends Model
         'contract_end' => 'date'
     ];
 
+    public $incrementing = false;
+
     const FOLDER_NAME = 'agent-contract/file';
 
     public function getFileURL()
@@ -46,5 +50,25 @@ final class AgentContract extends Model
     public function customer()
     {
         return $this->hasOne(Customer::class, 'id', 'customer_id');
+    }
+
+    /**
+     * Has Many Relation With Agent Contract Service
+     *
+     * @return HasMany
+     */
+    public function serviceContract(): HasMany
+    {
+        return $this->hasMany(AgentContractService::class, 'agent_contract_id', 'id');
+    }
+
+    /**
+     * Has Many Relation With Agent Contract Charge
+     *
+     * @return HasMany
+     */
+    public function contractAgentCharge(): HasMany
+    {
+        return $this->hasMany(AgentContractCharge::class, 'agent_contract_id', 'id');
     }
 }

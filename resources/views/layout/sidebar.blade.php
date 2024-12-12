@@ -60,8 +60,8 @@
 
     {{-- Costing --}}
     <x:layout.sidebar.parent-menu name="Costing" iconClass="bx bxs-file">
-        <x:layout.sidebar.child-menu name="Sea Air" link="/" />
-        <x:layout.sidebar.child-menu name="Cross Air" link="/" />
+        <x:layout.sidebar.child-menu name="Sea Air" link="{{ route('finance.costing.sea-air.index') }}" />
+        <x:layout.sidebar.child-menu name="Cross Air" link="{{ route('finance.costing.cross-air.index') }}" />
         <x:layout.sidebar.parent-menu name="Dubai Business" iconClass="bx bxs-file">
             <x:layout.sidebar.child-menu name="Sea Import" link="/" />
             <x:layout.sidebar.child-menu name="Sea Export" link="/" />

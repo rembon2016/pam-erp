@@ -683,18 +683,14 @@
                                             id="currency_id_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                             class="form-select"
                                             style="width: 100%;">
-                                            <option value="" @selected(!in_array($chargeValue->currency, ['USD', 'IDR', 'AED'])) hidden>
+                                            <option value="" @selected(!in_array($chargeValue->currency_id, $currencies->pluck('id')->toArray())) hidden>
                                                 Currency
                                             </option>
-                                            <option value="USD" @selected($chargeValue->currency == 'USD')>
-                                                USD
-                                            </option>
-                                            <option value="IDR" @selected($chargeValue->currency == 'IDR')>
-                                                IDR
-                                            </option>
-                                            <option value="AED" @selected($chargeValue->currency == 'AED')>
-                                                AED
-                                            </option>
+                                            @foreach ($currencies as $currency)
+                                                <option value="{{ $currency->id }}">
+                                                    {{ $currency->currency_name }}
+                                                </option>
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div class="tableChargeForm-box">

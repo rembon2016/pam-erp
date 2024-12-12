@@ -111,7 +111,7 @@
 @endsection
 
 @push('js')
-    @component('components.layout.table.datatable', [
+    @component('components.layout.table.datatable-shipment', [
         'id' => 'shipment_table',
         'url' => route('finance.general-wise.shipment.list', ['type' => $type]),
         'columns' => [

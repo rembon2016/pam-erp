@@ -6,11 +6,12 @@
     'required' => $required ?? false,
     'model' => $model ?? null,
     'file' => $file ?? false,
+    'disabled' => $disabled ?? false,
 ])
 
 <div class='mb-10'>
     <label for="#{{ $name }}" class='form-label {{ $required ? 'required' : '' }}'>{{ $label }}</label>
-    <input id="{{ $name }}" type="{{ $type }}" class="@if($errors->has($name)) is-invalid @endif form-control" placeholder="{{ $placeholder }}" name="{{ $name }}" value="{{ old($name, $type == 'date' ? $model?->{$name}?->format('Y-m-d') : $model?->{$name}) }}" {{ $required ? 'required' : '' }}>
+    <input id="{{ $name }}" type="{{ $type }}" class="@if($errors->has($name)) is-invalid @endif form-control" placeholder="{{ $placeholder }}" name="{{ $name }}" value="{{ old($name, $type == 'date' ? $model?->{$name}?->format('Y-m-d') : $model?->{$name}) }}" {{ $required ? 'required' : '' }} {{ $disabled ? 'disabled' : '' }}>
     <div class="invalid-feedback">
         {{ $errors->first($name) }}
     </div>

@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('state')->nullable();
             $table->text('address')->nullable();
             $table->string('country')->nullable();
-            $table->bigInteger('zip')->nullable();
+            $table->bigInteger('zip_code')->nullable();
             $table->bigInteger('po_box')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('fax_number')->nullable();

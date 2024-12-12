@@ -25,4 +25,11 @@ final class CustomerAddress extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    public function casts(): array
+    {
+        return [
+            'contact_informations' => 'collection'
+        ];
+    }
 }

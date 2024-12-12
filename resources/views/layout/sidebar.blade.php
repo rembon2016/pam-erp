@@ -154,7 +154,7 @@
 
     {{-- Accounting --}}
     <x:layout.sidebar.parent-menu name="Settings" iconClass="bx bx-cog">
-        <x:layout.sidebar.child-menu name="User" link="/" />
+        <x:layout.sidebar.child-menu name="User" link="{{ route('settings.user.index') }}" />
         <x:layout.sidebar.child-menu name="Role & Permission" link="{{ route('settings.role-permission.index') }}" />
     </x:layout.sidebar.parent-menu>
 

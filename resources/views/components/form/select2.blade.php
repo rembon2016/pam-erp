@@ -15,8 +15,7 @@
         id="{{ $name }}"
         data-control="select2"
         data-placeholder="{{ $placeholder }}"
-        @if($multiple)  data-close-on-select="false" data-allow-clear="true" multiple="multiple" @endif>
-
+        @if($multiple) data-close-on-select="false" data-allow-clear="true" multiple="multiple" @endif>
         <option></option>
         {{ $slot }}
 

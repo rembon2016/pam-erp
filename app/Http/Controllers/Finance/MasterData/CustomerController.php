@@ -4,11 +4,21 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
+use App\Constants\Customer\CustomerAddress;
+use App\Constants\Customer\CustomerType;
+use App\Functions\ObjectResponse;
 use App\Functions\Utility;
+use App\Models\Finance\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Functions\ResponseJson;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Finance\MasterData\Customer\StoreCustomerRequest;
+use App\Http\Requests\Finance\MasterData\Customer\UpdateCustomerRequest;
+use App\Models\Finance\AccountGroup;
+use App\Models\Finance\ChartOfAccount;
+use App\Models\Finance\Currency;
+use App\Models\Operation\Master\Countries;
 use App\Service\Finance\MasterData\CustomerService;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -82,15 +92,27 @@ final class CustomerController extends Controller
             'method' => 'POST',
          ];
 
-        return view('pages.finance.master-data.customer.form', compact('data'));
+         $customerTypes = CustomerType::COLLECT;
+         $customerAddressTypes = CustomerAddress::COLLECT;
+         $currencies = Currency::orderBy('currency_name', 'asc')->get();
+         $countries = Countries::orderBy('country_name', 'asc')->get();
+         $accountGroups = AccountGroup::orderBy('code', 'asc')->get();
+
+        return view('pages.finance.master-data.customer.form', compact('data', 'customerTypes', 'currencies', 'customerAddressTypes', 'countries', 'accountGroups'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCustomerRequest $request)
     {
-        //
+        $customerResponse = $this->customerService->createCustomer(dto: $request->validated());
+
+        return $customerResponse->success
+            ? to_route('finance.master-data.customer.index')
+                ->with('toastSuccess', $customerResponse->message)
+            : back()
+                ->with('toastError', $customerResponse->message);
     }
 
     /**
@@ -112,7 +134,7 @@ final class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCustomerRequest $request, string $id)
     {
         //
     }

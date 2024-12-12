@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Operation\Models\Origin;
+
+use Illuminate\Database\Eloquent\Model;
+class JobOrderDetail extends Model
+{
+    protected $table = 'origin.job_order_detail';
+    public $timestamps = false;
+    protected $primaryKey = 'job_order_detail_id';
+    protected $keyType = 'string';
+    static $rules = [];
+    protected $fillable = ['job_order_detail_id','job_order_id','ctd_number','job_id'];
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'job_id', 'job_id');
+    }
+
+
+
+}

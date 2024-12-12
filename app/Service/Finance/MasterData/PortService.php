@@ -21,9 +21,12 @@ final class PortService
      *
      * @return Collection The retrieved ports, or an error response if the operation fails.
      */
-    public function getPorts(): Collection
+    public function getPorts($filters = []): Collection
     {
         return Port::with('country')
+            ->when(!empty($filters['country_id']), function ($query) use ($filters) {
+                $query->where('country_id', $filters['country_id']);
+            })
             ->whereNotIn('status', ['2', '3'])
             ->orderBy('port_name', 'asc')
             ->get();

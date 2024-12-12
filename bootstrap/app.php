@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         then: function () {
             Route::middleware('api')
                 ->prefix('api/v1')
+                ->name('api.')
                 ->group(base_path('routes/api/api_v1.php'));
 
             Route::middleware('web')

@@ -188,15 +188,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($shipment['order_detail'] as $detail)
+                    @if(!empty($shipment['order_detail']) && is_array($shipment['order_detail']))
+                        @foreach ($shipment['order_detail'] as $detail)
+                            <tr class="custom-tr">
+                                <td class="custom-td">{{ $detail['order_number'] ?? '-' }}</td>
+                                <td class="custom-td">{{ $detail['art_number'] ?? '-' }}</td>
+                                <td class="custom-td">{{ $detail['style_number'] ?? '-' }}</td>
+                                <td class="custom-td">{{ $detail['hs_code'] ?? '-' }}</td>
+                                <td class="custom-td">{{ $detail['container_number'] ?? '-' }}</td>
+                            </tr>
+                        @endforeach
+                    @else
                         <tr class="custom-tr">
-                            <td class="custom-td">{{ $detail['order_number'] ?? '-' }}</td>
-                            <td class="custom-td">{{ $detail['art_number'] ?? '-' }}</td>
-                            <td class="custom-td">{{ $detail['style_number'] ?? '-' }}</td>
-                            <td class="custom-td">{{ $detail['hs_code'] ?? '-' }}</td>
-                            <td class="custom-td">{{ $detail['container_number'] ?? '-' }}</td>
+                            <td class="custom-td text-center" colspan="5">No order details available</td>
                         </tr>
-                    @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -218,16 +224,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($shipment['dimension'] as $dimension)
+                    @if(count($shipment['dimension']) > 0)
+                        @foreach ($shipment['dimension'] as $dimension)
+                            <tr class="custom-tr">
+                                <td class="custom-td">{{ $dimension['no_pcs'] ?? '-' }}</td>
+                                <td class="custom-td">{{ $dimension['length'] ?? '-' }}</td>
+                                <td class="custom-td">{{ $dimension['width'] ?? '-' }}</td>
+                                <td class="custom-td">{{ $dimension['height'] ?? '-' }}</td>
+                                <td class="custom-td">{{ $dimension['volume_cbm'] ?? '-' }}</td>
+                                <td class="custom-td">{{ $dimension['volume_weight'] ?? '-' }}</td>
+                            </tr>
+                        @endforeach
+                    @else
                         <tr class="custom-tr">
-                            <td class="custom-td">{{ $dimension['no_pcs'] ?? '-' }}</td>
-                            <td class="custom-td">{{ $dimension['length'] ?? '-' }}</td>
-                            <td class="custom-td">{{ $dimension['width'] ?? '-' }}</td>
-                            <td class="custom-td">{{ $dimension['height'] ?? '-' }}</td>
-                            <td class="custom-td">{{ $dimension['volume_cbm'] ?? '-' }}</td>
-                            <td class="custom-td">{{ $dimension['volume_weight'] ?? '-' }}</td>
+                            <td class="custom-td text-center" colspan="6">No dimension details available</td>
                         </tr>
-                    @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -620,7 +632,7 @@
 </div>
 
 <script>
-    const API_ORIGIN = `${window.location.protocol}//${'{!! env('API_ORIGIN') !!}'}`;
+    const API_BASE = `${window.location.protocol}//${'{!! env('API_ORIGIN') !!}'}`;
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => {
             alert('CTD Number copied to clipboard!');
@@ -638,7 +650,7 @@
 
         try {
             const response = await fetch(
-                `${API_ORIGIN}/api/airbill/export?job_id=${jobId}&type=ctd&role=DXB Staff&office_id=533219ad-bfa1-4cf6-87f9-fce85748a647`, {
+                `${API_BASE}/api/airbill/export?job_id=${jobId}&type=ctd&role=DXB Staff&office_id=533219ad-bfa1-4cf6-87f9-fce85748a647`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -690,7 +702,7 @@
             const extractedPart = parts[0].slice(0, -2);
 
             const response = await fetch(
-                `${API_ORIGIN}/api/finalalert/export?mother_vessel_id=${motherVesselId}&voyage_number_mother=${voyageNumberMother}&origin_id=${originId}&created_by=${createdBy}&prefix=${extractedPart}`, {
+                `${API_BASE}/api/finalalert/export?mother_vessel_id=${motherVesselId}&voyage_number_mother=${voyageNumberMother}&origin_id=${originId}&created_by=${createdBy}&prefix=${extractedPart}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/pdf',
@@ -743,7 +755,7 @@
         try {
             const encodedName = encodeURIComponent(nameFile);
             const response = await fetch(
-                `${API_ORIGIN}/api/order/download?job_id=${documentId}&name_file=${encodedName}`, {
+                `${API_BASE}/api/order/download?job_id=${documentId}&name_file=${encodedName}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/pdf',
@@ -795,7 +807,7 @@
     async function downloadNoteAttachment(attachment) {
         try {
             const response = await fetch(
-                `${API_ORIGIN}/api/notedsection/download?name_file=${attachment}`, {
+                `${API_BASE}/api/notedsection/download?name_file=${attachment}`, {
                     method: 'GET',
                 }
             );

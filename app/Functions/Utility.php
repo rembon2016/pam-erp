@@ -34,6 +34,13 @@ final class Utility
             case 'detail':
                 $button = '<a href="'.$url.'" class="action-btn btn-icon"><i class="bx bx-info-circle text-action-info"></i></a>';
                 break;
+            case 'show':
+                $button = '<a href="'.$url.'" class="action-btn btn-icon"><i class="bx bx-show text-action-info"></i></a>';
+            break;
+
+            case 'cost':
+                $button = '<a href="'.$url.'" class="action-btn btn-icon"><i class="bx bx-dollar text-action-success"></i></a>';
+                break;
 
             case 'download':
                 $button = '<a href="'.$url.'" class="action-btn btn-icon" download><i class="bx bx-download text-action-success"></i></a>';

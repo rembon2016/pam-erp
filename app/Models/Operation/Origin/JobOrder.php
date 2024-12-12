@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Operation\Models\Origin;
+namespace App\Models\Operation\Origin;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Operation\Master\Office;
+use App\Models\Finance\Costing;
 
 class JobOrder extends Model
 {
@@ -16,7 +17,10 @@ class JobOrder extends Model
     static $rules = [
 		'status' => 'required',];
     protected $fillable = ['job_order_id','job_order_code','date_order','description','vessel_id','vessel_name_voyage','created_by','modified_by','job_order_type','status','origin_id','origin_name','eta_dubai','destination_charges','loading_plan_id','feeder_vessel_name','voyage_number_feeder'];
-
+    public function costing()
+    {
+        return $this->belongsTo(Costing::class, 'job_order_id', 'job_order_id');
+    }
     public function detail()
     {
         return $this->hasMany(JobOrderDetail::class, 'job_order_id', 'job_order_id');

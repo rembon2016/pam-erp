@@ -16,12 +16,14 @@ final class ApiPortController extends Controller
         protected PortService $portService
     ) {}
 
-    public function list($country_id)
+    public function list()
     {
         return ResponseJson::success(
             Response::HTTP_OK,
             __('crud.fetched', ['name' => 'Port']),
-            $this->portService->getPorts()
+            $this->portService->getPorts([
+                'country_id' => request()->query('country')
+            ])
         );
     }
 }

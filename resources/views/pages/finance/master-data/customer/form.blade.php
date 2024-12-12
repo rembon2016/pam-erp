@@ -25,35 +25,35 @@
     <x:form.wrapper action="{{ $data['action'] }}" method="{{ $data['method'] }}">
         <div class="row">
             <div class='col-md-6'>
-                <x:form.input label="Customer Code" name="customer_code" placeholder="Type Customer Code" required="true" />
+                <x:form.input label="Customer Code" name="customer_code" placeholder="Type Customer Code" required="true" :model="@$customer" />
             </div>
             <div class='col-md-6'>
-                <x:form.input label="Customer Name" name="customer_name" placeholder="Type Customer Name" required="true" />
+                <x:form.input label="Customer Name" name="customer_name" placeholder="Type Customer Name" required="true" :model="@$customer" />
             </div>
             <div class='col-md-6'>
-                <x:form.input label="EORI Number" name="eori_number" placeholder="Type EORI Number" required="true" />
+                <x:form.input label="EORI Number" name="eori_number" placeholder="Type EORI Number" required="true" :model="@$customer" />
             </div>
             <div class='col-md-6'>
                 <x:form.select label="Credit Terms" name="credit_terms" defaultOption="Select Credit Terms" required="true">
-                    <option value="prepaid">Prepaid</option>
-                    <option value="collect">Collect</option>
-                    <option value="exwork">Ex Work</option>
+                    <option value="prepaid" @selected(old('credit_terms', @$customer->credit_terms) == 'prepaid')>Prepaid</option>
+                    <option value="collect" @selected(old('credit_terms', @$customer->credit_terms) == 'collect')>Collect</option>
+                    <option value="exwork" @selected(old('credit_terms', @$customer->credit_terms) == 'exwork')>Ex Work</option>
                 </x:form.select>
             </div>
             <div class='col-md-4'>
-                <x:form.input label="Local/Overseas" name="overseas" placeholder="Type Local/Overseas" required="true" />
+                <x:form.input label="Local/Overseas" name="overseas" placeholder="Type Local/Overseas" required="true" :model="@$customer" />
             </div>
             <div class='col-md-4'>
                 <x:form.select label="Currency" name="currency_id" defaultOption="Select Currency">
                     @foreach ($currencies as $currency)
-                        <option value="{{ $currency->id }}">
+                        <option value="{{ $currency->id }}" @selected(old('currency_id', @$customer->currency_id) == $currency->id)>
                             {{ $currency->currency_name }}
                         </option>
                     @endforeach
                 </x:form.select>
             </div>
             <div class='col-md-4'>
-                <x:form.input type="number" label="Credit Limit" name="credit_limit" placeholder="Type Credit Limit" required="true" />
+                <x:form.input type="number" label="Credit Limit" name="credit_limit" placeholder="Type Credit Limit" required="true" :model="@$customer" />
             </div>
             <div class="col-md-12">
                 <div class='mb-10'>
@@ -63,11 +63,22 @@
                             <div class="col-md-2">
                                 <div class="d-flex mt-3">
                                     <label class="form-check form-check-sm form-check-custom form-check-solid me-5">
-                                        <input class="form-check-input" name="customer_type[]" type="checkbox"
-                                            value="{{ $type }}">
-                                        <span class="form-check-label">
-                                            {{ $type }}
-                                        </span>
+                                        @if (@$customer)
+                                            @php
+                                                $types = @$customer->customerTypes->pluck('name')->toArray();
+                                            @endphp
+                                            <input class="form-check-input" name="customer_type[]" type="checkbox"
+                                                value="{{ $type }}" {{ in_array($type, $types) ? 'checked' : '' }}>
+                                            <span class="form-check-label">
+                                                {{ $type }}
+                                            </span>
+                                        @else
+                                            <input class="form-check-input" name="customer_type[]" type="checkbox"
+                                                value="{{ $type }}">
+                                            <span class="form-check-label">
+                                                {{ $type }}
+                                            </span>
+                                        @endif
                                     </label>
                                 </div>
                             </div>
@@ -114,7 +125,7 @@
                             <div class="col-md-4">
                                 <x:form.select label="Address Type" name="customer_address[address_type]" defaultOption="Select Address Type">
                                     @foreach ($customerAddressTypes as $addressType)
-                                        <option value="{{ $addressType }}">
+                                        <option value="{{ $addressType }}" @selected(@$customer->customerAddress->address_type == $addressType)>
                                             {{ $addressType }}
                                         </option>
                                     @endforeach
@@ -122,67 +133,96 @@
                             </div>
                             <div class="col-md-4">
                                 <x:form.input label="Bank DLR Code" name="customer_address[bank_dlr_code]"
-                                    placeholder="Type Bank DLR Code" />
+                                    placeholder="Type Bank DLR Code" :customModelling="@$customer->customerAddress->bank_dlr_code" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Address" name="customer_address[address]" placeholder="Type Address" />
+                                <x:form.input label="Address" name="customer_address[address]" placeholder="Type Address" :customModelling="@$customer->customerAddress->address" />
                             </div>
                             <div class="col-md-6">
-                                <x:form.input label="City" name="customer_address[city]" placeholder="Type City" />
+                                <x:form.input label="City" name="customer_address[city]" placeholder="Type City" :customModelling="@$customer->customerAddress->city" />
                             </div>
                             <div class="col-md-6">
-                                <x:form.input label="State" name="customer_address[state]" placeholder="Type State" />
+                                <x:form.input label="State" name="customer_address[state]" placeholder="Type State" :customModelling="@$customer->customerAddress->state" />
                             </div>
                             <div class="col-md-4">
                                 <x:form.select2 label="Country" name="customer_address[country]" placeholder="Select Country">
                                     @foreach ($countries as $country)
-                                        <option value="{{ $country->country_id }}">
+                                        <option value="{{ $country->country_id }}" @selected(@$customer->customerAddress->country == $country->country_id)>
                                             {{ $country->country_name }}
                                         </option>
                                     @endforeach
                                 </x:form.select2>
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Zip Code" name="customer_address[zip_code]" placeholder="Type Zip Code" />
+                                <x:form.input label="Zip Code" name="customer_address[zip_code]" placeholder="Type Zip Code" :customModelling="@$customer->customerAddress->zip_code" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="PO Box" name="customer_address[po_box]" placeholder="Type PO Box" />
+                                <x:form.input label="PO Box" name="customer_address[po_box]" placeholder="Type PO Box" :customModelling="@$customer->customerAddress->po_box" />
                             </div>
                             <div class="col-md-4">
                                 <x:form.input type="tel" label="Phone Number" name="customer_address[phone_number]"
-                                    placeholder="Type Phone Number" />
+                                    placeholder="Type Phone Number" :customModelling="@$customer->customerAddress->phone_number" />
                             </div>
                             <div class="col-md-4">
                                 <x:form.input type="tel" label="Fax Number" name="customer_address[fax_number]"
-                                    placeholder="Type Fax Number" />
+                                    placeholder="Type Fax Number" :customModelling="@$customer->customerAddress->fax_number" />
                             </div>
                             <div class="col-md-4">
                                 <x:form.input label="Warehouse Provider" name="customer_address[warehouse_provider]"
-                                    placeholder="Type Warehouse Provider" />
+                                    placeholder="Type Warehouse Provider" :customModelling="@$customer->customerAddress->warehouse_provider" />
                             </div>
                         </div>
                         <div class="row">
                             <h2 class="mb-5">Contact Information</h2>
                             <div id="contact-form">
-                                <div class="contact-row form-row row align-items-center">
-                                    <div class="col">
-                                        <x:form.input label="Contact Person Name" name="customer_address[contact_informations][contact_person_name][]" placeholder="Type Contact Person Name" />
+                                @if (@$customer && !empty(@$customer->customerAddress->contact_informations))
+                                    @foreach (@$customer->customerAddress->contact_informations as $key => $baseContract)
+                                        @php
+                                            $contactInformation = json_decode($baseContract, true)
+                                        @endphp
+                                        @foreach ($contactInformation as $contact)
+                                            <div class="contact-row form-row row align-items-center">
+                                                <div class="col">
+                                                    <x:form.input label="Contact Person Name" name="customer_address[contact_informations][contact_person_name][]" placeholder="Type Contact Person Name" :customModelling="@$contact['contact_person_name']" />
+                                                </div>
+                                                <div class="col">
+                                                    <x:form.input label="Contact Person Number" name="customer_address[contact_informations][contact_person_number][]" placeholder="Type Contact Person Number" :customModelling="@$contact['contact_person_number']" />
+                                                </div>
+                                                <div class="col">
+                                                    <x:form.input label="Contact Person Email" name="customer_address[contact_informations][contact_person_email][]" placeholder="Type Contact Person Email" :customModelling="@$contact['contact_person_email']" />
+                                                </div>
+                                                <div class="col">
+                                                    <x:form.input label="Contact Person Address" name="customer_address[contact_informations][contact_person_address][]" placeholder="Type Contact Person Address" :customModelling="@$contact['contact_person_address']" />
+                                                </div>
+                                                <div class="col-auto d-flex">
+                                                    <button type="button" class="btn btn-success me-2" onclick="addRow('.contact-row', '#contact-form')">+</button>
+                                                    <button type="button" class="btn btn-warning" onclick="removeRow('.contact-row')"
+                                                        disabled>-</button>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endforeach
+                                @else
+                                    <div class="contact-row form-row row align-items-center">
+                                        <div class="col">
+                                            <x:form.input label="Contact Person Name" name="customer_address[contact_informations][contact_person_name][]" placeholder="Type Contact Person Name" />
+                                        </div>
+                                        <div class="col">
+                                            <x:form.input label="Contact Person Number" name="customer_address[contact_informations][contact_person_number][]" placeholder="Type Contact Person Number" />
+                                        </div>
+                                        <div class="col">
+                                            <x:form.input label="Contact Person Email" name="customer_address[contact_informations][contact_person_email][]" placeholder="Type Contact Person Email" />
+                                        </div>
+                                        <div class="col">
+                                            <x:form.input label="Contact Person Address" name="customer_address[contact_informations][contact_person_address][]" placeholder="Type Contact Person Address" />
+                                        </div>
+                                        <div class="col-auto d-flex">
+                                            <button type="button" class="btn btn-success me-2" onclick="addRow('.contact-row', '#contact-form')">+</button>
+                                            <button type="button" class="btn btn-warning" onclick="removeRow('.contact-row')"
+                                                disabled>-</button>
+                                        </div>
                                     </div>
-                                    <div class="col">
-                                        <x:form.input label="Contact Person Number" name="customer_address[contact_informations][contact_person_number][]" placeholder="Type Contact Person Number" />
-                                    </div>
-                                    <div class="col">
-                                        <x:form.input label="Contact Person Email" name="customer_address[contact_informations][contact_person_email][]" placeholder="Type Contact Person Email" />
-                                    </div>
-                                    <div class="col">
-                                        <x:form.input label="Contact Person Address" name="customer_address[contact_informations][contact_person_address][]" placeholder="Type Contact Person Address" />
-                                    </div>
-                                    <div class="col-auto d-flex">
-                                        <button type="button" class="btn btn-success me-2" onclick="addRow('.contact-row', '#contact-form')">+</button>
-                                        <button type="button" class="btn btn-warning" onclick="removeRow('.contact-row')"
-                                            disabled>-</button>
-                                    </div>
-                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -270,19 +310,19 @@
                     <div class="tab-pane fade" id="vat" role="tabpanel">
                         <div class="row">
                             <div class="col-md-6">
-                                <x:form.input label="VAT Number" name="customer_vat[vat_number]" placeholder="Type VAT Number" />
+                                <x:form.input label="VAT Number" name="customer_vat[vat_number]" placeholder="Type VAT Number" :customModelling="@$customer->customerVat->vat_number" />
                             </div>
                             <div class="col-md-6">
-                                <x:form.input label="VAT Number (Arabic)" name="customer_vat[local_vat_number]" placeholder="Type VAT Number (Arabic)" />
+                                <x:form.input label="VAT Number (Arabic)" name="customer_vat[local_vat_number]" placeholder="Type VAT Number (Arabic)" :customModelling="@$customer->customerVat->local_vat_number" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="VAT Excemted" name="customer_vat[vat_excemted]" placeholder="Type VAT Excemted" />
+                                <x:form.input label="VAT Excemted" name="customer_vat[vat_excemted]" placeholder="Type VAT Excemted" :customModelling="@$customer->customerVat->vat_excemted" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Excemted Reason" name="customer_vat[excemted_reason]" placeholder="Type Excemted Reason" />
+                                <x:form.input label="Excemted Reason" name="customer_vat[excemted_reason]" placeholder="Type Excemted Reason" :customModelling="@$customer->customerVat->excemted_reason" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="AIT Number" name="customer_vat[ait_number]" placeholder="Type AIT Number" />
+                                <x:form.input label="AIT Number" name="customer_vat[ait_number]" placeholder="Type AIT Number" :customModelling="@$customer->customerVat->ait_number" />
                             </div>
                         </div>
                     </div>
@@ -290,15 +330,29 @@
                         <div class="row">
                             <div id="email-form">
                                 <div class="email-row form-row row align-items-center">
-                                    <div class="col">
-                                        <input type="hidden" name="customer_email[email_id][]" value="" />
-                                        <x:form.input type="email" label="Email" name="customer_email[email][]" placeholder="Type Email" />
-                                    </div>
-                                    <div class="col-auto d-flex">
-                                        <button type="button" class="btn btn-success me-2" onclick="addRow('.email-row', '#email-form')">+</button>
-                                        <button type="button" class="btn btn-warning" onclick="removeRow('.email-row')"
-                                            disabled>-</button>
-                                    </div>
+                                    @if(@$customer && $customer->customerEmails->count() > 0)
+                                        @foreach (@$customer->customerEmails as $email)
+                                            <div class="col">
+                                                <input type="hidden" name="customer_email[email_id][]" value="{{ $email->id }}" />
+                                                <x:form.input type="email" label="Email" name="customer_email[email][]" placeholder="Type Email" :customModelling="@$email->email" />
+                                            </div>
+                                            <div class="col-auto d-flex">
+                                                <button type="button" class="btn btn-success me-2" onclick="addRow('.email-row', '#email-form')">+</button>
+                                                <button type="button" class="btn btn-warning" onclick="removeRow('.email-row')"
+                                                    disabled>-</button>
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        <div class="col">
+                                            <input type="hidden" name="customer_email[email_id][]" value="" />
+                                            <x:form.input type="email" label="Email" name="customer_email[email][]" placeholder="Type Email" />
+                                        </div>
+                                        <div class="col-auto d-flex">
+                                            <button type="button" class="btn btn-success me-2" onclick="addRow('.email-row', '#email-form')">+</button>
+                                            <button type="button" class="btn btn-warning" onclick="removeRow('.email-row')"
+                                                disabled>-</button>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -306,149 +360,149 @@
                     <div class="tab-pane fade" id="sales" role="tabpanel">
                         <div class="row">
                             <div class="col-md-6">
-                                <x:form.input label="Location" name="customer_sales[location]" placeholder="Type Location" />
+                                <x:form.input label="Location" name="customer_sales[location]" placeholder="Type Location" :customModelling="@$customer->customerSales->location" />
                             </div>
                             <div class="col-md-6">
-                                <x:form.input label="Segment" name="customer_sales[segment]" placeholder="Type Segment" />
+                                <x:form.input label="Segment" name="customer_sales[segment]" placeholder="Type Segment" :customModelling="@$customer->customerSales->segment" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input label="Salesman" name="customer_sales[salesman]" placeholder="Type Salesman" />
+                                <x:form.input label="Salesman" name="customer_sales[salesman]" placeholder="Type Salesman" :customModelling="@$customer->customerSales->salesman" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input label="Customer Services" name="customer_sales[customer_services]" placeholder="Type Customer Services" />
+                                <x:form.input label="Customer Services" name="customer_sales[customer_services]" placeholder="Type Customer Services" :customModelling="@$customer->customerSales->customer_services" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input label="Credit Days" name="customer_sales[credit_days]" placeholder="Type Credit Days" />
+                                <x:form.input label="Credit Days" name="customer_sales[credit_days]" placeholder="Type Credit Days" :customModelling="@$customer->customerSales->credit_days" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input label="Limit Amount" name="customer_sales[limit_amount]" placeholder="Type Limit Amount" />
+                                <x:form.input label="Limit Amount" name="customer_sales[limit_amount]" placeholder="Type Limit Amount" :customModelling="@$customer->customerSales->limit_amount" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input label="Publish Credit Days" name="customer_sales[publish_credit_days]" placeholder="Type Publish Credit Days" />
+                                <x:form.input label="Publish Credit Days" name="customer_sales[publish_credit_days]" placeholder="Type Publish Credit Days" :customModelling="@$customer->customerSales->publish_credit_days" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input label="Publish Amount" name="customer_sales[publish_amount]" placeholder="Type Publish Amount" />
+                                <x:form.input label="Publish Amount" name="customer_sales[publish_amount]" placeholder="Type Publish Amount" :customModelling="@$customer->customerSales->publish_amount" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input type="date" label="Review Date" name="customer_sales[review_date]" placeholder="Type Review Date" />
+                                <x:form.input type="date" label="Review Date" name="customer_sales[review_date]" placeholder="Type Review Date" :customModelling="@$customer->customerSales->review_date" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input label="Override Amount" name="customer_sales[override_amount]" placeholder="Type Override Amount" />
+                                <x:form.input label="Override Amount" name="customer_sales[override_amount]" placeholder="Type Override Amount" :customModelling="@$customer->customerSales->override_amount" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input label="Allowed Days" name="customer_sales[allowed_days]" placeholder="Type Allowed Days" />
+                                <x:form.input label="Allowed Days" name="customer_sales[allowed_days]" placeholder="Type Allowed Days" :customModelling="@$customer->customerSales->allowed_days" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input label="TOS" name="customer_sales[tos]" placeholder="Type TOS" />
+                                <x:form.input label="TOS" name="customer_sales[tos]" placeholder="Type TOS" :customModelling="@$customer->customerSales->tos" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input label="Contact Person" name="customer_sales[contact_person]" placeholder="Type Contact Person" />
+                                <x:form.input label="Contact Person" name="customer_sales[contact_person]" placeholder="Type Contact Person" :customModelling="@$customer->customerSales->contact_person" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input label="Customer Email" name="customer_sales[customer_email]" placeholder="Type Customer Email" />
+                                <x:form.input label="Customer Email" name="customer_sales[customer_email]" placeholder="Type Customer Email" :customModelling="@$customer->customerSales->customer_email" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input label="Auto > %" name="customer_sales[auto_more_than_percentage]" placeholder="Type Auto > %" />
+                                <x:form.input label="Auto > %" name="customer_sales[auto_more_than_percentage]" placeholder="Type Auto > %" :customModelling="@$customer->customerSales->auto_more_than_percentage" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input label="Email Days" name="customer_sales[email_days]" placeholder="Type Email Days" />
+                                <x:form.input label="Email Days" name="customer_sales[email_days]" placeholder="Type Email Days" :customModelling="@$customer->customerSales->email_days" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input label="Auto O/S Email To" name="customer_sales[automatic_email_to]" placeholder="Type Auto O/S Email To" />
+                                <x:form.input label="Auto O/S Email To" name="customer_sales[automatic_email_to]" placeholder="Type Auto O/S Email To" :customModelling="@$customer->customerSales->automatic_email_to" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input label="Sales Coordinator" name="customer_sales[sales_coordinator]" placeholder="Type Sales Coordinator" />
+                                <x:form.input label="Sales Coordinator" name="customer_sales[sales_coordinator]" placeholder="Type Sales Coordinator" :customModelling="@$customer->customerSales->sales_coordinator" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input label="Acc Handling Person" name="customer_sales[acc_handling_person]" placeholder="Type Acc Handling Person" />
+                                <x:form.input label="Acc Handling Person" name="customer_sales[acc_handling_person]" placeholder="Type Acc Handling Person" :customModelling="@$customer->customerSales->acc_handling_person" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input label="Note" name="customer_sales[note]" placeholder="Type Note" />
+                                <x:form.input label="Note" name="customer_sales[note]" placeholder="Type Note" :customModelling="@$customer->customerSales->note" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input label="Invoices to Email" name="customer_sales[invoices_to_email]" placeholder="Type Invoices to Email" />
+                                <x:form.input label="Invoices to Email" name="customer_sales[invoices_to_email]" placeholder="Type Invoices to Email" :customModelling="@$customer->customerSales->invoices_to_email" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input label="Clearance Email" name="customer_sales[clearance_email]" placeholder="Type Clearance Email" />
+                                <x:form.input label="Clearance Email" name="customer_sales[clearance_email]" placeholder="Type Clearance Email" :customModelling="@$customer->customerSales->clearance_email" />
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="bank" role="tabpanel">
                         <div class="row">
                             <div class="col-md-6">
-                                <x:form.input label="Account Number" name="customer_bank[account_number]" placeholder="Type Account Number" />
+                                <x:form.input label="Account Number" name="customer_bank[account_number]" placeholder="Type Account Number" :customModelling="@$customer->customerBank->account_number" />
                             </div>
                             <div class="col-md-6">
-                                <x:form.input label="Account Name" name="customer_bank[account_name]" placeholder="Type Account Name" />
+                                <x:form.input label="Account Name" name="customer_bank[account_name]" placeholder="Type Account Name" :customModelling="@$customer->customerBank->account_name" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Bank Name" name="customer_bank[bank_name]" placeholder="Type Bank Name" />
+                                <x:form.input label="Bank Name" name="customer_bank[bank_name]" placeholder="Type Bank Name" :customModelling="@$customer->customerBank->bank_name" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="IBAN Number" name="customer_bank[iban_number]" placeholder="Type IBAN Number" />
+                                <x:form.input label="IBAN Number" name="customer_bank[iban_number]" placeholder="Type IBAN Number" :customModelling="@$customer->customerBank->iban_number" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Bank Swift Number" name="customer_bank[swift_code]" placeholder="Type Bank Swift Number" />
+                                <x:form.input label="Bank Swift Number" name="customer_bank[swift_code]" placeholder="Type Bank Swift Number" :customModelling="@$customer->customerBank->swift_code" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Bank Address" name="customer_bank[bank_address]" placeholder="Type Bank Address" />
+                                <x:form.input label="Bank Address" name="customer_bank[bank_address]" placeholder="Type Bank Address" :customModelling="@$customer->customerBank->bank_address" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Bank Guarantee A/C Number" name="customer_bank[bank_guarantee_ac_number]" placeholder="Type Bank Guarantee A/C Number" />
+                                <x:form.input label="Bank Guarantee A/C Number" name="customer_bank[bank_guarantee_ac_number]" placeholder="Type Bank Guarantee A/C Number" :customModelling="@$customer->customerBank->bank_guarantee_ac_number" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="BLZ Number / Sort Code" name="customer_bank[blz_number_sort_code]" placeholder="Type BLZ Number / Sort Code" />
+                                <x:form.input label="BLZ Number / Sort Code" name="customer_bank[blz_number_sort_code]" placeholder="Type BLZ Number / Sort Code" :customModelling="@$customer->customerBank->blz_number_sort_code" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Paye Beneficiary ID" name="customer_bank[paye_beneficiary_id]" placeholder="Type Paye Beneficiary ID" />
+                                <x:form.input label="Paye Beneficiary ID" name="customer_bank[paye_beneficiary_id]" placeholder="Type Paye Beneficiary ID" :customModelling="@$customer->customerBank->paye_beneficiary_id" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Payment Type" name="customer_bank[payment_type]" placeholder="Type Payment Type" />
+                                <x:form.input label="Payment Type" name="customer_bank[payment_type]" placeholder="Type Payment Type" :customModelling="@$customer->customerBank->payment_type" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Beneficiary Code" name="customer_bank[beneficiary_code]" placeholder="Type Beneficiary Code" />
+                                <x:form.input label="Beneficiary Code" name="customer_bank[beneficiary_code]" placeholder="Type Beneficiary Code" :customModelling="@$customer->customerBank->beneficiary_code" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Beneficiary A/C Number" name="customer_bank[beneficiary_ac_number]" placeholder="Type Beneficiary A/C Number" />
+                                <x:form.input label="Beneficiary A/C Number" name="customer_bank[beneficiary_ac_number]" placeholder="Type Beneficiary A/C Number" :customModelling="@$customer->customerBank->beneficiary_ac_number" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Beneficiary A/C Type" name="customer_bank[beneficiary_ac_type]" placeholder="Type Beneficiary A/C Type" />
+                                <x:form.input label="Beneficiary A/C Type" name="customer_bank[beneficiary_ac_type]" placeholder="Type Beneficiary A/C Type" :customModelling="@$customer->customerBank->beneficiary_ac_type" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Beneficiary Name" name="customer_bank[beneficiary_name]" placeholder="Type Beneficiary Name" />
+                                <x:form.input label="Beneficiary Name" name="customer_bank[beneficiary_name]" placeholder="Type Beneficiary Name" :customModelling="@$customer->customerBank->beneficiary_name" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Beneficiary Address Line 1" name="customer_bank[beneficiary_first_address]" placeholder="Type Beneficiary Address Line 1" />
+                                <x:form.input label="Beneficiary Address Line 1" name="customer_bank[beneficiary_first_address]" placeholder="Type Beneficiary Address Line 1" :customModelling="@$customer->customerBank->beneficiary_first_address" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Beneficiary Address Line 2" name="customer_bank[beneficiary_second_address]" placeholder="Type Beneficiary Address Line 2" />
+                                <x:form.input label="Beneficiary Address Line 2" name="customer_bank[beneficiary_second_address]" placeholder="Type Beneficiary Address Line 2" :customModelling="@$customer->customerBank->beneficiary_second_address" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Beneficiary Address Line 3" name="customer_bank[beneficiary_third_address]" placeholder="Type Beneficiary Address Line 3" />
+                                <x:form.input label="Beneficiary Address Line 3" name="customer_bank[beneficiary_third_address]" placeholder="Type Beneficiary Address Line 3" :customModelling="@$customer->customerBank->beneficiary_third_address" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Beneficiary City" name="customer_bank[beneficiary_city]" placeholder="Type Beneficiary City" />
+                                <x:form.input label="Beneficiary City" name="customer_bank[beneficiary_city]" placeholder="Type Beneficiary City" :customModelling="@$customer->customerBank->beneficiary_city" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Beneficiary State" name="customer_bank[beneficiary_state]" placeholder="Type Beneficiary State" />
+                                <x:form.input label="Beneficiary State" name="customer_bank[beneficiary_state]" placeholder="Type Beneficiary State" :customModelling="@$customer->customerBank->beneficiary_state" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Beneficiary Pincode" name="customer_bank[beneficiary_pincode]" placeholder="Type Beneficiary Pincode" />
+                                <x:form.input label="Beneficiary Pincode" name="customer_bank[beneficiary_pincode]" placeholder="Type Beneficiary Pincode" :customModelling="@$customer->customerBank->beneficiary_pincode" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="IFSC Code" name="customer_bank[ifsc_code]" placeholder="Type IFSC Code" />
+                                <x:form.input label="IFSC Code" name="customer_bank[ifsc_code]" placeholder="Type IFSC Code" :customModelling="@$customer->customerBank->ifsc_code" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Beneficiary Mobile Number" name="customer_bank[beneficiary_mobile_number]" placeholder="Type Beneficiary Mobile Number" />
+                                <x:form.input label="Beneficiary Mobile Number" name="customer_bank[beneficiary_mobile_number]" placeholder="Type Beneficiary Mobile Number" :customModelling="@$customer->customerBank->beneficiary_mobile_number" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Beneficiary Bank Number" name="customer_bank[beneficiary_bank_number]" placeholder="Type Beneficiary Bank Number" />
+                                <x:form.input label="Beneficiary Bank Number" name="customer_bank[beneficiary_bank_number]" placeholder="Type Beneficiary Bank Number" :customModelling="@$customer->customerBank->beneficiary_bank_number" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Beneficiary Bank Name" name="customer_bank[beneficiary_bank_name]" placeholder="Type Beneficiary Bank Name" />
+                                <x:form.input label="Beneficiary Bank Name" name="customer_bank[beneficiary_bank_name]" placeholder="Type Beneficiary Bank Name" :customModelling="@$customer->customerBank->beneficiary_bank_name" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Beneficiary Bank Branch Name" name="customer_bank[beneficiary_bank_branch_name]" placeholder="Type Beneficiary Bank Branch Name" />
+                                <x:form.input label="Beneficiary Bank Branch Name" name="customer_bank[beneficiary_bank_branch_name]" placeholder="Type Beneficiary Bank Branch Name" :customModelling="@$customer->customerBank->beneficiary_bank_branch_name" />
                             </div>
                         </div>
                     </div>
@@ -456,49 +510,97 @@
                         <div class="row">
                             <div id="account-form">
                                 <div class="account-row form-row row align-items-center">
-                                    <div class="col">
-                                        <input type="hidden" name="customer_account[customer_account_id][]" value="">
-                                        <x:form.select label="Account Number" name="customer_account[chart_of_account_id][]" defaultOption="Select Account Number" style="width: 228px;">
-                                        @foreach ($accountGroups as $group)
-                                            <optgroup label="{{ str($group->name)->upper() }}">
-                                                @foreach ($group->subAccountGroups as $subGroup)
-                                                    <optgroup label="{{ '-' . $subGroup->code . ' -- ' . str($subGroup->name)->upper() }}">
-                                                        @php
-                                                            $chartOfAccounts = $subGroup->chartOfAccounts()
-                                                                ->orderBy('account_number', 'asc')
-                                                                ->get();
-                                                        @endphp
-                                                        @foreach ($chartOfAccounts as $account)
-                                                            <option value="{{ $account->id }}">
-                                                                {{ '--' . $account->account_number . ' --- ' . str($account->account_name)->upper() }}
-                                                            </option>
+                                    @if (@$customer && @$customer->customerAccounts->count() > 0)
+                                        @foreach (@$customer->customerAccounts as $customerAccount)
+                                            <div class="col">
+                                                <input type="hidden" name="customer_account[customer_account_id][]" value="{{ $customerAccount->id }}">
+                                                <x:form.select label="Account Number" name="customer_account[chart_of_account_id][]" defaultOption="Select Account Number" style="width: 228px;">
+                                                    @foreach ($accountGroups as $group)
+                                                        <optgroup label="{{ str($group->name)->upper() }}">
+                                                            @foreach ($group->subAccountGroups as $subGroup)
+                                                                <optgroup label="{{ '-' . $subGroup->code . ' -- ' . str($subGroup->name)->upper() }}">
+                                                                    @php
+                                                                        $chartOfAccounts = $subGroup->chartOfAccounts()
+                                                                            ->orderBy('account_number', 'asc')
+                                                                            ->get();
+                                                                    @endphp
+                                                                    @foreach ($chartOfAccounts as $account)
+                                                                        <option value="{{ $account->id }}" @selected($customerAccount->id == $account->id)>
+                                                                            {{ '--' . $account->account_number . ' --- ' . str($account->account_name)->upper() }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </optgroup>
+                                                            @endforeach
+                                                        </optgroup>
+                                                    @endforeach
+                                                </x:form.select>
+                                            </div>
+                                            <div class="col">
+                                                <x:form.select label="Currency" name="customer_account[currency_id][]" defaultOption="Select Currency">
+                                                    @foreach ($currencies as $currency)
+                                                        <option value="{{ $currency->id }}" @selected($customerAccount->currency_id == $currency->id)>
+                                                            {{ $currency->currency_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </x:form.select>
+                                            </div>
+                                            <div class="col">
+                                                <x:form.input label="LOV Status" name="customer_account[lov_status][]" placeholder="Type LOV Status" :customModelling="@$customerAccount->lov_status" />
+                                            </div>
+                                            <div class="col">
+                                                <x:form.input label="Notes" name="customer_account[notes][]" placeholder="Type Notes" :customModelling="@$customerAccount->notes" />
+                                            </div>
+                                            <div class="col-auto d-flex">
+                                                <button type="button" class="btn btn-success me-2" onclick="addRow('.account-row', '#account-form')">+</button>
+                                                <button type="button" class="btn btn-warning" onclick="removeRow('.account-row')"
+                                                    disabled>-</button>
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        <div class="col">
+                                            <input type="hidden" name="customer_account[customer_account_id][]" value="">
+                                            <x:form.select label="Account Number" name="customer_account[chart_of_account_id][]" defaultOption="Select Account Number" style="width: 228px;">
+                                                @foreach ($accountGroups as $group)
+                                                    <optgroup label="{{ str($group->name)->upper() }}">
+                                                        @foreach ($group->subAccountGroups as $subGroup)
+                                                            <optgroup label="{{ '-' . $subGroup->code . ' -- ' . str($subGroup->name)->upper() }}">
+                                                                @php
+                                                                    $chartOfAccounts = $subGroup->chartOfAccounts()
+                                                                        ->orderBy('account_number', 'asc')
+                                                                        ->get();
+                                                                @endphp
+                                                                @foreach ($chartOfAccounts as $account)
+                                                                    <option value="{{ $account->id }}">
+                                                                        {{ '--' . $account->account_number . ' --- ' . str($account->account_name)->upper() }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </optgroup>
                                                         @endforeach
                                                     </optgroup>
                                                 @endforeach
-                                            </optgroup>
-                                        @endforeach
-                                    </x:form.select>
-                                    </div>
-                                    <div class="col">
-                                        <x:form.select label="Currency" name="customer_account[currency_id][]" defaultOption="Select Currency">
-                                            @foreach ($currencies as $currency)
-                                                <option value="{{ $currency->id }}">
-                                                    {{ $currency->currency_name }}
-                                                </option>
-                                            @endforeach
-                                        </x:form.select>
-                                    </div>
-                                    <div class="col">
-                                        <x:form.input label="LOV Status" name="customer_account[lov_status][]" placeholder="Type LOV Status" />
-                                    </div>
-                                    <div class="col">
-                                        <x:form.input label="Notes" name="customer_account[notes][]" placeholder="Type Notes" />
-                                    </div>
-                                    <div class="col-auto d-flex">
-                                        <button type="button" class="btn btn-success me-2" onclick="addRow('.account-row', '#account-form')">+</button>
-                                        <button type="button" class="btn btn-warning" onclick="removeRow('.account-row')"
-                                            disabled>-</button>
-                                    </div>
+                                            </x:form.select>
+                                        </div>
+                                        <div class="col">
+                                            <x:form.select label="Currency" name="customer_account[currency_id][]" defaultOption="Select Currency">
+                                                @foreach ($currencies as $currency)
+                                                    <option value="{{ $currency->id }}">
+                                                        {{ $currency->currency_name }}
+                                                    </option>
+                                                @endforeach
+                                            </x:form.select>
+                                        </div>
+                                        <div class="col">
+                                            <x:form.input label="LOV Status" name="customer_account[lov_status][]" placeholder="Type LOV Status" />
+                                        </div>
+                                        <div class="col">
+                                            <x:form.input label="Notes" name="customer_account[notes][]" placeholder="Type Notes" />
+                                        </div>
+                                        <div class="col-auto d-flex">
+                                            <button type="button" class="btn btn-success me-2" onclick="addRow('.account-row', '#account-form')">+</button>
+                                            <button type="button" class="btn btn-warning" onclick="removeRow('.account-row')"
+                                                disabled>-</button>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

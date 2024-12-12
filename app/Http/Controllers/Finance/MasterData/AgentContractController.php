@@ -17,9 +17,12 @@ use App\Models\Finance\AgentContract;
 use Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\Facades\DataTables;
 use App\Exports\MasterData\AgentContractExport;
+use App\Service\Finance\MasterData\PortService;
 use App\Service\Finance\MasterData\UnitService;
 use App\Service\Finance\MasterData\ChargeService;
+use App\Service\Finance\MasterData\CarrierService;
 use App\Service\Finance\MasterData\CountryService;
+use App\Service\Finance\MasterData\CurrencyService;
 use App\Service\Finance\MasterData\CustomerService;
 use App\Service\Finance\MasterData\ServiceTypeService;
 use App\Service\Finance\MasterData\AgentContractService;
@@ -34,7 +37,10 @@ final class AgentContractController extends Controller
         protected ServiceTypeService $serviceTypeService,
         protected CountryService $countryService,
         protected ChargeService $chargeService,
-        protected UnitService $unitService
+        protected UnitService $unitService,
+        protected CurrencyService $currrencyService,
+        protected CarrierService $carrierService,
+        protected PortService $portService
     ) {}
 
     /**
@@ -54,7 +60,7 @@ final class AgentContractController extends Controller
      */
     public function list(): JsonResponse
     {
-        // if (request()->ajax()) {
+        if (request()->ajax()) {
             return DataTables::of($this->agentContractService->getAgentContracts())
                 ->addIndexColumn()
                 ->addColumn('customer_code', function ($item) {
@@ -80,12 +86,12 @@ final class AgentContractController extends Controller
                 })
                 ->rawColumns(['action'])
                 ->toJson();
-        // }
+        }
 
-        // return ResponseJson::error(
-        //     Response::HTTP_UNAUTHORIZED,
-        //     'Access Unauthorized',
-        // );
+        return ResponseJson::error(
+            Response::HTTP_UNAUTHORIZED,
+            'Access Unauthorized',
+        );
     }
 
     /**
@@ -105,7 +111,8 @@ final class AgentContractController extends Controller
         $countries = $this->countryService->getCountries();
         $charges = $this->chargeService->getCharges();
         $units = $this->unitService->getUnitCollections();
-        $carriers = [];
+        $carriers = $this->carrierService->getCarriers();
+        $currencies = $this->currrencyService->getCurrencies();
         $routedTransits = [
             ['label' => 'DUBAI', 'value' => 'DUBAI'],
             ['label' => 'SINGAPORE', 'value' => 'SINGAPORE'],
@@ -116,7 +123,7 @@ final class AgentContractController extends Controller
 
          return view(
             'pages.finance.master-data.agent-contract.form',
-            compact('data', 'agent_contract', 'customers', 'serviceVendors', 'countries', 'routedTransits', 'carriers', 'charges', 'units')
+            compact('data', 'agent_contract', 'customers', 'serviceVendors', 'countries', 'routedTransits', 'carriers', 'charges', 'units', 'currencies')
         );
     }
 
@@ -154,7 +161,9 @@ final class AgentContractController extends Controller
         $countries = $this->countryService->getCountries();
         $charges = $this->chargeService->getCharges();
         $units = $this->unitService->getUnitCollections();
-        $carriers = [];
+        $currencies = $this->currrencyService->getCurrencies();
+        $carriers = $this->carrierService->getCarriers();
+        $ports = $this->portService->getPorts();
         $routedTransits = [
             ['label' => 'DUBAI', 'value' => 'DUBAI'],
             ['label' => 'SINGAPORE', 'value' => 'SINGAPORE'],
@@ -172,7 +181,9 @@ final class AgentContractController extends Controller
             'routedTransits' => $routedTransits,
             'carriers' => $carriers,
             'charges' => $charges,
-            'units' => $units
+            'units' => $units,
+            'currencies' => $currencies,
+            'ports' => $ports
          ]);
     }
 

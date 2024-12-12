@@ -108,4 +108,11 @@ final class ResponseJson
             'errors' => $errors,
         ]);
     }
+
+    public static function fromObject(object $response): JsonResponse
+    {
+        return $response->success
+            ? self::success($response->code, $response->message, $response->data)
+            : self::error($response->code, $response->message, $response->errors);
+    }
 }

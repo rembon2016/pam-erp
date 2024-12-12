@@ -4,23 +4,28 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
-use App\Constants\Customer\CustomerAddress;
-use App\Constants\Customer\CustomerType;
-use App\Functions\ObjectResponse;
+use Illuminate\View\View;
 use App\Functions\Utility;
-use App\Models\Finance\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Functions\ResponseJson;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Finance\Currency;
+use App\Models\Finance\Customer;
+use App\Functions\ObjectResponse;
 use App\Http\Controllers\Controller;
+use App\Models\Finance\AccountGroup;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\RedirectResponse;
+use App\Models\Finance\ChartOfAccount;
+use App\Constants\Customer\CustomerType;
+use Yajra\DataTables\Facades\DataTables;
+use App\Models\Operation\Master\Countries;
+use App\Constants\Customer\CustomerAddress;
+use App\Exports\MasterData\CustomerExport;
+use App\Service\Finance\MasterData\CustomerService;
 use App\Http\Requests\Finance\MasterData\Customer\StoreCustomerRequest;
 use App\Http\Requests\Finance\MasterData\Customer\UpdateCustomerRequest;
-use App\Models\Finance\AccountGroup;
-use App\Models\Finance\ChartOfAccount;
-use App\Models\Finance\Currency;
-use App\Models\Operation\Master\Countries;
-use App\Service\Finance\MasterData\CustomerService;
-use Yajra\DataTables\Facades\DataTables;
 
 final class CustomerController extends Controller
 {
@@ -33,6 +38,7 @@ final class CustomerController extends Controller
      */
     public function index()
     {
+        // dd($this->customerService->getCustomers());
         return view('pages.finance.master-data.customer.index');
     }
 
@@ -42,6 +48,7 @@ final class CustomerController extends Controller
             return DataTables::of($this->customerService->getCustomers())
                 ->addIndexColumn()
                 ->addColumn('customer_type', function ($item) {
+
                     $html = '<ul style="list-style-type:none; margin:0;padding:0;">';
 
                     foreach ($item->customerTypes as $customerType) {
@@ -126,9 +133,32 @@ final class CustomerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id): RedirectResponse|View
     {
-        //
+        $customerResponse = $this->customerService->getCustomerById(id: $id);
+        $data = [
+            'page' => 'Edit Customer',
+            'action' => route('finance.master-data.customer.update', $id),
+            'method' => 'PUT',
+         ];
+
+         $customerTypes = CustomerType::COLLECT;
+         $customerAddressTypes = CustomerAddress::COLLECT;
+         $currencies = Currency::orderBy('currency_name', 'asc')->get();
+         $countries = Countries::orderBy('country_name', 'asc')->get();
+         $accountGroups = AccountGroup::orderBy('code', 'asc')->get();
+
+        return $customerResponse->success
+            ? view('pages.finance.master-data.customer.form', [
+                'data' => $data,
+                'customer' => $customerResponse->data,
+                'customerTypes' => $customerTypes,
+                'customerAddressTypes' => $customerAddressTypes,
+                'currencies' => $currencies,
+                'countries' => $countries,
+                'accountGroups' => $accountGroups,
+            ])
+            : back()->with('toastError', $customerResponse->message);
     }
 
     /**
@@ -136,7 +166,13 @@ final class CustomerController extends Controller
      */
     public function update(UpdateCustomerRequest $request, string $id)
     {
-        //
+        $customerResponse = $this->customerService->updateCustomer(dto: $request->validated(), id: $id);
+
+        return $customerResponse->success
+            ? to_route('finance.master-data.customer.index')
+                ->with('toastSuccess', $customerResponse->message)
+            : back()
+                ->with('toastError', $customerResponse->message);
     }
 
     /**
@@ -144,6 +180,33 @@ final class CustomerController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $customerResponse = $this->customerService->deleteCustomer(id: $id);
+
+        return $customerResponse->success
+            ? to_route('finance.master-data.customer.index')
+                ->with('toastSuccess', $customerResponse->message)
+            : back()
+                ->with('toastError', $customerResponse->message);
+    }
+
+    public function exportPdf()
+    {
+        $data = $this->customerService->getCustomers();
+        $pdf = Pdf::loadView('exports.pdf.customer', compact('data'));
+        $file_name = 'list_customer_' . time() . '.pdf';
+
+        return $pdf->download($file_name);
+    }
+
+    public function exportExcel()
+    {
+        $file_name = 'list_customer_' . time() . '.xlsx';
+        return Excel::download(new CustomerExport, $file_name);
+    }
+
+    public function exportCsv()
+    {
+        $file_name = 'list_customer_' . time() . '.csv';
+        return Excel::download(new CustomerExport, $file_name);
     }
 }

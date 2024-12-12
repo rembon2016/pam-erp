@@ -30,7 +30,8 @@ final class UpdateAgentContractRequest extends FormRequest
             'contract_start' => 'required|date',
             'contract_end' => 'required|date',
             'contract_file' => 'nullable|file',
-            'contract_description' => 'required|string'
+            'contract_description' => 'required|string',
+            'service_data' => 'required|array',
         ];
     }
 
@@ -43,7 +44,8 @@ final class UpdateAgentContractRequest extends FormRequest
             'contract_start' => 'Start Contract Date',
             'contract_end' => 'End Contract Date',
             'contract_file' => 'Document (Attachment)',
-            'contract_description' => 'Description'
+            'contract_description' => 'Description',
+            'service_data' => 'Agent Contract Services & Charges',
         ];
     }
 }

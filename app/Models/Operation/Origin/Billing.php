@@ -1,5 +1,5 @@
 <?php
-namespace App\Operation\Models\Origin;
+namespace App\Models\Operation\Origin;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Filterable;

@@ -23,6 +23,8 @@ use App\Http\Controllers\Finance\MasterData\CustomerContractController;
 use App\Http\Controllers\Finance\GeneralWise\Shipment\ShipmentController;
 use App\Http\Controllers\Finance\MasterData\CustomerForBillingController;
 use App\Http\Controllers\Finance\Settings\UserController;
+use App\Http\Controllers\Finance\Costing\SeaAirController;
+use App\Http\Controllers\Finance\Costing\CrossAirController;
 use Illuminate\Support\Facades\Schema;
 
 
@@ -313,6 +315,33 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/list', [ShipmentController::class, 'list'])->name('list');
                 Route::get('/{type}', [ShipmentController::class, 'index'])->name('index');
                 Route::get('/{type}/{uuid}', [ShipmentController::class, 'detail'])->name('detail');
+            });
+        });
+
+        Route::group([
+            'prefix' => 'costing',
+            'as' => 'costing.'
+        ], function () {
+            Route::group([
+                'prefix' => 'sea-air',
+                'as' => 'sea-air.'
+            ], function () {
+                Route::get('/', [SeaAirController::class, 'index'])->name('index');
+                Route::get('/list', [SeaAirController::class, 'list'])->name('list');
+                Route::get('/show/{id}', [SeaAirController::class, 'show'])->name('show');
+                Route::get('/cost/{id}', [SeaAirController::class, 'cost'])->name('cost');
+                Route::get('/export/csv', [SeaAirController::class, 'exportCsv'])->name('export.csv');
+            });
+
+            Route::group([
+                'prefix' => 'cross-air',
+                'as' => 'cross-air.'
+            ], function () {
+                Route::get('/', [CrossAirController::class, 'index'])->name('index');
+                Route::get('/list', [CrossAirController::class, 'list'])->name('list');
+                Route::get('/show/{id}', [CrossAirController::class, 'show'])->name('show');
+                Route::get('/cost/{id}', [CrossAirController::class, 'cost'])->name('cost');
+                Route::get('/export/csv', [CrossAirController::class, 'exportCsv'])->name('export.csv');
             });
         });
     });

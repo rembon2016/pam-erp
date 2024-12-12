@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
-use App\Service\Finance\MasterData\CarrierService;
-use App\Service\Finance\MasterData\CurrencyService;
 use Illuminate\View\View;
 use App\Functions\Utility;
 use Illuminate\Http\Request;
@@ -19,9 +17,12 @@ use App\Models\Finance\AgentContract;
 use Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\Facades\DataTables;
 use App\Exports\MasterData\AgentContractExport;
+use App\Service\Finance\MasterData\PortService;
 use App\Service\Finance\MasterData\UnitService;
 use App\Service\Finance\MasterData\ChargeService;
+use App\Service\Finance\MasterData\CarrierService;
 use App\Service\Finance\MasterData\CountryService;
+use App\Service\Finance\MasterData\CurrencyService;
 use App\Service\Finance\MasterData\CustomerService;
 use App\Service\Finance\MasterData\ServiceTypeService;
 use App\Service\Finance\MasterData\AgentContractService;
@@ -38,7 +39,8 @@ final class AgentContractController extends Controller
         protected ChargeService $chargeService,
         protected UnitService $unitService,
         protected CurrencyService $currrencyService,
-        protected CarrierService $carrierService
+        protected CarrierService $carrierService,
+        protected PortService $portService
     ) {}
 
     /**
@@ -161,6 +163,7 @@ final class AgentContractController extends Controller
         $units = $this->unitService->getUnitCollections();
         $currencies = $this->currrencyService->getCurrencies();
         $carriers = $this->carrierService->getCarriers();
+        $ports = $this->portService->getPorts();
         $routedTransits = [
             ['label' => 'DUBAI', 'value' => 'DUBAI'],
             ['label' => 'SINGAPORE', 'value' => 'SINGAPORE'],
@@ -180,6 +183,7 @@ final class AgentContractController extends Controller
             'charges' => $charges,
             'units' => $units,
             'currencies' => $currencies,
+            'ports' => $ports
          ]);
     }
 

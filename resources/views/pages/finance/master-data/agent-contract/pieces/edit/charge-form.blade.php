@@ -687,7 +687,7 @@
                                                 Currency
                                             </option>
                                             @foreach ($currencies as $currency)
-                                                <option value="{{ $currency->id }}">
+                                                <option value="{{ $currency->id }}" @selected($chargeValue->currency_id == $currency->id)>
                                                     {{ $currency->currency_name }}
                                                 </option>
                                             @endforeach
@@ -821,7 +821,7 @@
                                             type="text"
                                             class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][20_feet]"
-                                            value="{{ $chargeValue->{'20_feet'} == 0 ? '' : $chargeValue->{'20_feet'}  }}"
+                                            value="{{ $chargeValue->twenty_feet == 0 ? '' : $chargeValue->twenty_feet  }}"
                                             style="width: 100%;"
                                             @if($chargeValue->unit->unit_name != 'CNTR')
                                                 disabled
@@ -832,7 +832,7 @@
                                             type="text"
                                             class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][40_feet]"
-                                            value="{{ $chargeValue->{'40_feet'} == 0 ? '' : $chargeValue->{'40_feet'} }}"
+                                            value="{{ $chargeValue->forty_feet == 0 ? '' : $chargeValue->forty_feet }}"
                                             style="width: 100%;"
                                             @if($chargeValue->unit->unit_name != 'CNTR')
                                                 disabled
@@ -843,7 +843,7 @@
                                             type="text"
                                             class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][45_feet_hc]"
-                                            value="{{ $chargeValue->{'45_feet_hc'} == 0 ? '' : $chargeValue->{'45_feet_hc'} }}"
+                                            value="{{ $chargeValue->forty_five_feet_hc == 0 ? '' : $chargeValue->forty_five_feet_hc }}"
                                             style="width: 100%;"
                                             @if($chargeValue->unit->unit_name != 'CNTR')
                                                 disabled
@@ -854,7 +854,7 @@
                                             type="text"
                                             class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][45_feet]"
-                                            value="{{ $chargeValue->{'45_feet'} == 0 ? '' : $chargeValue->{'45_feet'} }}"
+                                            value="{{ $chargeValue->forty_five_feet == 0 ? '' : $chargeValue->forty_five_feet }}"
                                             style="width: 100%;"
                                             @if($chargeValue->unit->unit_name != 'CNTR')
                                                 disabled

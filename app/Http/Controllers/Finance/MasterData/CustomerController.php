@@ -9,17 +9,20 @@ use App\Functions\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Functions\ResponseJson;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Finance\Currency;
 use App\Models\Finance\Customer;
 use App\Functions\ObjectResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Finance\AccountGroup;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Finance\ChartOfAccount;
 use App\Constants\Customer\CustomerType;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Operation\Master\Countries;
 use App\Constants\Customer\CustomerAddress;
+use App\Exports\MasterData\CustomerExport;
 use App\Service\Finance\MasterData\CustomerService;
 use App\Http\Requests\Finance\MasterData\Customer\StoreCustomerRequest;
 use App\Http\Requests\Finance\MasterData\Customer\UpdateCustomerRequest;
@@ -184,5 +187,26 @@ final class CustomerController extends Controller
                 ->with('toastSuccess', $customerResponse->message)
             : back()
                 ->with('toastError', $customerResponse->message);
+    }
+
+    public function exportPdf()
+    {
+        $data = $this->customerService->getCustomers();
+        $pdf = Pdf::loadView('exports.pdf.customer', compact('data'));
+        $file_name = 'list_customer_' . time() . '.pdf';
+
+        return $pdf->download($file_name);
+    }
+
+    public function exportExcel()
+    {
+        $file_name = 'list_customer_' . time() . '.xlsx';
+        return Excel::download(new CustomerExport, $file_name);
+    }
+
+    public function exportCsv()
+    {
+        $file_name = 'list_customer_' . time() . '.csv';
+        return Excel::download(new CustomerExport, $file_name);
     }
 }

@@ -634,15 +634,11 @@
                                         <option value="" selected hidden>
                                             Currency
                                         </option>
-                                        <option value="USD">
-                                            USD
-                                        </option>
-                                        <option value="IDR">
-                                            IDR
-                                        </option>
-                                        <option value="AED">
-                                            AED
-                                        </option>
+                                        @foreach ($currencies as $currency)
+                                            <option value="{{ $currency->id }}">
+                                                {{ $currency->currency_name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="tableChargeForm-box">

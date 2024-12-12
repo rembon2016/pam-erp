@@ -28,24 +28,35 @@ final class ShipmentController extends Controller
     {
         if($type == "seaair"){
             $page = 'SEA AIR';
+            $shipment_by = 'SEAAIR';
         }else if($type == "crossair"){
             $page = 'CROSS AIR';
+            $shipment_by = 'AIR';
         }else if($type == "seaimport"){
             $page = 'SEA IMPORT';
+            $shipment_by = 'SEAIMPORT';
         }else if($type == "seaexport"){
             $page = 'SEA EXPORT';
+            $shipment_by = 'SEAEXPORT';
         }else if($type == "airimport"){
             $page = 'AIR IMPORT';
+            $shipment_by = 'AIRIMPORT';
         }else if($type == "airexport"){
             $page = 'AIR EXPORT';
+            $shipment_by = 'AIREXPORT';
         }else if($type == "warehouse"){
             $page = 'WAREHOUSE';
+            $shipment_by = 'WAREHOUSE';
         }else if($type == "trucking"){
             $page = 'TRUCKING';
+            $shipment_by = 'TRUCKING';
         }else if($type == "courier"){
             $page = 'COURIER';
+            $shipment_by = 'COURIER';
         }
-        return view('pages.finance.general-wise.shipment.index',compact('type','page'));
+        
+        return view('pages.finance.general-wise.shipment.index', 
+            compact('type', 'page', 'shipment_by'));
     }
 
 

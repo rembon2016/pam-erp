@@ -86,6 +86,7 @@ Route::group(['middleware' => ['auth']], function () {
                 'as' => 'agent-contract.'
             ], function () {
                 Route::get('/', [AgentContractController::class, 'index'])->name('index');
+                Route::get('/detail/{id}', [AgentContractController::class, 'show'])->name('detail');
                 Route::get('/list', [AgentContractController::class, 'list'])->name('list');
                 Route::get('/create', [AgentContractController::class, 'create'])->name('create');
                 Route::post('/', [AgentContractController::class, 'store'])->name('store');

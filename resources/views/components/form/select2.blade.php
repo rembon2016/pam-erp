@@ -4,23 +4,35 @@
     'placeholder' => $placeholder ?? "Select Option",
     'required' => $required ?? false,
     'model' => $model ?? null,
-    'multiple' => $multiple ?? false
+    'multiple' => $multiple ?? false,
+    'id' => $id ?? $name,
+    'allowClear' => $allowClear ?? false,
+    'isFilterShipment' => $isFilterShipment ?? false
 ])
 
-<div class='mb-10'>
+<div class='{{ $isFilterShipment ? "filter-group" : "mb-10" }}'>
     <label for="#{{ $name }}" class='form-label {{ $required ? 'required' : '' }}'>{{ $label }}</label>
-    <select class="@if($errors->has($name)) is-invalid @endif form-select"
+    <select class="@if($errors->has($name)) is-invalid @endif form-select {{ $isFilterShipment ? 'filter-shipment-select' : '' }}"
         name="{{ $name }}"
         {{ $required ? 'required' : '' }}
-        id="{{ $name }}"
+        id="{{ isset($id) ? $id : $name }}"
         data-control="select2"
         data-placeholder="{{ $placeholder }}"
-        @if($multiple) data-close-on-select="false" data-allow-clear="true" multiple="multiple" @endif>
-        <option></option>
+        data-allow-clear="{{ $allowClear }}"
+        @if($multiple) data-close-on-select="false" multiple="multiple" @endif>
         {{ $slot }}
-
     </select>
     <div class="invalid-feedback">
         {{ $errors->first($name) }}
     </div>
 </div>
+
+@if($isFilterShipment)
+    @push('css')
+    <style>
+        .select2-dropdown.select2-dropdown--below {
+            min-width: 300px !important;
+        }
+    </style>
+    @endpush
+@endif

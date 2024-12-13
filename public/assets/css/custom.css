@@ -512,9 +512,9 @@ table.text-normal :is(td, tr){
 }
 
 .filter-label {
-    font-size: 11px;
+    font-size: 1.05rem;
     font-weight: 500;
-    color: #000000;
+    color: #3F4254;
     margin-bottom: 0.5rem;
     white-space: nowrap;
 }
@@ -549,7 +549,7 @@ table.text-normal :is(td, tr){
     border: 1px solid #e4e6ef;
     border-radius: 4px;
     color: #5e6278;
-    font-size: 11px;
+    font-size: 14px;
 }
 
 .btn-clear,

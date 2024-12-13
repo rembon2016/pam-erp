@@ -11,7 +11,7 @@
         <x:layout.card.header>
             <x:layout.card.toolbar-shipment />
             <div class="col-12">
-                <x:filter-shipment type="{{ $type }}" />
+                <x-filter.filter-shipment :tableId="'shipment_table'" :type="$type" />
             </div>
         </x:layout.card.header>
         <x:layout.card.body>
@@ -231,7 +231,6 @@
     ])
     @endcomponent
     <script>
-        const API_BASE = `${window.location.protocol}//${'{!! env('API_ORIGIN') !!}'}`;
         $(document).ready(function() {
 
             const shipmentBy = '{{ $shipment_by }}';

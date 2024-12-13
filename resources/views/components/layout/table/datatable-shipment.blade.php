@@ -10,17 +10,63 @@
         var t, e;
         return {
             init: function() {
-                (t = document.querySelector("#{{ $id }}")) && (t.querySelectorAll(
-                    "tbody tr").forEach((t => {
-                    const e = t.querySelectorAll("td"),
-                        r = moment(e[3].innerHTML, "dd mm yyyy").format();
-                    e[3].setAttribute("data-order", r)
-                })), e = $(t).DataTable({
+                t = document.querySelector("#{{ $id }}");
+                if (!t) return;
+
+                e = $(t).DataTable({
                     searchDelay: 500,
                     pageLength: 10,
                     processing: true,
                     serverSide: true,
-                    ajax: "{{ $url }}",
+                    search: {
+                        return: true,
+                        smart: true
+                    },
+                    ajax: {
+                        url: "{{ $url }}",
+                        type: 'GET',
+                        data: function(d) {
+                            // Get vessel select2 data
+                            const vesselSelect = $('#vessel');
+                            const vesselData = vesselSelect.select2('data')[0];
+                            
+                            // Get search value from external search box
+                            const searchValue = $('#datatableSearch').val();
+                            
+                            // Get all filter values
+                            const filters = {
+                                shipment_by: $('#shipment_by').val(),
+                                origin_name: $('#origin').val(),
+                                port_destination_name: $('#destination').val(),
+                                mother_vessel_name: $('#vessel').val(),
+                                eta: $('#eta').val(),
+                                voyage_number_mother: vesselData ? vesselData.voyage_number_mother : null,
+                                mother_vessel_id: vesselData ? vesselData.mother_vessel_id : null,
+                                search: searchValue || d.search.value
+                            };
+
+                            // Handle ETD date range
+                            const fromDate = $('#from_date_etd').val();
+                            const toDate = $('#to_date_etd').val();
+                            if (fromDate && toDate) {
+                                // Send as a simple string
+                                d.etd = fromDate + ',' + toDate;
+                            }
+
+                            // Remove empty/null/undefined filters
+                            Object.keys(filters).forEach(key => {
+                                if (!filters[key] || 
+                                    (Array.isArray(filters[key]) && filters[key].length === 0) ||
+                                    filters[key] === 'null' || 
+                                    filters[key] === 'undefined') {
+                                    delete filters[key];
+                                }
+                            });
+
+                            // Merge the remaining filters with DataTables parameters
+                            return { ...d, ...filters };
+                        }
+                    },
                     columns: @json($columns),
                     language: {
                         info: "_START_-_END_ of _TOTAL_",
@@ -116,7 +162,6 @@
 
                             // Check if the column is action
                             if (columnName === 'action' && row.job_id && row.shipment_by) {
-                                console.log('kepanggil');
                                 // Convert shipment_by to lowercase and handle potential undefined
                                 const shipmentType = (row.shipment_by || '').toLowerCase();
                                 const jobId = row.job_id || '';
@@ -151,23 +196,40 @@
                             $(td).attr('id', `td-${columnName}-${row}`);
                         }
                     }]
-                }), document.querySelector('[data-kt-ecommerce-order-filter="search"]').addEventListener(
-                    "keyup", (function(t) {
-                        e.search(t.target.value).draw()
-                    })), (() => {
-                    const t = document.querySelector('[data-kt-ecommerce-order-filter="status"]');
-                    $(t).on("change", (t => {
-                        let r = t.target.value;
-                        "all" === r && (r = ""), e.column(2).search(r).draw()
-                    }))
-                })())
+                });
+
+                // Store DataTable instance globally
+                window.shipmentDataTable = e;
+
+                // Add debounce function
+                function debounce(func, wait) {
+                    let timeout;
+                    return function(...args) {
+                        clearTimeout(timeout);
+                        timeout = setTimeout(() => func.apply(this, args), wait);
+                    };
+                }
+
+                // Connect external search box to DataTable with debounce
+                $('#datatableSearch').on('keyup', debounce(function() {
+                    window.shipmentDataTable.search(this.value).draw();
+                }, 1000)); // 1000ms = 1 second delay
+
+                // Optional: Add enter key handler (immediate search)
+                $('#datatableSearch').on('keypress', function(event) {
+                    if (event.which == 13) { // Enter key
+                        event.preventDefault();
+                        window.shipmentDataTable.search(this.value).draw();
+                    }
+                });
             }
         }
     }();
 
-    KTUtil.onDOMContentLoaded((function() {
-        KTDataTable.init()
-    }));
+    // Initialize on DOM load
+    KTUtil.onDOMContentLoaded(function() {
+        KTDataTable.init();
+    });
 
     // Move the sidebar initialization outside of the DataTable initialization
     document.addEventListener('DOMContentLoaded', function() {
@@ -367,11 +429,8 @@
 
         // Add click event listeners
         document.addEventListener('click', function(e) {
-            console.log('Click event detected on:', e.target);
-
             // Handle status badge click
             if (e.target.classList.contains('status-badge')) {
-                console.log('Status badge clicked');
                 const sidebar = document.getElementById('rightSidebar');
                 const ctdNumber = e.target.dataset.ctd;
                 const jobId = e.target.dataset.jobId;
@@ -400,7 +459,6 @@
 
                 // Open sidebar first
                 sidebar.classList.add('open');
-                console.log('Sidebar opened:', sidebar.classList.contains('open'));
 
                 // Then fetch data
                 const gmt = getTimeZone();
@@ -413,7 +471,6 @@
                         return response.json();
                     })
                     .then(data => {
-                        console.log('API Response:', data);
                         if (data.status && Array.isArray(data.data)) {
                             const sortedData = data.data.sort((a, b) =>
                                 (a.no_urut || 0) - (b.no_urut || 0) ||
@@ -446,7 +503,6 @@
                 const sidebar = document.getElementById('rightSidebar');
                 if (sidebar) {
                     sidebar.classList.remove('open');
-                    console.log('Sidebar closed');
                 }
             }
         });
@@ -456,7 +512,7 @@
             const sidebar = document.getElementById('rightSidebar');
             const isClickInside = sidebar?.contains(e.target);
             const isStatusBadge = e.target.classList.contains('status-badge');
-            
+
             // Close sidebar if click is outside and sidebar is open
             if (sidebar && !isClickInside && !isStatusBadge && sidebar.classList.contains('open')) {
                 sidebar.classList.remove('open');
@@ -534,4 +590,27 @@
             return "GMT+7"; // fallback to GMT+7
         }
     }
+
+    // Add click handler for clear button
+    $('#btn-clear').on('click', function() {
+        // Clear all select2 fields
+        $('#shipment_by, #origin, #destination, #vessel, #eta').val(null).trigger('change');
+        
+        // Clear date inputs
+        $('#from_date_etd, #to_date_etd').val('');
+        
+        // Clear search input
+        $('#datatableSearch').val('');
+        
+        // Get the DataTable instance
+        var dataTable = window.shipmentDataTable;
+        if (dataTable) {
+            // Clear search and reset to first page
+            dataTable
+                .search('')
+                .page.len(10)  // Reset page length to default (10)
+                .page(0)       // Go to first page
+                .draw();       // Redraw the table
+        }
+    });
 </script>

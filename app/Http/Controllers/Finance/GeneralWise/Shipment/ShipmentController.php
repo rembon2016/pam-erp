@@ -68,6 +68,7 @@ final class ShipmentController extends Controller
         } else {
             $base = env('API_DXB');
         }
+        
         $type = $request->type;
         if($type == "seaair"){
             $shipment_by = 'SEAAIR';
@@ -90,20 +91,66 @@ final class ShipmentController extends Controller
         }
 
         $apiUrl = $base . "/api/shippinginstruction";
-
+        
         // Correct page calculation
         $page = ($request->input('start') / $request->input('length')) + 1;
         $limit = $request->input('length');
-        $search = $request->input('search')['value'] ?? '';
+        
+        $search = $request->input('search');
+        if (is_array($search)) {
+            $search = $search['value'] ?? '';
+        }
 
-        // Make the API request
-        $response = Http::get($apiUrl, [
+        $params = [
             'page' => $page,
             'limit' => $limit,
             'search' => $search,
             'status' => 6,
-            'shipment_by'=>$shipment_by,
-        ]);
+            'shipment_by' => $shipment_by,
+        ];
+
+        if ($request->filled('origin_name')) {
+            $params['origin_name'] = $request->origin_name;
+        }
+
+        if ($request->filled('port_destination_name')) {
+            $params['port_destination_name'] = $request->port_destination_name;
+        }
+
+        if ($request->filled('mother_vessel_name')) {
+            $params['mother_vessel_name'] = $request->mother_vessel_name;
+        }
+
+        if ($request->filled('eta')) {
+            $params['eta'] = $request->eta;
+        }
+
+        if ($request->filled('voyage_number_mother')) {
+            $params['voyage_number_mother'] = $request->voyage_number_mother;
+        }
+
+        if ($request->filled('mother_vessel_id')) {
+            $params['mother_vessel_id'] = $request->mother_vessel_id;
+        }
+
+        if ($request->has('etd')) {
+            $etdValue = is_array($request->etd) ? implode(',', $request->etd) : $request->etd;
+            $params['etd'] = $etdValue;
+            
+            $queryString = http_build_query(array_filter($params));
+            $queryString = str_replace('etd=', 'etd[]=', $queryString);
+            $queryString = str_replace('%2C', ',', $queryString);
+            $fullUrl = $apiUrl . '?' . $queryString;
+        }
+
+        $queryString = http_build_query(array_filter($params));
+        $queryString = str_replace('etd=', 'etd[]=', $queryString); 
+        $fullUrl = $apiUrl . '?' . $queryString;
+
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+        ])->get($fullUrl);
+       
 
         if ($response->successful()) {
             $apiData = $response->json();

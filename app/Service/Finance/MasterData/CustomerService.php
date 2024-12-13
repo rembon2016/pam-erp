@@ -291,7 +291,7 @@ final class CustomerService
      */
     private function syncCustomerBank(?CustomerBank $customerBank, array $customerBankDto, string $customerId)
     {
-        $customerSalesDto['customer_id'] = $customerId;
+        $customerBankDto['customer_id'] = $customerId;
         empty($customerBank)
             ? CustomerBank::create($customerBankDto)
             : $customerBank->update($customerBankDto);
@@ -342,25 +342,59 @@ final class CustomerService
             $customerModel->customerTypes()->forceDelete();
             $customerModel->customerTypes()->create(['name' => $customerType]);
             if ($customerType == 'Billing Customer') {
-                CustomerBilling::create([
-                    'customer_code' => $customerModel->customer_code,
-                    'customer_name' => $customerModel->customer_name,
-                    'customer_type' => $customerTypeId,
-                    'finance_customer_id' => $customerModel->id
-                ]);
+                $customerBilling = CustomerBilling::query()
+                    ->where('finance_customer_id', $customerModel->id)
+                    ->first();
+
+                empty($customerBilling)
+                    ? CustomerBilling::create([
+                        'customer_code' => $customerModel->customer_code,
+                        'customer_name' => $customerModel->customer_name,
+                        'customer_type' => $customerTypeId,
+                        'finance_customer_id' => $customerModel->id
+                    ])
+                    : $customerBilling->update([
+                        'customer_code' => $customerModel->customer_code,
+                        'customer_name' => $customerModel->customer_name,
+                        'customer_type' => $customerTypeId,
+                        'finance_customer_id' => $customerModel->id
+                    ]);
+
             } else if ($customerType == 'Carrier Agent') {
-                Carrier::create([
-                    'carrier_code' => $customerModel->customer_code,
-                    'carrier_name' => $customerModel->customer_name,
-                    'finance_customer_id' => $customerModel->id
-                ]);
+                $carrier = Carrier::query()
+                    ->where('finance_customer_id', $customerModel->id)
+                    ->first();
+
+                empty($carrier)
+                    ? Carrier::create([
+                        'carrier_code' => $customerModel->customer_code,
+                        'carrier_name' => $customerModel->customer_name,
+                        'finance_customer_id' => $customerModel->id
+                    ])
+                    : $carrier->update([
+                        'carrier_code' => $customerModel->customer_code,
+                        'carrier_name' => $customerModel->customer_name,
+                        'finance_customer_id' => $customerModel->id
+                    ]);
+
             } else {
-                Vendor::create([
-                    'vendor_code' => $customerModel->customer_code,
-                    'vendor_name' => $customerModel->customer_name,
-                    'vendor_type_id' => $customerTypeId,
-                    'finance_customer_id' => $customerModel->id
-                ]);
+                $vendor = Vendor::query()
+                    ->where('finance_customer_id', $customerModel->id)
+                    ->first();
+
+                empty($vendor)
+                    ? Vendor::create([
+                        'vendor_code' => $customerModel->customer_code,
+                        'vendor_name' => $customerModel->customer_name,
+                        'vendor_type_id' => $customerTypeId,
+                        'finance_customer_id' => $customerModel->id
+                    ])
+                    : $vendor->update([
+                        'vendor_code' => $customerModel->customer_code,
+                        'vendor_name' => $customerModel->customer_name,
+                        'vendor_type_id' => $customerTypeId,
+                        'finance_customer_id' => $customerModel->id
+                    ]);
             }
         }
     }

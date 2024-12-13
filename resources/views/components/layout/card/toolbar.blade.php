@@ -52,7 +52,7 @@
             </svg>
         </span>
         <input type="text" data-kt-ecommerce-order-filter="search"
-            class="form-control form-control-solid w-250px ps-14" placeholder="Search Data..." />
+            class="data-search form-control form-control-solid w-250px ps-14" placeholder="Search Data..." />
     </div>
     <div id="kt_ecommerce_report_customer_orders_export" class="d-none"></div>
 </div>

@@ -39,4 +39,18 @@ final class AccountGroup extends Model
             foreignKey: 'account_group_id'
         );
     }
+
+    /**
+     * Get the chart of accounts associated with this account group.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function chartOfAccounts(): HasMany
+    {
+        return $this->hasMany(
+            related: ChartOfAccount::class,
+            foreignKey: 'account_group_id',
+            localKey: 'id'
+        );
+    }
 }

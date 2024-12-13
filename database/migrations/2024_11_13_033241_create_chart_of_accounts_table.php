@@ -16,6 +16,12 @@ return new class extends Migration
         Schema::create('finance.chart_of_accounts', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
+            $table->foreignUuid('account_group_id')
+                ->references('id')
+                ->on('finance.account_groups')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
             $table->foreignUuid('sub_account_group_id')
                 ->references('id')
                 ->on('finance.sub_account_groups')
@@ -24,8 +30,8 @@ return new class extends Migration
 
             $table->string('account_number');
             $table->string('account_name');
-            $table->string('subledger_code');
-            $table->string('subledger_name');
+            $table->string('subledger_code')->nullable();
+            $table->string('subledger_name')->nullable();
 
             $table->boolean('is_cashflow')->default(false);
 

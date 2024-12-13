@@ -4,12 +4,13 @@
     'defaultOption' => $defaultOption ?? "Select Option",
     'required' => $required ?? false,
     'model' => $model ?? null,
-    'multiple' => $multiple ?? false
+    'multiple' => $multiple ?? false,
+    'disabled' => $disabled ?? false,
 ])
 
 <div class='mb-10'>
     <label for="#{{ $name }}" class='form-label {{ $required ? 'required' : '' }}'>{{ $label }}</label>
-    <select class="@if($errors->has($name)) is-invalid @endif form-select" name="{{ $name }}" {{ $required ? 'required' : '' }} id="{{ $name }}" {{ $multiple ? 'multiple' : '' }}>
+    <select class="@if($errors->has($name)) is-invalid @endif form-select" name="{{ $name }}" {{ $required ? 'required' : '' }} id="{{ $name }}" {{ $multiple ? 'multiple' : '' }} {{ $disabled ? 'disabled' : '' }}>
         <option value="" @selected(is_null(old($name, $model?->{$name}))) hidden>{{ $defaultOption }}</option>
 
         {{ $slot }}

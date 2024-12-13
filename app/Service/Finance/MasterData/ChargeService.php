@@ -11,9 +11,13 @@ use Illuminate\Database\Eloquent\Collection;
 
 final class ChargeService
 {
-    public function getCharges(): Collection
+    public function getCharges($filters = []): Collection
     {
-        return Charge::orderBy('charge_code', 'ASC')->get();
+        return Charge::when(!empty($filters['charge_code']), function ($query) use ($filters) {
+            return $query->where('charge_code', $filters['charge_code']);
+        })->when(!empty($filters['charge_name']), function ($query) use ($filters) {
+            return $query->where('charge_name', $filters['charge_name']);
+        })->orderBy('charge_code', 'ASC')->get();
     }
 
     public function getChargeById(string $id): object

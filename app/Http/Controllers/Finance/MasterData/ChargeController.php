@@ -32,7 +32,8 @@ final class ChargeController extends Controller
      */
     public function index(): View
     {
-        return view('pages.finance.master-data.charge.index');
+        $charges = $this->chargeService->getCharges();
+        return view('pages.finance.master-data.charge.index', compact('charges'));
     }
 
     /**
@@ -45,7 +46,7 @@ final class ChargeController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            return DataTables::of($this->chargeService->getCharges())
+            return DataTables::of($this->chargeService->getCharges( request()->query()))
                 ->addIndexColumn()
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([

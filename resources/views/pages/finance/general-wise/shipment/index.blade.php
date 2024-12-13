@@ -232,26 +232,60 @@
     @endcomponent
     <script>
         $(document).ready(function() {
+            const selectedJobIds = new Set();
 
             const shipmentBy = '{{ $shipment_by }}';
 
             let table = $('#shipment_table').DataTable();
 
+            // Function to update checkboxes based on selectedJobIds
+            function updateCheckboxStates() {
+                table.rows().every(function() {
+                    const row = this.node();
+                    const data = this.data();
+                    const jobId = data.job_id;
+                    $(row).find('.row-checkbox').prop('checked', selectedJobIds.has(jobId));
+                });
+
+                // Update the select all checkbox
+                const allCheckboxes = $('.row-checkbox:not(#select_all)');
+                const allChecked = allCheckboxes.length === allCheckboxes.filter(':checked').length;
+                $('#select_all').prop('checked', allChecked);
+            }
+
             // Handle select all checkbox
             $(document).on('click', '#select_all', function() {
-                let isChecked = $(this).prop('checked');
-                $('.row-checkbox').prop('checked', isChecked);
+                const isChecked = $(this).prop('checked');
+                table.rows({
+                    page: 'current'
+                }).every(function() {
+                    const data = this.data();
+                    const jobId = data.job_id;
+                    if (isChecked) {
+                        selectedJobIds.add(jobId);
+                    } else {
+                        selectedJobIds.delete(jobId);
+                    }
+                });
+                updateCheckboxStates();
             });
 
             // Handle individual checkboxes
             $(document).on('click', '.row-checkbox:not(#select_all)', function() {
-                // Skip the select_all checkbox itself from the count
-                let totalCheckboxes = $('.row-checkbox:not(#select_all)').length;
-                let checkedCheckboxes = $('.row-checkbox:not(#select_all):checked').length;
-
-                // If all checkboxes are checked (excluding select_all), check the select_all box
-                $('#select_all').prop('checked', totalCheckboxes === checkedCheckboxes);
+                const row = table.row($(this).closest('tr')).data();
+                const jobId = row.job_id;
+                if ($(this).prop('checked')) {
+                    selectedJobIds.add(jobId);
+                } else {
+                    selectedJobIds.delete(jobId);
+                }
+                updateCheckboxStates();
             });
+
+             // Update checkboxes when page changes
+        table.on('draw', function() {
+            updateCheckboxStates();
+        });
 
             // Add "Rows per page" text to length element
             $('#shipment_table_length label').prepend('Rows per page: ');
@@ -307,7 +341,7 @@
                 });
 
                 // Update modal content
-                $('#selectedCTDCount').text(selectedCTDs.length);
+                $('#selectedCTDCount').text(selectedJobIds.size);
 
                 // Build URL with multiple job_ids
                 const baseUrl = `${API_BASE}/api/orderdocument/group?role_id=18`;
@@ -444,14 +478,10 @@
                         button.prop('disabled', false).text(originalText);
                         return;
                     }
-
-                    // Get the stored selected CTDs
-                    const selectedCTDs = button.data('selectedCTDs');
-                    const jobIds = selectedCTDs.map(item => item.jobId);
-
+                    
                     // Prepare the payload
                     const payload = {
-                        job_id: jobIds,
+                        job_id: Array.from(selectedJobIds),
                         role_id: "18",
                         type_document: selectedDocTypes,
                         prefix: "DXB"
@@ -485,7 +515,8 @@
                     $('#downloadMultipleModal').modal('hide');
                     $('.row-checkbox').prop('checked', false);
                     $('#select_all').prop('checked', false);
-
+                    selectedJobIds.clear();
+                    
                 } catch (error) {
                     console.error('Download error:', error);
                     Swal.fire({
@@ -493,8 +524,10 @@
                         title: 'Download Failed',
                         text: 'An error occurred while downloading the files. Please try again.'
                     });
+                    selectedJobIds.clear();
                 } finally {
                     button.prop('disabled', false).text(originalText);
+                    selectedJobIds.clear();
                 }
             });
 
@@ -769,7 +802,7 @@
 
             // Function to update export button text
             function updateExportButtonText() {
-                const selectedCount = $('.row-checkbox:checked:not(#select_all)').length;
+                const selectedCount = selectedJobIds.size;
                 const buttonText = selectedCount === 0 ?
                     'Export All Data to CSV' :
                     `Export ${selectedCount} Data to CSV`;
@@ -841,6 +874,11 @@
                 $('#exportCSVModal').modal('show');
             });
 
+            // Clear selectedJobIds when clear filter button is clicked
+            $('#btn-clear').on('click', function() {
+                selectedJobIds.clear();
+            });
+
             // Handle confirm export button click
             $('#confirmExport').click(async function() {
                 const button = $(this);
@@ -864,16 +902,10 @@
 
                     // Get selected CTD numbers from table
                     const selectedRows = $('.row-checkbox:checked:not(#select_all)');
-                    const selectedJobIds = [];
-
-                    selectedRows.each(function() {
-                        const rowData = table.row($(this).closest('tr')).data();
-                        selectedJobIds.push(rowData.job_id);
-                    });
 
                     // Prepare the payload
                     const payload = {
-                        job_id: selectedJobIds,
+                        job_id: Array.from(selectedJobIds),
                         field: selectedFields,
                         shipment_by: shipmentBy
                     };
@@ -906,7 +938,9 @@
                     $('#exportCSVModal').modal('hide');
                     $('.row-checkbox').prop('checked', false);
                     $('#select_all').prop('checked', false);
+                    selectedJobIds.clear();
 
+                    
                 } catch (error) {
                     console.error('Export error:', error);
                     Swal.fire({
@@ -914,8 +948,10 @@
                         title: 'Export Failed',
                         text: 'An error occurred while exporting the data. Please try again.'
                     });
+                    selectedJobIds.clear();
                 } finally {
                     button.prop('disabled', false).text(originalText);
+                    selectedJobIds.clear();
                 }
             });
 

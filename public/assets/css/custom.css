@@ -543,7 +543,7 @@ table.text-normal :is(td, tr){
 
 .filter-date {
     width: 100%;
-    min-height: 39px;
+    min-height: 43px;
     padding: 4px 4px;
     padding-left: 13px;
     border: 1px solid #e4e6ef;
@@ -604,11 +604,11 @@ table.text-normal :is(td, tr){
 
     .filter-select,
     .filter-date {
-        font-size: 10px;
+        font-size: 1.05rem;
     }
 
     .filter-label {
-        font-size: 10px;
+        font-size: 1.05rem;
     }
 }
 

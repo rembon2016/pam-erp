@@ -120,7 +120,7 @@
                                 // Convert shipment_by to lowercase and handle potential undefined
                                 const shipmentType = (row.shipment_by || '').toLowerCase();
                                 const jobId = row.job_id || '';
-                                
+
                                 return `
                                     <div class="d-flex gap-2 justify-content-center">
                                         <a href="/finance/general-wise/shipment/${shipmentType}/${jobId}" class="btn-view-shipment">
@@ -133,12 +133,12 @@
                             }
 
                             if (columnName === 'transit_via') {
-                                const transitVia = row.transit_via === "DUBAI" ? "DXB" 
-                                    : row.transit_via === "SINGAPORE" ? "SIN"
-                                    : row.transit_via === "LA" ? "LAX" 
-                                    : row.transit_via === "SEATTLE" ? "SEA"
-                                    : row.shipment_by === "AIR" ? "AIR"
-                                    : row.transit_via;
+                                const transitVia = row.transit_via === "DUBAI" ? "DXB" :
+                                    row.transit_via === "SINGAPORE" ? "SIN" :
+                                    row.transit_via === "LA" ? "LAX" :
+                                    row.transit_via === "SEATTLE" ? "SEA" :
+                                    row.shipment_by === "AIR" ? "AIR" :
+                                    row.transit_via;
                                 return `<span class="${className} ${additionalClass}" id="${idName}">${transitVia}</span>`;
                             }
 
@@ -177,7 +177,7 @@
                 position: fixed;
                 top: 0;
                 right: -400px;
-                width: 400px;
+                width: 330px;
                 height: 100vh;
                 background: white;
                 box-shadow: -2px 0 5px rgba(0,0,0,0.2);
@@ -256,16 +256,25 @@
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             }
 
+            .timeline-card.active {
+                background: linear-gradient(to right, rgb(50, 205, 50), rgb(173, 255, 47));
+            }
+
             .timeline-card h4 {
                 margin: 0 0 10px 0;
                 color: #333;
-                font-size: 16px;
+                font-size: 13px;
                 font-weight: 600;
             }
 
             .timeline-details {
-                font-size: 14px;
+                font-size: 13px;
                 color: #666;
+            }
+
+            .timeline-details.active, .timeline-details.active p {
+                color: #fff;
+                font-weight: 500;
             }
 
             .timeline-date {
@@ -299,6 +308,37 @@
                 color: #dc3545;
                 text-align: center;
                 padding: 20px;
+            }
+
+            .title-history-active {
+                background-color: rgb(203, 255, 189);
+                padding: 10px;
+                border-radius: 10px;
+            }
+
+            .title-history-inactive {
+                    background-color: #A9A9A9;
+                    padding: 10px;
+                    color: #fff;
+                    font-size: 14px;
+                    border-radius: 10px;
+            }
+
+            div.title-history-active h4 {
+                margin-bottom: 0;
+                font-size: 13px;
+                font-weight: bold;
+                color: rgb(52, 155, 23);
+            }
+            
+            div.title-history-active .timeline-date {
+                font-size: 12px;
+                font-weight: bold;
+                color: rgb(52, 155, 23);
+            }
+
+            div.title-history-inactive h4 {
+                color: #fff;
             }
         `;
 
@@ -375,11 +415,12 @@
                     .then(data => {
                         console.log('API Response:', data);
                         if (data.status && Array.isArray(data.data)) {
-                            const sortedData = data.data.sort((a, b) => 
-                                (a.no_urut || 0) - (b.no_urut || 0) || 
-                                new Date(a.tgl_aktual_real || 0) - new Date(b.tgl_aktual_real || 0)
+                            const sortedData = data.data.sort((a, b) =>
+                                (a.no_urut || 0) - (b.no_urut || 0) ||
+                                new Date(a.tgl_aktual_real || 0) - new Date(b.tgl_aktual_real ||
+                                    0)
                             );
-                            
+
                             const timelineHTML = generateTimelineHTML(sortedData);
                             if (timelineElement) {
                                 timelineElement.innerHTML = timelineHTML;
@@ -409,6 +450,18 @@
                 }
             }
         });
+
+        // Add this new event listener for clicks outside
+        document.addEventListener('click', function(e) {
+            const sidebar = document.getElementById('rightSidebar');
+            const isClickInside = sidebar?.contains(e.target);
+            const isStatusBadge = e.target.classList.contains('status-badge');
+            
+            // Close sidebar if click is outside and sidebar is open
+            if (sidebar && !isClickInside && !isStatusBadge && sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        });
     });
 
     // Function to generate timeline HTML from API data
@@ -417,19 +470,18 @@
             // Check if tgl_aktual exists
             const hasTglAktual = item.tgl_aktual != null && item.tgl_aktual !== undefined;
             const dotClass = hasTglAktual ? 'active' : 'inactive';
-            
-            // Determine card background color based on status and tgl_aktual_real
-            let cardStyle = '';
-          
-            
+
             return `
                 <div class="timeline-item">
                     <div class="timeline-dot ${dotClass}"></div>
-                    <div class="timeline-card" style="${cardStyle}">
-                        <h4>${item.status_name}</h4>
+                    <div class="timeline-card ${hasTglAktual ? 'active' : 'inactive'}">
+                        <div class="title-history-${hasTglAktual ? 'active' : 'inactive'}">
+                            <h4>${item.status_name}</h4>
+                            <p class="timeline-date ${hasTglAktual ? '' : 'd-none'}">${formatDateTime(item.tgl_aktual_real)}</p>
+                        </div>
                         ${hasTglAktual ? `
-                            <div class="timeline-details">
-                                <p class="timeline-date">${formatDateTime(item.tgl_aktual_real)}</p>
+                            <div class="timeline-details ${hasTglAktual ? 'active' : 'inactive'}">
+                               
                                 <p class="timeline-location">${item.location || ''}</p>
                                 <p class="timeline-email">${item.created_by || '-'}</p>
                                 <p class="timeline-secondary-date">${formatDateTime(item.date_modified || item.date_created)}</p>
@@ -449,7 +501,7 @@
     function formatDateTime(dateString) {
         if (!dateString) return '';
         const date = new Date(dateString);
-        
+
         // Format the date and time
         const formattedDate = date.toLocaleString('en-GB', {
             day: '2-digit',
@@ -459,7 +511,7 @@
             minute: '2-digit',
             hour12: false
         });
-        
+
         return formattedDate;
     }
 
@@ -470,12 +522,12 @@
             const formatter = new Intl.DateTimeFormat(undefined, {
                 timeZoneName: zoneName
             });
-            
+
             // run formatter on current date and find timezone part
             const timeZonePart = formatter
                 .formatToParts(Date.now())
                 .find(part => part.type === "timeZoneName");
-                
+
             return timeZonePart ? timeZonePart.value : "GMT+7"; // fallback to GMT+7
         } catch (error) {
             console.error('Error getting timezone:', error);

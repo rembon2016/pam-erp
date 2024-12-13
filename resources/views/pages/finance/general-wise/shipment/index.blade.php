@@ -67,8 +67,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="confirmDownload">Download</button>
+                    <button type="button" class="btn cstm-f-color-magenta" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn cstm-f-color-blue" id="confirmDownload">Download</button>
                 </div>
             </div>
         </div>
@@ -102,8 +102,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="confirmExport">Export</button>
+                    <button type="button" class="btn cstm-f-color-magenta" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn cstm-f-color-blue" id="confirmExport">Download</button>
                 </div>
             </div>
         </div>
@@ -830,7 +830,7 @@
             $('#confirmExport').click(async function() {
                 const button = $(this);
                 const originalText = button.text();
-                button.prop('disabled', true).text('Exporting...');
+                button.prop('disabled', true).text('Downloading...');
 
                 try {
                     // Get selected fields from checkboxes

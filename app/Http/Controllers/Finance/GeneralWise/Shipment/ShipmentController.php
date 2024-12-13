@@ -487,6 +487,31 @@ final class ShipmentController extends Controller
         return view('pages.finance.general-wise.shipment.detail', compact('shipment', 'type'));
     }
 
+    public function downloadDocuments(Request $request)
+    {
+        $base = ($request->type == "seaair" || $request->type == "crossair") ? env('API_ORIGIN') : env('API_DXB');
 
+        $data = $request->validate([
+            'job_id' => 'required|array',
+            'type_document' => 'required|array', 
+            'prefix' => 'required|string',
+            'type' => 'required|string'
+        ]);
+
+        $data['role_id'] = '18'; // Set the role_id as needed
+
+        $response = Http::post("{$base}/api/orderdocument/downloadmultiple", $data);
+
+        if ($response->ok()) {
+            return response()->streamDownload(function () use ($response) {
+                echo $response->body(); // Stream the file content
+            }, 'Selected-Documents.zip');
+        } else {
+            return response()->json([
+                'error' => 'Failed to send request',
+                'status' => $response->status(),
+            ], $response->status());
+        }
+    }
 
 }

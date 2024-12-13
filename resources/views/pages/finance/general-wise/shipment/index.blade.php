@@ -478,20 +478,24 @@
                         button.prop('disabled', false).text(originalText);
                         return;
                     }
+
+                    const type = '{{ $type }}';
                     
                     // Prepare the payload
                     const payload = {
                         job_id: Array.from(selectedJobIds),
                         role_id: "18",
                         type_document: selectedDocTypes,
-                        prefix: "DXB"
+                        prefix: "DXB",
+                        type: type
                     };
 
-                    // Make the request
-                    const response = await fetch(`${API_BASE}/api/orderdocument/downloadmultiple`, {
+                     // Make the request to the Laravel controller
+                    const response = await fetch('{{ route('finance.general-wise.shipment.download-documents') }}', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         body: JSON.stringify(payload)
                     });
@@ -516,7 +520,7 @@
                     $('.row-checkbox').prop('checked', false);
                     $('#select_all').prop('checked', false);
                     selectedJobIds.clear();
-                    
+
                 } catch (error) {
                     console.error('Download error:', error);
                     Swal.fire({

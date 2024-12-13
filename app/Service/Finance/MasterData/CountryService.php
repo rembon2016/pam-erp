@@ -18,9 +18,13 @@ final class CountryService
         //
     }
 
-    public function getCountries(): Collection
+    public function getCountries($filters = []): Collection
     {
-        return Countries::whereNotIn('status', ['2', '3'])->orderBy('country_name', 'asc')->get();
+        return Countries::when(!empty($filters['country_code']), function ($query) use ($filters) {
+            return $query->where('country_code', $filters['country_code']);
+        })->when(!empty($filters['country_name']), function ($query) use ($filters) {
+            return $query->where('country_name', $filters['country_name']);
+        })->whereNotIn('status', ['2', '3'])->orderBy('country_name', 'asc')->get();
     }
 
     public function getCountryById(int $id): object

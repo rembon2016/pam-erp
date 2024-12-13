@@ -31,7 +31,8 @@ final class CountryController extends Controller
      */
     public function index(): View
     {
-        return view('pages.finance.master-data.country.index');
+        $countries = $this->countryService->getCountries();
+        return view('pages.finance.master-data.country.index', compact('countries'));
     }
 
     /**
@@ -46,7 +47,7 @@ final class CountryController extends Controller
     public function list()
     {
         if (request()->ajax()) {
-            return DataTables::of($this->countryService->getCountries())
+            return DataTables::of($this->countryService->getCountries(request()->query()))
                 ->addIndexColumn()
                 ->addColumn('region_name', function ($item) {
                     return $item->region?->region_name ?? '-';

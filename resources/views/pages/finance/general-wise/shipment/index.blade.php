@@ -288,7 +288,11 @@
                 const selectedRows = $('.row-checkbox:checked:not(#select_all)');
 
                 if (selectedRows.length === 0) {
-                    alert('Please select at least 1 CTD');
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'No Selection',
+                        text: 'Please select at least 1 CTD'
+                    });
                     return;
                 }
 
@@ -411,7 +415,11 @@
 
                 } catch (error) {
                     console.error('API call error:', error);
-                    alert('Failed to fetch document data. Please try again.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'API Call Failed',
+                        text: 'Failed to fetch document data. Please try again.'
+                    });
                 }
             });
 
@@ -428,7 +436,11 @@
                     }).get();
 
                     if (selectedDocTypes.length === 0) {
-                        alert('Please select at least one document type');
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'No Selection',
+                            text: 'Please select at least one document type'
+                        });
                         button.prop('disabled', false).text(originalText);
                         return;
                     }
@@ -476,7 +488,11 @@
 
                 } catch (error) {
                     console.error('Download error:', error);
-                    alert('An error occurred while downloading the files. Please try again.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Download Failed',
+                        text: 'An error occurred while downloading the files. Please try again.'
+                    });
                 } finally {
                     button.prop('disabled', false).text(originalText);
                 }
@@ -838,7 +854,11 @@
                     }).get();
 
                     if (selectedFields.length === 0) {
-                        alert('Please select at least one field to export');
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'No Fields Selected',
+                            text: 'Please select at least one field to export'
+                        });
                         return;
                     }
 
@@ -889,7 +909,11 @@
 
                 } catch (error) {
                     console.error('Export error:', error);
-                    alert('An error occurred while exporting the data. Please try again.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Export Failed',
+                        text: 'An error occurred while exporting the data. Please try again.'
+                    });
                 } finally {
                     button.prop('disabled', false).text(originalText);
                 }

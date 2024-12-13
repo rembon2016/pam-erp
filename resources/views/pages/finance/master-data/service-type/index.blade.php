@@ -12,6 +12,7 @@
                 exportExcelLink="{{ route('finance.master-data.service-type.export.excel') }}"
                 exportCsvLink="{{ route('finance.master-data.service-type.export.csv') }}"
                 exportPdfLink="{{ route('finance.master-data.service-type.export.pdf') }}"
+                withFilter="true"
             />
         </x:layout.card.header>
         <x:layout.card.body>
@@ -29,12 +30,28 @@
             </x:layout.table.wrapper>
         </x:layout.card.body>
     </x:layout.card.wrapper>
+
+    <x:layout.modal.filter-modal>
+        <div class="col-12">
+            <x:form.select label="Service Type Code" name="service_code" defaultOption="Select Service Type Code" :model="request()">
+                @foreach ($service_types->pluck('service_code') as $code)
+                    <option value="{{ $code }}" @selected($code == request()->query('service_code'))>{{ $code }}</option>
+                @endforeach
+            </x:form.select>
+            <x:form.select label="Service Type Name" name="service_name" defaultOption="Select Service Type Name" :model="request()">
+                @foreach ($service_types->pluck('service_name') as $name)
+                    <option value="{{ $name }}" @selected($name == request()->query('service_name'))>{{ $name }}</option>
+                @endforeach
+            </x:form.select>
+        </div>
+    </x:layout.modal.filter-modal>
 @endsection
 
 @push('js')
 @component('components.layout.table.datatable', [
     'id' => 'service_type_table',
     'url' => route('finance.master-data.service-type.list'),
+    'dynamicParam' => true,
     'columns' => [
         [
             "data" => "DT_RowIndex",

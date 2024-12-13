@@ -1,11 +1,24 @@
 @props([
     'id' => $id,
     'url' => $url,
-    'columns' => $columns ?? []
+    'columns' => $columns ?? [],
+    'dynamicParam' => $dynamicParam ?? false
 ])
 
 <script>
     "use strict";
+
+    let ajaxUrl = "{{ $url }}";
+
+    @if ($dynamicParam)
+        const currentUrl = window.location.href;
+        const urlObject = new URL(currentUrl);
+        const params = urlObject.searchParams;
+        const groupedParams = Array.from(params.entries()).map(([key, value]) => `${key}=${value}`).join('&');
+
+        ajaxUrl += "?" + groupedParams;
+    @endif
+
     var KTDataTable = function() {
         var t, e;
         return {
@@ -21,7 +34,7 @@
                         pageLength: 10,
                         processing: true,
                         serverSide: true,
-                        ajax: "{{ $url }}",
+                        ajax: ajaxUrl,
                         columns: @json($columns),
                         columnDefs: [
                         {

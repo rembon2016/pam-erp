@@ -26,6 +26,10 @@ final class PortService
         return Port::with('country')
             ->when(!empty($filters['country_id']), function ($query) use ($filters) {
                 $query->where('country_id', $filters['country_id']);
+            })->when(!empty($filters['port_code']), function ($query) use ($filters) {
+                return $query->where('port_code', $filters['port_code']);
+            })->when(!empty($filters['port_name']), function ($query) use ($filters) {
+                return $query->where('port_name', $filters['port_name']);
             })
             ->whereNotIn('status', ['2', '3'])
             ->orderBy('port_name', 'asc')

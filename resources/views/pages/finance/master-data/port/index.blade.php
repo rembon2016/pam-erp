@@ -13,6 +13,7 @@
                 exportExcelLink="{{ route('finance.master-data.port.export.excel') }}"
                 exportCsvLink="{{ route('finance.master-data.port.export.csv') }}"
                 exportPdfLink="{{ route('finance.master-data.port.export.pdf') }}"
+                withFilter="true"
             />
         </x:layout.card.header>
         <x:layout.card.body>
@@ -33,12 +34,28 @@
             </x:layout.table.wrapper>
         </x:layout.card.body>
     </x:layout.card.wrapper>
+
+    <x:layout.modal.filter-modal>
+        <div class="col-12">
+            <x:form.select label="Port Name" name="port_name" defaultOption="Select Port Name" :model="request()">
+                @foreach ($ports->pluck('port_name') as $name)
+                    <option value="{{ $name }}" @selected($name == request()->query('port_name'))>{{ $name }}</option>
+                @endforeach
+            </x:form.select>
+            <x:form.select label="Port Code" name="port_code" defaultOption="Select Port Code" :model="request()">
+                @foreach ($ports->pluck('port_code') as $code)
+                    <option value="{{ $code }}" @selected($code == request()->query('port_code'))>{{ $code }}</option>
+                @endforeach
+            </x:form.select>
+        </div>
+    </x:layout.modal.filter-modal>
 @endsection
 
 @push('js')
 @component('components.layout.table.datatable', [
     'id' => 'port_table',
     'url' => route('finance.master-data.port.list'),
+    'dynamicParam' => true,
     'columns' => [
         [
             "data" => "DT_RowIndex",

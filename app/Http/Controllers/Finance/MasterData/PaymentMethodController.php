@@ -31,7 +31,8 @@ final class PaymentMethodController extends Controller
      */
     public function index(): View
     {
-        return view('pages.finance.master-data.payment-method.index');
+        $payment_terms = $this->paymentMethodService->getPaymentMethods()->pluck('payment_terms');
+        return view('pages.finance.master-data.payment-method.index', compact('payment_terms'));
     }
 
     /**
@@ -44,7 +45,7 @@ final class PaymentMethodController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            return DataTables::of($this->paymentMethodService->getPaymentMethods())
+            return DataTables::of($this->paymentMethodService->getPaymentMethods(request()->query()))
                 ->addIndexColumn()
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([

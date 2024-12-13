@@ -35,7 +35,8 @@ final class CurrencyController extends Controller
      */
     public function index(): View
     {
-        return view('pages.finance.master-data.currency.index');
+        $currencies = $this->currencyService->getCurrencies();
+        return view('pages.finance.master-data.currency.index', compact('currencies'));
     }
 
     /**
@@ -48,7 +49,8 @@ final class CurrencyController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            $currencies = $this->currencyService->getCurrencies();
+            $currencies = $this->currencyService->getCurrencies(request()->query());
+
             return DataTables::of($currencies)
                 ->addIndexColumn()
                 ->editColumn('currency_date', function ($item) {

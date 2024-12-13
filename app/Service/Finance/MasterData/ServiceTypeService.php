@@ -15,9 +15,13 @@ final class ServiceTypeService
      */
     public function __construct(){}
 
-    public function getServiceTypes(): Collection
+    public function getServiceTypes($filters = []): Collection
     {
-        return ServiceType::orderBy('service_code', 'ASC')->get();
+        return ServiceType::when(!empty($filters['service_code']), function ($query) use ($filters) {
+            return $query->where('service_code', $filters['service_code']);
+        })->when(!empty($filters['service_name']), function ($query) use ($filters) {
+            return $query->where('service_name', $filters['service_name']);
+        })->orderBy('service_code', 'ASC')->get();
     }
 
     /**

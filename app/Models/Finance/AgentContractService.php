@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
+use App\Models\Finance\ServiceType;
 use App\Models\Operation\Master\Port;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Operation\Master\Carrier;
@@ -32,6 +33,15 @@ final class AgentContractService extends Model
      */
     protected $guarded = ['id'];
 
+    /**
+     * Belongs to Relation with Service Type
+     *
+     * @return BelongsTo
+     */
+    public function serviceType()
+    {
+        return $this->belongsTo(ServiceType::class, 'service_type_id', 'id');
+    }
 
     /**
      * Belongs to Relation with Country
@@ -40,7 +50,7 @@ final class AgentContractService extends Model
      */
     public function porCountry()
     {
-        return $this->belongsTo(Countries::class, 'por_country', 'country_id');
+        return $this->belongsTo(Countries::class, 'por_country_id', 'country_id');
     }
 
     /**
@@ -50,7 +60,7 @@ final class AgentContractService extends Model
      */
     public function fdcCountry()
     {
-        return $this->belongsTo(Countries::class, 'fdc_country', 'country_id');
+        return $this->belongsTo(Countries::class, 'fdc_country_id', 'country_id');
     }
 
     /**
@@ -60,7 +70,7 @@ final class AgentContractService extends Model
      */
     public function porPort()
     {
-        return $this->belongsTo(Port::class, 'por_port', 'port_id');
+        return $this->belongsTo(Port::class, 'por_port_id', 'port_id');
     }
 
     /**
@@ -70,7 +80,7 @@ final class AgentContractService extends Model
      */
     public function fdcPort()
     {
-        return $this->belongsTo(Port::class, 'fdc_port', 'port_id');
+        return $this->belongsTo(Port::class, 'fdc_port_id', 'port_id');
     }
 
     /**

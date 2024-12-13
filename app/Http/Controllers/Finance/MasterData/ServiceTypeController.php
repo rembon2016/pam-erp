@@ -35,7 +35,8 @@ final class ServiceTypeController extends Controller
      */
     public function index(): View
     {
-        return view('pages.finance.master-data.service-type.index');
+        $service_types = $this->serviceTypeService->getServiceTypes();
+        return view('pages.finance.master-data.service-type.index', compact('service_types'));
     }
 
     /**
@@ -48,8 +49,8 @@ final class ServiceTypeController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
+            $service_types = $this->serviceTypeService->getServiceTypes(request()->query());
 
-            $service_types = ServiceType::orderBy('service_code', 'ASC')->get();
             return DataTables::of($service_types)
                 ->addIndexColumn()
                 ->addColumn('action', function ($item) {

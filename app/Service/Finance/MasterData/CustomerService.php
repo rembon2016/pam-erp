@@ -34,9 +34,11 @@ final class CustomerService
      *
      * @return \Illuminate\Database\Eloquent\Collection A collection of all customers.
      */
-    public function getCustomers(): Collection
+    public function getCustomers($filters = []): Collection
     {
-        return Customer::orderBy('customer_name', 'asc')->get();
+        return Customer::when(!empty($filters['customer_name']), function ($query) use ($filters) {
+            return $query->where('customer_name', $filters['customer_name']);
+        })->orderBy('customer_name', 'asc')->get();
     }
 
     /**

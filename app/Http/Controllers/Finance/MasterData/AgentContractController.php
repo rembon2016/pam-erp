@@ -48,7 +48,8 @@ final class AgentContractController extends Controller
      */
     public function index(): View
     {
-        return view('pages.finance.master-data.agent-contract.index');
+        $agent_contract_numbers = $this->agentContractService->getAgentContracts()->pluck('contract_no');
+        return view('pages.finance.master-data.agent-contract.index', compact('agent_contract_numbers'));
     }
 
     /**
@@ -61,7 +62,7 @@ final class AgentContractController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            return DataTables::of($this->agentContractService->getAgentContracts())
+            return DataTables::of($this->agentContractService->getAgentContracts(request()->query()))
                 ->addIndexColumn()
                 ->addColumn('customer_code', function ($item) {
                     return $item->customer?->customer_code;

@@ -16,9 +16,11 @@ final class CustomerContractService
 {
     use HandleUploadedFile;
 
-    public function getCustomerContracts(): Collection
+    public function getCustomerContracts($filters = []): Collection
     {
-        return CustomerContract::latest()->get();
+        return CustomerContract::when(!empty($filters['customer']), function ($query) use ($filters) {
+            return $query->where('customer_id', $filters['customer']);
+        })->latest()->get();
     }
 
     public function getCustomerContractById(string $id): object

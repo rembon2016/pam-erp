@@ -40,7 +40,8 @@ final class CustomerContractController extends Controller
      */
     public function index(): View
     {
-        return view('pages.finance.master-data.customer-contract.index');
+        $customer_contracts = $this->customerContractService->getCustomerContracts();
+        return view('pages.finance.master-data.customer-contract.index', compact('customer_contracts'));
     }
 
     /**
@@ -53,7 +54,7 @@ final class CustomerContractController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            return DataTables::of($this->customerContractService->getCustomerContracts())
+            return DataTables::of($this->customerContractService->getCustomerContracts(request()->query()))
                 ->addIndexColumn()
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([

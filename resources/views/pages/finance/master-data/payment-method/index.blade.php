@@ -12,6 +12,7 @@
                 exportExcelLink="{{ route('finance.master-data.payment-method.export.excel') }}"
                 exportCsvLink="{{ route('finance.master-data.payment-method.export.csv') }}"
                 exportPdfLink="{{ route('finance.master-data.payment-method.export.pdf') }}"
+                withFilter="true"
             />
         </x:layout.card.header>
         <x:layout.card.body>
@@ -28,12 +29,23 @@
             </x:layout.table.wrapper>
         </x:layout.card.body>
     </x:layout.card.wrapper>
+
+    <x:layout.modal.filter-modal>
+        <div class="col-12">
+            <x:form.select label="Payment Term Name" name="payment_terms" defaultOption="Select Payment Terms" :model="request()">
+                @foreach ($payment_terms as $item)
+                    <option value="{{ $item }}" @selected($item == request()->query('payment_terms'))>{{ $item }}</option>
+                @endforeach
+            </x:form.select>
+        </div>
+    </x:layout.modal.filter-modal>
 @endsection
 
 @push('js')
 @component('components.layout.table.datatable', [
     'id' => 'payment_method_table',
     'url' => route('finance.master-data.payment-method.list'),
+    'dynamicParam' => true,
     'columns' => [
         [
             "data" => "DT_RowIndex",

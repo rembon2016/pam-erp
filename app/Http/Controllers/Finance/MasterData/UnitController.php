@@ -33,7 +33,8 @@ final class UnitController extends Controller
      */
     public function index(): View
     {
-        return view('pages.finance.master-data.unit.index');
+        $units = $this->unitService->getUnitCollections();
+        return view('pages.finance.master-data.unit.index', compact('units'));
     }
 
     /**
@@ -48,7 +49,7 @@ final class UnitController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            return DataTables::of($this->unitService->getUnitCollections())
+            return DataTables::of($this->unitService->getUnitCollections(request()->query()))
                 ->addIndexColumn()
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([

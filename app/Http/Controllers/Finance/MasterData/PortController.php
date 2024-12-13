@@ -34,7 +34,8 @@ final class PortController extends Controller
      */
     public function index(): View
     {
-        return view('pages.finance.master-data.port.index');
+        $ports = $this->portService->getPorts();
+        return view('pages.finance.master-data.port.index', compact('ports'));
     }
 
     /**
@@ -50,7 +51,7 @@ final class PortController extends Controller
     public function list()
     {
         if (request()->ajax()) {
-            return DataTables::of($this->portService->getPorts())
+            return DataTables::of($this->portService->getPorts(request()->query()))
                 ->addIndexColumn()
                 ->addColumn('country_name', function ($item) {
                     return $item->country?->country_name;

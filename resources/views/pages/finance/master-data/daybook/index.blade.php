@@ -12,6 +12,7 @@
                 exportExcelLink="{{ route('finance.master-data.daybook.export.excel') }}"
                 exportCsvLink="{{ route('finance.master-data.daybook.export.csv') }}"
                 exportPdfLink="{{ route('finance.master-data.daybook.export.pdf') }}"
+                withFilter="true"
             />
         </x:layout.card.header>
         <x:layout.card.body>
@@ -30,12 +31,23 @@
             </x:layout.table.wrapper>
         </x:layout.card.body>
     </x:layout.card.wrapper>
+
+    <x:layout.modal.filter-modal>
+        <div class="col-12">
+            <x:form.select label="Daybook Code" name="daybook_code" defaultOption="Select Daybook Code" :model="request()">
+                @foreach ($daybook_codes as $code)
+                    <option value="{{ $code }}" @selected($code == request()->query('daybook_code'))>{{ $code }}</option>
+                @endforeach
+            </x:form.select>
+        </div>
+    </x:layout.modal.filter-modal>
 @endsection
 
 @push('js')
 @component('components.layout.table.datatable', [
     'id' => 'daybook_table',
     'url' => route('finance.master-data.daybook.list'),
+    'dynamicParam' => true,
     'columns' => [
         [
             "data" => "DT_RowIndex",

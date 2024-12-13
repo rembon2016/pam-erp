@@ -8,13 +8,16 @@ use Illuminate\View\View;
 use App\Functions\Utility;
 use Illuminate\Http\Response;
 use App\Functions\ResponseJson;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use App\Constants\COA\CashflowType;
 use App\Http\Controllers\Controller;
 use App\Models\Finance\AccountGroup;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Finance\SubAccountGroup;
 use Yajra\DataTables\Facades\DataTables;
+use App\Exports\MasterData\CountryExport;
 use App\Service\Finance\MasterData\ChartOfAccountService;
 use App\Http\Requests\Finance\MasterData\ChartOfAccount\StoreChartOfAccountRequest;
 use App\Http\Requests\Finance\MasterData\ChartOfAccount\UpdateChartOfAccountRequest;
@@ -104,4 +107,48 @@ final class ChartOfAccountController extends Controller
             $deleteCoaResponse->messsage
         );
     }
+
+    /**
+     * Export the list of chart of account to a PDF file.
+     *
+     * This method generates a PDF file containing the list of chart of account ordered by chart of account code in ascending order.
+     * The generated PDF file is then downloaded with the filename "list_currency_{timestamp}.pdf".
+     */
+    public function exportPdf()
+    {
+        $accountGroups = $this->coaService->getAccountGroups();
+        $pdf = Pdf::loadView('exports.pdf.chart-of-account', compact('accountGroups'));
+        $file_name = 'list_chart_of_accounts_' . time() . '.pdf';
+
+        return $pdf
+            ->setPaper('a4', 'landscape')
+            ->download($file_name);
+    }
+
+    /**
+     * Export the list of chart of account to an Excel file.
+     *
+     * This method generates an Excel file containing the list of chart of account ordered by currency code in ascending order.
+     * The generated Excel file is then downloaded with the filename "list_chart of account_{timestamp}.xlsx".
+     */
+    public function exportExcel()
+    {
+        $file_name = 'list_chart_of_accounts_' . time() . '.xlsx';
+
+        return Excel::download(new CountryExport, $file_name);
+    }
+
+    /**
+     * Export the list of chart of account to a CSV file.
+     *
+     * This method generates a CSV file containing the list of chart of account ordered by chart of account code in ascending order.
+     * The generated CSV file is then downloaded with the filename "list_chart of account_{timestamp}.csv".
+     */
+    public function exportCsv()
+    {
+        $file_name = 'list_chart_of_accounts_' . time() . '.csv';
+
+        return Excel::download(new CountryExport, $file_name);
+    }
+
 }

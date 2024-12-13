@@ -13,6 +13,7 @@
                 exportExcelLink="{{ route('finance.master-data.currency.export.excel') }}"
                 exportCsvLink="{{ route('finance.master-data.currency.export.csv') }}"
                 exportPdfLink="{{ route('finance.master-data.currency.export.pdf') }}"
+                withFilter="true"
             />
         </x:layout.card.header>
         <x:layout.card.body>
@@ -30,12 +31,28 @@
             </x:layout.table.wrapper>
         </x:layout.card.body>
     </x:layout.card.wrapper>
+
+    <x:layout.modal.filter-modal>
+        <div class="col-12">
+            <x:form.select label="Currency Code" name="currency_code" defaultOption="Select Currency Code" :model="request()">
+                @foreach ($currencies->pluck('currency_code') as $code)
+                    <option value="{{ $code }}" @selected($code == request()->query('currency_code'))>{{ $code }}</option>
+                @endforeach
+            </x:form.select>
+            <x:form.select label="Currency Name" name="currency_name" defaultOption="Select Currency Name" :model="request()">
+                @foreach ($currencies->pluck('currency_name') as $name)
+                    <option value="{{ $name }}" @selected($name == request()->query('currency_name'))>{{ $name }}</option>
+                @endforeach
+            </x:form.select>
+        </div>
+    </x:layout.modal.filter-modal>
 @endsection
 
 @push('js')
 @component('components.layout.table.datatable', [
     'id' => 'currency_table',
     'url' => route('finance.master-data.currency.list'),
+    'dynamicParam' => true,
     'columns' => [
         [
             "data" => "DT_RowIndex",

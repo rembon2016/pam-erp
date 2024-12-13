@@ -12,6 +12,7 @@
                 exportExcelLink="{{ route('finance.master-data.agent-contract.export.excel') }}"
                 exportCsvLink="{{ route('finance.master-data.agent-contract.export.csv') }}"
                 exportPdfLink="{{ route('finance.master-data.agent-contract.export.pdf') }}"
+                withFilter="true"
             />
         </x:layout.card.header>
         <x:layout.card.body>
@@ -33,12 +34,23 @@
             </x:layout.table.wrapper>
         </x:layout.card.body>
     </x:layout.card.wrapper>
+
+    <x:layout.modal.filter-modal>
+        <div class="col-12">
+            <x:form.select label="Contract No" name="contract_no" defaultOption="Select Contract No" :model="request()">
+                @foreach ($agent_contract_numbers as $item)
+                    <option value="{{ $item }}" @selected($item == request()->query('contract_no'))>{{ $item }}</option>
+                @endforeach
+            </x:form.select>
+        </div>
+    </x:layout.modal.filter-modal>
 @endsection
 
 @push('js')
 @component('components.layout.table.datatable', [
     'id' => 'agent_contract_table',
     'url' => route('finance.master-data.agent-contract.list'),
+    'dynamicParam' => true,
     'columns' => [
         [
             "data" => "DT_RowIndex",

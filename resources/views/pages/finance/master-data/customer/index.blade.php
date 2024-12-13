@@ -12,6 +12,7 @@
                 exportExcelLink="{{ route('finance.master-data.customer.export.excel') }}"
                 exportCsvLink="{{ route('finance.master-data.customer.export.csv') }}"
                 exportPdfLink="{{ route('finance.master-data.customer.export.pdf') }}"
+                withFilter="true"
             />
         </x:layout.card.header>
         <x:layout.card.body>
@@ -34,12 +35,23 @@
             </x:layout.table.wrapper>
         </x:layout.card.body>
     </x:layout.card.wrapper>
+
+    <x:layout.modal.filter-modal>
+        <div class="col-12">
+            <x:form.select label="Customer Name" name="customer_name" defaultOption="Select Customer Name" :model="request()">
+                @foreach ($customers->pluck('customer_name') as $item)
+                    <option value="{{ $item }}" @selected($item == request()->query('customer_name'))>{{ $item }}</option>
+                @endforeach
+            </x:form.select>
+        </div>
+    </x:layout.modal.filter-modal>
 @endsection
 
 @push('js')
 @component('components.layout.table.datatable', [
     'id' => 'customer_table',
     'url' => route('finance.master-data.customer.list'),
+    'dynamicParam' => true,
     'columns' => [
         [
             "data" => "DT_RowIndex",

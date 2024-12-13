@@ -15,9 +15,11 @@ final class AgentContractService
 {
     use HandleUploadedFile;
 
-    public function getAgentContracts(): Collection
+    public function getAgentContracts($filters = []): Collection
     {
-        return AgentContract::orderBy('contract_no', 'DESC')->get();
+        return AgentContract::when(!empty($filters['contract_no']), function ($query) use ($filters) {
+            return $query->where('contract_no', $filters['contract_no']);
+        })->orderBy('contract_no', 'DESC')->get();
     }
 
     public function getAgentContractById(string $id): object

@@ -38,14 +38,14 @@ final class CustomerController extends Controller
      */
     public function index()
     {
-        // dd($this->customerService->getCustomers());
-        return view('pages.finance.master-data.customer.index');
+        $customers = $this->customerService->getCustomers();
+        return view('pages.finance.master-data.customer.index', compact('customers'));
     }
 
     public function list()
     {
         if (request()->ajax()) {
-            return DataTables::of($this->customerService->getCustomers())
+            return DataTables::of($this->customerService->getCustomers(request()->query()))
                 ->addIndexColumn()
                 ->addColumn('customer_type', function ($item) {
 

@@ -10,7 +10,7 @@
     'customModelling' => $customModelling ?? null
 ])
 
-<div class='mb-10'>
+<div class='mb-3'>
 
     @php
         $valueRecondition = $type == 'date'

@@ -7,7 +7,7 @@
     'multiple' => $multiple ?? false
 ])
 
-<div class='mb-10'>
+<div class='mb-3'>
     <label for="#{{ $name }}" class='form-label {{ $required ? 'required' : '' }}'>{{ $label }}</label>
     <select class="@if($errors->has($name)) is-invalid @endif form-select"
         name="{{ $name }}"

@@ -329,9 +329,10 @@
                     <div class="tab-pane fade" id="email" role="tabpanel">
                         <div class="row">
                             <div id="email-form">
-                                <div class="email-row form-row row align-items-center">
-                                    @if(@$customer && $customer->customerEmails->count() > 0)
-                                        @foreach (@$customer->customerEmails as $email)
+
+                                @if (@$customer && @$customer->customerEmails->count() > 0)
+                                    @foreach (@$customer->customerEmails as $email)
+                                        <div class="email-row form-row row align-items-center">
                                             <div class="col">
                                                 <input type="hidden" name="customer_email[email_id][]" value="{{ $email->id }}" />
                                                 <x:form.input type="email" label="Email" name="customer_email[email][]" placeholder="Type Email" :customModelling="@$email->email" />
@@ -341,8 +342,10 @@
                                                 <button type="button" class="btn btn-warning" onclick="removeRow('.email-row')"
                                                     disabled>-</button>
                                             </div>
-                                        @endforeach
-                                    @else
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="email-row form-row row align-items-center">
                                         <div class="col">
                                             <input type="hidden" name="customer_email[email_id][]" value="" />
                                             <x:form.input type="email" label="Email" name="customer_email[email][]" placeholder="Type Email" />
@@ -352,8 +355,8 @@
                                             <button type="button" class="btn btn-warning" onclick="removeRow('.email-row')"
                                                 disabled>-</button>
                                         </div>
-                                    @endif
-                                </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -384,7 +387,11 @@
                                 <x:form.input label="Publish Amount" name="customer_sales[publish_amount]" placeholder="Type Publish Amount" :customModelling="@$customer->customerSales->publish_amount" />
                             </div>
                             <div class="col-md-3">
-                                <x:form.input type="date" label="Review Date" name="customer_sales[review_date]" placeholder="Type Review Date" :customModelling="@$customer->customerSales->review_date" />
+                                <label for="review_date" class="form-label">Review Date</label>
+                                <input id="review_date" type="date" class="@if($errors->has('review_date')) is-invalid @endif form-control" name="customer_sales[review_date]" value="{{ old('review_date', @$customer->customerSales->review_date) }}" />
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('review_date') }}
+                                </div>
                             </div>
                             <div class="col-md-3">
                                 <x:form.input label="Override Amount" name="customer_sales[override_amount]" placeholder="Type Override Amount" :customModelling="@$customer->customerSales->override_amount" />
@@ -509,9 +516,9 @@
                     <div class="tab-pane fade" id="account" role="tabpanel">
                         <div class="row">
                             <div id="account-form">
-                                <div class="account-row form-row row align-items-center">
-                                    @if (@$customer && @$customer->customerAccounts->count() > 0)
-                                        @foreach (@$customer->customerAccounts as $customerAccount)
+                                @if (@$customer && @$customer->customerAccounts->count() > 0)
+                                    @foreach (@$customer->customerAccounts as $customerAccount)
+                                        <div class="account-row form-row row align-items-center">
                                             <div class="col">
                                                 <input type="hidden" name="customer_account[customer_account_id][]" value="{{ $customerAccount->id }}">
                                                 <x:form.select label="Account Number" name="customer_account[chart_of_account_id][]" defaultOption="Select Account Number" style="width: 228px;">
@@ -525,7 +532,7 @@
                                                                             ->get();
                                                                     @endphp
                                                                     @foreach ($chartOfAccounts as $account)
-                                                                        <option value="{{ $account->id }}" @selected($customerAccount->id == $account->id)>
+                                                                        <option value="{{ $account->id }}" @selected($customerAccount->chart_of_account_id == $account->id)>
                                                                             {{ '--' . $account->account_number . ' --- ' . str($account->account_name)->upper() }}
                                                                         </option>
                                                                     @endforeach
@@ -555,8 +562,10 @@
                                                 <button type="button" class="btn btn-warning" onclick="removeRow('.account-row')"
                                                     disabled>-</button>
                                             </div>
-                                        @endforeach
-                                    @else
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="account-row form-row row align-items-center">
                                         <div class="col">
                                             <input type="hidden" name="customer_account[customer_account_id][]" value="">
                                             <x:form.select label="Account Number" name="customer_account[chart_of_account_id][]" defaultOption="Select Account Number" style="width: 228px;">
@@ -600,8 +609,8 @@
                                             <button type="button" class="btn btn-warning" onclick="removeRow('.account-row')"
                                                 disabled>-</button>
                                         </div>
-                                    @endif
-                                </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>

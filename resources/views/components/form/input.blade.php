@@ -25,7 +25,7 @@
     </div>
     @if ($file && !is_null($model?->{$name}))
         <a href="{{ $model?->getFileURL() }}" class="btn btn-sm btn-info d-inline-block mt-2" download>
-            <i class="bx bx-download me-2"></i> Downlaod File
+            <i class="bx bx-download me-2"></i> Download File
         </a>
     @endif
 </div>

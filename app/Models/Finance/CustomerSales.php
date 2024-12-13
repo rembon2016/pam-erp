@@ -25,4 +25,6 @@ final class CustomerSales extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    // public function
 }

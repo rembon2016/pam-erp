@@ -80,8 +80,9 @@ final class AgentContractController extends Controller
                 })
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([
+                        'detail' => route('finance.master-data.agent-contract.detail', $item->id),
                         'edit' => route('finance.master-data.agent-contract.edit', $item->id),
-                        'delete' => route('finance.master-data.agent-contract.destroy', $item->id),
+                        // 'delete' => route('finance.master-data.agent-contract.destroy', $item->id),
                     ]);
                 })
                 ->rawColumns(['action'])
@@ -92,6 +93,19 @@ final class AgentContractController extends Controller
             Response::HTTP_UNAUTHORIZED,
             'Access Unauthorized',
         );
+    }
+
+    public function show(string $id)
+    {
+        $getAgentContractResponse = $this->agentContractService->getAgentContractById($id);
+        if (!$getAgentContractResponse->success) return redirect()->to_route('finance.master-data.agent-contract.index')->with('toastError', $getAgentContractResponse->message);
+
+        $currencies = $this->currrencyService->getCurrencies();
+
+        return view('pages.finance.master-data.agent-contract.detail', [
+            'agent_contract' => $getAgentContractResponse->data,
+            'currencies' => $currencies,
+        ]);
     }
 
     /**

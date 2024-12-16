@@ -11,9 +11,11 @@ use Illuminate\Database\Eloquent\Collection;
 
 final class DaybookService
 {
-    public function getDaybooks(): Collection
+    public function getDaybooks($filters = []): Collection
     {
-        return Daybook::orderBy('code', 'ASC')->get();
+        return Daybook::when(!empty($filters['daybook_code']), function ($query) use ($filters) {
+            $query->where('code', $filters['daybook_code']);
+        })->orderBy('code', 'ASC')->get();
     }
 
     public function getDaybookById(string $id): object

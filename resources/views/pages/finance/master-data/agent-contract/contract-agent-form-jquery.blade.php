@@ -218,8 +218,8 @@
                         </option>
                         @foreach ($serviceVendors as $serviceVendor)
                             <option
-                                value="{{ $serviceVendor['value'] }}">
-                                {{ $serviceVendor['label'] }}
+                                value="{{ $serviceVendor->id }}">
+                                {{ $serviceVendor->service_code }}
                             </option>
                         @endforeach
                     </select>

@@ -12,6 +12,7 @@ use App\Traits\HandleTableTimestamps;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class Customer extends Model
@@ -38,6 +39,20 @@ final class Customer extends Model
      * @var array
      */
     protected $with = ['customerTypes'];
+
+    /**
+     * Retrieves the currency associated with the current customer.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function currency(): BelongsTo
+    {
+        return $this->belongsTo(
+            related: Currency::class,
+            foreignKey: 'currency_id',
+            ownerKey: 'id'
+        );
+    }
 
     /**
      * Retrieves the billing customer associated with the current customer.

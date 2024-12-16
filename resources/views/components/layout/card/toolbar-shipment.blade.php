@@ -33,8 +33,13 @@
     <div class="card-title">
         <div class="d-flex align-items-center position-relative my-1">
             <span class="fs-6">Search</span>
-            <input type="text" data-kt-ecommerce-order-filter="search"
-                class="form-control mb-1 ms-2 search-input" placeholder="" />
+            <input type="text" 
+                id="datatableSearch"
+                data-kt-ecommerce-order-filter="search"
+                class="form-control mb-1 ms-2 search-input" 
+                placeholder="" 
+                autocomplete="off"
+            />
         </div>
         <div id="kt_ecommerce_report_customer_orders_export" class="d-none"></div>
     </div>

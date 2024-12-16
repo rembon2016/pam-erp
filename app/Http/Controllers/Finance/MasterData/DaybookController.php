@@ -31,7 +31,8 @@ final class DaybookController extends Controller
      */
     public function index(): View
     {
-        return view('pages.finance.master-data.daybook.index');
+        $daybook_codes = $this->daybookService->getDaybooks()->pluck('code');
+        return view('pages.finance.master-data.daybook.index', compact('daybook_codes'));
     }
 
     /**
@@ -44,7 +45,7 @@ final class DaybookController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            return DataTables::of($this->daybookService->getDaybooks())
+            return DataTables::of($this->daybookService->getDaybooks(request()->query()))
                 ->addIndexColumn()
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([

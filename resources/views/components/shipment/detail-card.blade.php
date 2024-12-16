@@ -635,7 +635,13 @@
     const API_BASE = `${window.location.protocol}//${'{!! env('API_ORIGIN') !!}'}`;
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => {
-            alert('CTD Number copied to clipboard!');
+            Swal.fire({
+                icon: 'success',
+                title: 'Copied!',
+                text: 'CTD Number copied to clipboard!',
+                timer: 1500,
+                showConfirmButton: false
+            });
         });
     }
 
@@ -676,7 +682,11 @@
 
         } catch (error) {
             console.error('Download error:', error);
-            alert('Failed to download CTD file. Please try again.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Download Failed',
+                text: 'Failed to download CTD file. Please try again.'
+            });
         } finally {
             // Reset icon state
             icon.classList.remove('fa-spinner', 'fa-spin');
@@ -729,7 +739,11 @@
 
         } catch (error) {
             console.error('Download error:', error);
-            alert('Data not found');
+            Swal.fire({
+                icon: 'error',
+                title: 'Download Failed',
+                text: 'Data not found'
+            });
         } finally {
             // Reset icon state
             icon.classList.remove('fa-spinner', 'fa-spin');
@@ -788,7 +802,11 @@
 
         } catch (error) {
             console.error('Download error:', error);
-            alert('Failed to download document. Please try again.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Download Failed',
+                text: 'Failed to download document. Please try again.'
+            });
         } finally {
             // Reset icon state
             icon.classList.remove('fa-spinner', 'fa-spin');
@@ -836,7 +854,11 @@
 
         } catch (error) {
             console.error('Download error:', error);
-            alert('Failed to download attachment. Please try again.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Download Failed',
+                text: 'Failed to download attachment. Please try again.'
+            });
         }
     }
 </script>

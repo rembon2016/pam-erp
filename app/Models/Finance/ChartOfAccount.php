@@ -29,6 +29,20 @@ final class ChartOfAccount extends Model
     protected $guarded = ['id'];
 
     /**
+     * Get the account group that this chart of account belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function accountGroup(): BelongsTo
+    {
+        return $this->belongsTo(
+            related: AccountGroup::class,
+            foreignKey: 'account_group_id',
+            ownerKey: 'id'
+        );
+    }
+
+    /**
      * Get the sub-account group that this chart of account belongs to.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

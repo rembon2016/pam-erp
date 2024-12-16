@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Finance\MasterData\Customer;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Constants\Customer\CustomerType;
+use Illuminate\Foundation\Http\FormRequest;
 
 final class UpdateCustomerRequest extends FormRequest
 {
@@ -60,7 +61,7 @@ final class UpdateCustomerRequest extends FormRequest
             'customer_address.state' => ['nullable', 'string', 'max:255'],
             'customer_address.address' => ['nullable', 'string'],
             'customer_address.country' => ['nullable', 'string', 'max:255'],
-            'customer_address.zip' => ['nullable', 'numeric'],
+            'customer_address.zip_code' => ['nullable', 'numeric'],
             'customer_address.po_box' => ['nullable', 'numeric'],
             'customer_address.phone_number' => ['nullable', 'string', 'max:255'],
             'customer_address.fax_number' => ['nullable', 'string', 'max:255'],
@@ -89,6 +90,8 @@ final class UpdateCustomerRequest extends FormRequest
     {
         return [
             'customer_email' => ['nullable', 'array'],
+            'customer_email.email_id' => ['nullable', 'array'],
+            'customer_email.email_id.*' => ['nullable', 'string'],
             'customer_email.email' => ['nullable', 'array'],
             'customer_email.email.*' => ['nullable', 'email', 'max:255'],
         ];
@@ -159,6 +162,8 @@ final class UpdateCustomerRequest extends FormRequest
     {
         return [
             'customer_account' => ['nullable', 'array'],
+            'customer_account.customer_account_id' => ['nullable', 'array'],
+            'customer_account.customer_account_id.*' => ['nullable', 'string'],
             'customer_account.chart_of_account_id' => ['nullable', 'array'],
             'customer_account.chart_of_account_id.*' => ['nullable', 'exists:pgsql.finance.chart_of_accounts,id'],
             'customer_account.currency_id' => ['nullable', 'array'],

@@ -6,12 +6,33 @@ namespace App\Service\Finance\MasterData;
 
 use Illuminate\Http\Response;
 use App\Functions\ObjectResponse;
+use App\Models\Finance\AccountGroup;
+use App\Models\Finance\ChartOfAccount;
+use Illuminate\Support\Facades\Pipeline;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Builder;
 
 final class ChartOfAccountService
 {
+    public function getAccountGroups(): Collection
+    {
+        $accountGroupQueries = AccountGroup::query()
+            ->with(['subAccountGroups', 'chartOfAccounts'])
+            ->orderBy('code', 'asc');
+
+        $accountGroups = Pipeline::send($accountGroupQueries)
+            ->through([
+                \App\Http\Filters\COA\SearchFilter::class,
+            ])
+            ->thenReturn()
+            ->get();
+
+        return $accountGroups;
+    }
+
     public function getCoaById(string $id): object
     {
-        $coa = null;
+        $coa = ChartOfAccount::where('id', $id)->first();
         return !is_null($coa)
             ? ObjectResponse::success(
                 message: __('crud.fetched', ['name' => 'Chart of Account']),
@@ -20,14 +41,15 @@ final class ChartOfAccountService
             )
             : ObjectResponse::error(
                 message: __('crud.not_found', ['name' => 'Chart of Account']),
-                statusCode: Response::HTTP_NOT_FOUNDs
+                statusCode: Response::HTTP_NOT_FOUND
             );
     }
 
     public function createCoa(array $dto): object
     {
         try {
-            $coa = null;
+            $coa = ChartOfAccount::create($dto);
+
             return ObjectResponse::success(
                 message: __('crud.created', ['name' => 'Chart of Account']),
                 statusCode: Response::HTTP_CREATED,
@@ -42,13 +64,13 @@ final class ChartOfAccountService
         }
     }
 
-    public function updateCoa(string $id, array $dto): object
+    public function updateCoa(array $dto, string $id): object
     {
         $getCoaResponse = $this->getCoaById($id);
         if (!$getCoaResponse->success) return $getCoaResponse;
 
         try {
-            $getCoaResponse->update($dto);
+            $getCoaResponse->data->update($dto);
 
             return ObjectResponse::success(
                 message: __('crud.updated', ['name' => 'Chart of Account']),
@@ -70,7 +92,7 @@ final class ChartOfAccountService
         if (!$getCoaResponse->success) return $getCoaResponse;
 
         try {
-            $getCoaResponse->delete();
+            $getCoaResponse->data->delete();
 
             return ObjectResponse::success(
                 message: __('crud.deleted', ['name' => 'Chart of Account']),

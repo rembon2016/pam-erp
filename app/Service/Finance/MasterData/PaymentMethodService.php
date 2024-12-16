@@ -11,9 +11,11 @@ use Illuminate\Database\Eloquent\Collection;
 
 final class PaymentMethodService
 {
-    public function getPaymentMethods(): Collection
+    public function getPaymentMethods($filters = []): Collection
     {
-        return PaymentMethod::orderBy('payment_terms', 'DESC')->get();
+        return PaymentMethod::when(!empty($filters['payment_terms']), function ($query) use ($filters) {
+            return $query->where('payment_terms', $filters['payment_terms']);
+        })->orderBy('payment_terms', 'DESC')->get();
     }
 
     public function getPaymentMethodById(string $id): object

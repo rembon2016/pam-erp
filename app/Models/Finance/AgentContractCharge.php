@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Finance\Charge;
+use App\Models\Operation\Master\Unit;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Finance\AgentContractService;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 final class AgentContractCharge extends Model
 {
@@ -25,4 +29,46 @@ final class AgentContractCharge extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+
+    /**
+     * Belongs to Relation with Charge
+     *
+     * @return BelongsTo
+     */
+    public function contract()
+    {
+        return $this->belongsTo(AgentContract::class, 'agent_contract_id', 'id');
+    }
+
+
+    /**
+     * Belongs to Relation with Charge
+     *
+     * @return BelongsTo
+     */
+    public function serviceContract()
+    {
+        return $this->belongsTo(AgentContractService::class, 'agent_contract_service_id', 'id');
+    }
+
+    /**
+     * Belongs to Relation with Charge
+     *
+     * @return BelongsTo
+     */
+    public function charge()
+    {
+        return $this->belongsTo(Charge::class, 'charge_id', 'id');
+    }
+
+    /**
+     * Belongs to Relation with Unit
+     *
+     * @return BelongsTo
+     */
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class, 'unit_id', 'unit_id');
+    }
 }

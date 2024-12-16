@@ -62,7 +62,7 @@ final class StoreCustomerRequest extends FormRequest
             'customer_address.state' => ['nullable', 'string', 'max:255'],
             'customer_address.address' => ['nullable', 'string'],
             'customer_address.country' => ['nullable', 'string', 'max:255'],
-            'customer_address.zip' => ['nullable', 'numeric'],
+            'customer_address.zip_code' => ['nullable', 'numeric'],
             'customer_address.po_box' => ['nullable', 'numeric'],
             'customer_address.phone_number' => ['nullable', 'string', 'max:255'],
             'customer_address.fax_number' => ['nullable', 'string', 'max:255'],

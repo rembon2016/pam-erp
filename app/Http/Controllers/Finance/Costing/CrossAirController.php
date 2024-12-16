@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Finance\Costing;
 
 use App\Models\Operation\Origin\JobOrderAir;
+use App\Models\Operation\Origin\OperationDocument;
+use App\Models\Operation\Origin\LoadingPlanDocument;
 
 use Illuminate\View\View;
 use App\Functions\Convert;
@@ -99,7 +101,10 @@ final class CrossAirController extends Controller
     }
 
     public function show($id){
-
+        $joborder = JobOrderAir::with(['detail', 'loading','doc'])->findOrFail($id);
+        $op = OperationDocument::where('job_order_id', $id)->first();
+        $lpdoc = LoadingPlanDocument::where('loading_id', $joborder->loading_plan_id)->get();
+        return view('pages.finance.costing.cross-air.show', compact('id','joborder','op','lpdoc'));
     }
 
     public function cost($id){

@@ -5,6 +5,13 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Finance\Costing;
 
 use App\Models\Operation\Origin\JobOrder;
+use App\Models\Operation\Origin\OperationDocument;
+use App\Models\Operation\Origin\LoadingPlanDocument;
+use App\Models\Operation\Origin\LoadingReportDetail;
+use App\Models\Operation\Master\Port;
+use App\Models\Operation\Master\Vendor;
+use App\Models\Finance\Charge;
+use App\Models\Finance\Currency;
 
 use Illuminate\View\View;
 use App\Functions\Convert;
@@ -63,7 +70,7 @@ final class SeaAirController extends Controller
                     return $item->loading->voyage_number ?? "";
                 })
                 ->editColumn('eta', function ($item) {
-                    return Convert::date($item->eta) ?? "";
+                    return Convert::date($item->eta_dubai) ?? "";
                 })
                 ->editColumn('job_order_date', function ($item) {
                     return Convert::date($item->date_created) ?? "";
@@ -99,11 +106,23 @@ final class SeaAirController extends Controller
     }
 
     public function show($id){
-
+        $joborder = JobOrder::with(['detail', 'loading','doc'])->findOrFail($id);
+        $op = OperationDocument::where('job_order_id', $id)->first();
+        $lpdoc = LoadingPlanDocument::where('loading_id', $joborder->loading_plan_id)->get();
+        return view('pages.finance.costing.sea-air.show', compact('id','joborder','op','lpdoc'));
     }
 
     public function cost($id){
-
+        $joborder = JobOrder::with(['detail', 'loading','doc'])->findOrFail($id);
+        $loading = LoadingReportDetail::where('status',"!=",3)->where('bl_id', $joborder->loading_plan_id)->get();
+        $port = Port::where('status',"!=",3)->get();
+        $vendor_truck = Vendor::where('status',"!=",3)->where('vendor_type_id','08dc64df-4210-4c93-bf19-8ed8b0dc6658')->get();
+        $vendor_port = Vendor::where('status',"!=",3)->where('vendor_type_id','e1aa4b6f-e035-4f28-9887-b70bd18166b6')->get();
+        $vendor_air = Vendor::where('status',"!=",3)->where('vendor_type_id','bd809e96-71f9-42ab-b431-4c975df8c140')->get();
+        $vendor_line = Vendor::where('status',"!=",3)->where('vendor_type_id','f0bbc26c-a6ca-11ed-99ce-b7de90ac3f73')->get();
+        $charge = Charge::whereNull('deleted_at')->get();
+        $currency = Currency::whereNull('deleted_at')->get();
+        return view('pages.finance.costing.sea-air.cost', compact('id','joborder','loading','port','vendor_truck','vendor_port','vendor_air','vendor_line','charge','currency'));
     }
 
     public function exportCsv()

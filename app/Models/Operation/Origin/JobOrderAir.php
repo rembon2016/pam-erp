@@ -20,6 +20,11 @@ class JobOrderAir extends Model
         return $this->belongsTo(LoadingPlan::class, 'loading_plan_id', 'plan_id');
     }
 
+    public function loading()
+    {
+        return $this->belongsTo(LoadingPlan::class, 'loading_plan_id', 'plan_id');
+    }
+
     public function detail()
     {
         return $this->hasMany(JobOrderDetail::class, 'job_order_id', 'job_order_id');
@@ -37,6 +42,12 @@ class JobOrderAir extends Model
 
     }
 
+    public function doc()
+    {
+        return $this->hasMany(JobOrderDocument::class, 'job_order_id', 'job_order_id');
+    }
+
+
     function lpdetail(){
         return $this->hasOne(LoadingPlanDetail::class, 'loading_plan_id', 'loading_plan_id')
                     ->orderBy('date_departure', 'asc');
@@ -45,5 +56,10 @@ class JobOrderAir extends Model
     function lparrival(){
         return $this->hasOne(LoadingPlanDetail::class, 'loading_plan_id', 'loading_plan_id')
                     ->orderBy('date_arival', 'desc');
+    }
+
+    public function vendor()
+    {
+        return $this->hasMany(JobOrderVendor::class, 'job_order_id', 'job_order_id');
     }
 }

@@ -4,12 +4,14 @@
     'placeholder' => $placeholder ?? "Select Option",
     'required' => $required ?? false,
     'model' => $model ?? null,
-    'multiple' => $multiple ?? false
+    'multiple' => $multiple ?? false,
+    'onchange'=>$onchange ?? null
 ])
 
 <div class='mb-10'>
     <label for="#{{ $name }}" class='form-label {{ $required ? 'required' : '' }}'>{{ $label }}</label>
     <select class="@if($errors->has($name)) is-invalid @endif form-select"
+
         name="{{ $name }}"
         {{ $required ? 'required' : '' }}
         id="{{ $name }}"

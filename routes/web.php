@@ -3,11 +3,16 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\Finance\Settings\UserController;
+use App\Http\Controllers\Finance\Costing\SeaAirController;
+use App\Http\Controllers\Finance\Billing\InvoiceController;
 use App\Http\Controllers\Finance\MasterData\PortController;
 use App\Http\Controllers\Finance\MasterData\UnitController;
+use App\Http\Controllers\Finance\Costing\CrossAirController;
 use App\Http\Controllers\Finance\MasterData\ChargeController;
 use App\Http\Controllers\Finance\MasterData\CountryController;
 use App\Http\Controllers\Finance\MasterData\DaybookController;
@@ -22,10 +27,6 @@ use App\Http\Controllers\Finance\MasterData\ChartOfAccountController;
 use App\Http\Controllers\Finance\MasterData\CustomerContractController;
 use App\Http\Controllers\Finance\GeneralWise\Shipment\ShipmentController;
 use App\Http\Controllers\Finance\MasterData\CustomerForBillingController;
-use App\Http\Controllers\Finance\Settings\UserController;
-use App\Http\Controllers\Finance\Costing\SeaAirController;
-use App\Http\Controllers\Finance\Costing\CrossAirController;
-use Illuminate\Support\Facades\Schema;
 
 
 Route::group(['middleware' => ['auth']], function () {
@@ -317,6 +318,21 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/{type}', [ShipmentController::class, 'index'])->name('index');
                 Route::get('/{type}/{uuid}', [ShipmentController::class, 'detail'])->name('detail');
                 Route::post('/api/download-documents', [ShipmentController::class, 'downloadDocuments'])->name('download-documents');
+            });
+        });
+
+        Route::group([
+            'prefix' => 'billing',
+            'as' => 'billing.'
+        ], function () {
+            Route::group([
+                'prefix' => 'invoice',
+                'as' => 'invoice.'
+            ], function () {
+                Route::get('/', [InvoiceController::class, 'index'])->name('index');
+                Route::get('/list', [InvoiceController::class, 'list'])->name('list');
+                Route::get('/create/not-linked-billing-customer', [InvoiceController::class, 'createNotLinked'])->name('create.not-linked-billing-customer');
+                Route::post('/not-linked-billing-customer', [InvoiceController::class, 'storeNotLinked'])->name('store.not-linked-billing-customer');
             });
         });
 

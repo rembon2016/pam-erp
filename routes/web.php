@@ -330,6 +330,7 @@ Route::group(['middleware' => ['auth']], function () {
             ], function () {
                 Route::get('/', [SeaAirController::class, 'index'])->name('index');
                 Route::get('/list', [SeaAirController::class, 'list'])->name('list');
+                Route::post('/store', [SeaAirController::class, 'store'])->name('store');
                 Route::get('/show/{id}', [SeaAirController::class, 'show'])->name('show');
                 Route::get('/cost/{id}', [SeaAirController::class, 'cost'])->name('cost');
                 Route::get('/export/csv', [SeaAirController::class, 'exportCsv'])->name('export.csv');

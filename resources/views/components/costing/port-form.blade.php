@@ -2,7 +2,7 @@
     <div class='col-md-4'>
         <x:form.select2 label="Port Code" id="port_id" name="port_id[]" defaultOption="Select Port Code">
             @foreach($port as $row)
-            <option value="{{ $row->port_id }}" data-port-code="{{ $rows->port_code }}" @if($row->port_code == "AEJEA") selected @endif>{{ $row->port_code }}</option>
+            <option value="{{ $row->port_id }}" data-port-code="{{ $row->port_code }}" @if($row->port_code == "AEJEA") selected @endif>{{ $row->port_code }}</option>
             @endforeach
         </x:form.select2>
         <input type="hidden" name="port_code[]" id="port_code" value="AEJEA">`

@@ -13,6 +13,9 @@
         </h1>
     </x:layout.card.header>
     <x:layout.card.body>
+     <x:form.wrapper action="{{ $data['action'] }}" method="{{ $data['method'] }}">
+        <input type="hidden" value="{{ $joborder->loading_plan_id }}" name="loading_plan_id">
+        <input type="hidden" value="{{ $joborder->job_order_id }}" name="job_order_id">
         <div class="col-md-12">
             <div class="row">
                 <div class='col-md-3'>
@@ -79,16 +82,18 @@
 
                 <div class="tab-pane fade" id="import" role="tabpanel">
                     <x-costing.special-import :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
-                    
+                    <x:form.input label="Transaction Date" placeholder="Transaction Date" name="transaction_date_import" type="date" :model="$joborder" />
                     <x-costing.bl-form :bl="$bl" :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
                 </div>
                 <div class="tab-pane fade" id="export" role="tabpanel">
                     <x-costing.special-export :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
+                     <x:form.input label="Transaction Date" placeholder="Transaction Date" name="transaction_date_export" type="date" :model="$joborder" />
                      <x-costing.mawb-form :loadingplan="$loadingplan" :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
                 </div>
 
             </div>
         </div>
+        </x:form.wrapper>
     </x:layout.card.body>
 </x:layout.card.wrapper>
 @endsection

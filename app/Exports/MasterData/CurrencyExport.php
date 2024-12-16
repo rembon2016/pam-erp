@@ -22,10 +22,10 @@ class CurrencyExport implements FromCollection, WithHeadings, WithMapping
         return [
             $item->currency_code,
             $item->currency_name,
-            $item->currency_date?->format('d-m-Y'),
-            $item->buy_rate,
-            $item->sell_rate,
-            $item->notes,
+            // $item->currency_date?->format('d-m-Y'),
+            // $item->buy_rate,
+            // $item->sell_rate,
+            // $item->notes,
         ];
     }
 
@@ -34,10 +34,10 @@ class CurrencyExport implements FromCollection, WithHeadings, WithMapping
         return [
             'Currency Code',
             'Currency Name',
-            'Currency Date',
-            'Buy Rate',
-            'Sell Rate',
-            'Notes',
+            // 'Currency Date',
+            // 'Buy Rate',
+            // 'Sell Rate',
+            // 'Notes',
         ];
     }
 }

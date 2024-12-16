@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Operation\Models\Dxb;
+namespace App\Models\Operation\Dxb;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Http;

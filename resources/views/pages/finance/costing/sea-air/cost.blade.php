@@ -79,10 +79,12 @@
 
                 <div class="tab-pane fade" id="import" role="tabpanel">
                     <x-costing.special-import :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
-
+                    
+                    <x-costing.bl-form :bl="$bl" :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
                 </div>
                 <div class="tab-pane fade" id="export" role="tabpanel">
-
+                    <x-costing.special-export :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
+                     <x-costing.mawb-form :loadingplan="$loadingplan" :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
                 </div>
 
             </div>

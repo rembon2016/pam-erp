@@ -1,4 +1,12 @@
 <div class="container mt-4">
+ <div style="display: flex; align-items: center; justify-content: end;">
+            <button type="button" id="add-row" class="btn btn-icon btn-success rounded" style="height: 30px; width: 30px;margin-right:5px;">
+                <i class="fa fa-plus pe-0"></i>
+            </button>
+            <button type="button" id="remove-row" class="btn btn-icon btn-warning rounded" style="height: 30px; width: 30px;">
+                <i class="fa fa-minus pe-0"></i>
+            </button>
+        </div>
     <div id="input-rows">
         <div class="row mb-3 align-items-center" id="row-0">
             <div class="col-md-4">
@@ -21,10 +29,7 @@
             </div>
         </div>
     </div>
-    <div class="d-flex justify-content-end">
-        <button type="button" class="btn btn-success me-2" id="add-row"><i class="bi bi-plus-circle"></i> Add</button>
-        <button type="button" class="btn btn-danger" id="remove-row"><i class="bi bi-trash"></i> Remove</button>
-    </div>
+
 </div>
 
 @push('js')

@@ -17,7 +17,7 @@ final class FinanceSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            FixedAssetSeeder::class,
+            // FixedAssetSeeder::class,
             ChartOfAccountSeeder::class
         ]);
     }

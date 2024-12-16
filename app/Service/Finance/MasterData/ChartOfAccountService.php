@@ -6,14 +6,30 @@ namespace App\Service\Finance\MasterData;
 
 use Illuminate\Http\Response;
 use App\Functions\ObjectResponse;
+use Illuminate\Support\Facades\DB;
 use App\Models\Finance\AccountGroup;
 use App\Models\Finance\ChartOfAccount;
 use Illuminate\Support\Facades\Pipeline;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 final class ChartOfAccountService
 {
+    public function getChartOfAccounts(): Collection
+    {
+        $data = ChartOfAccount::join("finance.account_groups", "finance.account_groups.id", "=", "finance.chart_of_accounts.account_group_id")
+            ->join("finance.sub_account_groups", "finance.sub_account_groups.id", "=", "finance.chart_of_accounts.sub_account_group_id")
+            ->select([
+                'finance.chart_of_accounts.*',
+                DB::raw("CONCAT(finance.account_groups.code, finance.sub_account_groups.code, finance.chart_of_accounts.account_number) as code")
+            ])
+            ->get()
+            ->sortBy('code')
+            ->values();
+
+        return $data;
+    }
+
     public function getAccountGroups(): Collection
     {
         $accountGroupQueries = AccountGroup::query()

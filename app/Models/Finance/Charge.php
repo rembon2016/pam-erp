@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\Finance;
 
 use App\Models\Operation\Master\Unit;
+use App\Models\Finance\ChartOfAccount;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -27,5 +28,15 @@ final class Charge extends Model
     public function unit()
     {
         return $this->hasOne(Unit::class, 'unit_id', 'unit_id');
+    }
+
+    public function cost()
+    {
+        return $this->hasOne(ChartOfAccount::class, 'id', 'cost_id');
+    }
+
+    public function revenue()
+    {
+        return $this->hasOne(ChartOfAccount::class, 'id', 'revenue_id');
     }
 }

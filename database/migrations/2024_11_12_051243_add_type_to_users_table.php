@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('usr.users', function (Blueprint $table) {
-            $table->enum('type', ['erp', 'operation'])->default('erp');
+        Schema::table('usrs.users', function (Blueprint $table) {
+            $table->enum('type', ['erp', 'operation'])->nullable()->default('erp');
         });
     }
 
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('usr.users', function (Blueprint $table) {
+        Schema::table('usrs.users', function (Blueprint $table) {
             $table->dropColumn('type');
         });
     }

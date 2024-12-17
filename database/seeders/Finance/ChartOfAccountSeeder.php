@@ -20,7 +20,6 @@ final class ChartOfAccountSeeder extends Seeder
         $this->call([
             AccountGroupSeeder::class,
             SubAccountGroupSeeder::class,
-            // COASeeder::class,
         ]);
     }
 }

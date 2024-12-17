@@ -1,6 +1,6 @@
 @extends('layout.app')
 @section('body')
-    <x:layout.breadcrumb.wrapper module="Billing" pageName="Billing Customer - Not Linked">
+    <x:layout.breadcrumb.wrapper module="Billing" pageName="Not Linked Billing Customer">
         <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />
         <x:layout.breadcrumb.item pageName="Billing" />
         <x:layout.breadcrumb.item pageName="Invoice" href="{{ route('finance.billing.invoice.index') }}" />
@@ -34,7 +34,7 @@
             <div class='col-md-3'>
                 <x:form.select label="Month" name="month" defaultOption="Select Month" :model="request()">
                     @foreach ($months as $item)
-                        <option value="{{ $loop->iteration }}" @selected($item == request()->query('month'))>{{ $item }}</option>
+                        <option value="{{ $loop->iteration }}" @selected($loop->iteration == request()->query('month'))>{{ $item }}</option>
                     @endforeach
                 </x:form.select>
             </div>
@@ -72,6 +72,13 @@
                     @endforeach
                 </x:form.select>
             </div>
+            <div class='col-md-3'>
+                <x:form.select2 label="Billing Customer" name="customer" placeholder="Select Customer" :model="request()">
+                    @foreach ($customers as $item)
+                    <option value="{{ $item->id }}" @selected($item->id == request()->query('customer'))>{{ $item->customer_name }}</option>
+                    @endforeach
+                </x:form.select>
+            </div>
         </div>
         <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px">
             <x:form.cancel-button href="{{ route('finance.billing.invoice.create.not-linked-billing-customer') }}" label="Reset Filter" />
@@ -84,7 +91,8 @@
             <x:layout.card.toolbar
                 :customLink="[
                     'link' => '/',
-                    'text' => 'Update Multiple Billing Customer'
+                    'text' => 'Generate Invoices',
+                    'icon' => 'bx bx-plus'
                 ]"
                 withFilter="true"
             />
@@ -96,6 +104,7 @@
                         <x:layout.table.heading widthPixel="50" title="#" />
                         <x:layout.table.heading widthPixel="50" title="No" />
                         <x:layout.table.heading widthPixel="100" title="CTD No" />
+                        <x:layout.table.heading widthPixel="100" title="Billing Customer" />
                         <x:layout.table.heading widthPixel="100" title="Job Order No" />
                         <x:layout.table.heading widthPixel="100" title="Origin" />
                         <x:layout.table.heading widthPixel="100" title="Qty" />

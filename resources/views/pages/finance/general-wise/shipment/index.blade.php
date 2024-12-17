@@ -406,8 +406,8 @@
                         const label = getDocumentLabel(type);
                         documentTypesList.append(`
                             <div class="form-check mb-2">
-                                <input class="form-check-input document-type-checkbox" 
-                                       type="checkbox" 
+                                <input class="form-check-input document-type-checkbox"
+                                       type="checkbox"
                                        value="${type}"
                                        id="doc_${type}">
                                 <label class="form-check-label" for="doc_${type}">
@@ -425,8 +425,8 @@
                                 const label = getDocumentLabel(doc.type_document);
                                 documentTypesList.append(`
                                     <div class="form-check mb-2">
-                                        <input class="form-check-input document-type-checkbox" 
-                                               type="checkbox" 
+                                        <input class="form-check-input document-type-checkbox"
+                                               type="checkbox"
                                                value="${doc.type_document}"
                                                id="doc_${doc.type_document}">
                                         <label class="form-check-label" for="doc_${doc.type_document}">
@@ -480,7 +480,7 @@
                     }
 
                     const type = '{{ $type }}';
-                    
+
                     // Prepare the payload
                     const payload = {
                         job_id: Array.from(selectedJobIds),
@@ -944,7 +944,7 @@
                     $('#select_all').prop('checked', false);
                     selectedJobIds.clear();
 
-                    
+
                 } catch (error) {
                     console.error('Export error:', error);
                     Swal.fire({

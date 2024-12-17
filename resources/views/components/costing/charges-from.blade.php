@@ -77,7 +77,11 @@
                                 <option value="Credit" @if($row->status == 'Credit') selected @endif>Credit</option>
                             </select>
                         </td>
-                        <td><button type="button" class="btn btn-danger rounded btn-remove-row-{{ $type }}-{{ $k }}" style="height: 30px; width: 30px;"><i class="bi bi-trash "></i></button></td>
+                        <td>
+                            <button type="button" class="btn btn-icon btn-danger btn-remove-row-{{ $type }}-{{ $k }}" style="height: 30px; width: 30px;margin-top:5px;">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                        </td>
                     </tr>
 
                     @endif
@@ -170,7 +174,9 @@ $('#add-row-{{ $type }}-{{ $k }}').on('click', function () {
                     <option value="Credit">Credit</option>
                 </select>
             </td>
-            <td><button type="button" class="btn btn-danger btn-remove-row-ctd-{{ $k }}"><i class="bi bi-trash"></i></button></td>
+            <td><button type="button" class="btn btn-icon btn-danger btn-remove-row-{{ $type }}-{{ $k }}" style="height: 30px; width: 30px;margin-top:5px;">
+                            <i class="fa fa-trash"></i>
+                        </button></td>
         </tr>
     `;
     $('#{{ $type }}-charges-rows-{{ $k }}').append(newRow); // Append the new row
@@ -180,9 +186,25 @@ $('#add-row-{{ $type }}-{{ $k }}').on('click', function () {
 
 
     // Remove Row
-    $(document).on('click', '.btn-remove-row-{{ $type }}-{{ $k }}', function () {
-        $(this).closest('tr').remove(); // Remove the closest row
-    });
+
+
+      $('#{{ $type }}-charges-rows-{{ $k }}').on('click', '.btn-remove-row-{{ $type }}-{{ $k }}', function () {
+    const rowToHide = $(this).closest('tr'); // Ambil baris yang diklik
+    const hiddenInput = rowToHide.find('input[name="costing_detail_{{ $type }}_{{ $k }}_id[]"]'); // Cari input id
+
+    if (hiddenInput.length) {
+        const deletedId = hiddenInput.val(); // Ambil value ID dari input hidden
+        if (deletedId) {
+            // Tambahkan input hidden untuk menandai ID yang dihapus
+            rowToHide.append(`
+                <input type="hidden" name="costing_detail_{{ $type }}_{{ $k }}_delete_id[]" value="${deletedId}">
+            `);
+        }
+    }
+
+    // Tambahkan class untuk menyembunyikan baris
+    rowToHide.addClass('d-none');
+});
 
 
 </script>

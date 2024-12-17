@@ -36,7 +36,7 @@
                     <tr>
                         <th style="width: 150px;">Vendor Code</th>
                         <th style="width: 200px;">Vendor Name</th>
-                        <th style="width: 200px;">Charge</th>
+                        <th style="width: 150px;">Charge</th>
                         <th style="width: 150px;">Currency</th>
                         <th style="width: 200px;">Rate</th>
                         <th style="width: 200px;">Amount</th>
@@ -85,7 +85,13 @@
                                 <option value="Credit" @if($row->status == 'Credit') selected @endif>Credit</option>
                             </select>
                         </td>
-                        <td><button type="button" class="btn btn-danger btn-remove-row"><i class="bi bi-trash"></i></button></td>
+                        <td>
+
+                <button type="button" class="btn btn-icon btn-danger btn-remove-row" data-row-id="{{ $key }}" style="height: 30px; width: 30px;margin-top:5px;">
+                    <i class="fa fa-trash"></i>
+                </button>
+
+                        </td>
                     </tr>
                     @endif
                     @endforeach
@@ -123,7 +129,9 @@
                                 <option value="Credit">Credit</option>
                             </select>
                         </td>
-                        <td><button type="button" class="btn btn-danger btn-remove-row"><i class="bi bi-trash"></i></button></td>
+                        <td> <button type="button" class="btn btn-icon btn-danger btn-remove-row" data-row-id="{{ $key }}" style="height: 30px; width: 30px;margin-top:5px;">
+                    <i class="fa fa-trash"></i>
+                </button></td>
                     </tr>
                     @endif
                 </tbody>
@@ -228,7 +236,10 @@ let isVisible = true; // Track the visibility state
                         <option value="Credit">Credit</option>
                     </select>
                 </td>
-                <td><button type="button" class="btn btn-danger btn-remove-row"><i class="bi bi-trash"></i></button></td>
+                <td><button type="button" class="btn btn-icon btn-danger btn-remove-row" style="height: 30px; width: 30px;margin-top:5px;">
+                    <i class="fa fa-trash"></i>
+                </button>
+                </td>
             </tr>
         `;
         $('#charges-rows').append(newRow); // Add the new row to the table
@@ -237,9 +248,24 @@ let isVisible = true; // Track the visibility state
     });
 
     // Remove Row
-    $(document).on('click', '.btn-remove-row', function () {
-        $(this).closest('tr').remove(); // Remove the closest row
-    });
+  $('#charges-rows').on('click', '.btn-remove-row', function () {
+    const rowToHide = $(this).closest('tr'); // Ambil baris yang diklik
+    const hiddenInput = rowToHide.find('input[name="costing_special_import_id[]"]'); // Cari input id
+
+    if (hiddenInput.length) {
+        const deletedId = hiddenInput.val(); // Ambil value ID dari input hidden
+        if (deletedId) {
+            // Tambahkan input hidden untuk menandai ID yang dihapus
+            rowToHide.append(`
+                <input type="hidden" name="costing_special_import_delete_id[]" value="${deletedId}">
+            `);
+        }
+    }
+
+    // Tambahkan class untuk menyembunyikan baris
+    rowToHide.addClass('d-none');
+});
+
 
 
 </script>

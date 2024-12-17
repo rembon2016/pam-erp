@@ -4,13 +4,26 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
+use App\Functions\ResponseJson;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Service\Auth\LoginService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use App\Http\Requests\Auth\LoginSSORequest;
 
 final class LoginSSOController extends Controller
 {
+    /**
+     * Constructs the LoginController with the provided LoginService.
+     *
+     * @param LoginService $loginService The service responsible for handling login functionality.
+     */
+    public function __construct(
+        protected LoginService $loginService
+    ) {}
+
     /**
      * Redirects the user to the operation dashboard after logging in via SSO.
      *
@@ -27,9 +40,28 @@ final class LoginSSOController extends Controller
             'username' => Auth::user()->email,
         ]);
 
-        $token = base64_encode($response->object()->access_token.".3hJ7k2N5pQ8rXsZ1");
+        $salt = Str::random(20);
+        $token = base64_encode($response->object()->access_token."|{$salt}");
 
         return redirect()
-            ->to(config('app.frontend_url')."dashboard?token={$token}");
+            ->to(config('app.frontend_url')."redirect?auth={$token}");
+    }
+
+    /**
+     * Redirects the user to the ERP dashboard after logging in via SSO.
+     *
+     * @param \App\Http\Requests\Auth\LoginSSORequest $request
+     * @return mixed|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     */
+    public function redirectToErp(LoginSSORequest $request)
+    {
+        $response = $this->loginService->authenticateWithoutPassword(dto: $request->only('email'));
+
+        return $response->success
+            ? redirect()->route('dashboard')
+            : ResponseJson::error(
+                code: $response->code,
+                message: $response->message,
+            );
     }
 }

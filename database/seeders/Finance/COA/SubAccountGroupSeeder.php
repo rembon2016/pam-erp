@@ -20,7 +20,7 @@ final class SubAccountGroupSeeder extends Seeder
             ->each(function ($account) {
 
                 SubAccountGroup::create([
-                    'account_group_id' => $this->findAccountGroupByCode(code: $account['code'][0]),
+                    'account_group_id' => $this->findAccountGroupByCode(code: $account['account_group_code']),
                     'code' => $account['code'],
                     'name' => $account['name']
                 ]);
@@ -40,29 +40,130 @@ final class SubAccountGroupSeeder extends Seeder
     {
         return [
             [
-                'code' => '11',
-                'name' => 'Current Assets'
+                'code' => '00',
+                'name' => 'ASSET',
+                'account_group_code' => '1',
             ],
             [
-                'code' => '12',
-                'name' => 'Fixed Assets'
+                'code' => '01',
+                'name' => 'FIXED ASSET',
+                'account_group_code' => '1',
             ],
             [
-                'code' => '21',
-                'name' => 'Current Liabilities'
+                'code' => '05',
+                'name' => 'INVESTMENTS',
+                'account_group_code' => '1',
             ],
             [
-                'code' => '22',
-                'name' => 'Longterm Liabilities'
+                'code' => '10',
+                'name' => 'CURRENT ASSETS',
+                'account_group_code' => '1',
             ],
             [
-                'code' => '31',
-                'name' => 'Share'
+                'code' => '15',
+                'name' => 'MISCELLANEOUS EXPENDITURE',
+                'account_group_code' => '1',
             ],
             [
-                'code' => '32',
-                'name' => "Current Year's Profit and Loss"
-            ]
+                'code' => '00',
+                'name' => 'LIABILITIES',
+                'account_group_code' => '2',
+            ],
+            [
+                'code' => '01',
+                'name' => 'SHARE HOLDER FUNDS',
+                'account_group_code' => '2',
+            ],
+            [
+                'code' => '05',
+                'name' => 'LOAN FUNDS',
+                'account_group_code' => '2',
+            ],
+            [
+                'code' => '10',
+                'name' => 'CURRENT LIABILITIES',
+                'account_group_code' => '2',
+            ],
+            [
+                'code' => '15',
+                'name' => 'PAYABLES PROVISIONS',
+                'account_group_code' => '2',
+            ],
+            [
+                'code' => '00',
+                'name' => 'INCOME',
+                'account_group_code' => '3',
+            ],
+            [
+                'code' => '01',
+                'name' => 'TRADE INCOME',
+                'account_group_code' => '3',
+            ],
+            [
+                'code' => '05',
+                'name' => 'NON TRADE INCOME',
+                'account_group_code' => '3',
+            ],
+            [
+                'code' => '00',
+                'name' => 'EXPENDITURE',
+                'account_group_code' => '4',
+            ],
+            [
+                'code' => '01',
+                'name' => 'COST OF SALES',
+                'account_group_code' => '4',
+            ],
+            [
+                'code' => '05',
+                'name' => 'PERSONNEL ADMINISTRATIVE OVERHEADS',
+                'account_group_code' => '4',
+            ],
+            [
+                'code' => '06',
+                'name' => 'ENTERTAINMENT EXPENSES',
+                'account_group_code' => '4',
+            ],
+            [
+                'code' => '07',
+                'name' => 'INSURANCE',
+                'account_group_code' => '4',
+            ],
+            [
+                'code' => '08',
+                'name' => 'LEGAL STATUTORY COST',
+                'account_group_code' => '4',
+            ],
+            [
+                'code' => '10',
+                'name' => 'FINANCE EXPENSES',
+                'account_group_code' => '4',
+            ],
+            [
+                'code' => '15',
+                'name' => 'NON CASH COST',
+                'account_group_code' => '4',
+            ],
+            [
+                'code' => '20',
+                'name' => 'BAD DOUBTFUL DEBTS',
+                'account_group_code' => '4',
+            ],
+            [
+                'code' => '25',
+                'name' => 'TAXES',
+                'account_group_code' => '4',
+            ],
+            [
+                'code' => '30',
+                'name' => 'DIVIDEND',
+                'account_group_code' => '4',
+            ],
+            [
+                'code' => '50',
+                'name' => 'DIRECT ALLOCATED COSTS',
+                'account_group_code' => '4',
+            ],
         ];
     }
 

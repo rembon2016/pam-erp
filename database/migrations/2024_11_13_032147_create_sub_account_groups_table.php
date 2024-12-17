@@ -22,7 +22,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->unsignedTinyInteger('code')->unique();
+            $table->char('code', 20);
             $table->string('name')->unique();
 
             $table->timestamps();

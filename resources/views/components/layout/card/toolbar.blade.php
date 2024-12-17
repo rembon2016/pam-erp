@@ -3,18 +3,31 @@
     'exportExcelLink' => $exportExcelLink ?? null,
     'exportCsvLink' => $exportCsvLink ?? null,
     'exportPdfLink' => $exportPdfLink ?? null,
+    'customLink' => $customLink ?? [],
     'withFilter' => $withFilter ?? false,
 ])
 
 <div class="card-toolbar flex-row-fluid justify-content-start gap-2">
 
-    @if (!empty($createDataLink))
-        <a href="{{ $createDataLink }}" class="btn btn-sm custom-btn custom-btn-primary">
-            <i class="bx bx-plus"></i>
-            Add
-        </a>
-    @endif
+    <div class="d-flex align-items-center gap-2">
+        @if (!empty($createDataLink))
+            <a href="{{ $createDataLink }}" class="btn btn-sm custom-btn custom-btn-primary">
+                <i class="bx bx-plus"></i>
+                Add
+            </a>
+        @endif
 
+        @if (!empty($customLink))
+            <a href="{{ $customLink['link'] }}" class="btn btn-sm custom-btn custom-btn-primary">
+                @if (!empty($customLink['icon']))
+                    <i class="{{ $customLink['icon'] }}"></i>
+                @endif
+                {{ $customLink['text'] }}
+            </a>
+        @endif
+    </div>
+
+    @if (!empty($exportExcelLink) && !empty($exportCsvLink) && !empty($exportPdfLink))
     <button type="button" class="btn btn-sm custom-btn custom-btn-outline-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
         <i class="bx bx-export"></i>
         Export
@@ -38,6 +51,7 @@
             </div>
         @endif
     </div>
+    @endif
 </div>
 
 <div class="card-title">

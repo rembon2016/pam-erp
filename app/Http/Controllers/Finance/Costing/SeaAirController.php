@@ -5,6 +5,23 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Finance\Costing;
 
 use App\Models\Operation\Origin\JobOrder;
+use App\Models\Operation\Origin\OperationDocument;
+use App\Models\Operation\Origin\LoadingPlanDocument;
+use App\Models\Operation\Origin\LoadingReportDetail;
+use App\Models\Operation\Origin\LoadingReportBL;
+use App\Models\Operation\Origin\ShippingInstruction;
+use App\Models\Operation\Dxb\LoadingPlan;
+use App\Models\Operation\Master\Port;
+use App\Models\Operation\Master\Vendor;
+use App\Models\Finance\Charge;
+use App\Models\Finance\Currency;
+use App\Models\Finance\Costing;
+use App\Models\Finance\CostingDetail;
+use App\Models\Finance\CostingSpecial;
+use App\Models\Finance\CostingVendorAgent;
+use App\Models\Finance\CostingVendorPort;
+use App\Models\Finance\CostingVendorTrucking;
+
 
 use Illuminate\View\View;
 use App\Functions\Convert;
@@ -40,7 +57,7 @@ final class SeaAirController extends Controller
             $joborder->when(!empty($request['search']['value']), function ($query) use ($request) {
                 $search = $request['search']['value'];
 
-                $q->where('job_order_code', 'ilike', "%{$search}%");
+                $query->where('job_order_code', 'ilike', "%{$search}%");
 
             });
             $count_filter = $joborder->count();
@@ -63,7 +80,7 @@ final class SeaAirController extends Controller
                     return $item->loading->voyage_number ?? "";
                 })
                 ->editColumn('eta', function ($item) {
-                    return Convert::date($item->eta) ?? "";
+                    return Convert::date($item->eta_dubai) ?? "";
                 })
                 ->editColumn('job_order_date', function ($item) {
                     return Convert::date($item->date_created) ?? "";
@@ -99,11 +116,266 @@ final class SeaAirController extends Controller
     }
 
     public function show($id){
-
+        $joborder = JobOrder::with(['detail', 'loading','doc'])->findOrFail($id);
+        $op = OperationDocument::where('job_order_id', $id)->first();
+        $lpdoc = LoadingPlanDocument::where('loading_id', $joborder->loading_plan_id)->get();
+        return view('pages.finance.costing.sea-air.show', compact('id','joborder','op','lpdoc'));
     }
 
     public function cost($id){
+        $joborder = JobOrder::with(['detail', 'loading','doc'])->findOrFail($id);
+        $loading = LoadingReportDetail::where('status',"!=",3)->where('bl_id', $joborder->loading_plan_id)->get();
+        $port = Port::where('status',"!=",3)->get();
+        $vendor_truck = Vendor::where('status',"!=",3)->where('vendor_type_id','08dc64df-4210-4c93-bf19-8ed8b0dc6658')->get();
+        $vendor_port = Vendor::where('status',"!=",3)->where('vendor_type_id','e1aa4b6f-e035-4f28-9887-b70bd18166b6')->get();
+        $vendor_air = Vendor::where('status',"!=",3)->where('vendor_type_id','bd809e96-71f9-42ab-b431-4c975df8c140')->get();
+        $vendor_line = Vendor::where('status',"!=",3)->where('vendor_type_id','f0bbc26c-a6ca-11ed-99ce-b7de90ac3f73')->get();
+        $charge = Charge::whereNull('deleted_at')->get();
+        $currency = Currency::whereNull('deleted_at')->get();
+        $bl = LoadingReportBl::with('shipping')->where('loading_id', $joborder->loading_plan_id)->where('status','!=',3)->get();
+        $ship = ShippingInstruction::where("status","!=",3)->where("loading_id", $joborder->loading_plan_id)->get();
+        $loading_plan_dxb = $ship->pluck('loading_plan_dxb')->toArray();
+       //return response()->json($ship);
+        $loadingplan = LoadingPlan::with('shipping')->whereIn('plan_id', $loading_plan_dxb)->get();
+        $cost = Costing::where("job_order_id",$joborder->job_order_id);
+        if($cost->exists()){
+            $costing = $cost->first();
+            $data = [
+                'action' => route('finance.costing.sea-air.store'),
+                'method' => 'POST',
+             ];
+        }else{
+            $costing = null;
+            $data = [
+                'action' => route('finance.costing.sea-air.store'),
+                'method' => 'PUT',
+             ];
+        }
+        return view('pages.finance.costing.sea-air.cost', compact('id','joborder','loading','port','vendor_truck','vendor_port','vendor_air','vendor_line','charge','currency','bl','loadingplan','costing','data'));
+    }
 
+    public function store(Request $request){
+        $bl = LoadingReportBl::with('shipping')->where('loading_id', $request->loading_plan_id)->where('status','!=',3)->get();
+        $ship = ShippingInstruction::where("status","!=",3)->where("loading_id", $joborder->loading_plan_id)->get();
+        $loading_plan_dxb = $ship->pluck('loading_plan_dxb')->toArray();
+       //return response()->json($ship);
+        $loadingplan = LoadingPlan::with('shipping')->whereIn('plan_id', $loading_plan_dxb)->get();
+        $data_costing = [
+            'job_order_id' => $request->job_order_id,
+            'status' => 1,
+            'type'=> 'SEAAIR',
+            'notes'=> $request->notes,
+            'created_by' => auth()->user()->email
+        ];
+        $costing = Costing::create($data_costing);
+        if(!empty($request->vendor_truck_id)){
+            foreach($request->vendor_truck_id as $k => $row){
+                $vendor_name = $request->vendor_truck_name[$k];
+                $data_vendor_trucking = [
+                    'costing_id' => $costing->id,
+                    'container_no'=> $row->container_no,
+                    'vendor_id'=> $row,
+                    'vendor_name'=> $vendor_name,
+                    'created_by' => auth()->user()->email
+                ];
+                CostingVendorTrucking::create($data_vendor_trucking);
+            }
+        }
+
+        if(!empty($request->vendor_port_id)){
+            $data_port = [
+                'costing_id' => $costing->id,
+                'port_id'=> $request->port_id,
+                'port_code'=> $request->port_code,
+                'vendor_id' => $request->vendor_port_id,
+                'vendor_name' => $request->vendor_port_name,
+                'created_by' => auth()->user()->email
+            ];
+            CostingVendorPort::create($data_port);
+        }
+        if(!empty($request->vendor_air_id)){
+            foreach($request->vendor_air_id as $k => $row){
+                $vendor_name = $request->vendor_air_name[$k];
+                $data_vendor_agent = [
+                    'costing_id' => $costing->id,
+                    'mawb'=> $row->mawb,
+                    'vendor_id'=> $row,
+                    'vendor_name'=> $vendor_name,
+                    'created_by' => auth()->user()->email
+                ];
+                CostingVendorAgent::create($data_air_agent);
+            }
+        }
+
+        if(!empty($request->vendor_special_import_id)){
+            foreach($request->vendor_special_import_id as $k => $row){
+                $vendor_name = $request->vendor_special_import_name[$k];
+                $charge_id = $request->charge_special_import_id[$k];
+                $charge_name = $request->charge_special_import_name[$k];
+                $currency_id = $request->currency_special_import_id[$k];
+                $rate = $request->rate_special_import[$k];
+                $amount = $request->amount_special_import[$k];
+                $local_amount = $request->local_amount_special_import[$k];
+                $status = $request->status_amount_special_import[$k];
+                $email = auth()->user()->email;
+                $data_special_import = [
+                    'costing_id'=> $costing->id,
+                    'costing_type'=>'import',
+                    'vendor_id'=> $row,
+                    'vendor_name'=>$vendor_name,
+                     'charge_id'=>$charge_id,
+                     'charge_name'=>$charge_name,
+                     'currency_id'=>$currency_id,
+                     'rate'=>$rate,
+                     'amount'=>$amount,
+                     'local_amount'=>$local_amount,
+                     'status'=>$status,
+                     'created_by'=>$email,
+                ];
+
+                CostingSpecial::create($data_special_import);
+            }
+        }
+
+        if(!empty($request->vendor_special_export_id)){
+            foreach($request->vendor_special_export_id as $k => $row){
+                $vendor_name = $request->vendor_special_export_name[$k];
+                $charge_id = $request->charge_special_export_id[$k];
+                $charge_name = $request->charge_special_export_name[$k];
+                $currency_id = $request->currency_special_export_id[$k];
+                $rate = $request->rate_special_export[$k];
+                $amount = $request->amount_special_export[$k];
+                $local_amount = $request->local_amount_special_export[$k];
+                $status = $request->status_amount_special_export[$k];
+                $email = auth()->user()->email;
+                $data_special_export = [
+                    'costing_id'=> $costing->id,
+                    'costing_type'=>'export',
+                    'vendor_id'=> $row,
+                    'vendor_name'=>$vendor_name,
+                     'charge_id'=>$charge_id,
+                     'charge_name'=>$charge_name,
+                     'currency_id'=>$currency_id,
+                     'rate'=>$rate,
+                     'amount'=>$amount,
+                     'local_amount'=>$local_amount,
+                     'status'=>$status,
+                     'created_by'=>$email,
+                ];
+
+                CostingSpecial::create($data_special_export);
+            }
+        }
+
+        foreach($bl as $j => $row){
+            if (!empty($request["vendor_bl_{$j}_id"])) {
+                foreach($request["vendor_bl_{$j}_id"] as $k => $row){
+                    $vendor_name = $request["vendor_bl_{$j}_name"][$k];
+                    $charge_id = $request["charge_bl_{$j}_id"][$k];
+                    $charge_name = $request["charge_bl_{$j}_name"][$k];
+                    $currency_id = $request["currency_bl_{$j}_id"][$k];
+                    $rate = $request["rate_bl_{$j}"][$k];
+                    $amount = $request["amount_bl_{$j}"][$k];
+                    $local_amount = $request["local_amount_bl_{$j}"][$k];
+                    $status = $request["status_amount_bl_{$j}"][$k];
+                    $email = auth()->user()->email;
+                    $transaction_date = $request->transaction_date_import;
+                    $data_special_export = [
+                        'costing_id'=> $costing->id,
+                        'shipment_type'=>'SEAAIR',
+                        'costing_type'=>'bl',
+                        'costing_value'=>$row->bl_number,
+                        'vendor_id'=> $row,
+                        'vendor_name'=>$vendor_name,
+                         'charge_id'=>$charge_id,
+                         'charge_name'=>$charge_name,
+                         'currency_id'=>$currency_id,
+                         'rate'=>$rate,
+                         'amount'=>$amount,
+                         'local_amount'=>$local_amount,
+                         'status'=>$status,
+                         'created_by'=>$email,
+                         'transaction_date'=>$transaction_date
+                    ];
+
+                    CostingDetail::create($data_special_export);
+                }
+            }
+
+            foreach($bl->shipping as $m => $r){
+                if (!empty($request["vendor_ctd_{$m}_id"])) {
+                    foreach($request["vendor_ctd_{$m}_id"] as $z => $rx){
+                        $vendor_name = $request["vendor_ctd_{$m}_name"][$z];
+                        $charge_id = $request["charge_ctd_{$m}_id"][$z];
+                        $charge_name = $request["charge_ctd_{$m}_name"][$z];
+                        $currency_id = $request["currency_ctd_{$m}_id"][$z];
+                        $rate = $request["rate_ctd_{$m}"][$z];
+                        $amount = $request["amount_ctd_{$m}"][$z];
+                        $local_amount = $request["local_amount_ctd_{$m}"][$z];
+                        $status = $request["status_amount_ctd_{$m}"][$z];
+                        $email = auth()->user()->email;
+                        $transaction_date = $request->transaction_date_import;
+                        $data_special_export = [
+                            'costing_id'=> $costing->id,
+                            'shipment_type'=>'SEAAIR',
+                            'costing_type'=>'bl_ctd',
+                            'costing_value'=>$r->ctd_number,
+                            'vendor_id'=> $rx,
+                            'vendor_name'=>$vendor_name,
+                             'charge_id'=>$charge_id,
+                             'charge_name'=>$charge_name,
+                             'currency_id'=>$currency_id,
+                             'rate'=>$rate,
+                             'amount'=>$amount,
+                             'local_amount'=>$local_amount,
+                             'status'=>$status,
+                             'created_by'=>$email,
+                             'transaction_date'=>$transaction_date
+                        ];
+
+                        CostingDetail::create($data_special_export);
+                    }
+                }
+            }
+        }
+
+        foreach($loadingplan as $j => $row){
+            if (!empty($request["vendor_mawb_{$j}_id"])) {
+                foreach($request["vendor_mawb_{$j}_id"] as $k => $row){
+                    $vendor_name = $request["vendor_mawb_{$j}_name"][$k];
+                    $charge_id = $request["charge_mawb_{$j}_id"][$k];
+                    $charge_name = $request["charge_mawb_{$j}_name"][$k];
+                    $currency_id = $request["currency_mawb_{$j}_id"][$k];
+                    $rate = $request["rate_mawb_{$j}"][$k];
+                    $amount = $request["amount_mawb_{$j}"][$k];
+                    $local_amount = $request["local_amount_mawb_{$j}"][$k];
+                    $status = $request["status_amount_mawb_{$j}"][$k];
+                    $email = auth()->user()->email;
+                    $transaction_date = $request->transaction_date_import;
+                    $data_special_export = [
+                        'costing_id'=> $costing->id,
+                        'shipment_type'=>'SEAAIR',
+                        'costing_type'=>'mawb',
+                        'costing_value'=>$row->bl_number,
+                        'vendor_id'=> $row,
+                        'vendor_name'=>$vendor_name,
+                         'charge_id'=>$charge_id,
+                         'charge_name'=>$charge_name,
+                         'currency_id'=>$currency_id,
+                         'rate'=>$rate,
+                         'amount'=>$amount,
+                         'local_amount'=>$local_amount,
+                         'status'=>$status,
+                         'created_by'=>$email,
+                         'transaction_date'=>$transaction_date
+                    ];
+
+                    CostingDetail::create($data_special_export);
+                }
+            }
+        }
+
+        return to_route('finance.costing.sea-air.index')->with('toastSuccess', "Costing Success");
     }
 
     public function exportCsv()

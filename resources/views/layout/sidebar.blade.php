@@ -53,9 +53,9 @@
     </x:layout.sidebar.parent-menu>
 
     {{-- Billing --}}
-    <x:layout.sidebar.parent-menu name="Billing" iconClass="bx bxs-file">
-        <x:layout.sidebar.child-menu name="Generate Invoice" link="/" />
-        <x:layout.sidebar.child-menu name="Invoice List" link="/" />
+    <x:layout.sidebar.parent-menu name="Billing" iconClass="bx bxs-file" :showCondition="Route::is('finance.billing.*')">
+        <x:layout.sidebar.child-menu name="Generate Invoice" link="{{ route('finance.billing.invoice.create.not-linked-billing-customer') }}" :activeCondition="Route::is('finance.billing.invoice.*') && !Route::is('finance.billing.invoice.index')" />
+        <x:layout.sidebar.child-menu name="Invoice List" link="{{ route('finance.billing.invoice.index') }}" :activeCondition="Route::is('finance.billing.invoice.index')" />
     </x:layout.sidebar.parent-menu>
 
     {{-- Costing --}}

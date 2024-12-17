@@ -26,6 +26,15 @@ class JobOrder extends Model
         return $this->hasMany(JobOrderDetail::class, 'job_order_id', 'job_order_id');
     }
 
+    public function vendor()
+    {
+        return $this->hasMany(JobOrderVendor::class, 'job_order_id', 'job_order_id');
+    }
+    public function doc()
+    {
+        return $this->hasMany(JobOrderDocument::class, 'job_order_id', 'job_order_id');
+    }
+
     public function loading()
     {
         return $this->belongsTo(LoadingReport::class, 'loading_plan_id', 'loading_id');

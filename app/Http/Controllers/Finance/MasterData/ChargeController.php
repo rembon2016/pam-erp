@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
+use App\Service\Finance\MasterData\ChartOfAccountService;
 use App\Service\Finance\MasterData\UnitService;
 use Illuminate\View\View;
 use App\Functions\Utility;
@@ -25,6 +26,7 @@ final class ChargeController extends Controller
     public function __construct(
         protected ChargeService $chargeService,
         protected UnitService $unitService,
+        protected ChartOfAccountService $coaService
     ) {}
 
     /**
@@ -55,10 +57,10 @@ final class ChargeController extends Controller
                     ]);
                 })
                 ->editColumn('revenue_id', function ($item) {
-                    return $item?->revenue_id ?? '-';
+                    return $item?->revenue?->account_name ?? '-';
                 })
                 ->editColumn('cost_id', function ($item) {
-                    return $item?->cost_id ?? '-';
+                    return $item?->cost?->account_name ?? '-';
                 })
                 ->rawColumns(['action'])
                 ->toJson();
@@ -82,11 +84,10 @@ final class ChargeController extends Controller
          ];
 
         $charge = new Charge;
-        $costs = [];
-        $revenues = [];
+        $accounts = $this->coaService->getChartOfAccounts();
         $units = $this->unitService->getUnitCollections();
 
-         return view('pages.finance.master-data.charge.form', compact('data', 'charge', 'costs', 'revenues', 'units'));
+         return view('pages.finance.master-data.charge.form', compact('data', 'charge', 'accounts', 'units'));
     }
 
     /**
@@ -112,8 +113,7 @@ final class ChargeController extends Controller
         $getChargeResponse = $this->chargeService->getChargeById($id);
         if (!$getChargeResponse->success) return to_route('finance.master-data.charge.index')->with('toastError', $getChargeResponse->message);
 
-        $costs = [];
-        $revenues = [];
+        $accounts = $this->coaService->getChartOfAccounts();
         $units = $this->unitService->getUnitCollections();
 
         $data = [
@@ -125,8 +125,7 @@ final class ChargeController extends Controller
          return view('pages.finance.master-data.charge.form', [
             'data' => $data,
             'charge' => $getChargeResponse->data,
-            'costs' => $costs,
-            'revenues' => $revenues,
+            'accounts' => $accounts,
             'units' => $units
          ]);
     }

@@ -11,7 +11,7 @@
 
 
     <!-- Form Container -->
-    <div id="{{ $type }}-charges-form-{{ $k }}" >
+    <div id="{{ $type }}-charges-form-{{ $k }}">
 
         <div style="display: flex; align-items: center; justify-content: end;">
             <button type="button" id="add-row-{{ $type }}-{{ $k }}" class="btn btn-icon btn-success rounded" style="height: 30px; width: 30px;margin-right:5px;">
@@ -39,41 +39,50 @@
                 </thead>
                 <tbody id="{{ $type }}-charges-rows-{{ $k }}">
                     <!-- Rows will be dynamically added here -->
-                    <tr id="row-0">
-                        <td><select class="form-select vendor-select" onchange="setVendorName{{ ucfirst($type) }}({{ $k }},0)
-                                                " data-control="select2" id="vendor_{{ $type }}_{{ $k }}_id_0" name="vendor_{{ $type }}_{{ $k }}_id[]" data-key="0">
-                                <option>Select</option>
+
+                    @if(!empty($detail->detail))
+
+                    @foreach($detail->detail as $m => $row)
+                    @if($row->costing_value == $value)
+                    <tr id="row-{{ $m }}">
+                        <td>
+                            <input type="hidden" name="costing_detail_{{ $type }}_{{ $k }}_id[]" value="{{ $row->id }}">
+                            <select class="form-select vendor-select" onchange="setVendorName{{ ucfirst($type) }}({{ $k }}, {{ $m }})" " data-control=" select2" id="vendor_{{ $type }}_{{ $k }}_id_0" name="vendor_{{ $type }}_{{ $k }}_id[]" data-key="{{ $m }}">
                                 @foreach($vendor as $rows)
-                                <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}">{{ $rows->vendor_code }}</option>
+                                <option value="{{ $rows->vendor_id }}" @if($row->vendor_id == $rows->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}">{{ $rows->vendor_code }}</option>
                                 @endforeach
                             </select></td>
-                        <td><input type="text" class="form-control" id="vendor_{{ $type }}_{{ $k }}_name_0" placeholder="Name" name="vendor_{{ $type }}_{{ $k }}_name[]" readonly></td>
+                        <td><input type="text" class="form-control" id="vendor_{{ $type }}_{{ $k }}_name_{{ $m }}" placeholder="Name" value="{{  $row->vendor_name  }}" name="vendor_{{ $type }}_{{ $k }}_name[]" readonly></td>
                         <td>
-                            <select class="form-select" data-control="select2" id="charge_{{ $type }}_{{ $k }}_id_0" name="charge_{{ $type }}_{{ $k }}_id[]" data-key="0">
-                                <option>Select</option>
+                            <select class="form-select" data-control="select2" id="charge_{{ $type }}_{{ $k }}_id_{{ $m }}" name="charge_{{ $type }}_{{ $k }}_id[]" data-key="{{ $m }}">
+
                                 @foreach($charge as $rows)
-                                <option value="{{ $rows->id }}">{{ $rows->charge_code }}</option>
+                                <option value="{{ $rows->id }}" @if($row->charge_id == $rows->id) selected @endif>{{ $rows->charge_code }}</option>
                                 @endforeach
                             </select>
                         </td>
                         <td> <select class="form-select" data-control="select2" id="currency_{{ $type }}_{{ $k }}_id_0" name="currency_{{ $type }}_{{ $k }}_id[]" data-key="0">
-                                <option>Select</option>
+
                                 @foreach($currency as $rows)
-                                <option value="{{ $rows->id }}">{{ $rows->currency_code }}</option>
+                                <option value="{{ $rows->id }}" @if($row->currency_id == $rows->id) selected @endif>{{ $rows->currency_code }}</option>
                                 @endforeach
                             </select></td>
-                        <td><input type="text" class="form-control" name="rate_{{ $type }}_{{ $k }}[]" placeholder="Type here.."></td>
-                        <td><input type="text" class="form-control" name="amount_{{ $type }}_{{ $k }}[]" placeholder="Type here.."></td>
-                        <td><input type="text" class="form-control" name="local_amount_{{ $type }}_{{ $k }}[]" placeholder="Type here.."></td>
+                        <td><input type="text" class="form-control" value="{{ $row->rate }}" name="rate_{{ $type }}_{{ $k }}[]" placeholder="Type here.."></td>
+                        <td><input type="text" class="form-control" value="{{ $row->amount }}" name="amount_{{ $type }}_{{ $k }}[]" placeholder="Type here.."></td>
+                        <td><input type="text" class="form-control" value="{{ $row->local_amount }}" name="local_amount_{{ $type }}_{{ $k }}[]" placeholder="Type here.."></td>
                         <td>
                             <select class="form-select" name="status_{{ $type }}_{{ $k }}[]">
-                                <option>Select</option>
-                                <option value="Debit">Debit</option>
-                                <option value="Credit">Credit</option>
+
+                                <option value="Debit" @if($row->status == 'Debit') selected @endif>Debit</option>
+                                <option value="Credit" @if($row->status == 'Credit') selected @endif>Credit</option>
                             </select>
                         </td>
                         <td><button type="button" class="btn btn-danger rounded btn-remove-row-{{ $type }}-{{ $k }}" style="height: 30px; width: 30px;"><i class="bi bi-trash "></i></button></td>
                     </tr>
+
+                    @endif
+                    @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -107,8 +116,21 @@ let isVisible{{ ucfirst($type) }}{{ $k }} = true; // Track the visibility state
 
         $(`#vendor_{{ $type }}_${k}_name_` + key).val(vendorName);
     }
+     @php
+                        $jum = 0;
+                    @endphp
+ @if(!empty($detail->detail))
 
-let rowIndex{{ ucfirst($type) }}{{ $k }} = 1; // Initialize index for new rows
+                    @foreach($detail->detail as $m => $row)
+                    @if($detail->costing_value == $value)
+                        @php
+                            $jum++;
+                        @endphp
+                    @endif
+                    @endforeach
+                    @endif
+
+let rowIndex{{ ucfirst($type) }}{{ $k }} = {{ $jum }}; // Initialize index for new rows
 
 // Add Row
 $('#add-row-{{ $type }}-{{ $k }}').on('click', function () {
@@ -117,7 +139,6 @@ $('#add-row-{{ $type }}-{{ $k }}').on('click', function () {
             <td>
                 <select class="form-select vendor-select" onchange="setVendorName{{ ucfirst($type) }}({{ $k }}, ${rowIndex{{ ucfirst($type) }}{{ $k }}})"
                     data-control="select2" id="vendor_{{ $type }}_{{ $k }}_id_${rowIndex{{ ucfirst($type) }}{{ $k }}}" name="vendor_{{ $type }}_{{ $k }}_id[]" data-key="${rowIndex{{ ucfirst($type) }}{{ $k }}}">
-                    <option>Select</option>
                     @foreach($vendor as $rows)
                     <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}">{{ $rows->vendor_code }}</option>
                     @endforeach
@@ -126,7 +147,7 @@ $('#add-row-{{ $type }}-{{ $k }}').on('click', function () {
             <td><input type="text" class="form-control" id="vendor_{{ $type }}_{{ $k }}_name_${rowIndex{{ ucfirst($type) }}{{ $k }}}" placeholder="Name" name="vendor_{{ $type }}_{{ $k }}_name[]" readonly></td>
             <td>
                 <select class="form-select" data-control="select2" id="charge_{{ $type }}_{{ $k }}_id_${rowIndex{{ ucfirst($type) }}{{ $k }}}" name="charge_{{ $type }}_{{ $k }}_id[]" data-key="${rowIndex{{ ucfirst($type) }}{{ $k }}}">
-                    <option>Select</option>
+
                     @foreach($charge as $rows)
                     <option value="{{ $rows->id }}">{{ $rows->charge_code }}</option>
                     @endforeach
@@ -134,7 +155,7 @@ $('#add-row-{{ $type }}-{{ $k }}').on('click', function () {
             </td>
             <td>
                 <select class="form-select" data-control="select2" id="currency_{{ $type }}_{{ $k }}_id_${rowIndex{{ ucfirst($type) }}{{ $k }}}" name="currency_{{ $type }}_{{ $k }}_id[]" data-key="${rowIndex{{ ucfirst($type) }}{{ $k }}}">
-                    <option>Select</option>
+
                     @foreach($currency as $rows)
                     <option value="{{ $rows->id }}">{{ $rows->currency_code }}</option>
                     @endforeach
@@ -145,7 +166,6 @@ $('#add-row-{{ $type }}-{{ $k }}').on('click', function () {
             <td><input type="text" class="form-control" name="local_amount_{{ $type }}_{{ $k }}[]" placeholder="Type here.."></td>
             <td>
                 <select class="form-select" name="status_{{ $type }}_{{ $k }}[]">
-                    <option>Select</option>
                     <option value="Debit">Debit</option>
                     <option value="Credit">Credit</option>
                 </select>

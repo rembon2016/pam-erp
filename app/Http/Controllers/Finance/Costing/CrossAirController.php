@@ -46,7 +46,7 @@ final class CrossAirController extends Controller
 
             });
             $count_filter = $joborder->count();
-            $data = $joborder->skip($start)->take($pageSize)->latest()->get();
+            $data = $joborder->skip($start)->take($pageSize)->orderBy('date_order','DESC')->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()

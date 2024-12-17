@@ -47,6 +47,49 @@
                 </thead>
                 <tbody id="charges-export-rows">
                     <!-- Rows will be dynamically added here -->
+                     @if($costing != null)
+                    @foreach($costing->special as $key => $row)
+                     @if($row->costing_type === 'export')
+                              <tr id="row-{{ $key }}">
+                        <td>
+                        <input type="hidden" name="costing_special_export_id[]" value="{{ $row->id }}">
+                        <select class="form-select vendor-select" onchange="setVendorSpecialExportName({{ $key }})
+                                                " data-control="select2" id="vendor_special_export_id_{{ $key }}" name="vendor_special_export_id[]" data-key="{{ $key }}">
+                                <option>Select</option>
+                                @foreach($vendorLine as $rows)
+                                <option value="{{ $rows->vendor_id }}" @if($row->vendor_id == $rows->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}">{{ $rows->vendor_code }}</option>
+                                @endforeach
+                            </select></td>
+                        <td><input type="text" class="form-control" value="{{ $row->vendor_name }}" id="vendor_special_export_name_{{ $key }}" placeholder="Name" name="vendor_special_export_name[]" readonly></td>
+                        <td>
+                            <select class="form-select" data-control="select2" id="charge_special_export_id_0" name="charge_special_export_id[]" data-key="{{ $key }}">
+                                <option>Select</option>
+                                @foreach($charge as $rows)
+                                <option value="{{ $rows->id }}" @if($row->charge_id == $rows->id) selected @endif>{{ $rows->charge_code }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td> <select class="form-select" data-control="select2" id="currency_special_export_id_{{ $key }}" name="currency_special_export_id[]" data-key="{{ $key }}">
+                                <option>Select</option>
+                                @foreach($currency as $rows)
+                                <option value="{{ $rows->id }}" @if($row->currency_id == $rows->id) selected @endif>{{ $rows->currency_code }}</option>
+                                @endforeach
+                            </select></td>
+                        <td><input type="text" class="form-control" name="rate_special_export[]" value="{{ $row->rate }}" placeholder="Type here.."></td>
+                        <td><input type="text" class="form-control" name="amount_special_export[]" value="{{ $row->amount }}" placeholder="Type here.."></td>
+                        <td><input type="text" class="form-control" value="{{ $row->local_amount }}" name="local_amount_special_export[]" placeholder="Type here.."></td>
+                        <td>
+                            <select class="form-select" name="status_special_export[]">
+                                <option>Select</option>
+                                <option value="Debit" @if($row->status == 'Debit') selected @endif>Debit</option>
+                                <option value="Credit" @if($row->status == 'Credit') selected @endif>Credit</option>
+                            </select>
+                        </td>
+                        <td><button type="button" class="btn btn-danger btn-remove-row-special-export"><i class="bi bi-trash"></i></button></td>
+                    </tr>
+                      @endif
+                    @endforeach
+                    @else
                     <tr id="row-0">
                         <td><select class="form-select vendor-select" onchange="setVendorSpecialExportName(0)
                                                 " data-control="select2" id="vendor_special_export_id_0" name="vendor_special_export_id[]" data-key="0">
@@ -82,6 +125,7 @@
                         </td>
                         <td><button type="button" class="btn btn-danger btn-remove-row-special-export"><i class="bi bi-trash"></i></button></td>
                     </tr>
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -92,6 +136,13 @@
 
 @push('js')
 <script>
+@if($costing != null)
+@if($costing->special->contains(fn($item) => $item->costing_type === 'export'))
+    $('#special-export-charges-form').removeClass('d-none');
+     $('#special_charges_yes_export').prop('checked', true); // Check the 'Yes' radio button
+    $('#special_charges_no_export').prop('checked', false);
+@endif
+@endif
 $('input[name="special_charges_export"]').on('change', function () {
     if ($(this).val() === 'yes') {
         $('#special-export-charges-form').removeClass('d-none');
@@ -124,7 +175,19 @@ let isVisibleSpecialExport = true; // Track the visibility state
         $('#vendor_special_export_name_' + key).val(vendorName);
     }
 
+    @if($costing != null)
+        @if($costing->special->contains(fn($item) => $item->costing_type === 'export'))
+            @php
+                // Count special rows where costing_type is 'import'
+                $importCount = $costing->special->where('costing_type', 'export')->count();
+            @endphp
+            let rowIndexSpecialExport = {{ $importCount + 1 }};
+        @else
+        let rowIndexSpecialExport = 1; // Initialize index for new rows
+        @endif
+    @else
     let rowIndexSpecialExport = 1; // Initialize index for new rows
+    @endif
 
     // Add Row
     $('#add-row-special-export').on('click', function () {

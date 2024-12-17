@@ -35,7 +35,7 @@
 
                 </div>
                 <div class='col-md-12'>
-                    <x:form.textarea label="Notes" placeholder="Notes" name="notes" />
+                    <x:form.textarea label="Notes" placeholder="Notes" :model="$costing" name="notes" />
                 </div>
             </div>
             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -66,14 +66,18 @@
                     </ul>
                     <div class="tab-content p-5 bg-white border border-top-0">
                         <div class="tab-pane fade show active" id="trucking" role="tabpanel">
+                            @if($costing == null)
                             <x-costing.trucking-form :loading="$loading" :vendorTruck="$vendor_truck" />
+                            @else
+                             <x-costing.trucking-form-edit :costing="$costing" :vendorTruck="$vendor_truck" />
+                            @endif
                         </div>
 
                         <div class="tab-pane fade" id="port" role="tabpanel">
-                            <x-costing.port-form :port="$port" :vendorPort="$vendor_port" />
+                            <x-costing.port-form :port="$port" :costing="$costing" :vendorPort="$vendor_port" />
                         </div>
                         <div class="tab-pane fade" id="agent" role="tabpanel">
-                            <x-costing.agent-form  :vendorAir="$vendor_air" />
+                            <x-costing.agent-form  :costing="$costing" :vendorAir="$vendor_air" />
 
                         </div>
 
@@ -81,17 +85,30 @@
                 </div>
 
                 <div class="tab-pane fade" id="import" role="tabpanel">
-                    <x-costing.special-import :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
+                    <x-costing.special-import :costing="$costing" :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
                     <x:form.input label="Transaction Date" placeholder="Transaction Date" name="transaction_date_import" type="date" :model="$joborder" />
-                    <x-costing.bl-form :bl="$bl" :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
+                    @if($costing == null)
+                    <x-costing.bl-form :bl="$bl" :costing="$costing" :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
+                    @else
+                    <x-costing.bl-form-edit :bl="$bl" :costing="$costing" :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
+                    @endif
                 </div>
                 <div class="tab-pane fade" id="export" role="tabpanel">
-                    <x-costing.special-export :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
+                    <x-costing.special-export :costing="$costing" :vendorLine="$vendor_air" :charge="$charge" :currency="$currency" />
                      <x:form.input label="Transaction Date" placeholder="Transaction Date" name="transaction_date_export" type="date" :model="$joborder" />
-                     <x-costing.mawb-form :loadingplan="$loadingplan" :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
+                       @if($costing == null)
+                     <x-costing.mawb-form :loadingplan="$loadingplan" :vendorLine="$vendor_air" :charge="$charge" :currency="$currency" />
+                     @else
+                     <x-costing.mawb-form-edit :costing="$costing" :loadingplan="$loadingplan" :vendorLine="$vendor_air" :charge="$charge" :currency="$currency" />
+                     @endif
                 </div>
 
             </div>
+        </div>
+         <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px">
+            <x:form.cancel-button href="{{ route('finance.costing.sea-air.index') }}" label="Cancel" />
+            <x:form.submit-button label="Save" />
+            <x:form.submit-button label="Post" />
         </div>
         </x:form.wrapper>
     </x:layout.card.body>

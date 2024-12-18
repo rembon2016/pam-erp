@@ -1,4 +1,4 @@
-@props(['shipment'])
+@props(['shipment', 'type'])
 <script>
     console.log('Shipment data:', @json($shipment));
 </script>
@@ -246,150 +246,103 @@
 
 
         <div class="title-head-shipping-detail">
-            <h4>Sailing Schedule :</h4>
+            <h4>
+                @if(in_array($shipment['shipment_by'], ['SEAAIR', 'SEAIMPORT', 'SEAEXPORT']))
+                    Sailing Schedule
+                @elseif(in_array($shipment['shipment_by'], ['AIR', 'AIRIMPORT', 'AIREXPORT']))
+                    Main Flight Detail
+                @else
+                    Sailing Schedule
+                @endif
+                :
+            </h4>
         </div>
+        
 
-        <div class="row">
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <x:list.box-list icon="ship" title="Mother Vessel"
-                        value="{{ $shipment['mother_vessel_name'] ?? '-' }}" />
-                </div>
-                <div class="col-md-6">
-                    <x:list.box-list icon="dharmachakra" title="Feeder Vessel Name"
-                        value="{{ $shipment['feeder_vessel_name'] ?? '-' }}" />
-                </div>
-            </div>
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <x:list.box-list icon="clock" title="Mother Vessel Voyage Number"
-                        value="{{ $shipment['voyage_number_mother'] ?? '-' }}" />
-                </div>
-                <div class="col-md-6">
-                    <x:list.box-list icon="compass" title="Feeder Vessel Voyage Number"
-                        value="{{ $shipment['voyage_number_feeder'] ?? '-' }}" />
-
-                </div>
-            </div>
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <x:list.box-list icon="calendar-check" title="Estimated Time Departure"
-                        value="{{ $shipment['estimated_time_departure'] ?? '-' }}" date="true" />
-                </div>
-                <div class="col-md-6">
-                    <x:list.box-list icon="clock" title="Estimated Time Arrival Transit Hub"
-                        value="{{ $shipment['eta_dubai'] ?? '-' }}" date="true" />
-                </div>
-            </div>
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <x:list.box-list icon="calendar" title="Closing Time"
-                        value="{{ $shipment['time_closing_mother'] ?? '-' }}" date="true" />
-                </div>
-                <div class="col-md-6">
-                    <x:list.box-list icon="anchor" title="Shipping Line"
-                        value="{{ $shipment['loadingreport']['shipping_line_name'] ?? '-' }}" />
-
-                </div>
-            </div>
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <x:list.box-list icon="hourglass-end" title="Onboard Date"
-                        value="{{ $shipment['onBoardDate'] ?? '-' }}" date="true" />
-                </div>
-                <div class="col-md-6">
-                    <x:list.box-list icon="clock" title="Actual Arrival Date"
-                        value="{{ $shipment['actualArrivalDate'] ?? '-' }}" date="true" />
-                </div>
-            </div>
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <x:list.box-list icon="shipping-fast" title="Total Transit Time"
-                        value="{{ $shipment['days_closed']['days'] ?? '-' }}" />
-                </div>
-                <div class="col-md-6">
-                    <x:list.box-list icon="calendar-check" title="Closed Shipment By"
-                        value="{{ $shipment['days_closed']['user'] ?? '-' }}" />
-                </div>
-            </div>
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <x:list.box-list icon="user-check" title="Date Arrived At Transit Hub"
-                        value="{{ $shipment['arrived']['tgl_aktual'] ?? '-' }}" date="true" />
-                </div>
-                <div class="col-md-6">
-                    <x:list.box-list icon="calendar" title="Date Arrived At Destination"
-                        value="{{ $shipment['destination_arrived']['tgl_aktual'] ?? '-' }}" date="true" />
-                </div>
-            </div>
-        </div>
+        @if(in_array($shipment['shipment_by'], ['SEAAIR', 'SEAIMPORT', 'SEAEXPORT']))
+            <x-shipment.sailing-schedule :shipment="$shipment" />
+        @elseif(in_array($shipment['shipment_by'], ['AIR', 'AIRIMPORT', 'AIREXPORT']))
+            <x-shipment.flight-detail :shipment="$shipment" />
+        @else
+            <div></div>
+        @endif
 
 
-        <div class="title-head-shipping-detail">
-            <h4>Flight Detail :</h4>
-        </div>
-
-        <div class="row mb-4">
-            <div class="col-md-3">
-                <x:list.box-list icon="plane" title="Carrier Name"
-                    value="{{ $shipment['loading_plan']['carrier_name'] ?? '-' }}" />
-            </div>
-            <div class="col-md-3">
-                <x:list.box-list icon="file-alt" title="Loading Plan Number"
-                    value="{{ $shipment['loading_plan']['loading_plan_number'] ?? '-' }}" />
-            </div>
-            <div class="col-md-3">
-                <x:list.box-list icon="file-alt" title="MAWB Number"
-                    value="{{ $shipment['loading_plan']['mawb_number'] ?? '-' }}" />
-            </div>
-            <div class="col-md-3">
-                <x:list.box-list icon="clock" title="Cut-off Time"
-                    value="{{ $shipment['loading_plan']['closing_time'] ?? '-' }}" date="true" />
-            </div>
-        </div>
-
-        <div class="table-responsive">
-            <table class="table shipment-detail align-middle">
-                <thead>
-                    <tr>
-                        <th class="custom-th">FLIGHT NO.</th>
-                        <th class="custom-th">AIRPORT DEPARTURE</th>
-                        <th class="custom-th">DATE DEPARTURE</th>
-                        <th class="custom-th">AIRPORT ARRIVAL</th>
-                        <th class="custom-th">DATE ARRIVAL</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if(!empty($shipment['loading_plan_detail']) && is_array($shipment['loading_plan_detail']))
-                        @foreach ($shipment['loading_plan_detail'] as $detail)
-                            <tr class="custom-tr">
-                                <td class="custom-td">{{ $detail['flight_number'] ?? '-' }}</td>
-                                <td class="custom-td">{{ $detail['port_departure_name'] ?? '-' }}</td>
-                                <td class="custom-td">
-                                    @if(!empty($detail['date_departure']))
-                                        {{ $detail['date_departure'] ? \Carbon\Carbon::parse($detail['date_departure'])->format('d M Y, H:i') : '-' }}
-                                    @else
-                                        -
-                                    @endif
-                                </td>
-                                <td class="custom-td">{{ $detail['port_arival_name'] ?? '-' }}</td>
-                                <td class="custom-td">
-                                    @if(!empty($detail['date_arival']))
-                                        {{ $detail['date_arival'] ? \Carbon\Carbon::parse($detail['date_arival'])->format('d M Y, H:i') : '-' }}
-                                    @else
-                                        -
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
+        @if(!in_array($shipment['shipment_by'], ['WAREHOUSE', 'TRUCKING', 'COURIER']))
+            <div class="title-head-shipping-detail" id="flight-detail-origin-title">
+                <h4>
+                    @if(in_array($shipment['shipment_by'], ['AIR', 'AIRIMPORT', 'AIREXPORT']))
+                        Flight Detail (Transit) *if any :
                     @else
-                        <tr class="custom-tr">
-                            <td class="custom-td text-center" colspan="5">No flight details available</td>
-                        </tr>
+                        Flight Detail :
                     @endif
-                </tbody>
-            </table>
-        </div>
+                </h4>
+            </div>
+
+            <div class="row mb-4" id="flight-detail-origin-content">
+                <div class="col-md-3">
+                    <x:list.box-list icon="plane" title="Carrier Name"
+                        value="{{ $shipment['loading_plan']['carrier_name'] ?? '-' }}" />
+                </div>
+                <div class="col-md-3">
+                    <x:list.box-list icon="file-alt" title="Loading Plan Number"
+                        value="{{ $shipment['loading_plan']['loading_plan_number'] ?? '-' }}" />
+                </div>
+                <div class="col-md-3">
+                    <x:list.box-list icon="file-alt" title="MAWB Number"
+                        value="{{ $shipment['loading_plan']['mawb_number'] ?? '-' }}" />
+                </div>
+                <div class="col-md-3">
+                    <x:list.box-list icon="clock" title="Cut-off Time"
+                        value="{{ $shipment['loading_plan']['closing_time'] ?? '-' }}" date="true" />
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table shipment-detail align-middle">
+                    <thead>
+                        <tr>
+                            <th class="custom-th">FLIGHT NO.</th>
+                            <th class="custom-th">AIRPORT DEPARTURE</th>
+                            <th class="custom-th">DATE DEPARTURE</th>
+                            <th class="custom-th">AIRPORT ARRIVAL</th>
+                            <th class="custom-th">DATE ARRIVAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if(!empty($shipment['loading_plan_detail']) && is_array($shipment['loading_plan_detail']))
+                            @foreach ($shipment['loading_plan_detail'] as $detail)
+                                <tr class="custom-tr">
+                                    <td class="custom-td">{{ $detail['flight_number'] ?? '-' }}</td>
+                                    <td class="custom-td">{{ $detail['port_departure_name'] ?? '-' }}</td>
+                                    <td class="custom-td">
+                                        @if(!empty($detail['date_departure']))
+                                            {{ $detail['date_departure'] ? \Carbon\Carbon::parse($detail['date_departure'])->format('d M Y, H:i') : '-' }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                    <td class="custom-td">{{ $detail['port_arival_name'] ?? '-' }}</td>
+                                    <td class="custom-td">
+                                        @if(!empty($detail['date_arival']))
+                                            {{ $detail['date_arival'] ? \Carbon\Carbon::parse($detail['date_arival'])->format('d M Y, H:i') : '-' }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr class="custom-tr">
+                                <td class="custom-td text-center" colspan="5">No flight details available</td>
+                            </tr>
+                        @endif
+                    </tbody>
+                </table>
+            </div>
+        @endif
+
+       
 
         <div class="title-head-shipping-detail">
             <h4>Delivery Information :</h4>
@@ -470,16 +423,18 @@
         </div>
 
         <div class="row mb-4">
-            <div class="col-md-6 mb-3">
+            <div class="{{ in_array($shipment['shipment_by'], ['AIR', 'AIRIMPORT', 'AIREXPORT']) ? 'col-md-12' : 'col-md-6' }} mb-3">
                 <x:list.box-list-download name="ctd-file" title="CTD File"
                     value="{{ $shipment['ctd_number'] ?? '-' }}"
                     onclick="downloadCTD('{{ $shipment['ctd_number'] }}', '{{ $shipment['job_id'] }}', this)" />
             </div>
+            @if(!in_array($shipment['shipment_by'], ['AIR', 'AIRIMPORT', 'AIREXPORT']))
             <div class="col-md-6 mb-3">
                 <x:list.box-list-download name="final-alert" title="Final Alert"
                     value="final-alert-{{ $shipment['ctd_number'] ?? '-' }}"
                     onclick="downloadFinalAlert('{{ $shipment['ctd_number'] }}', '{{ $shipment['mother_vessel_id'] }}', '{{ $shipment['voyage_number_mother'] }}', '{{ $shipment['origin_id'] }}', '{{ $shipment['created_by'] }}', this)" />
             </div>
+            @endif
         </div>
 
         <div class="row mb-4">
@@ -592,7 +547,7 @@
                                         <div class="note-view-content">
                                             <p class="note-view-content-text">{{ $note['noted'] }}</p>
                                         </div>
-                                        @if ($note['attachment'] !== 'null')
+                                        @if (isset($note['attachment']) && $note['attachment'] !== 'null')
                                             <div class="note-view-content d-flex justify-content-end">
                                                 <span title="Download Image" class="note-view-content-text"
                                                     style="cursor: pointer;"
@@ -632,7 +587,7 @@
 </div>
 
 <script>
-    const API_BASE = `${window.location.protocol}//${'{!! env('API_ORIGIN') !!}'}`;
+    const API_BASE = `${window.location.protocol}//${'{!! in_array($type, ['seaair', 'crossair']) ? env('API_ORIGIN') : env('API_DXB') !!}'}`;
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => {
             Swal.fire({

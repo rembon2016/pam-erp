@@ -9,51 +9,105 @@
             :isFilterShipment="true">
         </x-form.select2> --}}
 
-        <x-form.select2
-            label="Origin"
-            name="origin_id"
-            id="origin"
-            placeholder="Choose"
-            :allowClear="false"
-            :isFilterShipment="true">
+        @if(in_array($type, ['seaimport', 'seaexport', 'airimport', 'airexport', 'warehouse', 'trucking', 'courier']))
+            <x-form.select2
+                label="Status Shipment"
+                name="status_id"
+                id="status"
+                placeholder="Choose"
+                :allowClear="false"
+                :isFilterShipment="true">
+            </x-form.select2>
+        @endif
+
+        @if(in_array($type, ['seaair', 'crossair', 'seaimport', 'airimport']))
+            <x-form.select2
+                label="Origin"
+                name="origin_id"
+                id="origin"
+                placeholder="Choose"
+                :allowClear="false"
+                :isFilterShipment="true">
+            </x-form.select2>
+        @endif
+
+        @if(in_array($type, ['seaair', 'crossair', 'seaexport', 'airexport']))
+            <x-form.select2
+                label="Destination"
+                name="port_destination_name"
+                id="destination"
+                placeholder="Choose"
+                :allowClear="false"
+                :isFilterShipment="true">
+            </x-form.select2>
+        @endif
+
+        @if(in_array($type, ['seaair', 'crossair', 'seaimport', 'seaexport']))
+            <x-form.select2
+                label="Vessel/Carrier"
+                name="mother_vessel_name"
+                id="vessel"
+                placeholder="Choose"
+                :allowClear="false"
+                :isFilterShipment="true">
+            </x-form.select2>
+        @endif
+
+        @if(in_array($type, ['airimport', 'airexport']))
+            <x-form.select2
+                label="Carrier"
+                name="carrier"
+                id="carrier"
+                placeholder="Choose"
+                :allowClear="false"
+                :isFilterShipment="true">
         </x-form.select2>
+        @endif
 
-        <x-form.select2
-            label="Destination"
-            name="port_destination_name"
-            id="destination"
-            placeholder="Choose"
-            :allowClear="false"
-            :isFilterShipment="true">
-        </x-form.select2>
+        @if(!in_array($type, ['warehouse', 'trucking', 'courier']))
+            <x-form.select2
+                label="ETA"
+                name="eta"
+                id="eta"
+                placeholder="Choose"
+                :allowClear="false"
+                :isFilterShipment="true">
+            </x-form.select2>
+        @endif
 
-        <x-form.select2
-            label="Vessel/Carrier"
-            name="mother_vessel_name"
-            id="vessel"
-            placeholder="Choose"
-            :allowClear="false"
-            :isFilterShipment="true">
-        </x-form.select2>
+        @if(in_array($type, ['seaair', 'crossair']))
+            <div class="filter-group">
+                <label class="filter-label">From Date ETD</label>
+                <input type="date" class="filter-date" id="from_date_etd" placeholder="mm/dd/yyyy">
+            </div>
 
-        <x-form.select2
-            label="ETA"
-            name="eta"
-            id="eta"
-            placeholder="Choose"
-            :allowClear="false"
-            :isFilterShipment="true">
-        </x-form.select2>
+            <div class="filter-group">
+                <label class="filter-label">To Date ETD</label>
+                <input type="date" class="filter-date" id="to_date_etd" placeholder="mm/dd/yyyy">
+            </div>
+        @endif
 
-        <div class="filter-group">
-            <label class="filter-label">From Date ETD</label>
-            <input type="date" class="filter-date" id="from_date_etd" placeholder="mm/dd/yyyy">
-        </div>
+        @if(in_array($type, ['warehouse', 'trucking']))
+            <x-form.select2
+                label="Shipper"
+                name="shipper"
+                id="shipper"
+                placeholder="Choose"
+                :allowClear="false"
+                :isFilterShipment="true">
+            </x-form.select2>
 
-        <div class="filter-group">
-            <label class="filter-label">To Date ETD</label>
-            <input type="date" class="filter-date" id="to_date_etd" placeholder="mm/dd/yyyy">
-        </div>
+            <x-form.select2
+                label="Consignee"
+                name="consignee"
+                id="consignee"
+                placeholder="Choose"
+                :allowClear="false"
+                :isFilterShipment="true">
+            </x-form.select2>
+        @endif
+
+        
 
         <div class="d-flex flex-column align-items-center">
             <button class="btn-clear" id="btn-clear">Clear Filter</button>
@@ -64,7 +118,7 @@
 
 @push('js')
     <script>
-        const API_BASE = `${window.location.protocol}//${'{!! env('API_ORIGIN') !!}'}`;
+        const API_BASE = `${window.location.protocol}//${'{!! in_array($type, ['seaair', 'crossair']) ? env('API_ORIGIN') : env('API_DXB') !!}'}`;
         function initializeSelect2WithData(elementId, url, valueField) {
             $.ajax({
                 url: url,
@@ -73,11 +127,19 @@
                 success: function(response) {
                     // Transform the data
                     const data = response.data.map(function(item) {
+                        // Special handling for status
+                        if (elementId === 'status') {
+                            return {
+                                id: item.status_name,
+                                text: item.status_name,
+                                status_id: item.status_id
+                            };
+                        }
                         // Special handling for destination
                         if (elementId === 'destination') {
                             return {
                                 id: item[valueField],
-                                text: `${item.port_destination_code} - ${item.port_destination_name}`
+                                text: item.port_destination_code ? `${item.port_destination_code} - ${item.port_destination_name}` : item.port_destination_name
                             };
                         }
                         // Special handling for vessel
@@ -102,7 +164,31 @@
                                 text: formattedDate
                             };
                         }
-                        // Default handling for other fields
+                        // Special handling for carrier
+                        if (elementId === 'carrier') {
+                            return {
+                                id: item.carrier_id,  // Use carrier_id as the id
+                                text: item.carrier_name, // Display carrier_name as the text
+                                carrier_id: item.carrier_id
+                            };
+                        }
+                        // Special handling for shipper
+                        if (elementId === 'shipper') {
+                            return {
+                                id: item.from_shipper,
+                                text: item.shipper_name,
+                                shipper_id: item.from_shipper
+                            };
+                        }
+                        // Special handling for consignee
+                        if (elementId === 'consignee') {
+                            return {
+                                id: item.to_consignee,
+                                text: item.consigne_name,
+                                consignee_id: item.to_consignee
+                            };
+                        }
+
                         return {
                             id: item[valueField],
                             text: item[valueField]
@@ -135,6 +221,8 @@
                     }).val(null).trigger('change');
                 },
                 error: function(xhr, status, error) {
+                    console.error('Error fetching data for ' + elementId + ':', error);
+                    console.error('Response:', xhr.responseText);
                     Swal.fire({
                         icon: 'error',
                         title: 'API Error',
@@ -145,6 +233,9 @@
         }
 
         $(document).ready(function() {
+            // Get current page type
+            const currentType = '{{ $type }}';
+
             // Initialize shipment_by select2 with static data
             $('#shipment_by').select2({
                 placeholder: 'Choose',
@@ -158,30 +249,69 @@
                 }
             }).val(null).trigger('change');
 
-            // Initialize other dynamic select2s
-            initializeSelect2WithData(
-                'origin', 
-                '{{ route('finance.general-wise.shipment.origin', ['type' => $type]) }}',
-                'origin_name'
-            );
+            // Initialize other dynamic select2s based on conditions
+            if (['seaair', 'crossair', 'seaimport', 'airimport'].includes(currentType)) {
+                initializeSelect2WithData(
+                    'origin', 
+                    '{{ route('finance.general-wise.shipment.origin', ['type' => $type]) }}',
+                    'origin_name'
+                );
+            }
             
-            initializeSelect2WithData(
-                'destination',
-                '{{ route('finance.general-wise.shipment.destination', ['type' => $type]) }}',
-                'port_destination_name'
-            );
+            if (['seaair', 'crossair', 'seaexport', 'airexport'].includes(currentType)) {
+                initializeSelect2WithData(
+                    'destination',
+                    '{{ route('finance.general-wise.shipment.destination', ['type' => $type]) }}',
+                    'port_destination_name'
+                );
+            }
             
-            initializeSelect2WithData(
-                'vessel',
-                '{{ route('finance.general-wise.shipment.vessel', ['type' => $type]) }}',
-                'mother_vessel_name'
-            );
+            if (['seaair', 'crossair', 'seaimport', 'seaexport'].includes(currentType)) {
+                initializeSelect2WithData(
+                    'vessel',
+                    '{{ route('finance.general-wise.shipment.vessel', ['type' => $type]) }}',
+                    'mother_vessel_name'
+                );
+            }
+
+            // Only initialize carrier select2 for airimport and airexport
+            if (['airimport', 'airexport'].includes(currentType)) {
+                initializeSelect2WithData(
+                    'carrier',
+                    '{{ route('finance.general-wise.shipment.carrier', ['type' => $type]) }}',
+                    'carrier_name'
+                );
+            }
             
-            initializeSelect2WithData(
-                'eta',
-                '{{ route('finance.general-wise.shipment.eta', ['type' => $type]) }}',
-                'eta'
-            );
+            if (!['warehouse', 'trucking', 'courier'].includes(currentType)) {
+                initializeSelect2WithData(
+                    'eta',
+                    '{{ route('finance.general-wise.shipment.eta', ['type' => $type]) }}',
+                    'eta'
+                );
+            }
+
+            if (['seaimport', 'seaexport', 'airimport', 'airexport', 'warehouse', 'trucking', 'courier'].includes(currentType)) {
+                initializeSelect2WithData(
+                    'status',
+                    '{{ route('finance.general-wise.shipment.statusShipment', ['type' => $type]) }}',
+                    'status'
+                );
+            }
+
+            if (['trucking', 'warehouse'].includes(currentType)) {
+                initializeSelect2WithData(
+                    'shipper',
+                    '{{ route('finance.general-wise.shipment.shipper', ['type' => $type]) }}',
+                    'shipper_name'
+                );
+
+                initializeSelect2WithData(
+                    'consignee',
+                    '{{ route('finance.general-wise.shipment.consignee', ['type' => $type]) }}',
+                    'consignee_name'
+                );
+            }
 
             // Update the filter button click handler
             $('#btn-filter-shipment').on('click', function() {
@@ -230,20 +360,13 @@
             // Add click handler for clear button
             $('#btn-clear').on('click', function() {
                 // Clear all select2 fields
-                $('#shipment_by, #origin, #destination, #vessel, #eta').val(null).trigger('change');
+                $('#shipment_by, #origin, #destination, #vessel, #eta, #status, #carrier, #shipper, #consignee').val(null).trigger('change');
                 
                 // Clear date inputs
                 $('#from_date_etd, #to_date_etd').val('');
                 
                 // Reset export button text to initial state
-                $('.button-export').text('Export All Data to CSV');
-                
-                // Add back the SVG icon
-                $('.button-export').append(`
-                    <svg width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg" class="ms-2">
-                        <path d="M1.66667 0C0.747396 0 0 0.728711 0 1.625V11.375C0 12.2713 0.747396 13 1.66667 13H8.33333C9.2526 13 10 12.2713 10 11.375V4.0625H6.66667C6.20573 4.0625 5.83333 3.69941 5.83333 3.25V0H1.66667ZM6.66667 0V3.25H10L6.66667 0ZM4.05469 6.35273L5 7.67051L5.94531 6.35273C6.14323 6.07598 6.53385 6.00996 6.8151 6.20293C7.09635 6.3959 7.16667 6.77676 6.96875 7.05098L5.76302 8.73438L6.97135 10.4152C7.16927 10.692 7.10156 11.0703 6.81771 11.2633C6.53385 11.4563 6.14583 11.3902 5.94792 11.1135L5 9.7957L4.05469 11.1135C3.85677 11.3902 3.46615 11.4563 3.1849 11.2633C2.90365 11.0703 2.83333 10.6895 3.03125 10.4152L4.23698 8.73438L3.02865 7.05352C2.83073 6.77676 2.89844 6.39844 3.18229 6.20547C3.46615 6.0125 3.85417 6.07852 4.05208 6.35527L4.05469 6.35273Z" fill="#F8F8F8"></path>
-                    </svg>
-                `);
+                $('.button-export-text').text('Export All Data to CSV');
                 
                 // Uncheck all checkboxes
                 $('.row-checkbox').prop('checked', false);

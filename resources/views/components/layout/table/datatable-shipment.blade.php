@@ -2,6 +2,7 @@
     'id' => $id,
     'url' => $url,
     'columns' => $columns ?? [],
+    'API_BASE' => $API_BASE
 ])
 
 <script>
@@ -26,22 +27,59 @@
                         url: "{{ $url }}",
                         type: 'GET',
                         data: function(d) {
-                            // Get vessel select2 data
-                            const vesselSelect = $('#vessel');
-                            const vesselData = vesselSelect.select2('data')[0];
-                            
+                            // Get existing select2 data
+                            let vesselData = null;
+                            let consigneeData = null;
+                            let carrierData = null;
+                            let shipperData = null;
+
+                            if ($('#vessel').length) {
+                                const vesselSelect = $('#vessel');
+                                vesselData = vesselSelect.select2('data')[0];
+                            }
+
+                            if ($('#carrier').length) {
+                                const carrierSelect = $('#carrier');
+                                carrierData = carrierSelect.select2('data')[0];
+                            }
+
+                            if ($('#shipper').length) {
+                                const shipperSelect = $('#shipper');
+                                shipperData = shipperSelect.select2('data')[0];
+                            }
+
+                            if ($('#consignee').length) {
+                                const consigneeSelect = $('#consignee');
+                                consigneeData = consigneeSelect.select2('data')[0];
+                            }
+
+                            let statusData = null;
+                            if ($('#status').length) {
+                                const statusSelect = $('#status');
+                                statusData = statusSelect.select2('data')[0];
+                            }
+
                             // Get search value from external search box
                             const searchValue = $('#datatableSearch').val();
-                            
+
                             // Get all filter values
                             const filters = {
-                                shipment_by: $('#shipment_by').val(),
-                                origin_name: $('#origin').val(),
-                                port_destination_name: $('#destination').val(),
-                                mother_vessel_name: $('#vessel').val(),
-                                eta: $('#eta').val(),
-                                voyage_number_mother: vesselData ? vesselData.voyage_number_mother : null,
-                                mother_vessel_id: vesselData ? vesselData.mother_vessel_id : null,
+                                shipment_by: $('#shipment_by').length ? $('#shipment_by')
+                                .val() : null,
+                                origin_name: $('#origin').length ? $('#origin').val() : null,
+                                port_destination_name: $('#destination').length ? $(
+                                    '#destination').val() : null,
+                                mother_vessel_name: $('#vessel').length ? $('#vessel').val() :
+                                    null,
+                                carrier_id: carrierData ? carrierData.carrier_id : null,
+                                eta: $('#eta').length ? $('#eta').val() : null,
+                                shipper_id: shipperData ? shipperData.shipper_id : null,
+                                consignee_id: consigneeData ? consigneeData.consignee_id : null,
+                                status_shipment: statusData ? statusData.text : null,
+                                voyage_number_mother: vesselData ? vesselData
+                                    .voyage_number_mother : null,
+                                mother_vessel_id: vesselData ? vesselData.mother_vessel_id :
+                                    null,
                                 search: searchValue || d.search.value
                             };
 
@@ -55,16 +93,39 @@
 
                             // Remove empty/null/undefined filters
                             Object.keys(filters).forEach(key => {
-                                if (!filters[key] || 
-                                    (Array.isArray(filters[key]) && filters[key].length === 0) ||
-                                    filters[key] === 'null' || 
+                                if (!filters[key] ||
+                                    (Array.isArray(filters[key]) && filters[key].length ===
+                                        0) ||
+                                    filters[key] === 'null' ||
                                     filters[key] === 'undefined') {
                                     delete filters[key];
                                 }
                             });
 
                             // Merge the remaining filters with DataTables parameters
-                            return { ...d, ...filters };
+                            return {
+                                ...d,
+                                ...filters
+                            };
+                        },
+                        dataSrc: function(json) {
+                            return json.data.map(function(item) {
+                                // Function to flatten nested objects
+                                function flattenObject(obj, prefix = '') {
+                                    return Object.keys(obj).reduce((acc, key) => {
+                                        const pre = prefix.length ? prefix + '.' : '';
+                                        if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
+                                            Object.assign(acc, flattenObject(obj[key], pre + key));
+                                        } else {
+                                            acc[pre + key] = obj[key];
+                                        }
+                                        return acc;
+                                    }, {});
+                                }
+
+                                // Flatten the item and merge it back with the original
+                                return { ...item, ...flattenObject(item) };
+                            });
                         }
                     },
                     columns: @json($columns),
@@ -80,14 +141,20 @@
                             }
 
                             const columnName = meta.settings.aoColumns[meta.col].data;
+                            
+                            // Check if the column data exists in the row
+                            if (!row.hasOwnProperty(columnName) || row[columnName] === null || row[columnName] === undefined) {
+                                return '-';
+                            }
+
                             const className = `td-${columnName}`;
                             const idName = `td-${columnName}-${meta.row}`;
 
                             const columnDef = meta.settings.aoColumns[meta.col];
                             const cutText = columnDef.cutText !== false;
 
-                            const displayData = data === null || data === '' ? '-' : (
-                                cutText && data.length > 25 ? data.substring(0, 22) +
+                            const displayData = data === null || data === '' || data === undefined ? '-' : (
+                                cutText && typeof data === 'string' && data.length > 25 ? data.substring(0, 22) +
                                 '...' : data);
 
                             // Add CTD Number linking
@@ -110,7 +177,7 @@
                                 } else if (data === 'CA') {
                                     additionalClass = 'ca-class';
                                 } else {
-                                    additionalClass = 'other-class';
+                                    additionalClass = 'db-class';
                                 }
                             }
 
@@ -463,7 +530,6 @@
                 // Then fetch data
                 const gmt = getTimeZone();
                 const encodedGMT = encodeURIComponent(gmt);
-                const API_BASE = `${window.location.protocol}//${'{!! env('API_ORIGIN') !!}'}`;
 
                 fetch(`${API_BASE}/api/historijob/list?job_id=${jobId}&gmt=${encodedGMT}`)
                     .then(response => {
@@ -593,24 +659,72 @@
 
     // Add click handler for clear button
     $('#btn-clear').on('click', function() {
-        // Clear all select2 fields
-        $('#shipment_by, #origin, #destination, #vessel, #eta').val(null).trigger('change');
-        
+        // Clear all select2 fields first
+        const select2Fields = ['#shipment_by', '#origin', '#destination', '#vessel', '#eta', '#status',
+            '#carrier', '#shipper', '#consignee'
+        ];
+
+        // Create a promise array for all select2 clear operations
+        const clearPromises = select2Fields.map(field => {
+            return new Promise(resolve => {
+                if ($(field).length) { // Only clear if element exists
+                    $(field).val(null).trigger('change');
+                }
+                setTimeout(resolve, 100);
+            });
+        });
+
         // Clear date inputs
         $('#from_date_etd, #to_date_etd').val('');
-        
+
         // Clear search input
         $('#datatableSearch').val('');
-        
-        // Get the DataTable instance
-        var dataTable = window.shipmentDataTable;
-        if (dataTable) {
-            // Clear search and reset to first page
-            dataTable
-                .search('')
-                .page.len(10)  // Reset page length to default (10)
-                .page(0)       // Go to first page
-                .draw();       // Redraw the table
-        }
+
+        // Wait for all select2 fields to be cleared before reloading DataTable
+        Promise.all(clearPromises).then(() => {
+            // Get the DataTable instance
+            var dataTable = window.shipmentDataTable;
+            if (dataTable) {
+                // Force clear the Ajax parameters before redrawing
+                dataTable.ajax.params = function(d) {
+                    // Reset all filter parameters
+                    delete d.status_shipment;
+                    delete d.origin_name;
+                    delete d.port_destination_name;
+                    delete d.mother_vessel_name;
+                    delete d.eta;
+                    delete d.voyage_number_mother;
+                    delete d.mother_vessel_id;
+                    return d;
+                };
+
+                // Clear search and reset to first page
+                dataTable
+                    .search('')
+                    .page.len(10) // Reset page length to default (10)
+                    .page(0) // Go to first page
+                    .draw(true); // Force redraw with true to reset all parameters
+            }
+        });
+    });
+
+    // Add this after your DataTable initialization
+    $('#shipment_table tbody').on('change', 'input[type="checkbox"]', function() {
+        $(this).closest('tr').toggleClass('selected-row', this.checked);
+    });
+
+    // Handle "Select All" checkbox
+    $('#select_all').on('change', function() {
+        var isChecked = this.checked;
+        $('#shipment_table tbody input[type="checkbox"]').each(function() {
+            this.checked = isChecked;
+            $(this).closest('tr').toggleClass('selected-row', isChecked);
+        });
     });
 </script>
+
+<style>
+    .selected-row {
+        background-color: #f5f5f5 !important; /* Light grey background */
+    }
+</style>

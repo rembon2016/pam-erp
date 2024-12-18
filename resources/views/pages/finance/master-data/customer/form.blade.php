@@ -69,13 +69,13 @@
                                             @endphp
                                             <input class="form-check-input" name="customer_type[]" type="checkbox"
                                                 value="{{ $type }}" {{ in_array($type, $types) ? 'checked' : '' }}>
-                                            <span class="form-check-label">
+                                            <span class="form-check-label" style="font-size: 10px;">
                                                 {{ $type }}
                                             </span>
                                         @else
                                             <input class="form-check-input" name="customer_type[]" type="checkbox"
                                                 value="{{ $type }}">
-                                            <span class="form-check-label">
+                                            <span class="form-check-label" style="font-size: 10px;">
                                                 {{ $type }}
                                             </span>
                                         @endif

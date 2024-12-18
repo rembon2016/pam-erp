@@ -43,7 +43,6 @@
     39 => 'App\\Providers\\AppServiceProvider',
     40 => 'Yajra\\DataTables\\DataTablesServiceProvider',
     41 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
-    42 => 'Barryvdh\\Debugbar\\ServiceProvider',
   ),
   'eager' => 
   array (
@@ -74,7 +73,6 @@
     24 => 'App\\Providers\\AppServiceProvider',
     25 => 'Yajra\\DataTables\\DataTablesServiceProvider',
     26 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
-    27 => 'Barryvdh\\Debugbar\\ServiceProvider',
   ),
   'deferred' => 
   array (

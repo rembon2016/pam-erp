@@ -10,11 +10,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Operation\Origin\ShippingInstruction;
 use App\Models\Operation\Dxb\ShippingInstruction as ShippingInstructionDxb;
+use App\Traits\HandleTableTimestamps;
 final class CostingHead extends Model
 {
     use HasFactory,
         HasUuids,
-        SoftDeletes;
+        SoftDeletes,
+        HandleTableTimestamps;
 
     protected $guarded = ['id'];
     protected $table = 'finance.costing_head';

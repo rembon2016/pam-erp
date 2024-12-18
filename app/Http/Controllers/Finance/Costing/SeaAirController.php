@@ -496,6 +496,7 @@ final class SeaAirController extends Controller
                     continue;
                 }
                 $costing_vendor_agent_id = $request->costing_vendor_agent_id[$k] ?? null;
+                $costing_vendor_agent_delete_id = $request->costing_vendor_agent_delete_id[$k] ?? null;
                 $vendor_name = $request->vendor_air_name[$k];
                 $mawb = $request->mawb[$k];
                 $data_vendor_agent = [
@@ -506,7 +507,11 @@ final class SeaAirController extends Controller
                 ];
                 if($costing_vendor_agent_id != null){
                     $data_vendor_agent["updated_by"] = auth()->user()->email;
-                    CostingVendorAgent::find($costing_vendor_agent_id)->update($data_vendor_agent);
+                    if($costing_vendor_agent_delete_id != null){
+                        CostingVendorAgent::find($costing_vendor_agent_delete_id)->delete();
+                    }else{
+                        CostingVendorAgent::find($costing_vendor_agent_id)->update($data_vendor_agent);
+                    }
                 }else{
                     $data_vendor_agent["created_by"] = auth()->user()->email;
                     CostingVendorAgent::create($data_vendor_agent);
@@ -521,6 +526,7 @@ final class SeaAirController extends Controller
                     continue;
                 }
                 $costing_special_import_id = $request->costing_special_import_id[$k] ?? null;
+                $costing_special_import_delete_id = $request->costing_special_import_delete_id[$k] ?? null;
                 $vendor_name = $request->vendor_special_import_name[$k];
                 $charge_id = $request->charge_special_import_id[$k];
                 $charge = Charge::find($charge_id);
@@ -547,7 +553,11 @@ final class SeaAirController extends Controller
                 ];
                 if($costing_special_import_id != null){
                     $data_special_import["updated_by"] = auth()->user()->email;
-                    CostingSpecial::find($costing_special_import_id)->update($data_special_import);
+                    if($costing_special_import_delete_id != null){
+                        CostingSpecial::find($costing_special_import_delete_id)->delete();
+                    }else{
+                        CostingSpecial::find($costing_special_import_id)->update($data_special_import);
+                    }
                 }else{
                     $data_special_import["created_by"] = auth()->user()->email;
                     CostingSpecial::create($data_special_import);
@@ -563,6 +573,7 @@ final class SeaAirController extends Controller
                     continue;
                 }
                 $costing_special_export_id = $request->costing_special_export_id[$k] ?? null;
+                $costing_special_export_delete_id = $request->costing_special_export_delete_id[$k] ?? null;
                 $vendor_name = $request->vendor_special_export_name[$k];
                 $charge_id = $request->charge_special_export_id[$k];
                 $charge = Charge::find($charge_id);
@@ -589,7 +600,11 @@ final class SeaAirController extends Controller
                 ];
                 if($costing_special_export_id != null){
                     $data_special_export["updated_by"] = auth()->user()->email;
-                    CostingSpecial::find($costing_special_export_id)->update($data_special_export);
+                    if($costing_special_export_delete_id != null){
+                        CostingSpecial::find($costing_special_export_delete_id)->delete();
+                    }else{
+                        CostingSpecial::find($costing_special_export_id)->update($data_special_export);
+                    }
                 }else{
                     $data_special_export["created_by"] = auth()->user()->email;
                     CostingSpecial::create($data_special_export);
@@ -625,6 +640,7 @@ final class SeaAirController extends Controller
 
                 foreach($request["vendor_bl_{$j}_id"] as $k => $row){
                     $costing_detail_id = $request["costing_detail_bl_{$j}_id"][$k] ?? null;
+                    $costing_detail_delete_id = $request["costing_detail_bl_{$j}_delete_id"][$k] ?? null;
                     $vendor_name = $request["vendor_bl_{$j}_name"][$k] ?? null;
                     $charge_id = $request["charge_bl_{$j}_id"][$k] ?? null;
                     if($charge_id != null){
@@ -659,7 +675,11 @@ final class SeaAirController extends Controller
                     ];
                     if($costing_detail_id != null){
                         $data_special_export["updated_by"] = auth()->user()->email;
-                        CostingDetail::find($costing_detail_id)->update($data_special_export);
+                        if($costing_detail_delete_id != null){
+                            CostingDetail::find($costing_detail_delete_id)->delete();
+                        }else{
+                            CostingDetail::find($costing_detail_id)->update($data_special_export);
+                        }
                     }else{
                         $data_special_export["created_by"] = auth()->user()->email;
                         CostingDetail::create($data_special_export);
@@ -674,6 +694,7 @@ final class SeaAirController extends Controller
                             continue;
                         }
                         $costing_detail_id = $request["costing_detail_ctd_{$m}_id"][$z] ?? null;
+                        $costing_detail_delete_id = $request["costing_detail_ctd_{$j}_delete_id"][$k] ?? null;
                         $vendor_name = $request["vendor_ctd_{$m}_name"][$z] ?? null;
                         $charge_id = $request["charge_ctd_{$m}_id"][$z] ?? null;
                         if($charge_id != null){
@@ -709,7 +730,11 @@ final class SeaAirController extends Controller
                         ];
                         if($costing_detail_id != null){
                             $data_special_export["updated_by"] = auth()->user()->email;
-                            CostingDetail::find($costing_detail_id)->update($data_special_export);
+                            if($costing_detail_delete_id != null){
+                                CostingDetail::find($costing_detail_delete_id)->delete();
+                            }else{
+                                CostingDetail::find($costing_detail_id)->update($data_special_export);
+                            }
                         }else{
                             $data_special_export["created_by"] = auth()->user()->email;
                             CostingDetail::create($data_special_export);
@@ -746,6 +771,7 @@ final class SeaAirController extends Controller
 
                 foreach($request["vendor_mawb_{$j}_id"] as $k => $row){
                     $costing_detail_id = $request["costing_detail_mawb_{$j}_id"][$k] ?? null;
+                    $costing_detail_delete_id = $request["costing_detail_mawb_{$j}_delete_id"][$k] ?? null;
                     $vendor_name = $request["vendor_mawb_{$j}_name"][$k] ?? null;
                     $charge_id = $request["charge_mawb_{$j}_id"][$k] ?? null;
                     if($charge_id != null){
@@ -779,7 +805,11 @@ final class SeaAirController extends Controller
                     ];
                     if($costing_detail_id != null){
                         $data_special_export["updated_by"] = auth()->user()->email;
-                        CostingDetail::find($costing_detail_id)->update($data_special_export);
+                        if($costing_detail_delete_id != null){
+                            CostingDetail::find($costing_detail_delete_id)->delete();
+                        }else{
+                            CostingDetail::find($costing_detail_id)->update($data_special_export);
+                        }
                     }else{
                         $data_special_export["created_by"] = auth()->user()->email;
                         CostingDetail::create($data_special_export);

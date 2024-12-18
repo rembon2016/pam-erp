@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Finance\MasterData;
 
 use Illuminate\View\View;
 use App\Functions\Utility;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Functions\ResponseJson;
@@ -20,9 +21,9 @@ use Illuminate\Http\RedirectResponse;
 use App\Models\Finance\ChartOfAccount;
 use App\Constants\Customer\CustomerType;
 use Yajra\DataTables\Facades\DataTables;
+use App\Exports\MasterData\CustomerExport;
 use App\Models\Operation\Master\Countries;
 use App\Constants\Customer\CustomerAddress;
-use App\Exports\MasterData\CustomerExport;
 use App\Service\Finance\MasterData\CustomerService;
 use App\Http\Requests\Finance\MasterData\Customer\StoreCustomerRequest;
 use App\Http\Requests\Finance\MasterData\Customer\UpdateCustomerRequest;
@@ -99,7 +100,7 @@ final class CustomerController extends Controller
             'method' => 'POST',
          ];
 
-         $customerTypes = CustomerType::COLLECT;
+         $customerTypes = Arr::sort(CustomerType::COLLECT);
          $customerAddressTypes = CustomerAddress::COLLECT;
          $currencies = Currency::orderBy('currency_name', 'asc')->get();
          $countries = Countries::orderBy('country_name', 'asc')->get();
@@ -142,7 +143,7 @@ final class CustomerController extends Controller
             'method' => 'PUT',
          ];
 
-         $customerTypes = CustomerType::COLLECT;
+         $customerTypes = Arr::sort(CustomerType::COLLECT);
          $customerAddressTypes = CustomerAddress::COLLECT;
          $currencies = Currency::orderBy('currency_name', 'asc')->get();
          $countries = Countries::orderBy('country_name', 'asc')->get();

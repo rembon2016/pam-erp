@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use App\Traits\HandleTableTimestamps;
 final class CostingSpecial extends Model
 {
     use HasFactory,
-        HasUuids,
-        SoftDeletes;
+    HasUuids,
+    SoftDeletes,
+    HandleTableTimestamps;
 
     protected $guarded = ['id'];
     protected $table = 'finance.costing_special';

@@ -13,6 +13,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Constants\Customer\CustomerType as CustomerTypeConstants;
 
 final class RecoverCustomerSeeder extends Seeder
 {
@@ -112,7 +113,7 @@ final class RecoverCustomerSeeder extends Seeder
 
                 $carrier->update(['finance_customer_id' => $customer->id]);
                 $customer->customerTypes()->firstOrCreate([
-                    'name' => FinanceCustomer::CARRIER_AGENT,
+                    'name' => CustomerTypeConstants::CARRIER_AGENT,
                 ]);
 
                 DB::commit();

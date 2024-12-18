@@ -2,7 +2,7 @@
     'id' => $id,
     'url' => $url,
     'columns' => $columns ?? [],
-    'API_BASE' => $API_BASE
+    'API_BASE' => $API_BASE,
 ])
 
 <script>
@@ -65,7 +65,7 @@
                             // Get all filter values
                             const filters = {
                                 shipment_by: $('#shipment_by').length ? $('#shipment_by')
-                                .val() : null,
+                                    .val() : null,
                                 origin_name: $('#origin').length ? $('#origin').val() : null,
                                 port_destination_name: $('#destination').length ? $(
                                     '#destination').val() : null,
@@ -113,9 +113,13 @@
                                 // Function to flatten nested objects
                                 function flattenObject(obj, prefix = '') {
                                     return Object.keys(obj).reduce((acc, key) => {
-                                        const pre = prefix.length ? prefix + '.' : '';
-                                        if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
-                                            Object.assign(acc, flattenObject(obj[key], pre + key));
+                                        const pre = prefix.length ? prefix + '.' :
+                                            '';
+                                        if (typeof obj[key] === 'object' && obj[
+                                            key] !== null && !Array.isArray(obj[
+                                                key])) {
+                                            Object.assign(acc, flattenObject(obj[
+                                                key], pre + key));
                                         } else {
                                             acc[pre + key] = obj[key];
                                         }
@@ -124,7 +128,10 @@
                                 }
 
                                 // Flatten the item and merge it back with the original
-                                return { ...item, ...flattenObject(item) };
+                                return {
+                                    ...item,
+                                    ...flattenObject(item)
+                                };
                             });
                         }
                     },
@@ -141,9 +148,10 @@
                             }
 
                             const columnName = meta.settings.aoColumns[meta.col].data;
-                            
+
                             // Check if the column data exists in the row
-                            if (!row.hasOwnProperty(columnName) || row[columnName] === null || row[columnName] === undefined) {
+                            if (!row.hasOwnProperty(columnName) || row[columnName] ===
+                                null || row[columnName] === undefined) {
                                 return '-';
                             }
 
@@ -153,9 +161,11 @@
                             const columnDef = meta.settings.aoColumns[meta.col];
                             const cutText = columnDef.cutText !== false;
 
-                            const displayData = data === null || data === '' || data === undefined ? '-' : (
-                                cutText && typeof data === 'string' && data.length > 25 ? data.substring(0, 22) +
-                                '...' : data);
+                            const displayData = data === null || data === '' || data ===
+                                undefined ? '-' : (
+                                    cutText && typeof data === 'string' && data.length >
+                                    25 ? data.substring(0, 22) +
+                                    '...' : data);
 
                             // Add CTD Number linking
                             if (columnName === 'ctd_number') {
@@ -725,6 +735,44 @@
 
 <style>
     .selected-row {
-        background-color: #f5f5f5 !important; /* Light grey background */
+        background-color: #f5f5f5 !important;
+        /* Light grey background */
+    }
+
+    .total-order-section {
+        margin-top: 20px;
+        display: none;
+    }
+
+    .total-order-grid {
+        display: flex;
+        gap: 0px;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+
+    .total-order-item {
+        background-color: white;
+        margin-right: 10px;
+        padding: 4px 10px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 500;
+        display: flex;
+        border: 1px dashed rgb(196, 190, 190);
+        align-items: center;
+    }
+
+    .total-order-label {
+        font-size: 0.875rem;
+        color: #6c757d;
+        margin-bottom: 0;
+        margin-right: 10px;
+    }
+
+    .total-order-value {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #2d49a7;
     }
 </style>

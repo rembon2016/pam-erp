@@ -35,6 +35,31 @@
                 <tbody class="text-black shipment_table_body">
                 </tbody>
             </x:layout.table.wrapper>
+            <div class="total-order-section" id="totalOrderSection" style="display: none;">
+                <h6 class="fw-bold mb-3">Total Order Summary</h6>
+                <div class="total-order-grid">
+                    <div class="total-order-item">
+                        <div class="total-order-label">Pieces Quantity :</div>
+                        <div class="total-order-value" id="totalQty">-</div>
+                    </div>
+                    <div class="total-order-item">
+                        <div class="total-order-label">Chargeable Weight :</div>
+                        <div class="total-order-value" id="totalChargable">-</div>
+                    </div>
+                    <div class="total-order-item">
+                        <div class="total-order-label">Gross Weight :</div>
+                        <div class="total-order-value" id="totalGrossWeight">-</div>
+                    </div>
+                    <div class="total-order-item">
+                        <div class="total-order-label">Measurement :</div>
+                        <div class="total-order-value" id="totalMeasurement">-</div>
+                    </div>
+                    <div class="total-order-item">
+                        <div class="total-order-label">TEUS :</div>
+                        <div class="total-order-value" id="totalTeus">-</div>
+                    </div>
+                </div>
+            </div>
         </x:layout.card.body>
     </x:layout.card.wrapper>
 

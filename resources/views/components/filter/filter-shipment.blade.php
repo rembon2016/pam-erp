@@ -343,11 +343,79 @@
                     }
                 }
 
+                // Get all filter values
+                const filterValues = {
+                    origin_name: $('#origin').val() || '',
+                    port_destination_name: $('#destination').val() || '',
+                    mother_vessel_name: $('#vessel').val() || '',
+                    status_shipment: $('#status').length ? $('#status').select2('data')[0]?.text || '' : '',
+                    mother_vessel_id: $('#vessel').length ? $('#vessel').select2('data')[0]?.mother_vessel_id || '' : '',
+                    voyage_number_mother: $('#vessel').length ? $('#vessel').select2('data')[0]?.voyage_number_mother || '' : '',
+                    carrier_id: $('#carrier').length ? $('#carrier').select2('data')[0]?.carrier_id || '' : '',
+                    from_shipper: $('#shipper').length ? $('#shipper').select2('data')[0]?.shipper_id || '' : '',
+                    to_consignee: $('#consignee').length ? $('#consignee').select2('data')[0]?.consignee_id || '' : '',
+                    etd: fromDateEtd && toDateEtd ? `${fromDateEtd},${toDateEtd}` : '',
+                    status: 6, // Add fixed status parameter
+                    shipment_by: (() => {
+                        const type = '{{ $type }}';
+                        switch(type) {
+                            case 'seaair': return 'SEAAIR';
+                            case 'crossair': return 'AIR';
+                            case 'seaimport': return 'SEAIMPORT';
+                            case 'seaexport': return 'SEAEXPORT';
+                            case 'airimport': return 'AIRIMPORT';
+                            case 'airexport': return 'AIREXPORT';
+                            case 'warehouse': return 'WAREHOUSE';
+                            case 'trucking': return 'TRUCKING';
+                            case 'courier': return 'COURIER';
+                            default: return '';
+                        }
+                    })()
+                };
+
                 // Get DataTable instance from window object
                 var dataTable = window.shipmentDataTable;
                 
                 if (dataTable) {
                     dataTable.ajax.reload(null, false);
+
+                    // Make the total order API call
+                    const totalOrderUrl = `${API_BASE}/api/shippinginstruction/totalorder`;
+                    
+                    $.ajax({
+                        url: totalOrderUrl,
+                        type: 'GET',
+                        data: filterValues,
+                        success: function(response) {
+                            // Show the total order section
+                            $('#totalOrderSection').show();
+
+                            // Helper function to format numbers
+                            const formatNumber = (value) => {
+                                if (value === null || value === undefined || value === '') return '-';
+                                const numValue = parseFloat(value);
+                                if (isNaN(numValue)) return '-';
+                                return numValue.toLocaleString('en-US', {
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 2
+                                });
+                            };
+
+                            // Update the values with proper formatting
+                            $('#totalQty').text(formatNumber(response?.data?.qty || "-"));
+                            $('#totalChargable').text(formatNumber(response?.data?.chargable || "-"));
+                            $('#totalGrossWeight').text(formatNumber(response?.data?.gross_weight || "-"));
+                            $('#totalMeasurement').text(formatNumber(response?.data?.measurement || "-"));
+                            $('#totalTeus').text(formatNumber(response?.data?.container || "-"));
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error fetching total order data:', error);
+                            $('#totalOrderSection').hide();
+                            
+                            // Reset all values to '-' on error
+                            $('#totalQty, #totalChargable, #totalGrossWeight, #totalMeasurement, #totalTeus').text('-');
+                        }
+                    });
                 } else {
                     Swal.fire({
                         icon: 'error',
@@ -357,7 +425,7 @@
                 }
             });
 
-            // Add click handler for clear button
+            // Update clear button handler to hide total order section
             $('#btn-clear').on('click', function() {
                 // Clear all select2 fields
                 $('#shipment_by, #origin, #destination, #vessel, #eta, #status, #carrier, #shipper, #consignee').val(null).trigger('change');
@@ -371,6 +439,9 @@
                 // Uncheck all checkboxes
                 $('.row-checkbox').prop('checked', false);
                 $('#select_all').prop('checked', false);
+                
+                // Hide total order section
+                $('#totalOrderSection').hide();
                 
                 // Get the DataTable instance and reload
                 var dataTable = $('#datatable').DataTable();

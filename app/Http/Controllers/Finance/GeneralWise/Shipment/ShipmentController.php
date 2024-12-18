@@ -182,6 +182,8 @@ final class ShipmentController extends Controller
         $queryString = str_replace('etd=', 'etd[]=', $queryString);
         $fullUrl = $apiUrl . '?' . $queryString;
 
+        \Log::info('Full URL:', ['url' => $fullUrl]);
+
         $response = Http::withHeaders([
             'Accept' => 'application/json',
         ])->get($fullUrl);
@@ -269,8 +271,8 @@ final class ShipmentController extends Controller
                 }, $data, array_keys($data)),
                 'input' => $request->all()
             ];
-
             return response()->json($result);
+
         }
 
         // Handle API request failure

@@ -36,20 +36,20 @@
             </div>
             <div class="col-md-3 mt-3">
                 <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" value="1" id="is_deferred" />
+                    <input class="form-check-input" type="checkbox" value="1" id="revenue_recognition" name="revenue_recognition" />
                     <label class="form-check-label" for="is_deferred">
                         Deferred Revenue Recognizition
                     </label>
                 </div>
             </div>
-            <div class="col-md-3 mt-3">
+            <div class="col-md-3 mt-3 revenue-recognition-box" style="display: none;">
                 <x:form.input type="date" label="Date Revenue Recognizition" name="date_revenue_recognizition" placeholder="Choose Date" :model="$invoice" />
             </div>
             <div class="col-12">
                 <div class="charge-wrapper">
                     <div class="charge-item border px-4 py-2 my-3">
                         <div class="d-flex align-items-center justify-content-between gap-3">
-                            <button type="button" class="btn btn-sm custom-btn custom-btn-primary">CTD: SZAXXXX</button>
+                            <button type="button" class="btn btn-sm custom-btn custom-btn-primary">CTD: SZAXXX1</button>
                             <div class="d-flex align-items-center justify-content-end gap-2">
                                 <button type="button" class="btn btn-icon btn-success rounded" data-type="add-item" style="width: 30px; height: 30px;">
                                     <i class="fa fa-plus pe-0"></i>
@@ -77,14 +77,14 @@
                                 <tbody>
                                     <tr class="charge-row">
                                         <td>
-                                            <select name="data[0][charge_id]" data-type="charge_id" class="form-select" data-control="select2" data-placeholder="Choose" required>
+                                            <select name="data[SZAXXX1][charges][0][charges][0][charge_id]" data-type="charge_id" class="form-select" data-control="select2" data-placeholder="Choose" required>
                                                 @foreach ($charges as $charge)
                                                     <option value="{{ $charge->id }}">{{ $charge->charge_name }}</option>
                                                 @endforeach
                                             </select>
                                         </td>
                                         <td>
-                                            <select name="data[0][currency_id]" data-type="currency_id" class="form-select" required>
+                                            <select name="data[SZAXXX1][charges][0][currency_id]" data-type="currency_id" class="form-select" required>
                                                 <option value="">Choose</option>
                                                 @foreach ($currencies as $currency)
                                                     <option value="{{ $currency->id }}">{{ $currency->currency_name }}</option>
@@ -92,10 +92,10 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <input type="number" name="data[0][rate]" data-type="rate" class="form-control" placeholder="0" min="0" required>
+                                            <input type="number" name="data[SZAXXX1][charges][0][rate]" data-type="rate" class="form-control" placeholder="0" min="0" required>
                                         </td>
                                         <td>
-                                            <select name="data[0][unit_id]" data-type="unit_id" class="form-select" required>
+                                            <select name="data[SZAXXX1][charges][0][unit_id]" data-type="unit_id" class="form-select" required>
                                                 <option value="">Choose</option>
                                                 @foreach ($units as $unit)
                                                     <option value="{{ $unit->id }}">{{ "{$unit->description} ({$unit->unit_name})" }}</option>
@@ -103,13 +103,89 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <input type="number" name="data[0][chw]" data-type="chw" class="form-control" placeholder="0" min="0" required>
+                                            <input type="number" name="data[SZAXXX1][charges][0][chw]" data-type="chw" class="form-control" placeholder="0" min="0" required>
                                         </td>
                                         <td>
-                                            <input type="number" name="data[0][amount]" data-type="amount" class="form-control" placeholder="0" min="0" required>
+                                            <input type="number" name="data[SZAXXX1][charges][0][amount]" data-type="amount" class="form-control" placeholder="0" min="0" value="0" readonly>
                                         </td>
                                         <td>
-                                            <input type="number" name="data[0][local_amount]" data-type="local_amount" class="form-control" placeholder="0" min="0" required>
+                                            <input type="number" name="data[SZAXXX1][charges][0][local_amount]" data-type="local_amount" class="form-control" placeholder="0" min="0" required>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center justify-content-end">
+                                                <button type="button" class="btn btn-icon btn-danger btn-sm" data-type="delete-item">
+                                                    <i class="bx bx-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="charge-item border px-4 py-2 my-3">
+                        <div class="d-flex align-items-center justify-content-between gap-3">
+                            <button type="button" class="btn btn-sm custom-btn custom-btn-primary">CTD: SZAXXXX2</button>
+                            <div class="d-flex align-items-center justify-content-end gap-2">
+                                <button type="button" class="btn btn-icon btn-success rounded" data-type="add-item" style="width: 30px; height: 30px;">
+                                    <i class="fa fa-plus pe-0"></i>
+                                </button>
+                                <button type="button" class="btn btn-icon btn-primary rounded" data-type="expand-item" style="width: 30px; height: 30px;">
+                                    <i class="fa fa-angle-down"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-responsive charge-table" data-is-expanded="true">
+                            <hr>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="required">Agreed Rate</th>
+                                        <th class="required">Currency</th>
+                                        <th>Rate</th>
+                                        <th class="required">Unit</th>
+                                        <th>CHW</th>
+                                        <th>Amount</th>
+                                        <th>Local Amount</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="charge-row">
+                                        <td>
+                                            <select name="data[SZAXXXX2][charges][0][charge_id]" data-type="charge_id" class="form-select" data-control="select2" data-placeholder="Choose" required>
+                                                @foreach ($charges as $charge)
+                                                    <option value="{{ $charge->id }}">{{ $charge->charge_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select name="data[SZAXXXX2][charges][0][currency_id]" data-type="currency_id" class="form-select" required>
+                                                <option value="">Choose</option>
+                                                @foreach ($currencies as $currency)
+                                                    <option value="{{ $currency->id }}">{{ $currency->currency_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="number" name="data[SZAXXXX2][charges][0][rate]" data-type="rate" class="form-control" placeholder="0" min="0" required>
+                                        </td>
+                                        <td>
+                                            <select name="data[SZAXXXX2][charges][0][unit_id]" data-type="unit_id" class="form-select" required>
+                                                <option value="">Choose</option>
+                                                @foreach ($units as $unit)
+                                                    <option value="{{ $unit->unit_id }}">{{ "{$unit->description} ({$unit->unit_name})" }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="number" name="data[SZAXXXX2][charges][0][chw]" data-type="chw" class="form-control" placeholder="0" min="0" required>
+                                        </td>
+                                        <td>
+                                            <input type="number" name="data[SZAXXXX2][charges][0][amount]" data-type="amount" class="form-control" placeholder="0" min="0" value="0" readonly>
+                                        </td>
+                                        <td>
+                                            <input type="number" name="data[SZAXXXX2][charges][0][local_amount]" data-type="local_amount" class="form-control" placeholder="0" min="0" required>
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center justify-content-end">
@@ -126,7 +202,7 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <x:form.input label="Total Invoices Amount" name="total" placeholder="Chargeable Weight" :model="$invoice" readonly="true" />
+                <x:form.input label="Total Invoices Amount" name="total" placeholder="0" :model="$invoice" readonly="true" />
             </div>
             <div class="col-12">
                 <x:form.textarea label="Description" name="description" placeholder="Type Description of Invoice" :model="$invoice" />
@@ -141,6 +217,24 @@
 
 @push('js')
 <script>
+    function calculateAmount(rowItem) {
+        // Calculate Amount per Row
+        const rate_per_row = ~~parseFloat($(rowItem).find('input[data-type="rate"]').val());
+        const chw_per_row = ~~parseFloat($(rowItem).find('input[data-type="chw"]').val());
+        const amount_per_row = rate_per_row * chw_per_row;
+
+        $(rowItem).find('input[data-type="amount"]').val(amount_per_row);
+
+        // Calculate Total Invoices Amount
+        let totalOfAmount = 0;
+        $('input[data-type="amount"]').each(function (index) {
+            const amount_value = ~~parseFloat($(this).val())
+            totalOfAmount += amount_value;
+        });
+
+        $("#total").val(totalOfAmount);
+    }
+
     $(document).off('click', 'button[data-type="expand-item"]').on('click', 'button[data-type="expand-item"]', function (event) {
         const chargeItem = $(this).parents('.charge-item');
         const chargeTable = $(chargeItem).find('.charge-table');
@@ -163,11 +257,10 @@
             const clonedFirstRowItem = $(chargeTable).find('.charge-row').eq(0).clone();
 
             clearValueInDynamicRow(clonedFirstRowItem);
-            rearrangeNameAttribute(clonedFirstRowItem);
+            rearrangeNameAttribute(clonedFirstRowItem, chargeTable, '.charge-row');
 
             $(chargeTable).find('tbody').append(clonedFirstRowItem);
         });
-
     });
 
     $(document).off('click', 'button[data-type="delete-item"]').on('click', 'button[data-type="delete-item"]', function (event) {
@@ -195,11 +288,27 @@
                 $(this).attr('name', finalNameAttr);
             })
         });
-
     });
 
-    $(document).ready(function () {
+    $(document).on('keyup', 'input[data-type="chw"], input[data-type="rate"]', debounce(function (event) {
+        const rowItem = $(this).parents('.charge-row');
+        calculateAmount(rowItem);
+    }, 150))
 
+    $(document).ready(function () {
+        $("#revenue_recognition").change(function () {
+            $("#date_revenue_recognizition").val('');
+
+            if ($(this).is(':checked')) {
+                $(".revenue-recognition-box").show();
+            } else {
+                $(".revenue-recognition-box").hide();
+            }
+        });
+
+        $(".charge-row").each(function () {
+            calculateAmount($(this));
+        })
     });
 </script>
 @endpush

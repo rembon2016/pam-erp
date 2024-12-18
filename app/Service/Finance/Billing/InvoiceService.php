@@ -13,4 +13,9 @@ final class InvoiceService
     {
         return Invoice::orderBy('invoice_no', 'DESC')->get();
     }
+
+    public function createInvoice(array $dto): object
+    {
+        dd($dto);
+    }
 }

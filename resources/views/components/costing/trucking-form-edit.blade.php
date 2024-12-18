@@ -11,7 +11,7 @@
         <div class='col-md-4'>
             <div class='mb-10'>
                 <label for="#vendor_id" class='form-label'>Vendor Code</label>
-                <select class="form-select" onChange="setVendorName('{{ $key }}')" name="vendor_truck_id[]" id="vendor_id_{{ $key }}" data-control="select2" data-placeholder="Vendor Code">
+                <select class="form-select" onChange="setVendorName('{{ $key }}')" name="vendor_truck_id[]" id="vendor_id_{{ $key }}" data-control="select2" data-placeholder="Vendor Code" @if($costing->status != 1) readonly @endif>
                     <option></option>
                     @foreach($vendorTruck as $rows)
                     <option value="{{ $rows->vendor_id }}" @if($row->vendor_id == $rows->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}">{{ $rows->vendor_code }}</option>

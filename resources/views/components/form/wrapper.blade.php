@@ -1,4 +1,4 @@
-@props(['action' => $action, 'method' => $method])
+@props(['action' => $action, 'method' => $method,'id'=>$id ?? null])
 @php
     $form_method = Str::upper($method) == 'GET' ? 'GET' : 'POST';
 @endphp
@@ -9,7 +9,7 @@
         <!--begin::Products-->
         <div class="card card-flush">
             <div class="card-body pt-8">
-                <form action="{{ $action }}" method="{{ $form_method }}" enctype="multipart/form-data">
+                <form action="{{ $action }}" method="{{ $form_method }}" id="{{ $id ?? "" }}" enctype="multipart/form-data">
                     @csrf
                     @if (Str::upper($method) == 'PUT') @method('PUT') @endif
                     {{ $slot }}

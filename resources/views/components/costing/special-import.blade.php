@@ -22,9 +22,11 @@
     <div id="special-charges-form" class="d-none">
 
         <div style="display: flex; align-items: center; justify-content: end;">
+            @if($costing?->status != 2)
             <button type="button" id="add-row-special" class="btn btn-icon btn-success rounded" style="height: 30px; width: 30px;margin-right:5px;">
                 <i class="fa fa-plus pe-0"></i>
             </button>
+            @endif
             <button type="button" id="updown" class="btn btn-icon btn-primary rounded" style="height: 30px; width: 30px;">
                 <i class="fa fa-angle-down"></i>
             </button>
@@ -53,8 +55,14 @@
                     <tr id="row-{{ $key }}">
                         <td>
                         <input type="hidden" name="costing_special_import_id[]" value="{{ $row->id }}">
+                         @if($costing->status != 1)
+                            <input type="hidden" name="vendor_special_import_id[]" type="text" class=" form-control" value="{{ $row->vendor_id }}">
+                            <input type="hidden" name="charge_special_import_id[]" type="text" class=" form-control" value="{{ $row->charge_id }}">
+                            <input type="hidden" name="currency_special_import_id[]" type="text" class=" form-control" value="{{ $row->currency_id }}">
+                             <input type="hidden" name="status_special_import[]" type="text" class=" form-control" value="{{ $row->status }}">
+                        @endif
                         <select class="form-select vendor-select" onchange="setVendorSpecialImportName({{ $key }})
-                                                " data-control="select2" id="vendor_special_import_id_{{ $key }}" name="vendor_special_import_id[]" data-key="{{ $key }}">
+                                                " data-control="select2" id="vendor_special_import_id_{{ $key }}" name="vendor_special_import_id[]" data-key="{{ $key }}" @if($costing->status != 1) disabled @endif>
                                 <option>Select</option>
                                 @foreach($vendorLine as $rows)
                                 <option value="{{ $rows->vendor_id }}" @if($row->vendor_id == $rows->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}">{{ $rows->vendor_code }}</option>
@@ -62,34 +70,37 @@
                             </select></td>
                         <td><input type="text" class="form-control" value="{{ $row->vendor_name }}" id="vendor_special_import_name_{{ $key }}" placeholder="Name" name="vendor_special_import_name[]" readonly></td>
                         <td>
-                            <select class="form-select" data-control="select2" id="charge_special_import_id_0" name="charge_special_import_id[]" data-key="{{ $key }}">
+                            <select class="form-select" data-control="select2" id="charge_special_import_id_0" name="charge_special_import_id[]" data-key="{{ $key }}" @if($costing->status != 1) disabled @endif>
                                 <option>Select</option>
                                 @foreach($charge as $rows)
                                 <option value="{{ $rows->id }}" @if($row->charge_id == $rows->id) selected @endif>{{ $rows->charge_code }}</option>
                                 @endforeach
                             </select>
                         </td>
-                        <td> <select class="form-select" data-control="select2" id="currency_special_import_id_{{ $key }}" name="currency_special_import_id[]" data-key="{{ $key }}">
+                        <td>
+
+                        <select class="form-select" data-control="select2" id="currency_special_import_id_{{ $key }}" name="currency_special_import_id[]" data-key="{{ $key }}" @if($costing->status != 1) disabled @endif>
                                 <option>Select</option>
                                 @foreach($currency as $rows)
                                 <option value="{{ $rows->id }}" @if($row->currency_id == $rows->id) selected @endif>{{ $rows->currency_code }}</option>
                                 @endforeach
                             </select></td>
-                        <td><input type="text" class="form-control" name="rate_special_import[]" value="{{ $row->rate }}" placeholder="Type here.."></td>
-                        <td><input type="text" class="form-control" name="amount_special_import[]" value="{{ $row->amount }}" placeholder="Type here.."></td>
-                        <td><input type="text" class="form-control" value="{{ $row->local_amount }}" name="local_amount_special_import[]" placeholder="Type here.."></td>
+                        <td><input type="text" class="form-control" name="rate_special_import[]" value="{{ $row->rate }}" placeholder="Type here.." @if($costing->status != 1) readonly @endif></td>
+                        <td><input type="text" class="form-control" name="amount_special_import[]" value="{{ $row->amount }}" placeholder="Type here.." @if($costing->status != 1) readonly @endif></td>
+                        <td><input type="text" class="form-control" value="{{ $row->local_amount }}" name="local_amount_special_import[]" placeholder="Type here.." @if($costing->status != 1) readonly @endif></td>
                         <td>
-                            <select class="form-select" name="status_special_import[]">
+                            <select class="form-select" name="status_special_import[]" @if($costing->status != 1) disabled @endif>
                                 <option>Select</option>
                                 <option value="Debit" @if($row->status == 'Debit') selected @endif>Debit</option>
                                 <option value="Credit" @if($row->status == 'Credit') selected @endif>Credit</option>
                             </select>
                         </td>
                         <td>
-
-                <button type="button" class="btn btn-icon btn-danger btn-remove-row"  style="height: 30px; width: 30px;margin-top:5px;">
-                    <i class="fa fa-trash"></i>
-                </button>
+                        @if($costing->status == 1)
+                        <button type="button" class="btn btn-icon btn-danger btn-remove-row"  style="height: 30px; width: 30px;margin-top:5px;">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                        @endif
 
                         </td>
                     </tr>

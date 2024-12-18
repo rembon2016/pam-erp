@@ -1,8 +1,10 @@
 <div class="container mt-4">
     <div style="display: flex; align-items: center; justify-content: end;">
+        @if($costing?->status != 2)
         <button type="button" id="add-row" class="btn btn-icon btn-success rounded" style="height: 30px; width: 30px; margin-right:5px;">
             <i class="fa fa-plus pe-0"></i>
         </button>
+        @endif
     </div>
     <div id="input-rows">
         @if(!empty($costing))
@@ -11,11 +13,14 @@
             <input type="hidden" name="costing_vendor_agent_id[]" value="{{ $row->id }}">
             <div class="col-md-4">
                 <label for="mawb_{{ $key }}" class="form-label">MAWB</label>
-                <input type="text" class="form-control" id="mawb_{{ $key }}" value="{{ $row->mawb }}" name="mawb[]" placeholder="Type here..">
+                <input type="text" class="form-control" id="mawb_{{ $key }}" value="{{ $row->mawb }}" name="mawb[]" placeholder="Type here.." @if($costing->status != 1) readonly @endif>
             </div>
             <div class="col-md-4">
                 <label for="vendor_air_id_{{ $key }}" class="form-label">Vendor Code</label>
-                <select class="form-select vendor-select" onchange="setVendorAirName({{ $key }})" data-control="select2" id="vendor_air_id_{{ $key }}" name="vendor_air_id[]" data-key="{{ $key }}">
+                 @if($costing->status != 1)
+                    <input type="hidden" name="vendor_air_id[]" type="text" class=" form-control" value="{{ $row->vendor_id }}">
+                @endif
+                <select class="form-select vendor-select" onchange="setVendorAirName({{ $key }})" data-control="select2" id="vendor_air_id_{{ $key }}" name="vendor_air_id[]" data-key="{{ $key }}" @if($costing?->status != 1 && $costing != null) disabled @endif>
                     <option>Select Vendor</option>
                     @foreach($vendorAir as $rows)
                     <option value="{{ $rows->vendor_id }}" @if($rows->vendor_id == $row->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}">{{ $rows->vendor_code }}</option>
@@ -27,9 +32,11 @@
                 <input type="text" class="form-control" id="vendor_air_name_{{ $key }}" value="{{ $row->vendor_name }}" name="vendor_air_name[]" readonly>
             </div>
             <div class="col-md-1 d-flex align-items-end">
+                @if($costing->status == 1)
                 <button type="button" class="btn btn-icon btn-danger remove-row" data-row-id="{{ $key }}" style="height: 30px; width: 30px;margin-top:20px;">
                     <i class="fa fa-trash"></i>
                 </button>
+                @endif
             </div>
         </div>
         @endforeach

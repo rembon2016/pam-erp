@@ -12,7 +12,7 @@
     </ul>
     <div class="tab-content p-5 bg-white border border-top-0">
         <div class="tab-pane fade show active" id="mawb-tab-{{ $m }}" role="tabpanel">
-            <x-costing.charges-from :k="$m" type="mawb" :vendor="$vendorLine" :charge="$charge" :currency="$currency" />
+            <x-costing.charges-from :costing="$costing" :k="$m" type="mawb" :vendor="$vendorLine" :charge="$charge" :currency="$currency" />
         </div>
 
         <div class="tab-pane fade" id="ctd-number-tab-{{ $m }}" role="tabpanel">

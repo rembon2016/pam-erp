@@ -460,8 +460,8 @@
                                                                     id="unit_id_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                                                     class="form-select"
                                                                     style="width: 100%;" disabled>
-                                                                    <option value="{{ $chargeValue->unit->unit_name }}" selected hidden>
-                                                                        {{ $chargeValue->unit->description." ({$chargeValue->unit->unit_name})" }}
+                                                                    <option value="{{ $chargeValue?->unit?->unit_name }}" selected hidden>
+                                                                        {{ $chargeValue?->unit?->description." ({$chargeValue?->unit?->unit_name})" }}
                                                                     </option>
                                                                 </select>
                                                             </div>

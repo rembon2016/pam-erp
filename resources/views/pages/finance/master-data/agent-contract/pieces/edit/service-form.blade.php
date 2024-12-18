@@ -341,8 +341,7 @@
                                 class="form-select selectLists countryList"
                                 id="por_country_id_{{ $index + 1 }}"
                                 data-placeholder="Select an option"
-                                style="min-width: 100%;"
-                                required>
+                                style="min-width: 100%;">
                                 <option value="" selected hidden>
                                     Country
                                 </option>
@@ -361,8 +360,7 @@
                                 class="form-select selectLists"
                                 id="por_port_id_{{ $index + 1 }}"
                                 data-placeholder="Select an option"
-                                style="min-width: 100%;"
-                                required>
+                                style="min-width: 100%;">
                                 @foreach($ports as $port)
                                     <option
                                         value="{{$port->port_id}}"
@@ -378,8 +376,7 @@
                                 class="form-select selectLists countryList"
                                 id="fdc_country_id_{{ $index + 1 }}"
                                 data-placeholder="Select an option"
-                                style="min-width: 100%;"
-                                required>
+                                style="min-width: 100%;">
                                 <option value="" selected hidden>
                                     Country
                                 </option>
@@ -398,8 +395,7 @@
                                 class="form-select selectLists"
                                 id="fdc_port_id_{{ $index + 1 }}"
                                 data-placeholder="Select an option"
-                                style="min-width: 100%;"
-                                required>
+                                style="min-width: 100%;">
                                 @foreach($ports as $port)
                                     <option
                                         value="{{$port->port_id}}"
@@ -415,8 +411,7 @@
                                 name="service_data[{{ $index }}][tos]"
                                 class="form-control"
                                 value="{{ $service->tos }}"
-                                style="min-width: 100%;"
-                                required>
+                                style="min-width: 100%;">
                         </div>
                         <div class="tableServiceForm-box">
                             <input
@@ -424,16 +419,14 @@
                                 name="service_data[{{ $index }}][tos_name]"
                                 class="form-control"
                                 value="{{ $service->tos_name }}"
-                                style="min-width: 100%;"
-                                required>
+                                style="min-width: 100%;">
                         </div>
                         <div class="tableServiceForm-box" style="min-width: 150px">
                             <select
                                 name="service_data[{{ $index }}][transit]"
                                 class="form-select selectTransit"
                                 id="select_transit_{{ $index + 1 }}"
-                                style="min-width: 100%;"
-                                required>
+                                style="min-width: 100%;">
                                 <option value="" selected hidden>
                                     Transit
                                 </option>
@@ -461,8 +454,7 @@
                                 class="form-select selectLists carrierList"
                                 id="carrier_id_{{ $index + 1 }}"
                                 data-placeholder="Select an option"
-                                style="min-width: 100%;"
-                                required>
+                                style="min-width: 100%;">
                                 <option value="" selected hidden>
                                     Carrier
                                 </option>
@@ -492,8 +484,7 @@
                                 name="service_data[{{ $index }}][party]"
                                 class="form-control"
                                 value="{{ $service->party }}"
-                                style="min-width: 100%;"
-                                required>
+                                style="min-width: 100%;">
                         </div>
                         <div class="tableServiceForm-box">
                             <input
@@ -501,8 +492,7 @@
                                 name="service_data[{{ $index }}][service_note]"
                                 class="form-control"
                                 value="{{ $service->notes }}"
-                                style="min-width: 100%;"
-                                required>
+                                style="min-width: 100%;">
                         </div>
                     </div>
                     <div class="collapse accordion-collapse chargeTableRow" id="r{{ $index + 1 }}" data-bs-parent=".tableServiceForm">

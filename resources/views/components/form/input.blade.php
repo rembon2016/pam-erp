@@ -7,7 +7,8 @@
     'model' => $model ?? null,
     'file' => $file ?? false,
     'disabled' => $disabled ?? false,
-    'customModelling' => $customModelling ?? null
+    'customModelling' => $customModelling ?? null,
+    'readonly' => $readonly ?? false
 ])
 
 <div class='mb-3'>
@@ -19,7 +20,7 @@
     @endphp
 
     <label for="#{{ $name }}" class='form-label {{ $required ? 'required' : '' }}'>{{ $label }}</label>
-    <input id="{{ $name }}" type="{{ $type }}" class="@if($errors->has($name)) is-invalid @endif form-control" placeholder="{{ $placeholder }}" name="{{ $name }}" value="{{ old($name, $valueRecondition) }}" {{ $required ? 'required' : '' }} {{ $disabled ? 'disabled' : '' }}>
+    <input id="{{ $name }}" type="{{ $type }}" class="@if($errors->has($name)) is-invalid @endif form-control" placeholder="{{ $placeholder }}" name="{{ $name }}" value="{{ old($name, $valueRecondition) }}" {{ $required ? 'required' : '' }} {{ $disabled ? 'disabled' : '' }} {{ $readonly ? 'readonly' : '' }}>
     <div class="invalid-feedback">
         {{ $errors->first($name) }}
     </div>

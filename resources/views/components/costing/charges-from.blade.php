@@ -8,19 +8,22 @@
 </style>
 @endpush
 <div>
-
-
     <!-- Form Container -->
     <div id="{{ $type }}-charges-form-{{ $k }}">
+        {{-- <div class="d-flex align-items-center justify-content-between gap-2"> --}}
+            {{-- @if (isset($ctd) && !empty($ctd))
+                <button class="btn custom-btn custom-btn-primary btn-sm">CTD NO: {{ $ctd->ctd_number }}</button>
+            @endif --}}
 
-        <div style="display: flex; align-items: center; justify-content: end;">
-            <button type="button" id="add-row-{{ $type }}-{{ $k }}" class="btn btn-icon btn-success rounded" style="height: 30px; width: 30px;margin-right:5px;">
-                <i class="fa fa-plus pe-0"></i>
-            </button>
-            <button type="button" id="updown-{{ $type }}-{{ $k }}" class="btn btn-icon btn-primary rounded" style="height: 30px; width: 30px;">
-                <i class="fa fa-angle-down"></i>
-            </button>
-        </div>
+            <div class="d-flex align-items-center justify-content-end">
+                <button type="button" id="add-row-{{ $type }}-{{ $k }}" class="btn btn-icon btn-success rounded" style="height: 30px; width: 30px;margin-right:5px;">
+                    <i class="fa fa-plus pe-0"></i>
+                </button>
+                <button type="button" id="updown-{{ $type }}-{{ $k }}" class="btn btn-icon btn-primary rounded" style="height: 30px; width: 30px;">
+                    <i class="fa fa-angle-down"></i>
+                </button>
+            </div>
+        {{-- </div> --}}
 
         <div class="table-responsive" id="table-{{ $type }}-{{ $k }}">
             <table class="table table-bordered">

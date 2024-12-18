@@ -73,7 +73,7 @@ final class RecoverCustomerSeeder extends Seeder
         try {
             foreach ($vendorCollection as $vendor) {
                 $customer = FinanceCustomer::firstOrCreate([
-                    'customer_code' => $vendor->vendor_name,
+                    'customer_code' => $vendor->vendor_code,
                     'customer_name' => $vendor->vendor_name,
                     'eori_number' => null,
                     'credit_terms' => null,
@@ -102,7 +102,7 @@ final class RecoverCustomerSeeder extends Seeder
         try {
             foreach ($carrierCollection as $carrier) {
                 $customer = FinanceCustomer::firstOrCreate([
-                    'customer_code' => $carrier->carrier_code,
+                    'customer_code' => $carrier->vendor_code,
                     'customer_name' => $carrier->carrier_name,
                     'eori_number' => null,
                     'credit_terms' => null,

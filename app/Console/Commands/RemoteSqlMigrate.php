@@ -13,7 +13,7 @@ final class RemoteSqlMigrate extends Command
      *
      * @var string
      */
-    protected $signature = 'pds:remote-sql-migrate {--dbhost=} {--dbusername=} {--dbname=} {--filename=}';
+    protected $signature = 'pds:remote-sql-migrate {--dbhost=} {--dbport=}  {--dbusername=} {--dbname=} {--filename=}';
 
     /**
      * The console command description.
@@ -31,11 +31,12 @@ final class RemoteSqlMigrate extends Command
             $databaseHost = $this->option('dbhost');
             $databaseUsername = $this->option('dbusername');
             $databaseName = $this->option('dbname');
+            $databasePort = $this->option('dbport');
             $filepath = database_path("sql/{$this->option('filename')}.sql");
 
             // dd($this->option('dbusername'), $this->option('dbname'), $filepath);
 
-            shell_exec("psql -h {$databaseHost} -U {$databaseUsername} -d {$databaseName} -a -f {$filepath}");
+            shell_exec("psql -h {$databaseHost} -p {$databasePort} -U {$databaseUsername} -d {$databaseName} -a -f {$filepath}");
 
             $this->info('Migration Process Complete!');
         } catch (\Exception $ex) {

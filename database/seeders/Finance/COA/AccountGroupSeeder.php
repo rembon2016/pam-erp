@@ -34,24 +34,20 @@ final class AccountGroupSeeder extends Seeder
         return [
             [
                 'code' => '1',
-                'name' => 'Assets'
+                'name' => 'ASSETS'
             ],
             [
                 'code' => '2',
-                'name' => 'Liabilities'
+                'name' => 'LIABILITIES'
             ],
             [
                 'code' => '3',
-                'name' => 'Equities'
+                'name' => 'INCOME'
             ],
             [
                 'code' => '4',
-                'name' => 'Revenues'
+                'name' => 'EXPENDITURE'
             ],
-            [
-                'code' => '5',
-                'name' => 'Expenditues'
-            ]
         ];
     }
 }

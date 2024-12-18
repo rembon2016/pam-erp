@@ -8,7 +8,7 @@
     </x:layout.breadcrumb.wrapper>
 
     <x:layout.card.wrapper>
-        <x-shipment.detail-card :shipment="$shipment" />
+        <x-shipment.detail-card :shipment="$shipment" :type="$type" />
     </x:layout.card.wrapper>
 @endsection
 

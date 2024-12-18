@@ -334,28 +334,6 @@ INSERT INTO "usrs"."roles" VALUES ('9d77dcc7-eb4b-4353-afce-1f866dba9d40', 'sale
 INSERT INTO "usrs"."roles" VALUES ('9d77dcc8-235a-42e0-83a9-c94eb07ec446', 'finance', 'web', '2024-11-12 03:15:07', '2024-11-12 03:15:07');
 
 -- ----------------------------
--- Table structure for users
--- ----------------------------
-DROP TABLE IF EXISTS "usrs"."users";
-CREATE TABLE "usrs"."users" (
-  "id" uuid NOT NULL,
-  "first_name" varchar(255) COLLATE "pg_catalog"."default",
-  "last_name" varchar(255) COLLATE "pg_catalog"."default",
-  "profile_image" varchar(255) COLLATE "pg_catalog"."default",
-  "email" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "password" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "email_verified_at" timestamp(0),
-  "sales_office_id" varchar(255) COLLATE "pg_catalog"."default",
-  "created_at" timestamp(0),
-  "updated_at" timestamp(0),
-  "deleted_at" timestamp(0),
-  "created_by" varchar(255) COLLATE "pg_catalog"."default",
-  "updated_by" varchar(255) COLLATE "pg_catalog"."default",
-  "deleted_by" varchar(255) COLLATE "pg_catalog"."default"
-)
-;
-
--- ----------------------------
 -- Records of users
 -- ----------------------------
 INSERT INTO "usrs"."users" VALUES ('9d77dcc8-f58d-423c-b90f-ed86b0649e0b', 'Retta', 'Klein', 'https://via.placeholder.com/640x480.png/008844?text=excepturi', 'admin@pamcargo.com', '$2y$12$xCnocsG50KTKkyxtF.BfNeTgdqJlKLd4BzSqG6uZURPA10sURYm2C', '2024-11-12 03:15:07', NULL, '2024-11-12 03:15:08', '2024-11-12 03:15:08', NULL, NULL, NULL, NULL);

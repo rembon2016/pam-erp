@@ -29,6 +29,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->redirectGuestsTo(redirect: fn (Request $request) => route('auth.login'));
         $middleware->redirectUsersTo(redirect: fn (Request $request) => route('dashboard'));
+
+        $middleware->validateCsrfTokens(except: [
+            'http://localhost:8000/login-operation-to-erp'
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

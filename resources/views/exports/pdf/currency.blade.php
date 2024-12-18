@@ -57,10 +57,6 @@
                 <th>No</th>
                 <th>Currency Code</th>
                 <th>Currency Name</th>
-                <th>Currency Date</th>
-                <th>Buy Rate</th>
-                <th>Sell Rate</th>
-                <th>Notes</th>
             </tr>
         </thead>
         <tbody>
@@ -69,10 +65,6 @@
                     <td align="center">{{ $loop->iteration }}</td>
                     <td>{{ $item->currency_code }}</td>
                     <td>{{ $item->currency_name }}</td>
-                    <td>{{ $item->currency_date?->format('d-m-Y') }}</td>
-                    <td>{{ $item->buy_rate }}</td>
-                    <td>{{ $item->sell_rate }}</td>
-                    <td>{{ $item->notes }}</td>
                 </tr>
             @endforeach
         </tbody>

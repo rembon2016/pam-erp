@@ -11,7 +11,7 @@
     'disabled' => $disabled ?? false
 ])
 
-<div class='{{ $isFilterShipment ? "filter-group" : "mb-10" }}'>
+<div class='{{ $isFilterShipment ? "filter-group" : "mb-3" }}'>
     <label for="#{{ $name }}" class='form-label {{ $required ? 'required' : '' }}'>{{ $label }}</label>
     <select class="@if($errors->has($name)) is-invalid @endif form-select {{ $isFilterShipment ? 'filter-shipment-select' : '' }}"
         name="{{ $name }}"

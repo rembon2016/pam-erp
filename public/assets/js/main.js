@@ -19,9 +19,11 @@ function syncSelect2Element(elementWrapper, executedFunction) {
         executedFunction();
     }
 
-    $(elementWrapper).find('select[data-control="select2"]').each(function (index) {
-        $(this).select2();
-    });
+    setTimeout(() => {
+        $(elementWrapper).find('select[data-control="select2"]').each(function (index) {
+            $(this).select2();
+        });
+    }, 500);
 }
 
 function clearValueInDynamicRow(rowItem) {

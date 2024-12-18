@@ -86,7 +86,7 @@ final class ShipmentController extends Controller
         } else {
             $base = env('API_DXB');
         }
-        
+
         $type = $request->type;
         if($type == "seaair"){
             $shipment_by = 'SEAAIR';
@@ -109,11 +109,11 @@ final class ShipmentController extends Controller
         }
 
         $apiUrl = $base . "/api/shippinginstruction";
-        
+
         // Correct page calculation
         $page = ($request->input('start') / $request->input('length')) + 1;
         $limit = $request->input('length');
-        
+
         $search = $request->input('search');
         if (is_array($search)) {
             $search = $search['value'] ?? '';
@@ -171,7 +171,7 @@ final class ShipmentController extends Controller
         if ($request->has('etd')) {
             $etdValue = is_array($request->etd) ? implode(',', $request->etd) : $request->etd;
             $params['etd'] = $etdValue;
-            
+
             $queryString = http_build_query(array_filter($params));
             $queryString = str_replace('etd=', 'etd[]=', $queryString);
             $queryString = str_replace('%2C', ',', $queryString);
@@ -179,13 +179,13 @@ final class ShipmentController extends Controller
         }
 
         $queryString = http_build_query(array_filter($params));
-        $queryString = str_replace('etd=', 'etd[]=', $queryString); 
+        $queryString = str_replace('etd=', 'etd[]=', $queryString);
         $fullUrl = $apiUrl . '?' . $queryString;
 
         $response = Http::withHeaders([
             'Accept' => 'application/json',
         ])->get($fullUrl);
-       
+
 
         if ($response->successful()) {
             $apiData = $response->json();
@@ -463,7 +463,7 @@ final class ShipmentController extends Controller
         $shipment = $shipmentResponse->successful() ? $shipmentResponse->json()['data'] : null;
 
         $orderDetailResponse = Http::get($base . "/api/orderdetail/{$uuid}");
-        
+
         if (!$orderDetailResponse->successful()) {
             abort(404);
         }
@@ -488,7 +488,7 @@ final class ShipmentController extends Controller
             $loadingPlanResponse = Http::get($url);
 
             if (!$loadingPlanResponse->successful()) {
-                abort(404); 
+                abort(404);
             }
             $loadingPlan = $loadingPlanResponse->json()['data'] ?? null;
 
@@ -563,7 +563,7 @@ final class ShipmentController extends Controller
             $chatOrigin = null;
         }
 
-        $chatDxbResponse = Http::get($base . "/api/notedsection?job_id={$uuid}&chat_section=2"); 
+        $chatDxbResponse = Http::get($base . "/api/notedsection?job_id={$uuid}&chat_section=2");
         if ($chatDxbResponse->successful()) {
             $chatDxb = $chatDxbResponse->json()['data'] ?? null;
         } else {
@@ -588,7 +588,7 @@ final class ShipmentController extends Controller
             $shipment['onBoardDate'] = $onboardData['tgl_aktual'] ?? null;
         }
 
-        // Get actual arrival date (status_id = 30, Arrived In Jebel Ali/Arrived in Transit Hub) 
+        // Get actual arrival date (status_id = 30, Arrived In Jebel Ali/Arrived in Transit Hub)
         $actualArrivalResponse = Http::get($base . "/api/historijob", [
             'status_id' => '30',
             'job_id' => $uuid,
@@ -630,7 +630,7 @@ final class ShipmentController extends Controller
 
         $data = $request->validate([
             'job_id' => 'required|array',
-            'type_document' => 'required|array', 
+            'type_document' => 'required|array',
             'prefix' => 'required|string',
             'type' => 'required|string'
         ]);

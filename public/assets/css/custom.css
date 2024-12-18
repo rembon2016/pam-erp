@@ -439,6 +439,26 @@ table.text-normal :is(td, tr){
     opacity: .75;
 }
 
+.custom-tabs {
+    display: inline-flex;
+    flex-direction: flex;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid #13BA18;
+}
+
+.custom-tab-link, .custom-tab-link:hover, .cutomer-tab-link:visited {
+    padding: 15px 25px;
+    border-radius: 10px;
+    color: #13BA18;
+}
+
+.custom-tab-link.active {
+    background-color: #13BA18;
+    color: #fff;
+}
+
+
 .text-action-warning {
     color: #C56A14;
 }

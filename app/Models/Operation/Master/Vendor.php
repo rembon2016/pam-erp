@@ -14,6 +14,8 @@ class Vendor extends Model
      */
     protected $table = 'master.vendor';
 
+    protected $keyType = 'string';
+
     /**
      * Indicates that this model does not have created_at and updated_at timestamp columns.
      *

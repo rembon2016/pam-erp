@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\Billing;
 
+use App\Service\Finance\GeneralWise\GeneralWiseService;
+use App\Service\Finance\MasterData\CustomerService;
+use App\Service\Finance\MasterData\ServiceTypeService;
 use Illuminate\View\View;
 use App\Functions\Utility;
 use Illuminate\Http\Request;
@@ -19,6 +22,9 @@ final class InvoiceController extends Controller
 {
     public function __construct(
         protected InvoiceService $invoiceService,
+        protected GeneralWiseService $generalWiseService,
+        protected ServiceTypeService $serviceTypeService,
+        protected CustomerService $customerService
     ) {}
     public function index(): View
     {
@@ -53,13 +59,35 @@ final class InvoiceController extends Controller
 
     public function createNotLinked(): View
     {
+        $service_types = $this->serviceTypeService->getServiceTypes();
         $months = Utility::getListOfMonths();
         $years = Utility::getListOfYears(25);
+        $vessels = $this->generalWiseService->getVessels();
+        $origins = $this->generalWiseService->getOrigins();
+        $voyages = $this->generalWiseService->getVoyages();
 
-        return view('pages.finance.billing.invoice.form-not-linked', compact('months', 'years'));
+        return view('pages.finance.billing.invoice.form-not-linked', compact('months', 'years', 'service_types', 'vessels', 'origins', 'voyages'));
     }
 
     public function storeNotLinked(Request $request): RedirectResponse
+    {
+        dd($request);
+    }
+
+    public function createLinked(): View
+    {
+        $service_types = $this->serviceTypeService->getServiceTypes();
+        $months = Utility::getListOfMonths();
+        $years = Utility::getListOfYears(15);
+        $vessels = $this->generalWiseService->getVessels();
+        $origins = $this->generalWiseService->getOrigins();
+        $voyages = $this->generalWiseService->getVoyages();
+        $customers = $this->customerService->getCustomers();
+
+        return view('pages.finance.billing.invoice.form-linked', compact('months', 'years', 'service_types', 'customers', 'vessels', 'origins', 'voyages'));
+    }
+
+    public function storeLinked(Request $request): RedirectResponse
     {
         dd($request);
     }

@@ -314,6 +314,10 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/filter/destination', [ShipmentController::class, 'destination'])->name('destination');
                 Route::get('/filter/vessel', [ShipmentController::class, 'vessel'])->name('vessel');
                 Route::get('/filter/eta', [ShipmentController::class, 'etamerge'])->name('eta');
+                Route::get('/filter/statusShipment', [ShipmentController::class, 'statusShipment'])->name('statusShipment');
+                Route::get('/filter/carrier', [ShipmentController::class, 'carrier'])->name('carrier');
+                Route::get('/filter/shipper', [ShipmentController::class, 'shipper'])->name('shipper');
+                Route::get('/filter/consignee', [ShipmentController::class, 'consignee'])->name('consignee');
                 Route::get('/list', [ShipmentController::class, 'list'])->name('list');
                 Route::get('/{type}', [ShipmentController::class, 'index'])->name('index');
                 Route::get('/{type}/{uuid}', [ShipmentController::class, 'detail'])->name('detail');
@@ -333,6 +337,8 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/list', [InvoiceController::class, 'list'])->name('list');
                 Route::get('/create/not-linked-billing-customer', [InvoiceController::class, 'createNotLinked'])->name('create.not-linked-billing-customer');
                 Route::post('/not-linked-billing-customer', [InvoiceController::class, 'storeNotLinked'])->name('store.not-linked-billing-customer');
+                Route::get('/create/linked-billing-customer', [InvoiceController::class, 'createLinked'])->name('create.linked-billing-customer');
+                Route::post('/linked-billing-customer', [InvoiceController::class, 'storeLinked'])->name('store.linked-billing-customer');
             });
         });
 
@@ -347,6 +353,7 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/', [SeaAirController::class, 'index'])->name('index');
                 Route::get('/list', [SeaAirController::class, 'list'])->name('list');
                 Route::post('/store', [SeaAirController::class, 'store'])->name('store');
+                Route::put('/update/{id}', [SeaAirController::class, 'update'])->name('update');
                 Route::get('/show/{id}', [SeaAirController::class, 'show'])->name('show');
                 Route::get('/cost/{id}', [SeaAirController::class, 'cost'])->name('cost');
                 Route::get('/export/csv', [SeaAirController::class, 'exportCsv'])->name('export.csv');

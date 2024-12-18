@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\HandleTableTimestamps;
 
 final class Costing extends Model
 {
     use HasFactory,
         HasUuids,
-        SoftDeletes;
+        SoftDeletes,
+        HandleTableTimestamps;
 
     protected $guarded = ['id'];
     protected $table = 'finance.costing';
@@ -22,4 +24,31 @@ final class Costing extends Model
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
+
+    public function truck()
+    {
+        return $this->hasMany(CostingVendorTrucking::class, 'costing_id', 'id');
+    }
+
+    public function port()
+    {
+        return $this->hasOne(CostingVendorPort::class, 'costing_id', 'id');
+    }
+
+    public function agent()
+    {
+        return $this->hasMany(CostingVendorAgent::class, 'costing_id', 'id');
+    }
+
+    public function special()
+    {
+        return $this->hasMany(CostingSpecial::class, 'costing_id', 'id');
+    }
+
+    public function head()
+    {
+        return $this->hasMany(CostingHead::class, 'costing_id', 'id');
+    }
+
+
 }

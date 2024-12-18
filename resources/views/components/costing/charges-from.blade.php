@@ -8,10 +8,12 @@
 </style>
 @endpush
 <div>
-
-
     <!-- Form Container -->
     <div id="{{ $type }}-charges-form-{{ $k }}">
+        {{-- <div class="d-flex align-items-center justify-content-between gap-2"> --}}
+            {{-- @if (isset($ctd) && !empty($ctd))
+                <button class="btn custom-btn custom-btn-primary btn-sm">CTD NO: {{ $ctd->ctd_number }}</button>
+            @endif --}}
 
         <div style="display: flex; align-items: center; justify-content: end;">
          @if($costing?->status != 2)

@@ -14,6 +14,11 @@ class Vendor extends Model
      */
     protected $table = 'master.vendor';
 
+    /**
+     * The database keytype for the master vendor
+     *
+     * @var string
+     */
     protected $keyType = 'string';
 
     /**
@@ -35,7 +40,7 @@ class Vendor extends Model
      *
      * @var array
      */
-    protected $fillable = ['id'];
+    protected $guarded = ['id'];
 
     /**
      * Appends the specific attribute to the model.

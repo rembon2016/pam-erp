@@ -316,8 +316,7 @@
                             class="form-select selectLists countryList"
                             id="por_country_id_1"
                             data-placeholder="Select an option"
-                            style="min-width: 100%;"
-                            required>
+                            style="min-width: 100%;">
                             <option value="" selected hidden>
                                 Country
                             </option>
@@ -336,7 +335,6 @@
                             id="por_port_id_1"
                             data-placeholder="Select an option"
                             style="min-width: 100%;"
-                            required
                             disabled>
                             <option value="" selected hidden>
                                 Port
@@ -349,8 +347,7 @@
                             class="form-select selectLists countryList"
                             id="fdc_country_id_1"
                             data-placeholder="Select an option"
-                            style="min-width: 100%;"
-                            required>
+                            style="min-width: 100%;">
                             <option value="" selected hidden>
                                 Country
                             </option>
@@ -369,7 +366,6 @@
                             id="fdc_port_id_1"
                             data-placeholder="Select an option"
                             style="min-width: 100%;"
-                            required
                             disabled>
                             <option value="" selected hidden>
                                 Port
@@ -382,8 +378,7 @@
                             name="service_data[0][tos]"
                             class="form-control"
                             value=""
-                            style="min-width: 100%;"
-                            required>
+                            style="min-width: 100%;">
                     </div>
                     <div class="tableServiceForm-box">
                         <input
@@ -391,16 +386,14 @@
                             name="service_data[0][tos_name]"
                             class="form-control"
                             value=""
-                            style="min-width: 100%;"
-                            required>
+                            style="min-width: 100%;">
                     </div>
                     <div class="tableServiceForm-box" style="min-width: 150px">
                         <select
                             name="service_data[0][transit]"
                             class="form-select selectTransit"
                             id="select_transit_1"
-                            style="min-width: 100%;"
-                            required>
+                            style="min-width: 100%;">
                             <option value="" selected hidden>
                                 Transit
                             </option>
@@ -427,8 +420,7 @@
                             class="form-select selectLists carrierList"
                             id="carrier_id_1"
                             data-placeholder="Select an option"
-                            style="min-width: 100%;"
-                            required>
+                            style="min-width: 100%;">
                             <option value="" selected hidden>
                                 Carrier
                             </option>
@@ -457,8 +449,7 @@
                             name="service_data[0][party]"
                             class="form-control"
                             value=""
-                            style="min-width: 100%;"
-                            required>
+                            style="min-width: 100%;">
                     </div>
                     <div class="tableServiceForm-box">
                         <input
@@ -466,8 +457,7 @@
                             name="service_data[0][service_note]"
                             class="form-control"
                             value=""
-                            style="min-width: 100%;"
-                            required>
+                            style="min-width: 100%;">
                     </div>
                 </div>
                 <div class="collapse accordion-collapse chargeTableRow" id="r1" data-bs-parent=".tableServiceForm">

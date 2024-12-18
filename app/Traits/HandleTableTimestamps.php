@@ -16,25 +16,26 @@ trait HandleTableTimestamps
      * This trait should be used on Eloquent models that need to track the user who
      * performed certain actions on the model.
      */
-    protected static function bootHandleTableTimestamps()
+    public static function bootHandleTableTimestamps()
     {
-
         if (Auth::check()) {
+            $userEmail = Auth::user()->email;
+
             // Action after eloquent model was created
-            static::created(function ($model) {
-                $model->created_by ??= Auth::user()->email;
+            static::created(function ($model) use ($userEmail) {
+                $model->created_by = $userEmail;
                 $model->save();
             });
 
             // Action after eloquent model was updated
-            static::updating(function ($model) {
-                $model->updated_by ??= Auth::user()->email;
+            static::updating(function ($model) use ($userEmail) {
+                $model->updated_by = $userEmail;
                 $model->save();
             });
 
             // Action after eloquent model was deleted
-            static::deleted(function ($model) {
-                $model->deleted_by ??= Auth::user()->email;
+            static::deleted(function ($model) use ($userEmail) {
+                $model->deleted_by = $userEmail;
                 $model->save();
             });
         }

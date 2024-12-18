@@ -1,16 +1,14 @@
 @foreach($bl as $k => $row)
 
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <ul class="nav nav-tabs costing-tabs px-3" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="bl-tab" data-bs-toggle="tab" data-bs-target="#bl-tab-{{ $k }}" type="button" role="tab">BL No: {{ $row->bl_number }}</button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="ctd-tab" data-bs-toggle="tab" data-bs-target="#ctd-tab-{{ $k }}" type="button" role="tab">CTD</button>
         </li>
-
-
     </ul>
-    <div class="tab-content p-5 bg-white border border-top-0">
+    <div class="tab-content p-5 bg-white costing-tab-content">
         <div class="tab-pane fade show active" id="bl-tab-{{ $k }}" role="tabpanel">
             <x-costing.charges-from :costing="$costing" :k="$k" type="bl" :vendor="$vendorLine" :charge="$charge" :currency="$currency" />
 
@@ -23,8 +21,5 @@
             <x-costing.charges-from :costing="$costing" :k="$j" type="ctd" :vendor="$vendorLine" :charge="$charge" :currency="$currency" />
           @endforeach
         </div>
-
-
     </div>
-
 @endforeach

@@ -1,3 +1,7 @@
+.form-control[readonly], .form-select[readonly] {
+    background-color: var(--kt-input-disabled-bg);
+}
+
 .uppercase{
     text-transform: uppercase;
 }
@@ -458,6 +462,27 @@ table.text-normal :is(td, tr){
     color: #fff;
 }
 
+.costing-tabs {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    border: none;
+}
+
+.costing-tabs .nav-link {
+    background-color: #DEDEDE;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    padding: 7.5px 15px;
+}
+
+.costing-tabs .nav-link.active {
+    background-color: #18BA43;
+    color: #fff;
+}
 
 .text-action-warning {
     color: #C56A14;

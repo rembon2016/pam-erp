@@ -85,15 +85,16 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="import" role="tabpanel">
+                <div class="tab-pane fade row" id="import" role="tabpanel">
                     <x-costing.special-import :costing="$costing" :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
-                     <div class="col-md-4">
-                    <x:form.input label="Transaction Date" placeholder="Transaction Date" name="transaction_date_import" type="date" :model="$joborder" />
+                    <div class="d-flex align-items-center justify-content-start mb-5">
+                        <x:form.input label="Transaction Date" placeholder="Transaction Date" name="transaction_date_import" type="date" :model="$joborder" />
                     </div>
+
                     @if($costing == null)
                     <x-costing.bl-form :costing="$costing" :bl="$bl" :costing="$costing" :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
                     @else
-                    <x-costing.bl-form-edit :bl="$bl" :costing="$costing" :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
+                        <x-costing.bl-form-edit :bl="$bl" :costing="$costing" :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
                     @endif
                 </div>
                 <div class="tab-pane fade" id="export" role="tabpanel">

@@ -8,13 +8,17 @@
 </style>
 @endpush
 <div>
-    <div class="mb-3">
+    <div class="mb-5">
         <label class="form-label">Add Special Charges?</label>
-        <div>
-            <input type="radio" id="special_charges_no" name="special_charges" value="no" checked>
-            <label for="special_charges_no">No</label>
-            <input type="radio" id="special_charges_yes" name="special_charges" value="yes">
-            <label for="special_charges_yes">Yes</label>
+        <div class="d-flex align-items-center gap-4">
+            <div class="d-flex align-items-center gap-1">
+                <input type="radio" id="special_charges_no" name="special_charges" value="no" checked>
+                <label for="special_charges_no">No</label>
+            </div>
+            <div class="d-flex align-items-center gap-1">
+                <input type="radio" id="special_charges_yes" name="special_charges" value="yes">
+                <label for="special_charges_yes">Yes</label>
+            </div>
         </div>
     </div>
 

@@ -137,6 +137,7 @@ final class CustomerController extends Controller
     public function edit(string $id): RedirectResponse|View
     {
         $customerResponse = $this->customerService->getCustomerById(id: $id);
+
         $data = [
             'page' => 'Edit Customer',
             'action' => route('finance.master-data.customer.update', $id),

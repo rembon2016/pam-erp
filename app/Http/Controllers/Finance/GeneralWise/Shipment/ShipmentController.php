@@ -480,13 +480,19 @@ final class ShipmentController extends Controller
         if ($type == 'air') {
             $loadingPlanId = $shipment['loading_id'] ?? null;
             $baseEnv = 'API_ORIGIN';
-        } else {
+            $loadingPlanEndpoint = "/api/loadingplan/";
+        } else if ($type == 'seaair') {
             $loadingPlanId = $shipment['loading_plan_dxb'] ?? null;
             $baseEnv = 'API_DXB';
+            $loadingPlanEndpoint = "/api/loadingplan/";
+        } else {
+            $loadingPlanId = $shipment['loading_id'] ?? null;
+            $baseEnv = 'API_DXB';
+            $loadingPlanEndpoint = "/api/loadingplanlocal/";
         }
-        
+
         if ($loadingPlanId) {
-            $url = env($baseEnv) . "/api/loadingplan/{$loadingPlanId}";
+            $url = env($baseEnv) . $loadingPlanEndpoint . $loadingPlanId;
             $loadingPlanResponse = Http::get($url);
 
             if (!$loadingPlanResponse->successful()) {
@@ -601,6 +607,14 @@ final class ShipmentController extends Controller
             $shipment['actualArrivalDate'] = $actualArrivalData['tgl_aktual'] ?? null;
         }
 
+        // Get local transport data
+        $localTransportResponse = Http::get($base . "/api/localtransport/{$uuid}");
+        if ($localTransportResponse->successful()) {
+            $localTransport = $localTransportResponse->json()['data'] ?? null;
+        } else {
+            $localTransport = null;
+        }
+
         try {
             $orderDetail = $orderDetailResponse->json()['data'] ?? null;
             $dimension = $dimensionResponse->json()['data'] ?? null;
@@ -613,6 +627,7 @@ final class ShipmentController extends Controller
         $shipment['dimension'] = $dimension;
         $shipment['loading_plan'] = $loadingPlan ?? null;
         $shipment['loading_plan_detail'] = $loadingPlanDetail ?? null;
+        $shipment['loading_plan_local'] = ($type != 'air' && $type != 'seaair') ? $loadingPlan : null;  
         $shipment['jobtruckdelivery'] = $jobtruckdelivery ?? null;
         $shipment['destination_handling_agent'] = $controlOffice ?? null;
         $shipment['destination_partner'] = $destinationPartner ?? null;
@@ -622,6 +637,7 @@ final class ShipmentController extends Controller
         $shipment['chat_origin'] = $chatOrigin ?? null;
         $shipment['chat_dxb'] = $chatDxb ?? null;
         $shipment['chat_agent'] = $chatAgent ?? null;
+        $shipment['local_transport'] = $localTransport ?? null;
         
         return view('pages.finance.general-wise.shipment.detail', compact('shipment', 'type'));
     }

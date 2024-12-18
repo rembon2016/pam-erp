@@ -136,18 +136,18 @@ final class AgentContractService
         foreach ($serviceData as $serviceKey => $service) {
             $serviceContractData = [
                 'service_type_id' => $service['service'],
-                'por_country_id' => $service['por_country'],
-                'por_port_id' => $service['por_port'],
-                'fdc_country_id' => $service['fdc_country'],
-                'fdc_port_id' => $service['fdc_port'],
-                'tos' => $service['tos'],
-                'tos_name' => $service['tos_name'],
-                'transit_via' => $service['transit'] ?? null,
-                'manual_input_transit' => $service['manual_input_transit'] ?? null,
-                'carrier_id' => $service['carrier_id'],
-                'carrier_name' => $service['carrier_name'],
-                'party' => $service['party'],
-                'notes' => $service['service_note'],
+                'por_country_id' => isset($service['por_country']) ? $service['por_country'] : null,
+                'por_port_id' => isset($service['por_port']) ? $service['por_port'] : null,
+                'fdc_country_id' => isset($service['fdc_country']) ? $service['fdc_country'] : null,
+                'fdc_port_id' => isset($service['fdc_port']) ? $service['fdc_port'] : null,
+                'tos' => isset($service['tos']) ? $service['tos'] : null,
+                'tos_name' => isset($service['tos_name']) ? $service['tos_name'] : null,
+                'transit_via' => isset($service['transit']) ? $service['transit'] : null,
+                'manual_input_transit' => isset($service['manual_input_transit']) ? $service['manual_input_transit'] : null,
+                'carrier_id' => isset($service['carrier_id']) ? $service['carrier_id'] : null,
+                'carrier_name' => isset($service['carrier_name']) ? $service['carrier_name'] : null,
+                'party' => isset($service['party']) ? $service['party'] : null,
+                'notes' => isset($service['service_note']) ? $service['service_note'] : null,
             ];
 
             if (!empty($service['service_id'])) {
@@ -182,44 +182,40 @@ final class AgentContractService
     private function syncServiceContractChargeData($arrayOfCharges, $serviceContract, $agentContract): void
     {
         foreach ($arrayOfCharges as $charge) {
-            if (!isset($charge['amount_per_unit'])) $charge['amount_per_unit'] = null;
-            if (!isset($charge['minimum_amount'])) $charge['minimum_amount'] = null;
-            if (!isset($charge['via_port'])) $charge['via_port'] = null;
-
             $chargeData = [
                 'agent_contract_service_id' => $serviceContract->id,
                 'agent_contract_id' => $agentContract->id,
-                'charge_id' => $charge['charge_id'],
-                'charge_name' => $charge['charge_name'],
-                'currency_id' => $charge['currency'],
-                'unit_id' => $charge['unit_id'],
-                'amount_per_unit' => $charge['amount_per_unit'],
-                'minimum_amount' => $charge['minimum_amount'],
-                'por' => $charge['por'],
-                'fdc' => $charge['fdc'],
-                'pp_cc' => $charge['pp_cc'],
-                'routed' => $charge['routed'] ?? null,
-                'imco' => $charge['imco'],
-                'commodity' => $charge['commodity'],
-                'crn' => $charge['c_r_n'],
-                'loading_bay' => $charge['loading_bay'],
-                'valid_from_date' => $charge['valid_from_date'],
-                'valid_to_date' => $charge['valid_to_date'],
+                'charge_id' => isset($charge['charge_id']) ? $charge['charge_id'] : null,
+                'charge_name' => isset($charge['charge_name']) ? $charge['charge_name'] : null,
+                'currency_id' => isset($charge['currency']) ? $charge['currency'] : null,
+                'unit_id' => isset($charge['unit_id']) ? $charge['unit_id'] : null,
+                'amount_per_unit' => isset($charge['amount_per_unit']) ? $charge['amount_per_unit'] : null,
+                'minimum_amount' => isset($charge['minimum_amount']) ? $charge['minimum_amount'] : null,
+                'por' => isset($charge['por']) ? $charge['por'] : null,
+                'fdc' => isset($charge['fdc']) ? $charge['fdc'] : null,
+                'pp_cc' => isset($charge['pp_cc']) ? $charge['pp_cc'] : null,
+                'routed' => isset($charge['routed']) ? $charge['routed'] : null,
+                'imco' => isset($charge['imco']) ? $charge['imco'] : null,
+                'commodity' => isset($charge['commodity']) ? $charge['commodity'] : null,
+                'crn' => isset($charge['c_r_n']) ? $charge['c_r_n'] : null,
+                'loading_bay' => isset($charge['loading_bay']) ? $charge['loading_bay'] : null,
+                'valid_from_date' => isset($charge['valid_from_date']) ? $charge['valid_from_date'] : null,
+                'valid_to_date' => isset($charge['valid_to_date']) ? $charge['valid_to_date'] : null,
 
-                'from_0_to_44' => $charge['from_0_to_44'] ?? 0,
-                'from_45_to_99' => $charge['from_45_to_99'] ?? 0,
-                'from_100_to_299' => $charge['from_100_to_299'] ?? 0,
-                'from_300_to_499' => $charge['from_300_to_499'] ?? 0,
-                'from_500_to_999' => $charge['from_500_to_999'] ?? 0,
-                'from_1000_to_infinity' => $charge['from_1000_to_infinity'] ?? 0,
+                'from_0_to_44' => isset($charge['from_0_to_44']) ? $charge['from_0_to_44'] : 0,
+                'from_45_to_99' => isset($charge['from_45_to_99']) ? $charge['from_45_to_99'] : 0,
+                'from_100_to_299' => isset($charge['from_100_to_299']) ? $charge['from_100_to_299'] : 0,
+                'from_300_to_499' => isset($charge['from_300_to_499']) ? $charge['from_300_to_499'] : 0,
+                'from_500_to_999' => isset($charge['from_500_to_999']) ? $charge['from_500_to_999'] : 0,
+                'from_1000_to_infinity' => isset($charge['from_1000_to_infinity']) ? $charge['from_1000_to_infinity'] : 0,
 
-                'twenty_feet' => $charge['20_feet'] ?? 0,
-                'forty_feet' => $charge['40_feet'] ?? 0,
-                'forty_five_feet_hc' => $charge['45_feet_hc'] ?? 0,
-                'forty_five_feet' => $charge['45_feet'] ?? 0,
+                'twenty_feet' => isset($charge['20_feet']) ? $charge['20_feet'] : 0,
+                'forty_feet' => isset($charge['40_feet']) ? $charge['40_feet'] : 0,
+                'forty_five_feet_hc' => isset($charge['45_feet_hc']) ? $charge['45_feet_hc'] : 0,
+                'forty_five_feet' => isset($charge['45_feet']) ? $charge['45_feet'] : 0,
 
-                'manual_input_routed' => $charge['manual_input_routed'] ?? null,
-                'via_port' => $charge['via_port'],
+                'manual_input_routed' => isset($charge['manual_input_routed']) ? $charge['manual_input_routed'] : null,
+                'via_port' => isset($charge['via_port']) ? $charge['via_port'] : null,
             ];
 
             if (!empty($charge['contract_agent_charge_id'])) {

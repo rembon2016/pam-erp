@@ -4,20 +4,23 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
-use App\Functions\ObjectResponse;
+use Illuminate\Support\Str;
 use App\Models\Finance\Customer;
-use App\Models\Finance\CustomerAccount;
-use App\Models\Finance\CustomerAddress;
+use App\Functions\ObjectResponse;
+use Illuminate\Support\Facades\DB;
+use App\Models\Finance\CustomerVat;
 use App\Models\Finance\CustomerBank;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Finance\CustomerEmail;
 use App\Models\Finance\CustomerSales;
-use App\Models\Finance\CustomerVat;
-use App\Models\Operation\Master\Carrier;
-use App\Models\Operation\Master\CustomerBilling;
-use App\Models\Operation\Master\CustomerType;
+use App\Models\Finance\CustomerAccount;
+use App\Models\Finance\CustomerAddress;
 use App\Models\Operation\Master\Vendor;
+use App\Models\Operation\Master\Carrier;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
+use App\Models\Operation\Master\CustomerType;
+use App\Models\Operation\Master\CustomerBilling;
+use App\Models\Finance\CustomerType as FinanceCustomerType;
 
 final class CustomerService
 {
@@ -106,6 +109,8 @@ final class CustomerService
 
         } catch (\Throwable $th) {
             DB::rollBack();
+
+            dd($th);
 
             return ObjectResponse::error(
                 message: $th->getMessage(),
@@ -339,65 +344,78 @@ final class CustomerService
     public function storeDataBasedOnCustomerType(array $customerTypesDto, Customer $customerModel)
     {
         $customerTypeModel = CustomerType::whereIn('customer_type_name', $customerTypesDto)->get();
+        $customerTypes = collect($customerTypesDto)->map(function ($item) use ($customerModel) {
+            return [
+                'id' => Str::uuid(),
+                'customer_id' => $customerModel->id,
+                'name' => $item,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'created_by' => Auth::user()->email,
+                'updated_by' => Auth::user()->email,
+            ];
+        })->toArray();
+
+        FinanceCustomerType::query()->forceDelete();
+        FinanceCustomerType::insert($customerTypes);
+
+        $customerBillingTypeData = array();
+        $carrierAgentTypeData = array();
+        $otherTypeData = array();
+
         foreach ($customerTypesDto as $key => $customerType) {
             $customerTypeId = $customerTypeModel[$key]->customer_type_id;
-            $customerModel->customerTypes()->forceDelete();
-            $customerModel->customerTypes()->create(['name' => $customerType]);
             if ($customerType == 'Billing Customer') {
-                $customerBilling = CustomerBilling::query()
-                    ->where('finance_customer_id', $customerModel->id)
-                    ->first();
-
-                empty($customerBilling)
-                    ? CustomerBilling::create([
-                        'customer_code' => $customerModel->customer_code,
-                        'customer_name' => $customerModel->customer_name,
-                        'customer_type' => $customerTypeId,
-                        'finance_customer_id' => $customerModel->id
-                    ])
-                    : $customerBilling->update([
-                        'customer_code' => $customerModel->customer_code,
-                        'customer_name' => $customerModel->customer_name,
-                        'customer_type' => $customerTypeId,
-                        'finance_customer_id' => $customerModel->id
-                    ]);
-
+                $customerBillingTypeData[] = [
+                    'customer_id' => Str::uuid(),
+                    'customer_code' => $customerModel->customer_code,
+                    'customer_name' => $customerModel->customer_name,
+                    'customer_type' => $customerTypeId,
+                    'finance_customer_id' => $customerModel->id,
+                    'date_created' => now(),
+                    'date_modified' => now(),
+                    'created_by' => Auth::user()->email,
+                    'status' => 1,
+                ];
             } else if ($customerType == 'Carrier Agent') {
-                $carrier = Carrier::query()
-                    ->where('finance_customer_id', $customerModel->id)
-                    ->first();
-
-                empty($carrier)
-                    ? Carrier::create([
-                        'carrier_code' => $customerModel->customer_code,
-                        'carrier_name' => $customerModel->customer_name,
-                        'finance_customer_id' => $customerModel->id
-                    ])
-                    : $carrier->update([
-                        'carrier_code' => $customerModel->customer_code,
-                        'carrier_name' => $customerModel->customer_name,
-                        'finance_customer_id' => $customerModel->id
-                    ]);
-
+                $carrierAgentTypeData[] = [
+                    'carrier_id' => Str::uuid(),
+                    'carrier_code' => $customerModel->customer_code,
+                    'carrier_name' => $customerModel->customer_name,
+                    'finance_customer_id' => $customerModel->id,
+                    'date_created' => now(),
+                    'date_modified' => now(),
+                    'created_by' => Auth::user()->email,
+                    'status' => 1,
+                ];
             } else {
-                $vendor = Vendor::query()
-                    ->where('finance_customer_id', $customerModel->id)
-                    ->first();
-
-                empty($vendor)
-                    ? Vendor::create([
-                        'vendor_code' => $customerModel->customer_code,
-                        'vendor_name' => $customerModel->customer_name,
-                        'vendor_type_id' => $customerTypeId,
-                        'finance_customer_id' => $customerModel->id
-                    ])
-                    : $vendor->update([
-                        'vendor_code' => $customerModel->customer_code,
-                        'vendor_name' => $customerModel->customer_name,
-                        'vendor_type_id' => $customerTypeId,
-                        'finance_customer_id' => $customerModel->id
-                    ]);
+                $otherTypeData[] = [
+                    'vendor_id' => Str::uuid(),
+                    'vendor_code' => $customerModel->customer_code,
+                    'vendor_name' => $customerModel->customer_name,
+                    'vendor_type_id' => $customerTypeId,
+                    'finance_customer_id' => $customerModel->id,
+                    'created_date' => now(),
+                    'date_modified' => now(),
+                    'created_by' => Auth::user()->email,
+                    'status' => 1,
+                ];
             }
+        }
+
+        if (!empty($customerBillingTypeData)) {
+            CustomerBilling::where('finance_customer_id', $customerModel->id)->delete();
+            CustomerBilling::insert($customerBillingTypeData);
+        }
+
+        if (!empty($carrierAgentTypeData)) {
+            Carrier::where('finance_customer_id', $customerModel->id)->delete();
+            Carrier::insert($carrierAgentTypeData);
+        }
+
+        if (!empty($otherTypeData)) {
+            Vendor::where('finance_customer_id', $customerModel->id)->delete();
+            Vendor::insert($otherTypeData);
         }
     }
 }

@@ -47,7 +47,7 @@
                 <x:form.select label="Currency" name="currency_id" defaultOption="Select Currency">
                     @foreach ($currencies as $currency)
                         <option value="{{ $currency->id }}" @selected(old('currency_id', @$customer->currency_id) == $currency->id)>
-                            {{ $currency->currency_name }}
+                            {{ $currency->currency_code . " - " . $currency->currency_name }}
                         </option>
                     @endforeach
                 </x:form.select>

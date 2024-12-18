@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="container mt-4 costing-table">
     <div style="display: flex; align-items: center; justify-content: end;">
         @if($costing?->status != 2)
         <button type="button" id="add-row" class="btn btn-icon btn-success rounded" style="height: 30px; width: 30px; margin-right:5px;">

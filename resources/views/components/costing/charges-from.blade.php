@@ -27,7 +27,7 @@
         </div>
 
         <div class="table-responsive" id="table-{{ $type }}-{{ $k }}">
-            <table class="table table-bordered">
+            <table class="table table-bordered costing-table" >
                 <thead>
                     <tr>
                         <th style="width: 150px;">Vendor Code</th>

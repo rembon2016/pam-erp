@@ -1,4 +1,4 @@
-<div>
+<div class="costing-table">
     @foreach($costing->truck as $key => $row)
     <div class="row">
         <input type="hidden" name="costing_vendor_truck_id[]" value="{{ $row->id }}">

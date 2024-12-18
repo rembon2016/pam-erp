@@ -37,7 +37,7 @@
         </div>
 
         <div class="table-responsive" id="table-special-import">
-            <table class="table table-bordered">
+            <table class="table table-bordered costing-table">
                 <thead>
                     <tr>
                         <th style="width: 150px;">Vendor Code</th>

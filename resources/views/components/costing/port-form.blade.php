@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row costing-table">
     <div class='col-md-4'>
 
         @if($costing?->port != null)

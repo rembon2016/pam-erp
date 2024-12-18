@@ -10,6 +10,14 @@ function generateRandomString(length) {
     return result;
 }
 
+function debounce(func, delay) {
+    let timeout;
+    return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), delay);
+    };
+}
+
 function syncSelect2Element(elementWrapper, executedFunction) {
     $(elementWrapper).find('select[data-control="select2"]').each(function (index) {
         $(this).select2('destroy');
@@ -31,10 +39,10 @@ function clearValueInDynamicRow(rowItem) {
     $(rowItem).find('select[data-control="select2"]').val('').trigger('change');
 }
 
-function rearrangeNameAttribute(rowItem, row_index = 0) {
+function rearrangeNameAttribute(rowItem, wrapperElement, rowClass = '.dynamic-row-item', row_index = 0) {
     $(rowItem).find('input, select').each(function (index) {
         const nameAttr = $(this).attr('name');
-        const currentIndex = $(".dynamic-row-wrapper .dynamic-row-item").length;
+        const currentIndex = $(wrapperElement).find(rowClass).length;
         const finalNameAttr = nameAttr.replace(`[${row_index}]`, `[${currentIndex}]`);
 
         $(this).attr('name', finalNameAttr);
@@ -47,7 +55,7 @@ $(document).off('click', 'button[data-type="add-dynamic-row"]').on('click', 'but
     clearValueInDynamicRow(clonedFirstRowItem);
 
     if (dynamicRowWrapper.attr('data-array-type') === "associative") {
-        rearrangeNameAttribute(clonedFirstRowItem);
+        rearrangeNameAttribute(clonedFirstRowItem, dynamicRowWrapper);
     }
 
     $(dynamicRowWrapper).append(clonedFirstRowItem);

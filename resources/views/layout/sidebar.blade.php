@@ -42,7 +42,17 @@
             <x:layout.sidebar.child-menu name="Trucking" link="/" />
             <x:layout.sidebar.child-menu name="Courier" link="/" />
         </x:layout.sidebar.parent-menu>
-        <x:layout.sidebar.child-menu name="Job Order" link="/" />
+        <x:layout.sidebar.parent-menu name="Job Order" link="/" iconClass="bx bxs-file" >
+            <x:layout.sidebar.child-menu name="Sea Air" link="/" />
+            <x:layout.sidebar.child-menu name="Cross Air" link="/" />
+            <x:layout.sidebar.child-menu name="Sea Import" link="/" />
+            <x:layout.sidebar.child-menu name="Sea Export" link="/" />
+            <x:layout.sidebar.child-menu name="Air Import" link="/" />
+            <x:layout.sidebar.child-menu name="Air Export" link="/" />
+            <x:layout.sidebar.child-menu name="Warehouse" link="/" />
+            <x:layout.sidebar.child-menu name="Trucking" link="/" />
+            <x:layout.sidebar.child-menu name="Courier" link="/" />
+        </x:layout.sidebar.parent-menu>
         <x:layout.sidebar.child-menu name="CTD" link="/" />
         <x:layout.sidebar.child-menu name="Customer" link="/" />
         <x:layout.sidebar.child-menu name="Container" link="/" />

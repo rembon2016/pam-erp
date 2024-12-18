@@ -18,6 +18,7 @@ trait HandleTableTimestamps
      */
     protected static function bootHandleTableTimestamps()
     {
+
         if (Auth::check()) {
             // Action after eloquent model was created
             static::created(function ($model) {

@@ -20,11 +20,11 @@
                     <x:layout.table.row>
                         <th class="th-datatable-checkbox-all"><input type="checkbox" class="row-checkbox" id="select_all">
                         </th>
-                       
+
                         @foreach(App\Service\Finance\GeneralWise\ShipmentColumnService::getColumns($type) as $column)
                             @if(isset($column['title']))
-                                <x:layout.table.heading 
-                                    widthPixel="{{ $column['width'] ?? '100' }}" 
+                                <x:layout.table.heading
+                                    widthPixel="{{ $column['width'] ?? '100' }}"
                                 title="{{ $column['title'] }}"
                                 customClass="{{ $column['className'] ?? '' }}"
                             />
@@ -127,7 +127,7 @@
 
 @push('js')
     @component('components.layout.table.datatable-shipment', [
-        'id' => 'shipment_table',   
+        'id' => 'shipment_table',
         'url' => route('finance.general-wise.shipment.list', ['type' => $type]),
         'columns' => App\Service\Finance\GeneralWise\ShipmentColumnService::getColumns($type),
         'API_BASE' => in_array($type, ['seaair', 'crossair']) ? env('API_ORIGIN') : env('API_DXB')

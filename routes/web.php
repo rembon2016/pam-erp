@@ -335,10 +335,12 @@ Route::group(['middleware' => ['auth']], function () {
             ], function () {
                 Route::get('/', [InvoiceController::class, 'index'])->name('index');
                 Route::get('/list', [InvoiceController::class, 'list'])->name('list');
-                Route::get('/create/not-linked-billing-customer', [InvoiceController::class, 'createNotLinked'])->name('create.not-linked-billing-customer');
+                Route::get('/form/not-linked-billing-customer', [InvoiceController::class, 'createNotLinked'])->name('create.not-linked-billing-customer');
                 Route::post('/not-linked-billing-customer', [InvoiceController::class, 'storeNotLinked'])->name('store.not-linked-billing-customer');
-                Route::get('/create/linked-billing-customer', [InvoiceController::class, 'createLinked'])->name('create.linked-billing-customer');
+                Route::get('/form/linked-billing-customer', [InvoiceController::class, 'createLinked'])->name('create.linked-billing-customer');
                 Route::post('/linked-billing-customer', [InvoiceController::class, 'storeLinked'])->name('store.linked-billing-customer');
+                Route::get('/generate', [InvoiceController::class, 'viewGenerate'])->name('generate');
+                Route::post('/generate', [InvoiceController::class, 'storeGenerate'])->name('generate');
             });
         });
 
@@ -353,6 +355,7 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/', [SeaAirController::class, 'index'])->name('index');
                 Route::get('/list', [SeaAirController::class, 'list'])->name('list');
                 Route::post('/store', [SeaAirController::class, 'store'])->name('store');
+                Route::get('/status/{id}/{status}', [SeaAirController::class, 'status'])->name('status');
                 Route::put('/update/{id}', [SeaAirController::class, 'update'])->name('update');
                 Route::get('/show/{id}', [SeaAirController::class, 'show'])->name('show');
                 Route::get('/cost/{id}', [SeaAirController::class, 'cost'])->name('cost');

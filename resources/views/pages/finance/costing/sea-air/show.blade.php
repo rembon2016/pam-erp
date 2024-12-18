@@ -434,6 +434,65 @@
                     </div>
                 </div>
             </div>
+            <div class="d-flex w-100 justify-start" style="gap: 7.5px; margin-top: 20px">
+                <button type="button" class="btn btn-sm custom-btn btn-secondary" >Open</button>
+                @if($costing->status != 1 && $costing != null)
+                <button type="button" class="btn btn-sm custom-btn btn-danger" id="closed-button">Closed</button>
+                <button type="button" class="btn btn-sm custom-btn custom-btn-primary" id="reopen-button">Re-Open</button>
+                @endif
+            </div>
+             <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px; margin-top: 20px">
+            <x:form.cancel-button href="{{ route('finance.costing.sea-air.index') }}" label="Cancel" />
+
+
+
+        </div>
         </x:layout.card.body>
     </x:layout.card.wrapper>
 @endsection
+
+@push('js')
+<script>
+$(document).on('click', '#closed-button', function (e) {
+    e.preventDefault(); // Prevent the default link behavior
+
+    const url = "{{ route('finance.costing.sea-air.status',[$costing?->id, 2]) }}"; // Get the URL from the link
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "do you want to close?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Redirect to the URL if confirmed
+            window.location.href = url;
+        }
+    });
+});
+
+$(document).on('click', '#reopen-button', function (e) {
+    e.preventDefault(); // Prevent the default link behavior
+
+    const url = "{{ route('finance.costing.sea-air.status',[$costing?->id, 3]) }}"; // Get the URL from the link
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "do you want to re-open?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Redirect to the URL if confirmed
+            window.location.href = url;
+        }
+    });
+});
+</script>
+@endpush

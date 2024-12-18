@@ -1,4 +1,4 @@
-<div>
+<div class="costing-table">
     @foreach($loading as $key => $row)
     <div class="row">
         <div class='col-md-4'>

@@ -10,14 +10,39 @@ function generateRandomString(length) {
     return result;
 }
 
-function clearValueInDynamicRow(rowItem) {
-    $(rowItem).find('input, select').val('');
+function debounce(func, delay) {
+    let timeout;
+    return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), delay);
+    };
 }
 
-function rearrangeNameAttribute(rowItem, row_index = 0) {
+function syncSelect2Element(elementWrapper, executedFunction) {
+    $(elementWrapper).find('select[data-control="select2"]').each(function (index) {
+        $(this).select2('destroy');
+    });
+
+    if (typeof executedFunction === "function") {
+        executedFunction();
+    }
+
+    setTimeout(() => {
+        $(elementWrapper).find('select[data-control="select2"]').each(function (index) {
+            $(this).select2();
+        });
+    }, 500);
+}
+
+function clearValueInDynamicRow(rowItem) {
+    $(rowItem).find('input, select').val('');
+    $(rowItem).find('select[data-control="select2"]').val('').trigger('change');
+}
+
+function rearrangeNameAttribute(rowItem, wrapperElement, rowClass = '.dynamic-row-item', row_index = 0) {
     $(rowItem).find('input, select').each(function (index) {
         const nameAttr = $(this).attr('name');
-        const currentIndex = $(".dynamic-row-wrapper .dynamic-row-item").length;
+        const currentIndex = $(wrapperElement).find(rowClass).length;
         const finalNameAttr = nameAttr.replace(`[${row_index}]`, `[${currentIndex}]`);
 
         $(this).attr('name', finalNameAttr);
@@ -30,7 +55,7 @@ $(document).off('click', 'button[data-type="add-dynamic-row"]').on('click', 'but
     clearValueInDynamicRow(clonedFirstRowItem);
 
     if (dynamicRowWrapper.attr('data-array-type') === "associative") {
-        rearrangeNameAttribute(clonedFirstRowItem);
+        rearrangeNameAttribute(clonedFirstRowItem, dynamicRowWrapper);
     }
 
     $(dynamicRowWrapper).append(clonedFirstRowItem);
@@ -57,7 +82,6 @@ $(document).off('click', 'button[data-type="delete-dynamic-row"]').on('click', '
                 const indexEndOfArray = nameAttr.indexOf(']');
                 const indexElement = nameAttr.slice(indexStartOfArray, indexEndOfArray);
                 const finalNameAttr = nameAttr.replace(indexElement, `[${index}`);
-                console.log(finalNameAttr, indexElement, index);
 
                 $(this).attr('name', finalNameAttr);
             })

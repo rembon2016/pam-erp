@@ -4,19 +4,23 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\Billing;
 
-use App\Service\Finance\GeneralWise\GeneralWiseService;
-use App\Service\Finance\MasterData\CustomerService;
-use App\Service\Finance\MasterData\ServiceTypeService;
 use Illuminate\View\View;
 use App\Functions\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Functions\ResponseJson;
+use App\Models\Finance\Invoice;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\Facades\DataTables;
 use App\Service\Finance\Billing\InvoiceService;
+use App\Service\Finance\MasterData\UnitService;
+use App\Service\Finance\MasterData\ChargeService;
+use App\Service\Finance\MasterData\CurrencyService;
+use App\Service\Finance\MasterData\CustomerService;
+use App\Service\Finance\MasterData\ServiceTypeService;
+use App\Service\Finance\GeneralWise\GeneralWiseService;
 
 final class InvoiceController extends Controller
 {
@@ -24,7 +28,10 @@ final class InvoiceController extends Controller
         protected InvoiceService $invoiceService,
         protected GeneralWiseService $generalWiseService,
         protected ServiceTypeService $serviceTypeService,
-        protected CustomerService $customerService
+        protected CustomerService $customerService,
+        protected ChargeService $chargeService,
+        protected CurrencyService $currencyService,
+        protected UnitService $unitService
     ) {}
     public function index(): View
     {
@@ -61,7 +68,7 @@ final class InvoiceController extends Controller
     {
         $service_types = $this->serviceTypeService->getServiceTypes();
         $months = Utility::getListOfMonths();
-        $years = Utility::getListOfYears(25);
+        $years = Utility::getListOfYears(15);
         $vessels = $this->generalWiseService->getVessels();
         $origins = $this->generalWiseService->getOrigins();
         $voyages = $this->generalWiseService->getVoyages();
@@ -88,6 +95,21 @@ final class InvoiceController extends Controller
     }
 
     public function storeLinked(Request $request): RedirectResponse
+    {
+        dd($request);
+    }
+
+    public function viewGenerate()
+    {
+        $invoice = new Invoice;
+        $charges = $this->chargeService->getCharges();
+        $currencies = $this->currencyService->getCurrencies();
+        $units = $this->unitService->getUnitCollections();
+
+        return view('pages.finance.billing.invoice.generate', compact('invoice', 'charges', 'currencies', 'units'));
+    }
+
+    public function storeGenerate(Request $request)
     {
         dd($request);
     }

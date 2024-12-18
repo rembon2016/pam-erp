@@ -8,13 +8,18 @@
 </style>
 @endpush
 <div>
-    <div class="mb-3">
+    <div class="mb-5">
         <label class="form-label">Add Special Charges?</label>
-        <div>
-            <input type="radio" id="special_charges_no_export" name="special_charges_export" value="no" checked>
-            <label for="special_charges_no_export">No</label>
-            <input type="radio" id="special_charges_yes_export" name="special_charges_export" value="yes">
-            <label for="special_charges_yes_export">Yes</label>
+
+        <div class="d-flex align-items-center gap-4">
+            <div class="d-flex align-items-center gap-1">
+                <input type="radio" id="special_charges_no_export" name="special_charges_export" value="no" checked>
+                <label for="special_charges_no_export">No</label>
+            </div>
+            <div class="d-flex align-items-center gap-1">
+                <input type="radio" id="special_charges_yes_export" name="special_charges_export" value="yes">
+                <label for="special_charges_yes_export">Yes</label>
+            </div>
         </div>
     </div>
 
@@ -22,16 +27,18 @@
     <div id="special-export-charges-form" class="d-none">
 
         <div style="display: flex; align-items: center; justify-content: end;">
+             @if($costing?->status != 2)
             <button type="button" id="add-row-special-export" class="btn btn-icon btn-success rounded" style="height: 30px; width: 30px;margin-right:5px;">
                 <i class="fa fa-plus pe-0"></i>
             </button>
+            @endif
             <button type="button" id="updown-special-export" class="btn btn-icon btn-primary rounded" style="height: 30px; width: 30px;">
                 <i class="fa fa-angle-down"></i>
             </button>
         </div>
 
         <div class="table-responsive" id="table-special-export">
-            <table class="table table-bordered">
+            <table class="table table-bordered costing-table">
                 <thead>
                     <tr>
                         <th style="width: 150px;">Vendor Code</th>
@@ -53,8 +60,14 @@
                               <tr id="row-{{ $key }}">
                         <td>
                         <input type="hidden" name="costing_special_export_id[]" value="{{ $row->id }}">
+                         @if($costing->status != 1)
+                            <input type="hidden" name="vendor_special_export_id[]" type="text" class=" form-control" value="{{ $row->vendor_id }}">
+                            <input type="hidden" name="charge_special_export_id[]" type="text" class=" form-control" value="{{ $row->charge_id }}">
+                            <input type="hidden" name="currency_special_export_id[]" type="text" class=" form-control" value="{{ $row->currency_id }}">
+                             <input type="hidden" name="status_special_export[]" type="text" class=" form-control" value="{{ $row->status }}">
+                        @endif
                         <select class="form-select vendor-select" onchange="setVendorSpecialExportName({{ $key }})
-                                                " data-control="select2" id="vendor_special_export_id_{{ $key }}" name="vendor_special_export_id[]" data-key="{{ $key }}">
+                                                " data-control="select2" id="vendor_special_export_id_{{ $key }}" name="vendor_special_export_id[]" data-key="{{ $key }}" @if($costing->status != 1) disabled @endif>
                                 <option>Select</option>
                                 @foreach($vendorLine as $rows)
                                 <option value="{{ $rows->vendor_id }}" @if($row->vendor_id == $rows->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}">{{ $rows->vendor_code }}</option>
@@ -62,33 +75,36 @@
                             </select></td>
                         <td><input type="text" class="form-control" value="{{ $row->vendor_name }}" id="vendor_special_export_name_{{ $key }}" placeholder="Name" name="vendor_special_export_name[]" readonly></td>
                         <td>
-                            <select class="form-select" data-control="select2" id="charge_special_export_id_0" name="charge_special_export_id[]" data-key="{{ $key }}">
+                            <select class="form-select" data-control="select2" id="charge_special_export_id_0" name="charge_special_export_id[]" data-key="{{ $key }}" @if($costing->status != 1) disabled @endif>
                                 <option>Select</option>
                                 @foreach($charge as $rows)
                                 <option value="{{ $rows->id }}" @if($row->charge_id == $rows->id) selected @endif>{{ $rows->charge_code }}</option>
                                 @endforeach
                             </select>
                         </td>
-                        <td> <select class="form-select" data-control="select2" id="currency_special_export_id_{{ $key }}" name="currency_special_export_id[]" data-key="{{ $key }}">
+                        <td> <select class="form-select" data-control="select2" id="currency_special_export_id_{{ $key }}" name="currency_special_export_id[]" data-key="{{ $key }}" @if($costing->status != 1) disabled @endif>
                                 <option>Select</option>
                                 @foreach($currency as $rows)
                                 <option value="{{ $rows->id }}" @if($row->currency_id == $rows->id) selected @endif>{{ $rows->currency_code }}</option>
                                 @endforeach
                             </select></td>
-                        <td><input type="text" class="form-control" name="rate_special_export[]" value="{{ $row->rate }}" placeholder="Type here.."></td>
-                        <td><input type="text" class="form-control" name="amount_special_export[]" value="{{ $row->amount }}" placeholder="Type here.."></td>
-                        <td><input type="text" class="form-control" value="{{ $row->local_amount }}" name="local_amount_special_export[]" placeholder="Type here.."></td>
+                        <td><input type="text" class="form-control" name="rate_special_export[]" value="{{ $row->rate }}" placeholder="Type here.." @if($costing->status != 1) readonly @endif></td>
+                        <td><input type="text" class="form-control" name="amount_special_export[]" value="{{ $row->amount }}" placeholder="Type here.." @if($costing->status != 1) readonly @endif></td>
+                        <td><input type="text" class="form-control" value="{{ $row->local_amount }}" name="local_amount_special_export[]" placeholder="Type here.." @if($costing->status != 1) readonly @endif></td>
                         <td>
-                            <select class="form-select" name="status_special_export[]">
+                            <select class="form-select" name="status_special_export[]" @if($costing->status != 1) disabled @endif>
                                 <option>Select</option>
                                 <option value="Debit" @if($row->status == 'Debit') selected @endif>Debit</option>
                                 <option value="Credit" @if($row->status == 'Credit') selected @endif>Credit</option>
                             </select>
                         </td>
                         <td>
+                        @if($costing->status == 1)
                           <button type="button" class="btn btn-icon btn-danger btn-remove-row-special-export" style="height: 30px; width: 30px;margin-top:5px;">
-                    <i class="fa fa-trash"></i>
-                </button>
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        @endif
+
                         </td>
                     </tr>
                       @endif

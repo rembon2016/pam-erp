@@ -22,6 +22,7 @@ use App\Models\Finance\CostingSpecial;
 use App\Models\Finance\CostingVendorAgent;
 use App\Models\Finance\CostingVendorPort;
 use App\Models\Finance\CostingVendorTrucking;
+use App\Models\Finance\Customer;
 
 
 use Illuminate\View\View;
@@ -88,7 +89,7 @@ final class SeaAirController extends Controller
                 })
                 ->editColumn('status', function ($item) {
                     if(!empty($item->costing)){
-                        if($item->costing->status == 1){
+                        if($item->costing->status == 1 || $item->costing->status == 3){
                             return 'Open';
                         }else{
                             return 'Closed';
@@ -118,19 +119,33 @@ final class SeaAirController extends Controller
 
     public function show($id){
         $joborder = JobOrder::with(['detail', 'loading','doc'])->findOrFail($id);
+        $cost = Costing::where("job_order_id",$joborder->job_order_id);
+        if($cost->exists()){
+            $costing = $cost->first();
+        }else{
+            $costing = null;
+        }
         $op = OperationDocument::where('job_order_id', $id)->first();
         $lpdoc = LoadingPlanDocument::where('loading_id', $joborder->loading_plan_id)->get();
-        return view('pages.finance.costing.sea-air.show', compact('id','joborder','op','lpdoc'));
+        return view('pages.finance.costing.sea-air.show', compact('id','joborder','op','lpdoc','costing'));
     }
 
     public function cost($id){
         $joborder = JobOrder::with(['detail', 'loading','doc'])->findOrFail($id);
         $loading = LoadingReportDetail::where('status',"!=",3)->where('bl_id', $joborder->loading_plan_id)->get();
         $port = Port::where('status',"!=",3)->get();
-        $vendor_truck = Vendor::where('status',"!=",3)->where('vendor_type_id','08dc64df-4210-4c93-bf19-8ed8b0dc6658')->get();
-        $vendor_port = Vendor::where('status',"!=",3)->where('vendor_type_id','e1aa4b6f-e035-4f28-9887-b70bd18166b6')->get();
-        $vendor_air = Vendor::where('status',"!=",3)->where('vendor_type_id','bd809e96-71f9-42ab-b431-4c975df8c140')->get();
-        $vendor_line = Vendor::where('status',"!=",3)->where('vendor_type_id','f0bbc26c-a6ca-11ed-99ce-b7de90ac3f73')->get();
+        $vendor_truck = Customer::select('id as vendor_id','customer_name as vendor_name','customer_code as vendor_code')->with("customerTypes")->whereHas("customerTypes", function ($query) {
+            $query->where("name", "Trucking Company");
+        })->get();
+        $vendor_port = Customer::select('id as vendor_id','customer_name as vendor_name','customer_code as vendor_code')->with("customerTypes")->whereHas("customerTypes", function ($query) {
+            $query->where("name", "Dubai Port");
+        })->get();
+        $vendor_air = Customer::select('id as vendor_id','customer_name as vendor_name','customer_code as vendor_code')->with("customerTypes")->whereHas("customerTypes", function ($query) {
+            $query->where("name", "Carrier Agent");
+        })->get();
+        $vendor_line = Customer::select('id as vendor_id','customer_name as vendor_name','customer_code as vendor_code')->with("customerTypes")->whereHas("customerTypes", function ($query) {
+            $query->where("name", "Shipping line");
+        })->get();
         $charge = Charge::whereNull('deleted_at')->get();
         $currency = Currency::whereNull('deleted_at')->get();
         $bl = LoadingReportBl::with('shipping')->where('loading_id', $joborder->loading_plan_id)->where('status','!=',3)->get();
@@ -436,7 +451,7 @@ final class SeaAirController extends Controller
     }
 
     public function update($id, Request $request){
-
+        dd($request->all());
         $costing = Costing::find($id);
         $bl = LoadingReportBl::with('shipping')->where('loading_id', $request->loading_plan_id)->where('status','!=',3)->get();
         $ship = ShippingInstruction::where("status","!=",3)->where("loading_id", $request->loading_plan_id)->get();
@@ -823,6 +838,13 @@ final class SeaAirController extends Controller
         }
 
         return to_route('finance.costing.sea-air.index')->with('toastSuccess', "Update Success");
+    }
+
+    public function status($id, $status){
+        $costing = Costing::find($id);
+        $costing->status = $status;
+        $costing->save();
+        return to_route('finance.costing.sea-air.show',$costing->job_order_id)->with('toastSuccess', "Update Success");
     }
 
     public function exportCsv()

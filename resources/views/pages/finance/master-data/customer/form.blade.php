@@ -47,7 +47,7 @@
                 <x:form.select label="Currency" name="currency_id" defaultOption="Select Currency">
                     @foreach ($currencies as $currency)
                         <option value="{{ $currency->id }}" @selected(old('currency_id', @$customer->currency_id) == $currency->id)>
-                            {{ $currency->currency_name }}
+                            {{ $currency->currency_code . " - " . $currency->currency_name }}
                         </option>
                     @endforeach
                 </x:form.select>
@@ -521,26 +521,28 @@
                                         <div class="account-row form-row row align-items-center">
                                             <div class="col">
                                                 <input type="hidden" name="customer_account[customer_account_id][]" value="{{ $customerAccount->id }}">
-                                                <x:form.select label="Account Number" name="customer_account[chart_of_account_id][]" defaultOption="Select Account Number" style="width: 228px;">
-                                                    @foreach ($accountGroups as $group)
-                                                        <optgroup label="{{ str($group->name)->upper() }}">
-                                                            @foreach ($group->subAccountGroups as $subGroup)
-                                                                <optgroup label="{{ '-' . $subGroup->code . ' -- ' . str($subGroup->name)->upper() }}">
-                                                                    @php
-                                                                        $chartOfAccounts = $subGroup->chartOfAccounts()
-                                                                            ->orderBy('account_number', 'asc')
-                                                                            ->get();
-                                                                    @endphp
-                                                                    @foreach ($chartOfAccounts as $account)
-                                                                        <option value="{{ $account->id }}" @selected($customerAccount->chart_of_account_id == $account->id)>
-                                                                            {{ '--' . $account->account_number . ' --- ' . str($account->account_name)->upper() }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </optgroup>
-                                                            @endforeach
-                                                        </optgroup>
-                                                    @endforeach
-                                                </x:form.select>
+                                                <div class="mb-3">
+                                                    <select name="customer_account[chart_of_account_id][]" style="width: 228px;" class="form-select" data-control="select2" data-placeholder="Select Account Number" id="customer_account[chart_of_account_id][]">
+                                                        @foreach ($accountGroups as $group)
+                                                            <optgroup label="{{ str($group->name)->upper() }}">
+                                                                @foreach ($group->subAccountGroups as $subGroup)
+                                                                    <optgroup label="{{ '-' . $subGroup->code . ' -- ' . str($subGroup->name)->upper() }}">
+                                                                        @php
+                                                                            $chartOfAccounts = $subGroup->chartOfAccounts()
+                                                                                ->orderBy('account_number', 'asc')
+                                                                                ->get();
+                                                                        @endphp
+                                                                        @foreach ($chartOfAccounts as $account)
+                                                                            <option value="{{ $account->id }}" @selected($customerAccount->chart_of_account_id == $account->id)>
+                                                                                {{ '--' . $account->account_number . ' --- ' . str($account->account_name)->upper() }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </optgroup>
+                                                                @endforeach
+                                                            </optgroup>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             </div>
                                             <div class="col">
                                                 <x:form.select label="Currency" name="customer_account[currency_id][]" defaultOption="Select Currency">
@@ -568,26 +570,29 @@
                                     <div class="account-row form-row row align-items-center">
                                         <div class="col">
                                             <input type="hidden" name="customer_account[customer_account_id][]" value="">
-                                            <x:form.select label="Account Number" name="customer_account[chart_of_account_id][]" defaultOption="Select Account Number" style="width: 228px;">
-                                                @foreach ($accountGroups as $group)
-                                                    <optgroup label="{{ str($group->name)->upper() }}">
-                                                        @foreach ($group->subAccountGroups as $subGroup)
-                                                            <optgroup label="{{ '-' . $subGroup->code . ' -- ' . str($subGroup->name)->upper() }}">
-                                                                @php
-                                                                    $chartOfAccounts = $subGroup->chartOfAccounts()
-                                                                        ->orderBy('account_number', 'asc')
-                                                                        ->get();
-                                                                @endphp
-                                                                @foreach ($chartOfAccounts as $account)
-                                                                    <option value="{{ $account->id }}">
-                                                                        {{ '--' . $account->account_number . ' --- ' . str($account->account_name)->upper() }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </optgroup>
-                                                        @endforeach
-                                                    </optgroup>
-                                                @endforeach
-                                            </x:form.select>
+                                            <div class="mb-3">
+                                                <label for="#customer_account[chart_of_account_id][]" class='form-label'>Account Number</label>
+                                                <select name="customer_account[chart_of_account_id][]" style="width: 228px;" class="form-select" data-control="select2" data-placeholder="Select Account Number" id="customer_account[chart_of_account_id][]">
+                                                    @foreach ($accountGroups as $group)
+                                                        <optgroup label="{{ str($group->name)->upper() }}">
+                                                            @foreach ($group->subAccountGroups as $subGroup)
+                                                                <optgroup label="{{ '-' . $subGroup->code . ' -- ' . str($subGroup->name)->upper() }}">
+                                                                    @php
+                                                                        $chartOfAccounts = $subGroup->chartOfAccounts()
+                                                                            ->orderBy('account_number', 'asc')
+                                                                            ->get();
+                                                                    @endphp
+                                                                    @foreach ($chartOfAccounts as $account)
+                                                                        <option value="{{ $account->id }}">
+                                                                            {{ '--' . $account->account_number . ' --- ' . str($account->account_name)->upper() }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </optgroup>
+                                                            @endforeach
+                                                        </optgroup>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
                                         <div class="col">
                                             <x:form.select label="Currency" name="customer_account[currency_id][]" defaultOption="Select Currency">
@@ -626,9 +631,10 @@
 
 @push('js')
     <script>
-        function addRow(rowClass, formId) {
-            const newRow = $(rowClass).first().clone()
 
+        function addRow(rowClass, formId) {
+
+            const newRow = $(rowClass).first().clone()
             newRow.find('input').val('')
             newRow.find('select').val(null)
 

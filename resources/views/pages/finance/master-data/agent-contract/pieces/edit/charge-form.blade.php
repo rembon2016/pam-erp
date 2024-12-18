@@ -164,7 +164,7 @@
                                             name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][amount_per_unit]"
                                             style="width: 200px;"
                                             value="{{ $chargeValue->amount_per_unit }}"
-                                            @if($chargeValue->unit->unit_name == 'KG')
+                                            @if($chargeValue?->unit?->unit_name == 'KG')
                                                 disabled
                                             @endif>
                                     </td>
@@ -176,9 +176,9 @@
                                             name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][minimum_amount]"
                                             style="width: 200px;"
                                             value="{{ $chargeValue->minimum_amount }}"
-                                            @if($chargeValue->unit->unit_name == 'CNTR')
+                                            @if($chargeValue?->unit?->unit_name == 'CNTR')
                                                 disabled
-                                            @elseif($chargeValue->unit->unit_name == 'KG')
+                                            @elseif($chargeValue?->unit?->unit_name == 'KG')
                                                 disabled
                                             @endif>
                                     </td>
@@ -190,9 +190,9 @@
                                             name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][via_port]"
                                             style="width: 200px;"
                                             value="{{ $chargeValue->via_port }}"
-                                            @if($chargeValue->unit->unit_name == 'KG')
+                                            @if($chargeValue?->unit?->unit_name == 'KG')
                                                 disabled
-                                            @elseif($chargeValue->unit->unit_name == 'SHPT')
+                                            @elseif($chargeValue?->unit?->unit_name == 'SHPT')
                                                 disabled
                                             @endif>
                                     </td>
@@ -203,7 +203,7 @@
                                             name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][from_0_to_44]"
                                             value="{{ $chargeValue->from_0_to_44 == 0 ? '' : $chargeValue->from_0_to_44 }}"
                                             style="width: 200px;"
-                                            @if($chargeValue->unit->unit_name != 'KG')
+                                            @if($chargeValue?->unit?->unit_name != 'KG')
                                                 disabled
                                             @endif>
                                     </td>
@@ -214,7 +214,7 @@
                                             name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][from_45_to_99]"
                                             value="{{ $chargeValue->from_45_to_99 == 0 ? '' : $chargeValue->from_45_to_99 }}"
                                             style="width: 200px;"
-                                            @if($chargeValue->unit->unit_name != 'KG')
+                                            @if($chargeValue?->unit?->unit_name != 'KG')
                                                 disabled
                                             @endif>
                                     </td>
@@ -225,7 +225,7 @@
                                             name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][from_100_to_299]"
                                             value="{{ $chargeValue->from_100_to_299 == 0 ? '' : $chargeValue->from_100_to_299 }}"
                                             style="width: 200px;"
-                                            @if($chargeValue->unit->unit_name != 'KG')
+                                            @if($chargeValue?->unit?->unit_name != 'KG')
                                                 disabled
                                             @endif>
                                     </td>
@@ -236,7 +236,7 @@
                                             name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][from_300_to_499]"
                                             value="{{ $chargeValue->from_300_to_499 == 0 ? '' : $chargeValue->from_300_to_499 }}"
                                             style="width: 200px;"
-                                            @if($chargeValue->unit->unit_name != 'KG')
+                                            @if($chargeValue?->unit?->unit_name != 'KG')
                                                 disabled
                                             @endif>
                                     </td>
@@ -247,7 +247,7 @@
                                             name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][from_500_to_999]"
                                             value="{{ $chargeValue->from_500_to_999 == 0 ? '' : $chargeValue->from_500_to_999 }}"
                                             style="width: 200px;"
-                                            @if($chargeValue->unit->unit_name != 'KG')
+                                            @if($chargeValue?->unit?->unit_name != 'KG')
                                                 disabled
                                             @endif>
                                     </td>
@@ -258,7 +258,7 @@
                                             name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][from_1000_to_infinity]"
                                             value="{{ $chargeValue->from_1000_to_infinity == 0 ? '' : $chargeValue->from_1000_to_infinity }}"
                                             style="width: 200px;"
-                                            @if($chargeValue->unit->unit_name != 'KG')
+                                            @if($chargeValue?->unit?->unit_name != 'KG')
                                                 disabled
                                             @endif>
                                     </td>
@@ -269,7 +269,7 @@
                                             name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][20_feet]"
                                             value="{{ $chargeValue->{'20_feet'} == 0 ? '' : $chargeValue->{'20_feet'}  }}"
                                             style="width: 200px;"
-                                            @if($chargeValue->unit->unit_name != 'CNTR')
+                                            @if($chargeValue?->unit?->unit_name != 'CNTR')
                                                 disabled
                                             @endif>
                                     </td>
@@ -280,7 +280,7 @@
                                             name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][40_feet]"
                                             value="{{ $chargeValue->{'40_feet'} == 0 ? '' : $chargeValue->{'40_feet'} }}"
                                             style="width: 200px;"
-                                            @if($chargeValue->unit->unit_name != 'CNTR')
+                                            @if($chargeValue?->unit?->unit_name != 'CNTR')
                                                 disabled
                                             @endif>
                                     </td>
@@ -291,7 +291,7 @@
                                             name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][45_feet_hc]"
                                             value="{{ $chargeValue->{'45_feet_hc'} == 0 ? '' : $chargeValue->{'45_feet_hc'} }}"
                                             style="width: 200px;"
-                                            @if($chargeValue->unit->unit_name != 'CNTR')
+                                            @if($chargeValue?->unit?->unit_name != 'CNTR')
                                                 disabled
                                             @endif>
                                     </td>
@@ -302,7 +302,7 @@
                                             name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][45_feet]"
                                             value="{{ $chargeValue->{'45_feet'} == 0 ? '' : $chargeValue->{'45_feet'} }}"
                                             style="width: 200px;"
-                                            @if($chargeValue->unit->unit_name != 'CNTR')
+                                            @if($chargeValue?->unit?->unit_name != 'CNTR')
                                                 disabled
                                             @endif>
                                     </td>
@@ -720,7 +720,7 @@
                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][amount_per_unit]"
                                             value="{{ $chargeValue->amount_per_unit }}"
                                             style="width: 100%;"
-                                            @disabled($chargeValue->unit->unit_name == 'KG')>
+                                            @disabled($chargeValue?->unit?->unit_name == 'KG')>
                                     </div>
                                     <div class="tableChargeForm-box" style="min-width: 130px;">
                                         <input
@@ -730,9 +730,9 @@
                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][minimum_amount]"
                                             value="{{ $chargeValue->minimum_amount }}"
                                             style="width: 100%;"
-                                            @if($chargeValue->unit->unit_name == 'CNTR')
+                                            @if($chargeValue?->unit?->unit_name == 'CNTR')
                                                 disabled
-                                            @elseif($chargeValue->unit->unit_name == 'KG')
+                                            @elseif($chargeValue?->unit?->unit_name == 'KG')
                                                 disabled
                                             @endif>
                                     </div>
@@ -744,9 +744,9 @@
                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][via_port]"
                                             style="width: 100%;"
                                             value="{{ $chargeValue->via_port }}"
-                                            @if($chargeValue->unit->unit_name == 'KG')
+                                            @if($chargeValue?->unit?->unit_name == 'KG')
                                                 disabled
-                                            @elseif($chargeValue->unit->unit_name == 'SHPT')
+                                            @elseif($chargeValue?->unit?->unit_name == 'SHPT')
                                                 disabled
                                             @endif>
                                     </div>
@@ -757,7 +757,7 @@
                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][from_0_to_44]"
                                             value="{{ $chargeValue->from_0_to_44 == 0 ? '' : $chargeValue->from_0_to_44 }}"
                                             style="width: 100%;"
-                                            @if($chargeValue->unit->unit_name != 'KG')
+                                            @if($chargeValue?->unit?->unit_name != 'KG')
                                                 disabled
                                             @endif>
                                     </div>
@@ -768,7 +768,7 @@
                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][from_45_to_99]"
                                             value="{{ $chargeValue->from_45_to_99 == 0 ? '' : $chargeValue->from_45_to_99 }}"
                                             style="width: 100%;"
-                                            @if($chargeValue->unit->unit_name != 'KG')
+                                            @if($chargeValue?->unit?->unit_name != 'KG')
                                                 disabled
                                             @endif>
                                     </div>
@@ -779,7 +779,7 @@
                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][from_100_to_299]"
                                             value="{{ $chargeValue->from_100_to_299 == 0 ? '' : $chargeValue->from_100_to_299 }}"
                                             style="width: 100%;"
-                                            @if($chargeValue->unit->unit_name != 'KG')
+                                            @if($chargeValue?->unit?->unit_name != 'KG')
                                                 disabled
                                             @endif>
                                     </div>
@@ -790,7 +790,7 @@
                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][from_300_to_499]"
                                             value="{{ $chargeValue->from_300_to_499 == 0 ? '' : $chargeValue->from_300_to_499 }}"
                                             style="width: 100%;"
-                                            @if($chargeValue->unit->unit_name != 'KG')
+                                            @if($chargeValue?->unit?->unit_name != 'KG')
                                                 disabled
                                             @endif>
                                     </div>
@@ -801,7 +801,7 @@
                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][from_500_to_999]"
                                             value="{{ $chargeValue->from_500_to_999 == 0 ? '' : $chargeValue->from_500_to_999 }}"
                                             style="width: 100%;"
-                                            @if($chargeValue->unit->unit_name != 'KG')
+                                            @if($chargeValue?->unit?->unit_name != 'KG')
                                                 disabled
                                             @endif>
                                     </div>
@@ -812,7 +812,7 @@
                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][from_1000_to_infinity]"
                                             value="{{ $chargeValue->from_1000_to_infinity == 0 ? '' : $chargeValue->from_1000_to_infinity }}"
                                             style="width: 100%;"
-                                            @if($chargeValue->unit->unit_name != 'KG')
+                                            @if($chargeValue?->unit?->unit_name != 'KG')
                                                 disabled
                                             @endif>
                                     </div>
@@ -823,7 +823,7 @@
                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][20_feet]"
                                             value="{{ $chargeValue->twenty_feet == 0 ? '' : $chargeValue->twenty_feet  }}"
                                             style="width: 100%;"
-                                            @if($chargeValue->unit->unit_name != 'CNTR')
+                                            @if($chargeValue?->unit?->unit_name != 'CNTR')
                                                 disabled
                                             @endif>
                                     </div>
@@ -834,7 +834,7 @@
                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][40_feet]"
                                             value="{{ $chargeValue->forty_feet == 0 ? '' : $chargeValue->forty_feet }}"
                                             style="width: 100%;"
-                                            @if($chargeValue->unit->unit_name != 'CNTR')
+                                            @if($chargeValue?->unit?->unit_name != 'CNTR')
                                                 disabled
                                             @endif>
                                     </div>
@@ -845,7 +845,7 @@
                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][45_feet_hc]"
                                             value="{{ $chargeValue->forty_five_feet_hc == 0 ? '' : $chargeValue->forty_five_feet_hc }}"
                                             style="width: 100%;"
-                                            @if($chargeValue->unit->unit_name != 'CNTR')
+                                            @if($chargeValue?->unit?->unit_name != 'CNTR')
                                                 disabled
                                             @endif>
                                     </div>
@@ -856,7 +856,7 @@
                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][45_feet]"
                                             value="{{ $chargeValue->forty_five_feet == 0 ? '' : $chargeValue->forty_five_feet }}"
                                             style="width: 100%;"
-                                            @if($chargeValue->unit->unit_name != 'CNTR')
+                                            @if($chargeValue?->unit?->unit_name != 'CNTR')
                                                 disabled
                                             @endif>
                                     </div>

@@ -7,10 +7,11 @@
     'multiple' => $multiple ?? false,
     'id' => $id ?? $name,
     'allowClear' => $allowClear ?? false,
-    'isFilterShipment' => $isFilterShipment ?? false
+    'isFilterShipment' => $isFilterShipment ?? false,
+    'disabled' => $disabled ?? false
 ])
 
-<div class='{{ $isFilterShipment ? "filter-group" : "mb-10" }}'>
+<div class='{{ $isFilterShipment ? "filter-group" : "mb-3" }}'>
     <label for="#{{ $name }}" class='form-label {{ $required ? 'required' : '' }}'>{{ $label }}</label>
     <select class="@if($errors->has($name)) is-invalid @endif form-select {{ $isFilterShipment ? 'filter-shipment-select' : '' }}"
         name="{{ $name }}"
@@ -19,6 +20,7 @@
         data-control="select2"
         data-placeholder="{{ $placeholder }}"
         data-allow-clear="{{ $allowClear }}"
+        {{ $disabled ? 'disabled' : '' }}
         @if($multiple) data-close-on-select="false" multiple="multiple" @endif>
         {{ $slot }}
     </select>

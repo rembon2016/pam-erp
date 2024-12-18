@@ -85,15 +85,16 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="import" role="tabpanel">
+                <div class="tab-pane fade row" id="import" role="tabpanel">
                     <x-costing.special-import :costing="$costing" :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
-                     <div class="col-md-4">
-                    <x:form.input label="Transaction Date" placeholder="Transaction Date" name="transaction_date_import" type="date" :model="$joborder" />
+                    <div class="d-flex align-items-center justify-content-start mb-5">
+                        <x:form.input label="Transaction Date" placeholder="Transaction Date" name="transaction_date_import" type="date" :model="$joborder" />
                     </div>
+
                     @if($costing == null)
-                    <x-costing.bl-form :bl="$bl" :costing="$costing" :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
+                    <x-costing.bl-form :costing="$costing" :bl="$bl" :costing="$costing" :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
                     @else
-                    <x-costing.bl-form-edit :bl="$bl" :costing="$costing" :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
+                        <x-costing.bl-form-edit :bl="$bl" :costing="$costing" :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
                     @endif
                 </div>
                 <div class="tab-pane fade" id="export" role="tabpanel">
@@ -102,7 +103,7 @@
                      <x:form.input label="Transaction Date" placeholder="Transaction Date" name="transaction_date_export" type="date" :model="$joborder" />
                      </div>
                        @if($costing == null)
-                     <x-costing.mawb-form :loadingplan="$loadingplan" :vendorLine="$vendor_air" :charge="$charge" :currency="$currency" />
+                     <x-costing.mawb-form :costing="$costing" :loadingplan="$loadingplan" :vendorLine="$vendor_air" :charge="$charge" :currency="$currency" />
                      @else
                      <x-costing.mawb-form-edit :costing="$costing" :loadingplan="$loadingplan" :vendorLine="$vendor_air" :charge="$charge" :currency="$currency" />
                      @endif
@@ -110,10 +111,12 @@
 
             </div>
         </div>
-         <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px">
+         <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px; margin-top: 20px">
             <x:form.cancel-button href="{{ route('finance.costing.sea-air.index') }}" label="Cancel" />
+            @if($costing?->status != 2)
             <button type="button" class="btn btn-sm custom-btn custom-btn-primary" id="save-button">Save</button>
             <button type="button" class="btn btn-sm custom-btn custom-btn-primary" id="post-button">Post</button>
+            @endif
         </div>
         </x:form.wrapper>
     </x:layout.card.body>
@@ -125,7 +128,11 @@
 
         // Event untuk tombol Save
         $('#save-button').click(function () {
-            $('#status_costing').val(1); // Set status menjadi 1 (Save)
+            @if($costing?->status == 3)
+            $('#status_costing').val(3); // Set status menjadi 1 (Save)
+            @else
+             $('#status_costing').val(1); // Set status menjadi 1 (Save)
+            @endif
             $('#costing-form').submit(); // Submit form
         });
 

@@ -1,6 +1,6 @@
 <div class="row">
     <div class='col-md-4'>
-        @if($costing?->port != null)
+
         @if($costing?->port != null)
         <input type="hidden" name="costing_vendor_port_id" value="{{ $row->port->id ?? "" }}">
         @endif

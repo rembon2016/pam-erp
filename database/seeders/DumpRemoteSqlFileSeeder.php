@@ -30,7 +30,7 @@ final class DumpRemoteSqlFileSeeder extends Seeder
         $dbPort = env('DB_PORT');
 
         foreach ($this->getSqlList() as $filename) {
-            Artisan::call('pds:remote-sql-migrate', ['--dbhost' => $dbHost, '--dbusername' => $dbUsername, '--dbname', $dbPort, '--dbport' => $dbName, '--filename' => $filename]);
+            Artisan::call('pds:remote-sql-migrate', ['--dbhost' => $dbHost, '--dbusername' => $dbUsername, '--dbport' => $dbPort, '--dbname' => $dbName, '--filename' => $filename]);
         }
 
         foreach ($this->acceptedAllTypeOfCustomerTables as $customerTable) {

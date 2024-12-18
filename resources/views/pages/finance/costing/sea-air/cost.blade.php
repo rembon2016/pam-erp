@@ -13,9 +13,10 @@
         </h1>
     </x:layout.card.header>
     <x:layout.card.body>
-     <x:form.wrapper action="{{ $data['action'] }}" method="{{ $data['method'] }}">
+     <x:form.wrapper id="costing-form" action="{{ $data['action'] }}" method="{{ $data['method'] }}">
         <input type="hidden" value="{{ $joborder->loading_plan_id }}" name="loading_plan_id">
         <input type="hidden" value="{{ $joborder->job_order_id }}" name="job_order_id">
+         <input type="hidden" name="status_costing" id="status_costing" value="">
         <div class="col-md-12">
             <div class="row">
                 <div class='col-md-3'>
@@ -111,10 +112,29 @@
         </div>
          <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px">
             <x:form.cancel-button href="{{ route('finance.costing.sea-air.index') }}" label="Cancel" />
-            <x:form.submit-button label="Save" />
-            <x:form.submit-button label="Post" />
+            <button type="button" class="btn btn-sm custom-btn custom-btn-primary" id="save-button">Save</button>
+            <button type="button" class="btn btn-sm custom-btn custom-btn-primary" id="post-button">Post</button>
         </div>
         </x:form.wrapper>
     </x:layout.card.body>
 </x:layout.card.wrapper>
 @endsection
+
+@push('js')
+<script>
+
+        // Event untuk tombol Save
+        $('#save-button').click(function () {
+            $('#status_costing').val(1); // Set status menjadi 1 (Save)
+            $('#costing-form').submit(); // Submit form
+        });
+
+        // Event untuk tombol Post
+        $('#post-button').click(function () {
+
+            $('#status_costing').val(2); // Set status menjadi 2 (Post)
+            $('#costing-form').submit(); // Submit form
+        });
+
+</script>
+@endpush

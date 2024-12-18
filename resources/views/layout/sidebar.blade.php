@@ -32,15 +32,15 @@
     {{-- General Wise --}}
     <x:layout.sidebar.parent-menu name="General Wise" iconClass="bx bxs-file">
         <x:layout.sidebar.parent-menu name="Shipments" iconClass="bx bxs-file">
-            <x:layout.sidebar.child-menu name="Sea Air" link="/" />
-            <x:layout.sidebar.child-menu name="Cross Air" link="/" />
-            <x:layout.sidebar.child-menu name="Sea Import" link="/" />
-            <x:layout.sidebar.child-menu name="Sea Export" link="/" />
-            <x:layout.sidebar.child-menu name="Air Import" link="/" />
-            <x:layout.sidebar.child-menu name="Air Export" link="/" />
-            <x:layout.sidebar.child-menu name="Warehouse" link="/" />
-            <x:layout.sidebar.child-menu name="Trucking" link="/" />
-            <x:layout.sidebar.child-menu name="Courier" link="/" />
+            <x:layout.sidebar.child-menu name="Sea Air" link="{{ route('finance.general-wise.shipment.index','seaair') }}" />
+            <x:layout.sidebar.child-menu name="Cross Air" link="{{ route('finance.general-wise.shipment.index','crossair') }}" />
+            <x:layout.sidebar.child-menu name="Sea Import" link="{{ route('finance.general-wise.shipment.index','seaimport') }}" />
+            <x:layout.sidebar.child-menu name="Sea Export" link="{{ route('finance.general-wise.shipment.index','seaexport') }}" />
+            <x:layout.sidebar.child-menu name="Air Import" link="{{ route('finance.general-wise.shipment.index','airimport') }}" />
+            <x:layout.sidebar.child-menu name="Air Export" link="{{ route('finance.general-wise.shipment.index','airexport') }}" />
+            <x:layout.sidebar.child-menu name="Warehouse" link="{{ route('finance.general-wise.shipment.index','warehouse') }}" />
+            <x:layout.sidebar.child-menu name="Trucking" link="{{ route('finance.general-wise.shipment.index','trucking') }}" />
+            <x:layout.sidebar.child-menu name="Courier" link="{{ route('finance.general-wise.shipment.index','courier') }}" />
         </x:layout.sidebar.parent-menu>
         <x:layout.sidebar.parent-menu name="Job Order" link="/" iconClass="bx bxs-file" >
             <x:layout.sidebar.child-menu name="Sea Air" link="/" />

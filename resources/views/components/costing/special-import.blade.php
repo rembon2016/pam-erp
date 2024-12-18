@@ -87,7 +87,7 @@
                         </td>
                         <td>
 
-                <button type="button" class="btn btn-icon btn-danger btn-remove-row" data-row-id="{{ $key }}" style="height: 30px; width: 30px;margin-top:5px;">
+                <button type="button" class="btn btn-icon btn-danger btn-remove-row"  style="height: 30px; width: 30px;margin-top:5px;">
                     <i class="fa fa-trash"></i>
                 </button>
 
@@ -129,7 +129,7 @@
                                 <option value="Credit">Credit</option>
                             </select>
                         </td>
-                        <td> <button type="button" class="btn btn-icon btn-danger btn-remove-row" data-row-id="{{ $key }}" style="height: 30px; width: 30px;margin-top:5px;">
+                        <td> <button type="button" class="btn btn-icon btn-danger btn-remove-row"  style="height: 30px; width: 30px;margin-top:5px;">
                     <i class="fa fa-trash"></i>
                 </button></td>
                     </tr>

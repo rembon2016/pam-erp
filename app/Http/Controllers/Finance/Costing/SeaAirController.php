@@ -165,7 +165,7 @@ final class SeaAirController extends Controller
         $loadingplan = LoadingPlan::with('shipping')->whereIn('plan_id', $loading_plan_dxb)->get();
         $data_costing = [
             'job_order_id' => $request->job_order_id,
-            'status' => 1,
+            'status' => $request->status_costing,
             'type'=> 'SEAAIR',
             'notes'=> $request->notes,
             'created_by' => auth()->user()->email
@@ -436,6 +436,7 @@ final class SeaAirController extends Controller
     }
 
     public function update($id, Request $request){
+
         $costing = Costing::find($id);
         $bl = LoadingReportBl::with('shipping')->where('loading_id', $request->loading_plan_id)->where('status','!=',3)->get();
         $ship = ShippingInstruction::where("status","!=",3)->where("loading_id", $request->loading_plan_id)->get();
@@ -445,6 +446,7 @@ final class SeaAirController extends Controller
         $data_costing = [
             'job_order_id' => $request->job_order_id,
             'notes'=> $request->notes,
+            'status' => $request->status_costing,
             'updated_by' => auth()->user()->email
         ];
         $costing = Costing::find($id)->update($data_costing);

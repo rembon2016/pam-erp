@@ -13,7 +13,7 @@ final class RemoteSqlMigrate extends Command
      *
      * @var string
      */
-    protected $signature = 'pds:remote-sql-migrate {--dbhost=} {--dbusername=} {--dbname=} {--filename=}';
+    protected $signature = 'pds:remote-sql-migrate {--dbhost=} {--dbport=}  {--dbusername=} {--dbname=} {--filename=}';
 
     /**
      * The console command description.

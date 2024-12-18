@@ -314,6 +314,10 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/filter/destination', [ShipmentController::class, 'destination'])->name('destination');
                 Route::get('/filter/vessel', [ShipmentController::class, 'vessel'])->name('vessel');
                 Route::get('/filter/eta', [ShipmentController::class, 'etamerge'])->name('eta');
+                Route::get('/filter/statusShipment', [ShipmentController::class, 'statusShipment'])->name('statusShipment');
+                Route::get('/filter/carrier', [ShipmentController::class, 'carrier'])->name('carrier');
+                Route::get('/filter/shipper', [ShipmentController::class, 'shipper'])->name('shipper');
+                Route::get('/filter/consignee', [ShipmentController::class, 'consignee'])->name('consignee');
                 Route::get('/list', [ShipmentController::class, 'list'])->name('list');
                 Route::get('/{type}', [ShipmentController::class, 'index'])->name('index');
                 Route::get('/{type}/{uuid}', [ShipmentController::class, 'detail'])->name('detail');

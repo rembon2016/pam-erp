@@ -9,7 +9,7 @@
 
     <x:layout.card.wrapper>
         <x:layout.card.header>
-            <x:layout.card.toolbar-shipment />
+            <x:layout.card.toolbar-shipment :type="$type" />
             <div class="col-12">
                 <x-filter.filter-shipment :tableId="'shipment_table'" :type="$type" />
             </div>
@@ -20,26 +20,16 @@
                     <x:layout.table.row>
                         <th class="th-datatable-checkbox-all"><input type="checkbox" class="row-checkbox" id="select_all">
                         </th>
-                        <x:layout.table.heading widthPixel="150" title="CTD NUMBER" />
-                        <x:layout.table.heading widthPixel="250" title="SHIPMENT STATUS" />
-                        <x:layout.table.heading widthPixel="250" title="SHIPPER" />
-                        <x:layout.table.heading widthPixel="250" title="CONSIGNEE" />
-                        <x:layout.table.heading widthPixel="100" title="ORIGIN" />
-                        <x:layout.table.heading widthPixel="100" title="DESTINATION" />
-                        <x:layout.table.heading widthPixel="100" title="PIECES" />
-                        <x:layout.table.heading widthPixel="100" title="PKGS" />
-                        <x:layout.table.heading widthPixel="100" title="GWT/KGS" />
-                        <x:layout.table.heading widthPixel="100" title="CHW/KGS" />
-                        <x:layout.table.heading widthPixel="100" title="CBM/M3" />
-                        <x:layout.table.heading widthPixel="100" title="TERMS" />
-                        <x:layout.table.heading widthPixel="100" title="SHIPMENT BY" />
-                        <x:layout.table.heading widthPixel="300" title="VESSEL/CARRIER" />
-                        <x:layout.table.heading widthPixel="100" title="ETD" />
-                        <x:layout.table.heading widthPixel="100" title="ATD" />
-                        <x:layout.table.heading widthPixel="100" title="ETA Transit Hub" />
-                        <x:layout.table.heading widthPixel="100" title="ATA Transit Hub" />
-                        <x:layout.table.heading widthPixel="100" title="ROUTING" />
-                        <x:layout.table.heading widthPixel="100" customClass="text-center" title="Action" />
+                       
+                        @foreach(App\Service\Finance\GeneralWise\ShipmentColumnService::getColumns($type) as $column)
+                            @if(isset($column['title']))
+                                <x:layout.table.heading 
+                                    widthPixel="{{ $column['width'] ?? '100' }}" 
+                                title="{{ $column['title'] }}"
+                                customClass="{{ $column['className'] ?? '' }}"
+                            />
+                            @endif
+                        @endforeach
                     </x:layout.table.row>
                 </thead>
                 <tbody class="text-black shipment_table_body">
@@ -112,122 +102,10 @@
 
 @push('js')
     @component('components.layout.table.datatable-shipment', [
-        'id' => 'shipment_table',
+        'id' => 'shipment_table',   
         'url' => route('finance.general-wise.shipment.list', ['type' => $type]),
-        'columns' => [
-            [
-                'data' => 'checkbox',
-                'name' => 'checkbox',
-                'orderable' => false,
-                'searchable' => false,
-                'className' => 'dt-body-center no-sort',
-                'render' => function () {
-                    return '<input type="checkbox" class="row-checkbox">';
-                },
-            ],
-            [
-                'data' => 'ctd_number',
-                'name' => 'ctd_number',
-                'orderable' => false,
-            ],
-            [
-                'data' => 'status_shipment',
-                'name' => 'status_shipment',
-                'orderable' => false,
-                'cutText' => false,
-            ],
-            [
-                'data' => 'shipper_name',
-                'name' => 'shipper_name',
-                'orderable' => false,
-            ],
-            [
-                'data' => 'consigne_name',
-                'name' => 'consigne_name',
-                'orderable' => false,
-            ],
-            [
-                'data' => 'origin_name',
-                'name' => 'origin_name',
-                'orderable' => false,
-            ],
-            [
-                'data' => 'destination_name',
-                'name' => 'destination_name',
-                'orderable' => false,
-            ],
-            [
-                'data' => 'order.qty',
-                'name' => 'order.qty',
-                'orderable' => false,
-            ],
-            [
-                'data' => 'order.pkgs',
-                'name' => 'order.pkgs',
-                'orderable' => false,
-            ],
-            [
-                'data' => 'order.gross_weight',
-                'name' => 'order.gross_weight',
-                'orderable' => false,
-            ],
-            [
-                'data' => 'order.chw',
-                'name' => 'order.chw',
-                'orderable' => false,
-            ],
-            [
-                'data' => 'order.measurement',
-                'name' => 'order.measurement',
-                'orderable' => false,
-            ],
-            [
-                'data' => 'freight_term',
-                'name' => 'freight_term',
-                'orderable' => false,
-            ],
-            [
-                'data' => 'shipment_type',
-                'name' => 'shipment_type',
-                'orderable' => false,
-            ],
-            [
-                'data' => 'vessel_voyage',
-                'name' => 'vessel_voyage',
-                'orderable' => false,
-                'cutText' => false,
-            ],
-            [
-                'data' => 'estimated_time_departure',
-                'name' => 'estimated_time_departure',
-                'orderable' => false,
-            ],
-            [
-                'data' => 'atd',
-                'name' => 'atd',
-                'orderable' => false,
-            ],
-            [
-                'data' => 'eta',
-                'name' => 'eta',
-                'orderable' => false,
-            ],
-            [
-                'data' => 'ata',
-                'name' => 'ata',
-                'orderable' => false,
-            ],
-            [
-                'data' => 'transit_via',
-                'name' => 'transit_via',
-                'orderable' => false,
-            ],
-            [
-                'data' => 'action',
-                'name' => 'action',
-                'orderable' => false,
-            ],
-        ],
+        'columns' => App\Service\Finance\GeneralWise\ShipmentColumnService::getColumns($type),
+        'API_BASE' => in_array($type, ['seaair', 'crossair']) ? env('API_ORIGIN') : env('API_DXB')
     ])
     @endcomponent
     <script>
@@ -437,8 +315,8 @@
                             }
                         });
                     } else {
-                        documentTypesList.append(
-                            '<p class="text-muted">No document types available</p>');
+                        // documentTypesList.append(
+                        //     '<p class="text-muted">No document types available</p>');
                     }
 
                     // Store the selected CTDs for later use
@@ -810,7 +688,7 @@
                 const buttonText = selectedCount === 0 ?
                     'Export All Data to CSV' :
                     `Export ${selectedCount} Data to CSV`;
-                $('.button-export').text(buttonText);
+                $('.button-export-text').text(buttonText);
             }
 
             // Update text when page loads

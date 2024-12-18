@@ -728,6 +728,7 @@ table#shipment_table  td,  table#shipment_table th {
 
 table#shipment_table thead th {
     padding: 15px !important;
+    padding-left: 8px !important;
 }
 
 table#shipment_table .sa-class {
@@ -744,6 +745,15 @@ table#shipment_table .ca-class {
     background-color: #d6e0ff;
     padding: 8px;
     border-radius: 4px;
+}
+
+table#shipment_table .db-class {
+    color: #214ed4;
+    font-weight: 600;
+    background-color: #d6e0ff;
+    padding: 7px;
+    border-radius: 4px;
+    font-size: 11px;
 }
 
 table#shipment_table .first-vessel {
@@ -783,7 +793,7 @@ table#shipment_table .btn-view-shipment {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 12px 12px;
+    padding: 8px 7px;
     background-color: #30c051;
     border-radius: 5px;
     border: none;

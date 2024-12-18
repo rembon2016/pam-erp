@@ -10,18 +10,16 @@
     </ul>
     <div class="tab-content p-5 bg-white costing-tab-content">
         <div class="tab-pane fade show active" id="bl-tab-{{ $k }}" role="tabpanel">
-            <x-costing.charges-from :k="$k" type="bl" :vendor="$vendorLine" :charge="$charge" :currency="$currency" />
+            <x-costing.charges-from :costing="$costing" :k="$k" type="bl" :vendor="$vendorLine" :charge="$charge" :currency="$currency" />
+
         </div>
 
         <div class="tab-pane fade" id="ctd-tab-{{ $k }}" role="tabpanel">
-            <div class="d-flex flex-column" style="row-gap: 15px;">
-                @foreach($row->shipping as $j => $ctd)
-                    <div class="">
-                        <button type="button" class="btn btn-success">CTD NO: {{ $ctd->ctd_number }}</button>
-                        <x-costing.charges-from :k="$j" type="ctd" :vendor="$vendorLine" :charge="$charge" :currency="$currency" />
-                    </div>
-                @endforeach
-            </div>
+
+          @foreach($row->shipping as $j => $ctd)
+            <button type="button" class="btn btn-success">CTD NO: {{ $ctd->ctd_number }}</button>
+            <x-costing.charges-from :costing="$costing" :k="$j" type="ctd" :vendor="$vendorLine" :charge="$charge" :currency="$currency" />
+          @endforeach
         </div>
     </div>
 @endforeach

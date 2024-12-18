@@ -7,7 +7,8 @@
     'multiple' => $multiple ?? false,
     'id' => $id ?? $name,
     'allowClear' => $allowClear ?? false,
-    'isFilterShipment' => $isFilterShipment ?? false
+    'isFilterShipment' => $isFilterShipment ?? false,
+    'disabled' => $disabled ?? false
 ])
 
 <div class='{{ $isFilterShipment ? "filter-group" : "mb-10" }}'>
@@ -19,6 +20,7 @@
         data-control="select2"
         data-placeholder="{{ $placeholder }}"
         data-allow-clear="{{ $allowClear }}"
+        {{ $disabled ? 'disabled' : '' }}
         @if($multiple) data-close-on-select="false" multiple="multiple" @endif>
         {{ $slot }}
     </select>

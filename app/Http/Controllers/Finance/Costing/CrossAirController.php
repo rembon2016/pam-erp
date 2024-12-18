@@ -72,7 +72,7 @@ final class CrossAirController extends Controller
                 })
                 ->editColumn('status', function ($item) {
                     if(!empty($item->costing)){
-                        if($item->costing->status == 1){
+                        if($item->costing->status == 1 || $item->costing->status == 3){
                             return 'Open';
                         }else{
                             return 'Closed';

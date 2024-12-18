@@ -88,7 +88,7 @@ final class SeaAirController extends Controller
                 })
                 ->editColumn('status', function ($item) {
                     if(!empty($item->costing)){
-                        if($item->costing->status == 1){
+                        if($item->costing->status == 1 || $item->costing->status == 3){
                             return 'Open';
                         }else{
                             return 'Closed';
@@ -118,9 +118,15 @@ final class SeaAirController extends Controller
 
     public function show($id){
         $joborder = JobOrder::with(['detail', 'loading','doc'])->findOrFail($id);
+        $cost = Costing::where("job_order_id",$joborder->job_order_id);
+        if($cost->exists()){
+            $costing = $cost->first();
+        }else{
+            $costing = null;
+        }
         $op = OperationDocument::where('job_order_id', $id)->first();
         $lpdoc = LoadingPlanDocument::where('loading_id', $joborder->loading_plan_id)->get();
-        return view('pages.finance.costing.sea-air.show', compact('id','joborder','op','lpdoc'));
+        return view('pages.finance.costing.sea-air.show', compact('id','joborder','op','lpdoc','costing'));
     }
 
     public function cost($id){
@@ -436,7 +442,7 @@ final class SeaAirController extends Controller
     }
 
     public function update($id, Request $request){
-
+        dd($request->all());
         $costing = Costing::find($id);
         $bl = LoadingReportBl::with('shipping')->where('loading_id', $request->loading_plan_id)->where('status','!=',3)->get();
         $ship = ShippingInstruction::where("status","!=",3)->where("loading_id", $request->loading_plan_id)->get();
@@ -823,6 +829,13 @@ final class SeaAirController extends Controller
         }
 
         return to_route('finance.costing.sea-air.index')->with('toastSuccess', "Update Success");
+    }
+
+    public function status($id, $status){
+        $costing = Costing::find($id);
+        $costing->status = $status;
+        $costing->save();
+        return to_route('finance.costing.sea-air.show',$costing->job_order_id)->with('toastSuccess', "Update Success");
     }
 
     public function exportCsv()

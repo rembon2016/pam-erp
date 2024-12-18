@@ -15,15 +15,16 @@
                 <button class="btn custom-btn custom-btn-primary btn-sm">CTD NO: {{ $ctd->ctd_number }}</button>
             @endif --}}
 
-            <div class="d-flex align-items-center justify-content-end">
-                <button type="button" id="add-row-{{ $type }}-{{ $k }}" class="btn btn-icon btn-success rounded" style="height: 30px; width: 30px;margin-right:5px;">
-                    <i class="fa fa-plus pe-0"></i>
-                </button>
-                <button type="button" id="updown-{{ $type }}-{{ $k }}" class="btn btn-icon btn-primary rounded" style="height: 30px; width: 30px;">
-                    <i class="fa fa-angle-down"></i>
-                </button>
-            </div>
-        {{-- </div> --}}
+        <div style="display: flex; align-items: center; justify-content: end;">
+         @if($costing?->status != 2)
+            <button type="button" id="add-row-{{ $type }}-{{ $k }}" class="btn btn-icon btn-success rounded" style="height: 30px; width: 30px;margin-right:5px;">
+                <i class="fa fa-plus pe-0"></i>
+            </button>
+            @endif
+            <button type="button" id="updown-{{ $type }}-{{ $k }}" class="btn btn-icon btn-primary rounded" style="height: 30px; width: 30px;">
+                <i class="fa fa-angle-down"></i>
+            </button>
+        </div>
 
         <div class="table-responsive" id="table-{{ $type }}-{{ $k }}">
             <table class="table table-bordered">
@@ -50,40 +51,48 @@
                     <tr id="row-{{ $m }}">
                         <td>
                             <input type="hidden" name="costing_detail_{{ $type }}_{{ $k }}_id[]" value="{{ $row->id }}">
-                            <select class="form-select vendor-select" onchange="setVendorName{{ ucfirst($type) }}({{ $k }}, {{ $m }})" " data-control=" select2" id="vendor_{{ $type }}_{{ $k }}_id_0" name="vendor_{{ $type }}_{{ $k }}_id[]" data-key="{{ $m }}">
+                            @if($costing->status != 1)
+                            <input type="hidden" name="vendor_{{ $type }}_{{ $k }}_id[]" type="text" class=" form-control" value="{{ $row->vendor_id }}">
+                            <input type="hidden" name="charge_{{ $type }}_{{ $k }}_id[]" type="text" class=" form-control" value="{{ $row->charge_id }}">
+                            <input type="hidden" name="currency_{{ $type }}_{{ $k }}_id[]" type="text" class=" form-control" value="{{ $row->currency_id }}">
+                             <input type="hidden" name="status_{{ $type }}_{{ $k }}[]" type="text" class=" form-control" value="{{ $row->status }}">
+                        @endif
+                            <select class="form-select vendor-select" onchange="setVendorName{{ ucfirst($type) }}({{ $k }}, {{ $m }})" " data-control=" select2" id="vendor_{{ $type }}_{{ $k }}_id_0" name="vendor_{{ $type }}_{{ $k }}_id[]" data-key="{{ $m }}" @if($costing->status != 1) disabled @endif>
                                 @foreach($vendor as $rows)
                                 <option value="{{ $rows->vendor_id }}" @if($row->vendor_id == $rows->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}">{{ $rows->vendor_code }}</option>
                                 @endforeach
                             </select></td>
                         <td><input type="text" class="form-control" id="vendor_{{ $type }}_{{ $k }}_name_{{ $m }}" placeholder="Name" value="{{  $row->vendor_name  }}" name="vendor_{{ $type }}_{{ $k }}_name[]" readonly></td>
                         <td>
-                            <select class="form-select" data-control="select2" id="charge_{{ $type }}_{{ $k }}_id_{{ $m }}" name="charge_{{ $type }}_{{ $k }}_id[]" data-key="{{ $m }}">
+                            <select class="form-select" data-control="select2" id="charge_{{ $type }}_{{ $k }}_id_{{ $m }}" name="charge_{{ $type }}_{{ $k }}_id[]" data-key="{{ $m }}" @if($costing->status != 1) disabled @endif>
 
                                 @foreach($charge as $rows)
                                 <option value="{{ $rows->id }}" @if($row->charge_id == $rows->id) selected @endif>{{ $rows->charge_code }}</option>
                                 @endforeach
                             </select>
                         </td>
-                        <td> <select class="form-select" data-control="select2" id="currency_{{ $type }}_{{ $k }}_id_0" name="currency_{{ $type }}_{{ $k }}_id[]" data-key="0">
+                        <td> <select class="form-select" data-control="select2" id="currency_{{ $type }}_{{ $k }}_id_0" name="currency_{{ $type }}_{{ $k }}_id[]" data-key="0" @if($costing->status != 1) disabled @endif>
 
                                 @foreach($currency as $rows)
                                 <option value="{{ $rows->id }}" @if($row->currency_id == $rows->id) selected @endif>{{ $rows->currency_code }}</option>
                                 @endforeach
                             </select></td>
-                        <td><input type="text" class="form-control" value="{{ $row->rate }}" name="rate_{{ $type }}_{{ $k }}[]" placeholder="Type here.."></td>
-                        <td><input type="text" class="form-control" value="{{ $row->amount }}" name="amount_{{ $type }}_{{ $k }}[]" placeholder="Type here.."></td>
-                        <td><input type="text" class="form-control" value="{{ $row->local_amount }}" name="local_amount_{{ $type }}_{{ $k }}[]" placeholder="Type here.."></td>
+                        <td><input type="text" class="form-control" value="{{ $row->rate }}" name="rate_{{ $type }}_{{ $k }}[]" placeholder="Type here.." @if($costing->status != 1) readonly @endif></td>
+                        <td><input type="text" class="form-control" value="{{ $row->amount }}" name="amount_{{ $type }}_{{ $k }}[]" placeholder="Type here.." @if($costing->status != 1) readonly @endif></td>
+                        <td><input type="text" class="form-control" value="{{ $row->local_amount }}" name="local_amount_{{ $type }}_{{ $k }}[]" placeholder="Type here.." @if($costing->status != 1) readonly @endif></td>
                         <td>
-                            <select class="form-select" name="status_{{ $type }}_{{ $k }}[]">
+                            <select class="form-select" name="status_{{ $type }}_{{ $k }}[]" @if($costing->status != 1) disabled @endif>
 
                                 <option value="Debit" @if($row->status == 'Debit') selected @endif>Debit</option>
                                 <option value="Credit" @if($row->status == 'Credit') selected @endif>Credit</option>
                             </select>
                         </td>
                         <td>
+                        @if($costing->status == 1)
                             <button type="button" class="btn btn-icon btn-danger btn-remove-row-{{ $type }}-{{ $k }}" style="height: 30px; width: 30px;margin-top:5px;">
                             <i class="fa fa-trash"></i>
                         </button>
+                        @endif
                         </td>
                     </tr>
 

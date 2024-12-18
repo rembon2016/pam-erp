@@ -10,8 +10,23 @@ function generateRandomString(length) {
     return result;
 }
 
+function syncSelect2Element(elementWrapper, executedFunction) {
+    $(elementWrapper).find('select[data-control="select2"]').each(function (index) {
+        $(this).select2('destroy');
+    });
+
+    if (typeof executedFunction === "function") {
+        executedFunction();
+    }
+
+    $(elementWrapper).find('select[data-control="select2"]').each(function (index) {
+        $(this).select2();
+    });
+}
+
 function clearValueInDynamicRow(rowItem) {
     $(rowItem).find('input, select').val('');
+    $(rowItem).find('select[data-control="select2"]').val('').trigger('change');
 }
 
 function rearrangeNameAttribute(rowItem, row_index = 0) {
@@ -57,7 +72,6 @@ $(document).off('click', 'button[data-type="delete-dynamic-row"]').on('click', '
                 const indexEndOfArray = nameAttr.indexOf(']');
                 const indexElement = nameAttr.slice(indexStartOfArray, indexEndOfArray);
                 const finalNameAttr = nameAttr.replace(indexElement, `[${index}`);
-                console.log(finalNameAttr, indexElement, index);
 
                 $(this).attr('name', finalNameAttr);
             })

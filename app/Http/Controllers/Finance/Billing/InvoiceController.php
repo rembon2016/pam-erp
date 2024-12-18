@@ -15,6 +15,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\Facades\DataTables;
 use App\Service\Finance\Billing\InvoiceService;
+use App\Service\Finance\MasterData\UnitService;
+use App\Service\Finance\MasterData\ChargeService;
+use App\Service\Finance\MasterData\CurrencyService;
 use App\Service\Finance\MasterData\CustomerService;
 use App\Service\Finance\MasterData\ServiceTypeService;
 use App\Service\Finance\GeneralWise\GeneralWiseService;
@@ -25,7 +28,10 @@ final class InvoiceController extends Controller
         protected InvoiceService $invoiceService,
         protected GeneralWiseService $generalWiseService,
         protected ServiceTypeService $serviceTypeService,
-        protected CustomerService $customerService
+        protected CustomerService $customerService,
+        protected ChargeService $chargeService,
+        protected CurrencyService $currencyService,
+        protected UnitService $unitService
     ) {}
     public function index(): View
     {
@@ -96,7 +102,11 @@ final class InvoiceController extends Controller
     public function viewGenerate()
     {
         $invoice = new Invoice;
-        return view('pages.finance.billing.invoice.generate', compact('invoice'));
+        $charges = $this->chargeService->getCharges();
+        $currencies = $this->currencyService->getCurrencies();
+        $units = $this->unitService->getUnitCollections();
+
+        return view('pages.finance.billing.invoice.generate', compact('invoice', 'charges', 'currencies', 'units'));
     }
 
     public function storeGenerate(Request $request)

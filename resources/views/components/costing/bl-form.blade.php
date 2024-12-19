@@ -18,7 +18,7 @@
         <div class="tab-pane fade" id="ctd-tab-{{ $k }}" role="tabpanel">
 
           @foreach($row->shipping as $j => $ctd)
-            <button type="button" class="btn btn-success">CTD NO: {{ $ctd->ctd_number }}</button>
+            <button type="button" class="btn btn-sm custom-btn custom-btn-primary">CTD NO: {{ $ctd->ctd_number }}</button>
             <x-costing.charges-from :costing="$costing" :k="$j" type="ctd" :value="$ctd->ctd_number" :vendor="$vendorLine" :charge="$charge" :currency="$currency" />
           @endforeach
         </div>

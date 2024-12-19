@@ -73,7 +73,7 @@ final class ShipmentController extends Controller
                 $shipment_by = 'UNKNOWN';
         }
 
-        return view('pages.finance.general-wise.shipment.index', 
+        return view('pages.finance.general-wise.shipment.index',
             compact('type', 'page', 'shipment_by'));
     }
 
@@ -240,7 +240,7 @@ final class ShipmentController extends Controller
                         $item['eta'] = $item['eta_new'] != null ? Carbon::parse($item['eta_new'])->format('d M Y') : '-';
                     }
 
-                    $item['estimated_time_departure'] = $item['estimated_time_departure'] != null ? 
+                    $item['estimated_time_departure'] = $item['estimated_time_departure'] != null ?
                         Carbon::parse($item['estimated_time_departure'])->format('d M Y') : '-';
 
                     $item['destination_name'] = $destination;
@@ -250,8 +250,8 @@ final class ShipmentController extends Controller
                     $motherVesselName = $item['mother_vessel_name'] ?? '';
                     $voyageNumberMother = $item['voyage_number_mother'] ?? '';
                     $voyageVesselOrigin = $item['voyage_vessel_origin'] ?? '';
-                    
-                    $item['vessel_voyage'] = $motherVesselName . '-' . $voyageNumberMother . 
+
+                    $item['vessel_voyage'] = $motherVesselName . '-' . $voyageNumberMother .
                         ($voyageVesselOrigin ? '/' . $voyageVesselOrigin : '');
 
                     if(isset($item['feeder_vessel_name']) && $item['feeder_vessel_name'] != null){
@@ -306,17 +306,17 @@ final class ShipmentController extends Controller
         } else {
             $base = env('API_DXB');
         }
-        
+
         if ($type == "seaair" || $type == "crossair") {
             $origin_url = $base . "/api/shippinginstruction/origin/name";
         } else {
             $origin_url = $base . "/api/shippinginstruction/origin?shipment_by=" . $shipment_by;
         }
-    
+
         $response_origin = Http::get($origin_url, [
             'shipment_by' => $shipment_by,
         ]);
-    
+
         if ($response_origin->successful()) {
             $apiData = $response_origin->json();
             return response()->json([
@@ -453,10 +453,10 @@ final class ShipmentController extends Controller
     public function detail(string $type, string $uuid): View
     {
         $base = ($type == "seaair" || $type == "air") ? env('API_ORIGIN') : env('API_DXB');
-        
+
         $finalUrl = $base . "/api/shippinginstruction/{$uuid}";
         $shipmentResponse = Http::get($finalUrl);
-        
+
 
         if (!$shipmentResponse->successful()) {
             abort(404);
@@ -627,7 +627,7 @@ final class ShipmentController extends Controller
         $shipment['dimension'] = $dimension;
         $shipment['loading_plan'] = $loadingPlan ?? null;
         $shipment['loading_plan_detail'] = $loadingPlanDetail ?? null;
-        $shipment['loading_plan_local'] = ($type != 'air' && $type != 'seaair') ? $loadingPlan : null;  
+        $shipment['loading_plan_local'] = ($type != 'air' && $type != 'seaair') ? $loadingPlan : null;
         $shipment['jobtruckdelivery'] = $jobtruckdelivery ?? null;
         $shipment['destination_handling_agent'] = $controlOffice ?? null;
         $shipment['destination_partner'] = $destinationPartner ?? null;
@@ -638,7 +638,7 @@ final class ShipmentController extends Controller
         $shipment['chat_dxb'] = $chatDxb ?? null;
         $shipment['chat_agent'] = $chatAgent ?? null;
         $shipment['local_transport'] = $localTransport ?? null;
-        
+
         return view('pages.finance.general-wise.shipment.detail', compact('shipment', 'type'));
     }
 

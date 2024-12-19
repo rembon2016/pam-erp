@@ -29,7 +29,8 @@
                 <x:form.input type="date" label="Invoice Due Date" name="invoice_due_date" placeholder="Choose Date" :model="$invoice" readonly="true" />
             </div>
             <div class='col-md-3'>
-                <x:form.input label="Billing Customer" name="customer" placeholder="Billing Customer" :model="$invoice" readonly="true" />
+                <x:form.input label="Billing Customer" name="customer_billing_id" placeholder="Billing Customer" :model="$invoice" readonly="true" />
+                <input type="hidden" name="customer_credit_limit" id="customer_credit_limit" value="30">
             </div>
             <div class='col-md-3'>
                 <x:form.input label="Chargeable Weight" name="chw" placeholder="Chargeable Weight" :model="$invoice" readonly="true" />
@@ -50,6 +51,8 @@
                     <div class="charge-item border px-4 py-2 my-3">
                         <div class="d-flex align-items-center justify-content-between gap-3">
                             <button type="button" class="btn btn-sm custom-btn custom-btn-primary">CTD: SZAXXX1</button>
+                            <input type="hidden" name="data[SZAXXX1][ctd_number]" value="SZAXXX1">
+                            <input type="hidden" name="data[SZAXXX1][job_id]" value="1">
                             <div class="d-flex align-items-center justify-content-end gap-2">
                                 <button type="button" class="btn btn-icon btn-success rounded" data-type="add-item" style="width: 30px; height: 30px;">
                                     <i class="fa fa-plus pe-0"></i>
@@ -77,7 +80,7 @@
                                 <tbody>
                                     <tr class="charge-row">
                                         <td>
-                                            <select name="data[SZAXXX1][charges][0][charges][0][charge_id]" data-type="charge_id" class="form-select" data-control="select2" data-placeholder="Choose" required>
+                                            <select name="data[SZAXXX1][charges][0][charge_id]" data-type="charge_id" class="form-select" data-control="select2" data-placeholder="Choose" required>
                                                 @foreach ($charges as $charge)
                                                     <option value="{{ $charge->id }}">{{ $charge->charge_name }}</option>
                                                 @endforeach
@@ -98,7 +101,7 @@
                                             <select name="data[SZAXXX1][charges][0][unit_id]" data-type="unit_id" class="form-select" required>
                                                 <option value="">Choose</option>
                                                 @foreach ($units as $unit)
-                                                    <option value="{{ $unit->id }}">{{ "{$unit->description} ({$unit->unit_name})" }}</option>
+                                                    <option value="{{ $unit->unit_id }}">{{ "{$unit->description} ({$unit->unit_name})" }}</option>
                                                 @endforeach
                                             </select>
                                         </td>
@@ -125,7 +128,9 @@
                     </div>
                     <div class="charge-item border px-4 py-2 my-3">
                         <div class="d-flex align-items-center justify-content-between gap-3">
-                            <button type="button" class="btn btn-sm custom-btn custom-btn-primary">CTD: SZAXXXX2</button>
+                            <button type="button" class="btn btn-sm custom-btn custom-btn-primary">CTD: SZAXXX2</button>
+                            <input type="hidden" name="data[SZAXXX2][ctd_number]" value="SZAXXX2">
+                            <input type="hidden" name="data[SZAXXX2][job_id]" value="2">
                             <div class="d-flex align-items-center justify-content-end gap-2">
                                 <button type="button" class="btn btn-icon btn-success rounded" data-type="add-item" style="width: 30px; height: 30px;">
                                     <i class="fa fa-plus pe-0"></i>
@@ -153,14 +158,14 @@
                                 <tbody>
                                     <tr class="charge-row">
                                         <td>
-                                            <select name="data[SZAXXXX2][charges][0][charge_id]" data-type="charge_id" class="form-select" data-control="select2" data-placeholder="Choose" required>
+                                            <select name="data[SZAXXX2][charges][0][charge_id]" data-type="charge_id" class="form-select" data-control="select2" data-placeholder="Choose" required>
                                                 @foreach ($charges as $charge)
                                                     <option value="{{ $charge->id }}">{{ $charge->charge_name }}</option>
                                                 @endforeach
                                             </select>
                                         </td>
                                         <td>
-                                            <select name="data[SZAXXXX2][charges][0][currency_id]" data-type="currency_id" class="form-select" required>
+                                            <select name="data[SZAXXX2][charges][0][currency_id]" data-type="currency_id" class="form-select" required>
                                                 <option value="">Choose</option>
                                                 @foreach ($currencies as $currency)
                                                     <option value="{{ $currency->id }}">{{ $currency->currency_name }}</option>
@@ -168,24 +173,24 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <input type="number" name="data[SZAXXXX2][charges][0][rate]" data-type="rate" class="form-control" placeholder="0" min="0" required>
+                                            <input type="number" name="data[SZAXXX2][charges][0][rate]" data-type="rate" class="form-control" placeholder="0" min="0" required>
                                         </td>
                                         <td>
-                                            <select name="data[SZAXXXX2][charges][0][unit_id]" data-type="unit_id" class="form-select" required>
+                                            <select name="data[SZAXXX2][charges][0][unit_id]" data-type="unit_id" class="form-select" required>
                                                 <option value="">Choose</option>
                                                 @foreach ($units as $unit)
-                                                    <option value="{{ $unit->unit_id }}">{{ "{$unit->description} ({$unit->unit_name})" }}</option>
+                                                    <option value="{{ $unit->id }}">{{ "{$unit->description} ({$unit->unit_name})" }}</option>
                                                 @endforeach
                                             </select>
                                         </td>
                                         <td>
-                                            <input type="number" name="data[SZAXXXX2][charges][0][chw]" data-type="chw" class="form-control" placeholder="0" min="0" required>
+                                            <input type="number" name="data[SZAXXX2][charges][0][chw]" data-type="chw" class="form-control" placeholder="0" min="0" required>
                                         </td>
                                         <td>
-                                            <input type="number" name="data[SZAXXXX2][charges][0][amount]" data-type="amount" class="form-control" placeholder="0" min="0" value="0" readonly>
+                                            <input type="number" name="data[SZAXXX2][charges][0][amount]" data-type="amount" class="form-control" placeholder="0" min="0" value="0" readonly>
                                         </td>
                                         <td>
-                                            <input type="number" name="data[SZAXXXX2][charges][0][local_amount]" data-type="local_amount" class="form-control" placeholder="0" min="0" required>
+                                            <input type="number" name="data[SZAXXX2][charges][0][local_amount]" data-type="local_amount" class="form-control" placeholder="0" min="0" required>
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center justify-content-end">
@@ -308,6 +313,26 @@
 
         $(".charge-row").each(function () {
             calculateAmount($(this));
+        })
+
+        $("#invoice_date").change(function () {
+            const invoice_date = new Date($(this).val());
+
+            if (!isNaN(invoice_date)) {
+                // Tambahkan 30 hari pada invoice date
+                const dueDate = new Date(invoice_date);
+                const credit_limit = parseInt($("#customer_credit_limit").val());
+                dueDate.setDate(dueDate.getDate() + credit_limit);
+
+                // Format tanggal menjadi YYYY-MM-DD
+                const formattedDueDate = dueDate.toISOString().split('T')[0];
+
+                // Update nilai pada input invoice due date
+                $("#invoice_due_date").val(formattedDueDate)
+            } else {
+                // Kosongkan due date jika invoice date tidak valid
+                $("#invoice_due_date").val('')
+            }
         })
     });
 </script>

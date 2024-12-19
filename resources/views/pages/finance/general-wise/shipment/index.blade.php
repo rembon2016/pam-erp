@@ -22,6 +22,9 @@
                         </th>
 
                         @foreach(App\Service\Finance\GeneralWise\ShipmentColumnService::getColumns($type) as $column)
+                            @php
+                                \Log::info('Column:', ['column' => $column]);
+                            @endphp
                             @if(isset($column['title']))
                                 <x:layout.table.heading
                                     widthPixel="{{ $column['width'] ?? '100' }}"

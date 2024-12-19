@@ -6,6 +6,7 @@ namespace App\Models\Finance;
 
 use App\Models\Finance\Invoice;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Finance\InvoiceShipmentCharge;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -21,8 +22,15 @@ final class InvoiceShipment extends Model
         'deleted_at' => 'datetime',
     ];
 
+    public $incrementing = false;
+
     public function invoice()
     {
         return $this->belongsTo(Invoice::class, 'invoice_id', 'id');
+    }
+
+    public function invoiceShipmentCharge()
+    {
+        return $this->hasMany(InvoiceShipmentCharge::class, 'invoice_shipment_id', 'id');
     }
 }

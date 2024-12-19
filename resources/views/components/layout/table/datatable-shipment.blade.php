@@ -400,7 +400,7 @@
             }
 
             .timeline-card h4 {
-                margin: 0 0 10px 0;
+                margin: 0;
                 color: #333;
                 font-size: 13px;
                 font-weight: 600;
@@ -608,7 +608,12 @@
                     <div class="timeline-dot ${dotClass}"></div>
                     <div class="timeline-card ${hasTglAktual ? 'active' : 'inactive'}">
                         <div class="title-history-${hasTglAktual ? 'active' : 'inactive'}">
-                            <h4>${item.status_name}</h4>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h4>${item.status_name}</h4> 
+                                <span class="icon-history"">
+                                     ${getStatusIcon(item.status_name, hasTglAktual)}
+                                </span>
+                            </div>
                             <p class="timeline-date ${hasTglAktual ? '' : 'd-none'}">${formatDateTime(item.tgl_aktual_real)}</p>
                         </div>
                         ${hasTglAktual ? `

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Finance\Billing;
 
 use App\Http\Requests\Finance\Billing\Invoice\StoreInvoiceRequest;
+use App\Service\Finance\MasterData\PortService;
 use Illuminate\View\View;
 use App\Functions\Utility;
 use Illuminate\Http\Request;
@@ -43,9 +44,9 @@ final class InvoiceController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            $currencies = $this->invoiceService->getInvoices(request()->query());
+            $invoices = $this->invoiceService->getInvoices(request()->query());
 
-            return DataTables::of($currencies)
+            return DataTables::of($invoices)
                 ->addIndexColumn()
                 // ->editColumn('currency_date', function ($item) {
                 //     return $item->currency_date?->format('d-m-Y');
@@ -66,6 +67,29 @@ final class InvoiceController extends Controller
         );
     }
 
+    public function shipmentList()
+    {
+        if (request()->ajax()) {
+            $data = (new PortService())->getPorts(request()->query());
+
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('country_name', function ($item) {
+                    return $item->country?->country_name;
+                })
+                ->addColumn('row_checkbox', function ($item) {
+                    return "<input type='checkbox' value='{$item->id}' class='row-checkbox' />";
+                })
+                ->rawColumns(['row_checkbox'])
+                ->toJson();
+        }
+
+        return ResponseJson::error(
+            Response::HTTP_UNAUTHORIZED,
+            'Access Unauthorized',
+        );
+    }
+
     public function createNotLinked(): View
     {
         $service_types = $this->serviceTypeService->getServiceTypes();
@@ -74,8 +98,9 @@ final class InvoiceController extends Controller
         $vessels = $this->generalWiseService->getVessels();
         $origins = $this->generalWiseService->getOrigins();
         $voyages = $this->generalWiseService->getVoyages();
+        $customers = $this->customerService->getCustomers();
 
-        return view('pages.finance.billing.invoice.form-not-linked', compact('months', 'years', 'service_types', 'vessels', 'origins', 'voyages'));
+        return view('pages.finance.billing.invoice.form-not-linked', compact('months', 'years', 'service_types', 'vessels', 'origins', 'voyages', 'customers'));
     }
 
     public function storeNotLinked(Request $request): RedirectResponse

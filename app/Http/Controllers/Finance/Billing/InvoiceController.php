@@ -54,6 +54,9 @@ final class InvoiceController extends Controller
                 ->getShippingInstructionByCustomerCondition(condition: $billingCustomerCondition);
 
             return DataTables::of($instructions->data)
+                ->addColumn('row_checkbox', function ($col) {
+                    return "<input type='checkbox' class='row-checkbox' value='{{ $col->job_id }}' />";
+                })
                 ->addColumn('billing_customer_name', function ($col) {
                     return $col->billingCustomer?->customer_name ?? '-';
                 })
@@ -75,6 +78,7 @@ final class InvoiceController extends Controller
                 ->addColumn('chw', function ($col) {
                     return $col->order->chw ?? '-';
                 })
+                ->rawColumns(['row_checkbox'])
                 ->addIndexColumn()
                 ->toJson();
         }
@@ -87,7 +91,6 @@ final class InvoiceController extends Controller
 
     public function createNotLinked(): View
     {
-        // dd(request()->get('billing-customer'));
         $service_types = $this->serviceTypeService->getServiceTypes();
         $months = Utility::getListOfMonths();
         $years = Utility::getListOfYears(15);

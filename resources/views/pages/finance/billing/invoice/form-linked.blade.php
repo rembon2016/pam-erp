@@ -110,8 +110,8 @@
                             <input type="checkbox" class="row-checkbox" id="select_all">
                         </th>
                         <x:layout.table.heading widthPixel="50" title="No" />
-                        <x:layout.table.heading widthPixel="100" title="Billing Customer" />
                         <x:layout.table.heading widthPixel="100" title="CTD No" />
+                        <x:layout.table.heading widthPixel="100" title="Billing Customer" />
                         <x:layout.table.heading widthPixel="100" title="Job Order No" />
                         <x:layout.table.heading widthPixel="100" title="Origin" />
                         <x:layout.table.heading widthPixel="100" title="Qty" />
@@ -126,46 +126,8 @@
 @endsection
 
 @push('js')
-@component('components.layout.table.datatable', [
-    'id' => 'linked-table',
-    'url' => route('finance.billing.invoice.list', ['billing-customer' => 'linked']),
-    'dynamicParam' => true,
-    'columns' => [
-        [
-            "data" => "DT_RowIndex",
-            "name" => "DT_RowIndex",
-            "orderable" => false,
-            "searchable" => false
-        ],
-        [
-            "data" => "billing_customer_name",
-            "name" => "billing_customer_name",
-        ],
-        [
-            "data" => "ctd_number",
-            "name" => "ctd_number",
-        ],
-        [
-            "data" => "job_order_code",
-            "name" => "job_order_code",
-        ],
-        [
-            "data" => "origin_name",
-            "name" => "origin_name",
-        ],
-        [
-            "data" => "qty",
-            "name" => "qty",
-        ],
-        [
-            "data" => "chw",
-            "name" => "chw",
-        ],
-    ],
-])
-@endcomponent
 <script>
-    const ajaxUrl = "{{ route('finance.billing.invoice.shipment.list') }}";
+    const ajaxUrl = "{{ route('finance.billing.invoice.list') }}";
     const selectedData = new Set();
 
     function updateCheckboxStates(table) {
@@ -192,7 +154,7 @@
         return {
             init: function() {
 
-                (t = document.querySelector("#invoice_table")) && (t.querySelectorAll(
+                (t = document.querySelector("#linked-table")) && (t.querySelectorAll(
                         "tbody tr").forEach((t => {
                         const e = t.querySelectorAll("td"),
                             r = moment(e[3].innerHTML, "dd mm yyyy").format();
@@ -217,12 +179,28 @@
                                 searchable: false
                             },
                             {
-                                data: "port_name",
-                                name: "port_name",
+                                data: "ctd_number",
+                                name: "ctd_number",
                             },
                             {
-                                data: "country_name",
-                                name: "country_name",
+                                data: "billing_customer_name",
+                                name: "billing_customer_name",
+                            },
+                            {
+                                data: "job_order_code",
+                                name: "job_order_code",
+                            },
+                            {
+                                data: "origin_name",
+                                name: "origin_name",
+                            },
+                            {
+                                data: "qty",
+                                name: "qty",
+                            },
+                            {
+                                data: "chw",
+                                name: "chw",
                             },
                         ],
                         columnDefs: [

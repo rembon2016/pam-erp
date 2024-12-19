@@ -129,49 +129,15 @@
 @endsection
 
 @push('js')
-@component('components.layout.table.datatable', [
-    'id' => 'not-linked-table',
-    'url' => route('finance.billing.invoice.list', ['billing-customer' => 'not-linked']),
-    'dynamicParam' => true,
-    'columns' => [
-        [
-            "data" => "DT_RowIndex",
-            "name" => "DT_RowIndex",
-            "orderable" => false,
-            "searchable" => false
-        ],
-        [
-            "data" => "ctd_number",
-            "name" => "ctd_number",
-        ],
-        [
-            "data" => "job_order_code",
-            "name" => "job_order_code",
-        ],
-        [
-            "data" => "origin_name",
-            "name" => "origin_name",
-        ],
-        [
-            "data" => "qty",
-            "name" => "qty",
-        ],
-        [
-            "data" => "chw",
-            "name" => "chw",
-        ],
-    ],
-])
-@endcomponent
 <script>
-    const ajaxUrl = "{{ route('finance.billing.invoice.shipment.list') }}";
+    const ajaxUrl = "{{ route('finance.billing.invoice.list') }}" + "?billing-customer=not-linked" ;
     const selectedData = new Set();
 
     function updateCheckboxStates(table) {
         table.rows().every(function() {
             const row = this.node();
             const data = this.data();
-            const uniqueId = data.port_id;
+            const uniqueId = data.job_id;
             $(row).find('.row-checkbox').prop('checked', selectedData.has(uniqueId));
         });
 
@@ -191,7 +157,7 @@
         return {
             init: function() {
 
-                (t = document.querySelector("#invoice_table")) && (t.querySelectorAll(
+                (t = document.querySelector("#not-linked-table")) && (t.querySelectorAll(
                         "tbody tr").forEach((t => {
                         const e = t.querySelectorAll("td"),
                             r = moment(e[3].innerHTML, "dd mm yyyy").format();
@@ -216,12 +182,24 @@
                                 searchable: false
                             },
                             {
-                                data: "port_name",
-                                name: "port_name",
+                                data: "ctd_number",
+                                name: "ctd_number",
                             },
                             {
-                                data: "country_name",
-                                name: "country_name",
+                                data: "job_order_code",
+                                name: "job_order_code",
+                            },
+                            {
+                                data: "origin_name",
+                                name: "origin_name",
+                            },
+                            {
+                                data: "qty",
+                                name: "qty",
+                            },
+                            {
+                                data: "chw",
+                                name: "chw",
                             },
                         ],
                         columnDefs: [
@@ -246,7 +224,7 @@
 
                             $(document).on('click', '.row-checkbox:not(#select_all)', function () {
                                 const row = e.row($(this).closest('tr')).data();
-                                const uniqueId = row.port_id;
+                                const uniqueId = row.job_id;
                                 if ($(this).prop('checked')) {
                                     selectedData.add(uniqueId);
                                 } else {
@@ -264,7 +242,7 @@
                                     page: 'current'
                                 }).every(function() {
                                     const data = this.data();
-                                    const uniqueId = data.port_id;
+                                    const uniqueId = data.job_id;
                                     if (isChecked) {
                                         selectedData.add(uniqueId);
                                     } else {

@@ -28,8 +28,10 @@ final class ShippingInstructionService
     {
         $shippingInstructions = ShippingInstruction::query()
             ->select(['job_id', 'shipment_by', 'origin_name', 'ctd_number', 'customer_id', 'customer_name', 'date_created'])
-            ->with(['jobOrder', 'jobOrderAir'])
+            ->with(['jobOrder', 'jobOrderAir', 'jobOrderDetail'])
             ->{$condition == 'exists' ? "whereNotNull" : "whereNull"}('customer_id')
+            ->whereHas('jobOrder')
+            ->orWhereHas('jobOrderAir')
             ->orderBy('date_created', 'desc');
 
         return ObjectResponse::success(

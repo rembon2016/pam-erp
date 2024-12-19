@@ -78,8 +78,8 @@ final class InvoiceController extends Controller
                 ->addColumn('chw', function ($col) {
                     return $col->order->chw ?? '-';
                 })
-                ->rawColumns(['row_checkbox'])
                 ->addIndexColumn()
+                ->rawColumns(['row_checkbox'])
                 ->toJson();
         }
 

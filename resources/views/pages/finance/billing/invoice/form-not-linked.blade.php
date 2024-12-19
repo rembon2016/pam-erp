@@ -9,12 +9,12 @@
     @component('components.invoice.form-tab', [
         'tabs' => [
             [
-                'link' => route('finance.billing.invoice.create.not-linked-billing-customer'),
+                'link' => route('finance.billing.invoice.create.not-linked-billing-customer', ['billing-customer' => 'not-linked']),
                 'text' => 'Billing Customer - Not Linked',
                 'activeCondition' => request()->routeIs('finance.billing.invoice.create.not-linked-billing-customer'),
             ],
             [
-                'link' => route('finance.billing.invoice.create.linked-billing-customer'),
+                'link' => route('finance.billing.invoice.create.linked-billing-customer', ['billing-customer' => 'linked']),
                 'text' => 'Billing Customer - Linked',
                 'activeCondition' => request()->routeIs('finance.billing.invoice.create.linked-billing-customer'),
             ]
@@ -86,7 +86,6 @@
                 <div class="d-flex align-items-center justify-content-end gap-2">
                     <x:layout.card.toolbar
                         :customLink="[
-                            'is_modal' => true,
                             'text' => 'Update Multiple Billing Customer'
                         ]"
                         withFilter="true"
@@ -95,24 +94,21 @@
             </div>
         </x:layout.card.header>
         <x:layout.card.body>
-            <x:layout.table.wrapper id="invoice_table">
+            <x:layout.table.wrapper id="not-linked-table">
                 <thead>
                     <x:layout.table.row>
                         <th class="min-w-50px">
                             <input type="checkbox" class="row-checkbox" id="select_all">
                         </th>
                         <x:layout.table.heading widthPixel="50" title="No" />
-                        <x:layout.table.heading widthPixel="100" title="Port Name" />
-                        <x:layout.table.heading widthPixel="100" title="Port Code" />
-                        <x:layout.table.heading widthPixel="100" title="Country" />
-                        {{-- <x:layout.table.heading widthPixel="100" title="CTD No" />
+                        <x:layout.table.heading widthPixel="100" title="CTD No" />
                         <x:layout.table.heading widthPixel="100" title="Job Order No" />
                         <x:layout.table.heading widthPixel="100" title="Origin" />
                         <x:layout.table.heading widthPixel="100" title="Qty" />
-                        <x:layout.table.heading widthPixel="100" title="CHW" /> --}}
+                        <x:layout.table.heading widthPixel="100" title="CHW" />
                     </x:layout.table.row>
                 </thead>
-                <tbody class="fw-semibold text-gray-600 not-linked-body">
+                <tbody class="fw-semibold text-gray-600">
                 </tbody>
             </x:layout.table.wrapper>
         </x:layout.card.body>
@@ -132,17 +128,16 @@
     </x:layout.modal.form-modal>
 @endsection
 
-
 @push('js')
 <script>
-    const ajaxUrl = "{{ route('finance.billing.invoice.shipment.list') }}";
+    const ajaxUrl = "{{ route('finance.billing.invoice.list') }}" + "?billing-customer=not-linked" ;
     const selectedData = new Set();
 
     function updateCheckboxStates(table) {
         table.rows().every(function() {
             const row = this.node();
             const data = this.data();
-            const uniqueId = data.port_id;
+            const uniqueId = data.job_id;
             $(row).find('.row-checkbox').prop('checked', selectedData.has(uniqueId));
         });
 
@@ -162,7 +157,7 @@
         return {
             init: function() {
 
-                (t = document.querySelector("#invoice_table")) && (t.querySelectorAll(
+                (t = document.querySelector("#not-linked-table")) && (t.querySelectorAll(
                         "tbody tr").forEach((t => {
                         const e = t.querySelectorAll("td"),
                             r = moment(e[3].innerHTML, "dd mm yyyy").format();
@@ -187,12 +182,24 @@
                                 searchable: false
                             },
                             {
-                                data: "port_name",
-                                name: "port_name",
+                                data: "ctd_number",
+                                name: "ctd_number",
                             },
                             {
-                                data: "country_name",
-                                name: "country_name",
+                                data: "job_order_code",
+                                name: "job_order_code",
+                            },
+                            {
+                                data: "origin_name",
+                                name: "origin_name",
+                            },
+                            {
+                                data: "qty",
+                                name: "qty",
+                            },
+                            {
+                                data: "chw",
+                                name: "chw",
                             },
                         ],
                         columnDefs: [
@@ -217,7 +224,7 @@
 
                             $(document).on('click', '.row-checkbox:not(#select_all)', function () {
                                 const row = e.row($(this).closest('tr')).data();
-                                const uniqueId = row.port_id;
+                                const uniqueId = row.job_id;
                                 if ($(this).prop('checked')) {
                                     selectedData.add(uniqueId);
                                 } else {
@@ -235,7 +242,7 @@
                                     page: 'current'
                                 }).every(function() {
                                     const data = this.data();
-                                    const uniqueId = data.port_id;
+                                    const uniqueId = data.job_id;
                                     if (isChecked) {
                                         selectedData.add(uniqueId);
                                     } else {
@@ -252,6 +259,24 @@
             }
         }
     }();
+
+    $(document).ready(function () {
+        $("#custom-link-button").off('click').on('click', function (event) {
+            event.preventDefault();
+
+            if (selectedData.size == 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'No Selection',
+                    text: 'Please select at least 1 CTD'
+                });
+                return;
+            } else {
+                $("#custom_link_modal").modal('show');
+            }
+
+        });
+    })
 
     KTUtil.onDOMContentLoaded((function() {
         KTDataTable.init()

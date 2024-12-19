@@ -39,7 +39,7 @@
                     <x:form.textarea label="Notes" placeholder="Notes" :model="$costing" name="notes" />
                 </div>
             </div>
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <ul class="nav nav-tabs default-costing-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="vendor-tab" data-bs-toggle="tab" data-bs-target="#vendor" type="button" role="tab">Vendor</button>
                 </li>
@@ -53,7 +53,7 @@
             </ul>
             <div class="tab-content p-5 bg-white border border-top-0">
                 <div class="tab-pane fade show active" id="vendor" role="tabpanel">
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <ul class="nav nav-tabs default-costing-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="trucking-tab" data-bs-toggle="tab" data-bs-target="#trucking" type="button" role="tab">Trucking</button>
                         </li>
@@ -75,7 +75,7 @@
                         </div>
 
                         <div class="tab-pane fade" id="port" role="tabpanel">
-                            <x-costing.port-form :port="$port" :costing="$costing" :vendorPort="$vendor_port" />
+                            <x-costing.port-form :costing="$costing" :vendorPort="$vendor_port" />
                         </div>
                         <div class="tab-pane fade" id="agent" role="tabpanel">
                             <x-costing.agent-form  :costing="$costing" :vendorAir="$vendor_air" />
@@ -144,4 +144,5 @@
         });
 
 </script>
+
 @endpush

@@ -23,6 +23,7 @@ use App\Service\Finance\MasterData\CurrencyService;
 use App\Service\Finance\MasterData\CustomerService;
 use App\Service\Finance\MasterData\ServiceTypeService;
 use App\Service\Finance\GeneralWise\GeneralWiseService;
+use App\Service\Operation\Origin\ShippingInstructionService;
 
 final class InvoiceController extends Controller
 {
@@ -33,7 +34,8 @@ final class InvoiceController extends Controller
         protected CustomerService $customerService,
         protected ChargeService $chargeService,
         protected CurrencyService $currencyService,
-        protected UnitService $unitService
+        protected UnitService $unitService,
+        protected ShippingInstructionService $shippingInstructionService,
     ) {}
 
     public function index(): View
@@ -43,44 +45,41 @@ final class InvoiceController extends Controller
 
     public function list(): JsonResponse
     {
+        $billingCustomerCondition = request()->get('billing-customer') == 'not-linked'
+            ? 'empty'
+            : 'exists';
+
         if (request()->ajax()) {
-            $invoices = $this->invoiceService->getInvoices(request()->query());
+            $instructions = $this->shippingInstructionService
+                ->getShippingInstructionByCustomerCondition(condition: $billingCustomerCondition);
 
-            return DataTables::of($invoices)
-                ->addIndexColumn()
-                // ->editColumn('currency_date', function ($item) {
-                //     return $item->currency_date?->format('d-m-Y');
-                // })
-                ->addColumn('action', function ($item) {
-                    return Utility::generateTableActions([
-                        'edit' => route('finance.master-data.currency.edit', $item->id),
-                        'delete' => route('finance.master-data.currency.destroy', $item->id),
-                    ]);
+            return DataTables::of($instructions->data)
+                ->addColumn('row_checkbox', function ($col) {
+                    return "<input type='checkbox' class='row-checkbox' value='{{ $col->job_id }}' />";
                 })
-                ->rawColumns(['action'])
-                ->toJson();
-        }
-
-        return ResponseJson::error(
-            Response::HTTP_UNAUTHORIZED,
-            'Access Unauthorized',
-        );
-    }
-
-    public function shipmentList()
-    {
-        if (request()->ajax()) {
-            $data = (new PortService())->getPorts(request()->query());
-
-            return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('country_name', function ($item) {
-                    return $item->country?->country_name;
+                ->addColumn('billing_customer_name', function ($col) {
+                    return $col->billingCustomer?->customer_name ?? '-';
                 })
-                ->addColumn('row_checkbox', function ($item) {
-                    return "<input type='checkbox' value='{$item->id}' class='row-checkbox' />";
+                ->addColumn('job_order_code', function ($col) {
+                    $jobOrderCode = $col->shipment_by == 'SEAAIR'
+                        ? $col->jobOrder->job_order_code ?? '-'
+                        : $col->jobOrderAir->job_order_code ?? '-';
+
+                    return $jobOrderCode;
+                })
+                ->addColumn('origin_name', function ($col) {
+                    $jobOrderOriginName = $col->origin_name;
+
+                    return $jobOrderOriginName;
+                })
+                ->addColumn('qty', function ($col) {
+                    return $col->order->qty ?? '-';
+                })
+                ->addColumn('chw', function ($col) {
+                    return $col->order->chw ?? '-';
                 })
                 ->rawColumns(['row_checkbox'])
+                ->addIndexColumn()
                 ->toJson();
         }
 

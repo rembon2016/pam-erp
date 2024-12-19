@@ -22,7 +22,7 @@
             <div class="d-flex flex-column" style="row-gap: 15px;">
                 @foreach($row->shipping as $j => $ctd)
                     <div class="">
-                        <div class="btn custom-btn btn-sm custom-btn-primary">CTD NO: {{ $ctd->ctd_number }}</div>
+                        <div class="btn btn-sm custom-btn custom-btn-primary">CTD NO: {{ $ctd->ctd_number }}</div>
                         <x-costing.charges-from :costing="$costing" :detail="$row" value="{{ $ctd->ctd_number  }}" :k="$j" type="ctd" :vendor="$vendorLine" :charge="$charge" :currency="$currency" />
                     </div>
                 @endforeach

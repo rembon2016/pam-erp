@@ -15,6 +15,9 @@
                 <hr>
 
                 <form action="{{ $action }}" class="row justify-content-center" method="{{ $method }}" target="{{ $target }}">
+                    @if($method != "GET")
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    @endif
                     {{ $slot }}
 
                     <div class="row mb-3 mt-5" style="row-gap: 10px;">

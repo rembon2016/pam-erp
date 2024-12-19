@@ -27,6 +27,12 @@ class LoadingReportDetail extends Model
         return $this->belongsTo(LoadingReport::class, 'bl_id', 'loading_id');
     }
 
+
+    public function bl()
+    {
+        return $this->belongsTo(LoadingReportBl::class, 'loading_report_bl_id', 'loading_report_bl_id');
+    }
+
     public function getTeusAttribute($value)
     {
         if(!isset($this->container_type)){

@@ -354,6 +354,7 @@ Route::group(['middleware' => ['auth']], function () {
                 'as' => 'sea-air.'
             ], function () {
                 Route::get('/', [SeaAirController::class, 'index'])->name('index');
+                Route::get('/port', [SeaAirController::class, 'port'])->name('port');
                 Route::get('/list', [SeaAirController::class, 'list'])->name('list');
                 Route::post('/store', [SeaAirController::class, 'store'])->name('store');
                 Route::get('/status/{id}/{status}', [SeaAirController::class, 'status'])->name('status');

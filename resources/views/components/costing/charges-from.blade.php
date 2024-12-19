@@ -41,7 +41,7 @@
                         <th style="width: 100px;">Actions</th>
                     </tr>
                 </thead>
-                <tbody id="{{ $type }}-charges-rows-{{ $k }}">
+                <tbody id="{{ $type }}-charges-rows-{{ $value }}">
                     <!-- Rows will be dynamically added here -->
 
                     @if(!empty($detail->detail))
@@ -77,11 +77,11 @@
                                 <option value="{{ $rows->id }}" @if($row->currency_id == $rows->id) selected @endif>{{ $rows->currency_code }}</option>
                                 @endforeach
                             </select></td>
-                        <td><input type="text" class="form-control" value="{{ $row->rate }}" name="rate_{{ $type }}_{{ $k }}[]" placeholder="Type here.." @if($costing->status != 1) readonly @endif></td>
-                        <td><input type="text" class="form-control" value="{{ $row->amount }}" name="amount_{{ $type }}_{{ $k }}[]" placeholder="Type here.." @if($costing->status != 1) readonly @endif></td>
-                        <td><input type="text" class="form-control" value="{{ $row->local_amount }}" name="local_amount_{{ $type }}_{{ $k }}[]" placeholder="Type here.." @if($costing->status != 1) readonly @endif></td>
+                        <td><input type="text" class="form-control" value="{{ $row->rate }}" id="rate_{{ $type }}_{{ $k }}_id_0"  name="rate_{{ $type }}_{{ $k }}[]" placeholder="Type here.." @if($costing->status != 1) readonly @endif></td>
+                        <td><input type="text" class="form-control" value="{{ $row->amount }}" id="amount_{{ $type }}_{{ $k }}_id_0" name="amount_{{ $type }}_{{ $k }}[]" placeholder="Type here.." @if($costing->status != 1) readonly @endif></td>
+                        <td><input type="text" class="form-control" value="{{ $row->local_amount }}" id="local_amount_{{ $type }}_{{ $k }}_id_0"  name="local_amount_{{ $type }}_{{ $k }}[]" placeholder="Type here.." @if($costing->status != 1) readonly @endif></td>
                         <td>
-                            <select class="form-select" name="status_{{ $type }}_{{ $k }}[]" @if($costing->status != 1) disabled @endif>
+                            <select class="form-select" id="status_{{ $type }}_{{ $k }}_id_0"  name="status_{{ $type }}_{{ $k }}[]" @if($costing->status != 1) disabled @endif>
 
                                 <option value="Debit" @if($row->status == 'Debit') selected @endif>Debit</option>
                                 <option value="Credit" @if($row->status == 'Credit') selected @endif>Credit</option>
@@ -146,7 +146,7 @@ let isVisible{{ ucfirst($type) }}{{ $k }} = true; // Track the visibility state
                     @endforeach
                     @endif
 
-let rowIndex{{ ucfirst($type) }}{{ $k }} = {{ $jum }}; // Initialize index for new rows
+var rowIndex{{ ucfirst($type) }}{{ $k }} = {{ $jum }}; // Initialize index for new rows
 
 // Add Row
 $('#add-row-{{ $type }}-{{ $k }}').on('click', function () {
@@ -177,11 +177,11 @@ $('#add-row-{{ $type }}-{{ $k }}').on('click', function () {
                     @endforeach
                 </select>
             </td>
-            <td><input type="text" class="form-control" name="rate_{{ $type }}_{{ $k }}[]" placeholder="Type here.."></td>
-            <td><input type="text" class="form-control" name="amount_{{ $type }}_{{ $k }}[]" placeholder="Type here.."></td>
-            <td><input type="text" class="form-control" name="local_amount_{{ $type }}_{{ $k }}[]" placeholder="Type here.."></td>
+            <td><input type="text" class="form-control" id="rate_{{ $type }}_{{ $k }}_id_${rowIndex{{ ucfirst($type) }}{{ $k }}}" name="rate_{{ $type }}_{{ $k }}[]" placeholder="Type here.."></td>
+            <td><input type="text" class="form-control" id="ampunt{{ $type }}_{{ $k }}_id_${rowIndex{{ ucfirst($type) }}{{ $k }}}" name="amount_{{ $type }}_{{ $k }}[]" placeholder="Type here.."></td>
+            <td><input type="text" class="form-control" id="local_amount_{{ $type }}_{{ $k }}_id_${rowIndex{{ ucfirst($type) }}{{ $k }}}" name="local_amount_{{ $type }}_{{ $k }}[]" placeholder="Type here.."></td>
             <td>
-                <select class="form-select" name="status_{{ $type }}_{{ $k }}[]">
+                <select class="form-select" id="status_{{ $type }}_{{ $k }}_id_${rowIndex{{ ucfirst($type) }}{{ $k }}}" name="status_{{ $type }}_{{ $k }}[]">
                     <option value="Debit">Debit</option>
                     <option value="Credit">Credit</option>
                 </select>
@@ -191,16 +191,83 @@ $('#add-row-{{ $type }}-{{ $k }}').on('click', function () {
                         </button></td>
         </tr>
     `;
-    $('#{{ $type }}-charges-rows-{{ $k }}').append(newRow); // Append the new row
+    $('#{{ $type }}-charges-rows-{{ $value }}').append(newRow); // Append the new row
     $('.vendor-select').select2(); // Reinitialize Select2
     rowIndex{{ ucfirst($type) }}{{ $k }}++; // Increment row index
 });
+
+    function setCharge{{ $k }}(key, bl, index, type){
+        var first = '';
+        if(type == 'bl'){
+            first = 'Bl';
+        }else if(type == 'mawb'){
+            first = 'Mawb';
+        }
+       const newRow = `
+        <tr id="row-${index}>
+            <td>
+                <select class="form-select vendor-select" onchange="setVendorName${first}(${key}, ${index})"
+                    data-control="select2" id="vendor_${type}_${key}_id_${index}"
+                    name="vendor_${type}_${key}_id[]" data-key="${index}">
+                    @foreach($vendor as $rows)
+                    <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}">{{ $rows->vendor_code }}</option>
+                    @endforeach
+                </select>
+            </td>
+            <td>
+                <input type="text" class="form-control" id="vendor_${type}_${key}_name_${index}"
+                    placeholder="Name" name="vendor_${type}_${key}_name[]" readonly>
+            </td>
+            <td>
+                <select class="form-select" data-control="select2" id="charge_${type}_${key}_id_${index}"
+                    name="charge_${type}_${key}_id[]" data-key="${index}">
+                    @foreach($charge as $rows)
+                    <option value="{{ $rows->id }}">{{ $rows->charge_code }}</option>
+                    @endforeach
+                </select>
+            </td>
+            <td>
+                <select class="form-select" data-control="select2" id="currency_${type}_${key}_id_${index}"
+                    name="currency_bl_${key}_id[]" data-key="${index}">
+                    @foreach($currency as $rows)
+                    <option value="{{ $rows->id }}">{{ $rows->currency_code }}</option>
+                    @endforeach
+                </select>
+            </td>
+            <td>
+                <input type="text" class="form-control" id="rate_${type}_${key}_id_${index}" name="rate_${type}_${key}[]" placeholder="Type here..">
+            </td>
+            <td>
+                <input type="text" class="form-control" id="amount_${type}_${key}_id_${index}" name="amount_${type}_${key}[]" placeholder="Type here..">
+            </td>
+            <td>
+                <input type="text" class="form-control" id="local_amount_${type}_${key}_id_${index}" name="local_amount_${type}_${key}[]" placeholder="Type here..">
+            </td>
+            <td>
+                <select class="form-select" name="status_${type}_${key}[]">
+                    <option value="Debit">Debit</option>
+                    <option value="Credit">Credit</option>
+                </select>
+            </td>
+            <td>
+                <button type="button" class="btn btn-icon btn-danger btn-remove-row-${type}-${key}"
+                    style="height: 30px; width: 30px; margin-top:5px;">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    `;
+    console.log(`${type}-charges-rows-${bl}`);
+    $(`#${type}-charges-rows-${bl}`).append(newRow); // Append the new row
+    $('.vendor-select').select2(); // Reinitialize Select2
+    window[`rowIndex${first}${key}`]++; // Increment row index
+    }
 
 
     // Remove Row
 
 
-      $('#{{ $type }}-charges-rows-{{ $k }}').on('click', '.btn-remove-row-{{ $type }}-{{ $k }}', function () {
+      $('#{{ $type }}-charges-rows-{{ $value }}').on('click', '.btn-remove-row-{{ $type }}-{{ $k }}', function () {
     const rowToHide = $(this).closest('tr'); // Ambil baris yang diklik
     const hiddenInput = rowToHide.find('input[name="costing_detail_{{ $type }}_{{ $k }}_id[]"]'); // Cari input id
 

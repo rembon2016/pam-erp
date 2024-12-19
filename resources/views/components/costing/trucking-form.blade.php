@@ -10,7 +10,7 @@
         <div class='col-md-4'>
             <div class='mb-10'>
                 <label for="#vendor_id" class='form-label'>Vendor Code</label>
-                <select class="form-select" onChange="setVendorName('{{ $key }}')" name="vendor_truck_id[]" id="vendor_id_{{ $key }}" data-control="select2" data-placeholder="Vendor Code">
+                <select class="form-select" onChange="setVendorName('{{ $key }}', '{{ $row->bl->bl_number }}')" name="vendor_truck_id[]" id="vendor_id_{{ $key }}" data-control="select2" data-placeholder="Vendor Code">
                     <option></option>
                     @foreach($vendorTruck as $rows)
                     <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}">{{ $rows->vendor_code }}</option>
@@ -31,12 +31,21 @@
 
 @push('js')
 <script>
- function setVendorName(key) {
+ function setVendorName(key,bl) {
 
         var $dropdown = $(`#vendor_id_${key}`);
         var vendorName = $dropdown.find(':selected').data('vendor-name');
          console.log(vendorName);
         $('#vendor_name_' + key).val(vendorName);
+        var key = $("#bl_"+bl).val();
+
+
+        var index = window[`rowIndexBl${key}`];
+        console.log(index);
+
+        window[`setCharge${key}`](key, bl, index,'bl');
+
+
     }
 </script>
 @endpush

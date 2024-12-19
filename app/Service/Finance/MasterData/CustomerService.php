@@ -356,7 +356,7 @@ final class CustomerService
             ];
         })->toArray();
 
-        FinanceCustomerType::query()->forceDelete();
+        FinanceCustomerType::query()->where('customer_id', $customerModel->id)->forceDelete();
         FinanceCustomerType::insert($customerTypes);
 
         $customerBillingTypeData = array();

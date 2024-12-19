@@ -11,6 +11,7 @@ use App\Functions\ResponseJson;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use App\Constants\COA\CashflowType;
+use App\Exports\MasterData\ChartOfAccountExport;
 use App\Http\Controllers\Controller;
 use App\Models\Finance\AccountGroup;
 use Maatwebsite\Excel\Facades\Excel;
@@ -135,7 +136,7 @@ final class ChartOfAccountController extends Controller
     {
         $file_name = 'list_chart_of_accounts_' . time() . '.xlsx';
 
-        return Excel::download(new CountryExport, $file_name);
+        return Excel::download(new ChartOfAccountExport, $file_name);
     }
 
     /**
@@ -148,7 +149,7 @@ final class ChartOfAccountController extends Controller
     {
         $file_name = 'list_chart_of_accounts_' . time() . '.csv';
 
-        return Excel::download(new CountryExport, $file_name);
+        return Excel::download(new ChartOfAccountExport, $file_name);
     }
 
 }

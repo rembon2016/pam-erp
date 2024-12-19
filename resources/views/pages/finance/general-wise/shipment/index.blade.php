@@ -132,6 +132,7 @@
         'columns' => App\Service\Finance\GeneralWise\ShipmentColumnService::getColumns($type),
         'API_BASE' => in_array($type, ['seaair', 'crossair']) ? env('API_ORIGIN') : env('API_DXB')
     ])
+
     @endcomponent
     <script>
         $(document).ready(function() {

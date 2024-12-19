@@ -61,7 +61,7 @@
 
         <div class="row mb-7">
             <div class="col-md-6">
-                <x-list.box-list icon="calendar" title="Cargo Readiness Date" :value="$shipment['cargo_redines_date'] ?? '-'" />
+                <x-list.box-list date="true" icon="calendar" title="Cargo Readiness Date" :value="$shipment['cargo_redines_date'] ?? '-'" />
             </div>
             <div class="col-md-6">
                 <x-list.box-list icon="box" title="Loading Type" :value="$shipment['loading_type'] ?? '-'" />
@@ -96,7 +96,7 @@
 
         <div class="row mb-7">
             <div class="col-md-4">
-                <x-list.box-list icon="calendar-alt" title="Permit Date" :value="$shipment['permit_date'] ?? '-'" />
+                <x-list.box-list date="true" icon="calendar-alt" title="Permit Date" :value="$shipment['permit_date'] ?? '-'" />
             </div>
             <div class="col-md-4">
                 <x-list.box-list icon="file-contract" title="Permit No." :value="$shipment['permit_no'] ?? '-'" />

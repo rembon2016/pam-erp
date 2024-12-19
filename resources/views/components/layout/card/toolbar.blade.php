@@ -18,12 +18,28 @@
         @endif
 
         @if (!empty($customLink))
-            <a href="{{ $customLink['link'] }}" class="btn btn-sm custom-btn custom-btn-primary">
-                @if (!empty($customLink['icon']))
-                    <i class="{{ $customLink['icon'] }}"></i>
-                @endif
-                {{ $customLink['text'] }}
-            </a>
+            @if(isset($customLink['link']))
+                <a href="{{ $customLink['link'] }}" class="btn btn-sm custom-btn custom-btn-primary" id="custom-link-button">
+                    @if (!empty($customLink['icon']))
+                        <i class="{{ $customLink['icon'] }}"></i>
+                    @endif
+                    {{ $customLink['text'] }}
+                </a>
+            @elseif (isset($customLink['is_modal']))
+                <button type="button" class="btn btn-sm custom-btn custom-btn-primary" data-bs-toggle="modal" data-bs-target="#custom_link_modal" id="custom-link-button">
+                    @if (!empty($customLink['icon']))
+                        <i class="{{ $customLink['icon'] }}"></i>
+                    @endif
+                    {{ $customLink['text'] }}
+                </button>
+            @else
+                <button type="button" class="btn btn-sm custom-btn custom-btn-primary" id="custom-link-button">
+                    @if (!empty($customLink['icon']))
+                        <i class="{{ $customLink['icon'] }}"></i>
+                    @endif
+                    {{ $customLink['text'] }}
+                </button>
+            @endif
         @endif
     </div>
 

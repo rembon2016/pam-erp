@@ -18,6 +18,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.7/dist/js/tempus-dominus.min.js"
     crossorigin="anonymous"></script>
 <script src="{{ asset('assets/js/main.js') }}"></script>
+<script src="{{ asset('assets/js/history-shipping-icons.js') }}"></script>
 <script src="{{ asset('assets/js/dynamic-modal.js') }}"></script>
 
 @include('utils.alert')

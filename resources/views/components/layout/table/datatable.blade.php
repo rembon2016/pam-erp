@@ -48,15 +48,13 @@
                     ]
                     }), document.querySelector('[data-kt-ecommerce-order-filter="search"]').addEventListener(
                         "keyup", (function(t) {
-
-                                e.search(t.target.value).draw()
-
+                            e.search(t.target.value).draw()
                         })), (() => {
-                        const t = document.querySelector('[data-kt-ecommerce-order-filter="status"]');
-                        $(t).on("change", (t => {
-                            let r = t.target.value;
-                            "all" === r && (r = ""), e.column(2).search(r).draw()
-                        }))
+                            const t = document.querySelector('[data-kt-ecommerce-order-filter="status"]');
+                            $(t).on("change", (t => {
+                                let r = t.target.value;
+                                "all" === r && (r = ""), e.column(2).search(r).draw()
+                            }))
                     })())
             }
         }

@@ -26,6 +26,11 @@ class ShippingInstruction extends Model
     ];
     protected $appends = ['pod_code','teus','teus_new','days_closed'];
 
+    public function jobOrderDetail()
+    {
+        return $this->hasOne(JobOrderDetail::class, 'job_id', 'job_id');
+    }
+
     public function jobOrder()
     {
         return $this->hasOneThrough(

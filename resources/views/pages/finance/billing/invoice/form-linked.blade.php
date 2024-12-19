@@ -9,12 +9,12 @@
     @component('components.invoice.form-tab', [
         'tabs' => [
             [
-                'link' => route('finance.billing.invoice.create.not-linked-billing-customer'),
+                'link' => route('finance.billing.invoice.create.not-linked-billing-customer', ['billing-customer' => 'not-linked']),
                 'text' => 'Billing Customer - Not Linked',
                 'activeCondition' => request()->routeIs('finance.billing.invoice.create.not-linked-billing-customer'),
             ],
             [
-                'link' => route('finance.billing.invoice.create.linked-billing-customer'),
+                'link' => route('finance.billing.invoice.create.linked-billing-customer', ['billing-customer' => 'linked']),
                 'text' => 'Billing Customer - Linked',
                 'activeCondition' => request()->routeIs('finance.billing.invoice.create.linked-billing-customer'),
             ]
@@ -98,13 +98,13 @@
             />
         </x:layout.card.header>
         <x:layout.card.body>
-            <x:layout.table.wrapper id="currency_table">
+            <x:layout.table.wrapper id="linked-table">
                 <thead>
                     <x:layout.table.row>
                         <x:layout.table.heading widthPixel="50" title="#" />
-                        <x:layout.table.heading widthPixel="50" title="No" />
-                        <x:layout.table.heading widthPixel="100" title="CTD No" />
+                        {{-- <x:layout.table.heading widthPixel="50" title="No" /> --}}
                         <x:layout.table.heading widthPixel="100" title="Billing Customer" />
+                        <x:layout.table.heading widthPixel="100" title="CTD No" />
                         <x:layout.table.heading widthPixel="100" title="Job Order No" />
                         <x:layout.table.heading widthPixel="100" title="Origin" />
                         <x:layout.table.heading widthPixel="100" title="Qty" />
@@ -117,3 +117,44 @@
         </x:layout.card.body>
     </x:layout.card.wrapper>
 @endsection
+
+@push('js')
+@component('components.layout.table.datatable', [
+    'id' => 'linked-table',
+    'url' => route('finance.billing.invoice.list', ['billing-customer' => 'linked']),
+    'dynamicParam' => true,
+    'columns' => [
+        [
+            "data" => "DT_RowIndex",
+            "name" => "DT_RowIndex",
+            "orderable" => false,
+            "searchable" => false
+        ],
+        [
+            "data" => "billing_customer_name",
+            "name" => "billing_customer_name",
+        ],
+        [
+            "data" => "ctd_number",
+            "name" => "ctd_number",
+        ],
+        [
+            "data" => "job_order_code",
+            "name" => "job_order_code",
+        ],
+        [
+            "data" => "origin_name",
+            "name" => "origin_name",
+        ],
+        [
+            "data" => "qty",
+            "name" => "qty",
+        ],
+        [
+            "data" => "chw",
+            "name" => "chw",
+        ],
+    ],
+])
+@endcomponent
+@endpush

@@ -22,6 +22,7 @@ use App\Service\Finance\MasterData\CurrencyService;
 use App\Service\Finance\MasterData\CustomerService;
 use App\Service\Finance\MasterData\ServiceTypeService;
 use App\Service\Finance\GeneralWise\GeneralWiseService;
+use App\Service\Operation\Origin\ShippingInstructionService;
 
 final class InvoiceController extends Controller
 {
@@ -32,7 +33,8 @@ final class InvoiceController extends Controller
         protected CustomerService $customerService,
         protected ChargeService $chargeService,
         protected CurrencyService $currencyService,
-        protected UnitService $unitService
+        protected UnitService $unitService,
+        protected ShippingInstructionService $shippingInstructionService,
     ) {}
 
     public function index(): View
@@ -42,21 +44,37 @@ final class InvoiceController extends Controller
 
     public function list(): JsonResponse
     {
-        if (request()->ajax()) {
-            $currencies = $this->invoiceService->getInvoices(request()->query());
+        $billingCustomerCondition = request()->get('billing-customer') == 'not-linked'
+            ? 'empty'
+            : 'exists';
 
-            return DataTables::of($currencies)
-                ->addIndexColumn()
-                // ->editColumn('currency_date', function ($item) {
-                //     return $item->currency_date?->format('d-m-Y');
-                // })
-                ->addColumn('action', function ($item) {
-                    return Utility::generateTableActions([
-                        'edit' => route('finance.master-data.currency.edit', $item->id),
-                        'delete' => route('finance.master-data.currency.destroy', $item->id),
-                    ]);
+        if (request()->ajax()) {
+            $instructions = $this->shippingInstructionService
+                ->getShippingInstructionByCustomerCondition(condition: $billingCustomerCondition);
+
+            return DataTables::of($instructions->data)
+                ->addColumn('billing_customer_name', function ($col) {
+                    return $col->billingCustomer?->customer_name ?? '-';
                 })
-                ->rawColumns(['action'])
+                ->addColumn('job_order_code', function ($col) {
+                    $jobOrderCode = $col->shipment_by == 'SEAAIR'
+                        ? $col->jobOrder->job_order_code ?? '-'
+                        : $col->jobOrderAir->job_order_code ?? '-';
+
+                    return $jobOrderCode;
+                })
+                ->addColumn('origin_name', function ($col) {
+                    $jobOrderOriginName = $col->origin_name;
+
+                    return $jobOrderOriginName;
+                })
+                ->addColumn('qty', function ($col) {
+                    return $col->order->qty ?? '-';
+                })
+                ->addColumn('chw', function ($col) {
+                    return $col->order->chw ?? '-';
+                })
+                ->addIndexColumn()
                 ->toJson();
         }
 
@@ -68,6 +86,7 @@ final class InvoiceController extends Controller
 
     public function createNotLinked(): View
     {
+        // dd(request()->get('billing-customer'));
         $service_types = $this->serviceTypeService->getServiceTypes();
         $months = Utility::getListOfMonths();
         $years = Utility::getListOfYears(15);

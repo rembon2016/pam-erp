@@ -33,6 +33,7 @@ final class InvoiceController extends Controller
         protected CurrencyService $currencyService,
         protected UnitService $unitService
     ) {}
+
     public function index(): View
     {
         return view('pages.finance.billing.invoice.index');

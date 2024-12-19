@@ -102,7 +102,7 @@
                         <x:layout.table.heading widthPixel="100" title="CHW" />
                     </x:layout.table.row>
                 </thead>
-                <tbody class="fw-semibold text-gray-600">
+                <tbody class="fw-semibold text-gray-600 not-linked-body">
                 </tbody>
             </x:layout.table.wrapper>
         </x:layout.card.body>

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Api\Finance\Billing\ApiInvoiceController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiChargeController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiPortController;
 use Illuminate\Support\Facades\Route;
@@ -32,5 +33,22 @@ Route::group([
             Route::get('/', [ApiChargeController::class, 'list'])->name('list');
             Route::get('/{id}', [ApiChargeController::class, 'show'])->name('show');
         });
+    });
+
+    Route::group([
+        'prefix' => 'billing',
+        'as' => 'billing.',
+    ], function () {
+
+        Route::group([
+            'prefix' => 'invoice',
+            'as' => 'invoice.'
+        ], function () {
+
+            Route::get('/not-linked-list', [ApiInvoiceController::class, 'notLinkedList'])->name('not_linked_list');
+            Route::get('/linked-list', [ApiInvoiceController::class, 'linkedList'])->name('linked_list');
+
+        });
+
     });
 });

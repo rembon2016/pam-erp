@@ -75,7 +75,7 @@ class ShipmentColumnService
                 'title' => 'GWT/KGS',
                 'width' => '150'
             ],
-           
+
             [
                 'data' => 'order.measurement',
                 'name' => 'order.measurement',
@@ -90,7 +90,7 @@ class ShipmentColumnService
                 'title' => 'CHW/KGS',
                 'width' => '100'
             ],
-           
+
             [
                 'data' => 'vessel_voyage',
                 'name' => 'vessel_voyage',

@@ -522,7 +522,7 @@
                                             <div class="col">
                                                 <input type="hidden" name="customer_account[customer_account_id][]" value="{{ $customerAccount->id }}">
                                                 <div class="mb-3">
-                                                    <select name="customer_account[chart_of_account_id][]" style="width: 228px;" class="form-select" data-control="select2" data-placeholder="Select Account Number" id="customer_account[chart_of_account_id][]">
+                                                    <select name="customer_account[chart_of_account_id][]" style="width: 228px;" class="form-select account-select2" data-control="select2" data-placeholder="Select Account Number" id="customer_account[chart_of_account_id][]">
                                                         @foreach ($accountGroups as $group)
                                                             <optgroup label="{{ str($group->name)->upper() }}">
                                                                 @foreach ($group->subAccountGroups as $subGroup)
@@ -572,7 +572,7 @@
                                             <input type="hidden" name="customer_account[customer_account_id][]" value="">
                                             <div class="mb-3">
                                                 <label for="#customer_account[chart_of_account_id][]" class='form-label'>Account Number</label>
-                                                <select name="customer_account[chart_of_account_id][]" style="width: 228px;" class="form-select account-select2" data-control="select2" data-placeholder="Select Account Number" id="account-select2-1741215">
+                                                <select name="customer_account[chart_of_account_id][]" style="width: 228px;" class="form-select account-select2" data-control="select2" data-placeholder="Select Account Number">
                                                     @foreach ($accountGroups as $group)
                                                         <optgroup label="{{ str($group->name)->upper() }}">
                                                             @foreach ($group->subAccountGroups as $subGroup)
@@ -637,12 +637,12 @@
             const newRow = $(rowClass).first().clone();
             newRow.find('input').val('');
             newRow.find('select').val(null);
-            
+
             newRow.find('.select2-container').remove();
-            
+
             const uniqueId = `account-select2-${Date.now()}-${initialRowCount}`;
             newRow.find('select[data-control="select2"]').attr('id', uniqueId);
-            
+
             $(formId).append(newRow);
 
             const initializeSelect2 = (select, index) => {
@@ -663,15 +663,15 @@
             };
 
             const allRows = $(`${formId} ${rowClass}`);
-            
+
             allRows.each(function(index) {
                 const select = $(this).find('select[data-control="select2"]');
-                
+
                 if (!select.attr('id') || select.attr('id').includes('undefined')) {
                     const rowUniqueId = `account-select2-${Date.now()}-${index}`;
                     select.attr('id', rowUniqueId);
                 }
-                
+
                 initializeSelect2(select, index);
             });
 

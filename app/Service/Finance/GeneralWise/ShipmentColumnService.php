@@ -7,12 +7,12 @@ class ShipmentColumnService
     public static function getColumns($type)
     {
         if (in_array($type, ['seaair', 'crossair'])) {
-            return self::getMainBusinessColumns();
+            return self::getMainBusinessColumns($type);
         }
-        return self::getDubaiBusinessColumns();
+        return self::getDubaiBusinessColumns($type);
     }
 
-    private static function getMainBusinessColumns()
+    private static function getMainBusinessColumns($type)
     {
         return [
             [
@@ -172,7 +172,7 @@ class ShipmentColumnService
         ];
     }
 
-    private static function getDubaiBusinessColumns()
+    private static function getDubaiBusinessColumns($type)
     {
         return [
             [
@@ -205,14 +205,16 @@ class ShipmentColumnService
                 'name' => 'shipper_name',
                 'orderable' => false,
                 'title' => 'SHIPPER',
-                'width' => '250'
+                'width' => '250',
+                'visible' => !in_array($type, ['courier']) 
             ],
             [
                 'data' => 'consigne_name',
                 'name' => 'consigne_name',
                 'orderable' => false,
                 'title' => 'CONSIGNEE',
-                'width' => '250'
+                'width' => '250',
+                'visible' => !in_array($type, ['courier']) 
             ],
             [
                 'data' => 'destination_name',
@@ -253,44 +255,50 @@ class ShipmentColumnService
                 'data' => 'vessel_voyage',
                 'name' => 'vessel_voyage',
                 'orderable' => false,
-                'title' => 'VESSEL/CARRIER',
+                'title' => 'VESSEL/CARRIERA', 
                 'width' => '300',
-                'cutText' => false
+                'cutText' => false,
+                'visible' => !in_array($type, ['courier']) 
             ],
             [
                 'data' => 'estimated_time_departure',
                 'name' => 'estimated_time_departure',
                 'orderable' => false,
                 'title' => 'ETD',
-                'width' => '100'
+                'width' => '100',
+                'visible' => !in_array($type, ['courier']) 
             ],
             [
                 'data' => 'atd',
                 'name' => 'atd',
                 'orderable' => false,
                 'title' => 'ATD',
-                'width' => '100'
+                'width' => '100',
+                'visible' => !in_array($type, ['courier']) 
             ],
             [
                 'data' => 'eta',
                 'name' => 'eta',
                 'orderable' => false,
                 'title' => 'ETA Transit Hub',
-                'width' => '100'
+                'width' => '100',
+                'visible' => !in_array($type, ['courier']) 
             ],
             [
                 'data' => 'ata',
                 'name' => 'ata',
                 'orderable' => false,
                 'title' => 'ATA Transit Hub',
-                'width' => '100'
+                'width' => '100',
+                'visible' => !in_array($type, ['courier']) 
             ],
             [
                 'data' => 'origin_name',
                 'name' => 'origin_name',
                 'orderable' => false,
                 'title' => 'ORIGIN',
-                'width' => '250'
+                'width' => '250',
+                'visible' => !in_array($type, ['courier']) 
             ],
             [
                 'data' => 'order.pkgs',
@@ -304,7 +312,8 @@ class ShipmentColumnService
                 'name' => 'freight_term',
                 'orderable' => false,
                 'title' => 'TERMS',
-                'width' => '100'
+                'width' => '100',
+                'visible' => !in_array($type, ['courier']) 
             ],
             [
                 'data' => 'shipment_type',
@@ -318,14 +327,16 @@ class ShipmentColumnService
                 'name' => 'transit_via',
                 'orderable' => false,
                 'title' => 'ROUTING',
-                'width' => '100'
+                'width' => '100',
+                'visible' => !in_array($type, ['courier']) 
             ],
             [
                 'data' => 'days_closed.days',
                 'name' => 'transit_time',
                 'orderable' => false,
                 'title' => 'TRANSIT TIME',
-                'width' => '100'
+                'width' => '100',
+                'visible' => !in_array($type, ['courier']) 
             ],
             [
                 'data' => 'action',

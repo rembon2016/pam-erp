@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\Billing;
 
+use App\Http\Requests\Finance\Billing\Invoice\StoreInvoiceRequest;
 use Illuminate\View\View;
 use App\Functions\Utility;
 use Illuminate\Http\Request;
@@ -105,12 +106,18 @@ final class InvoiceController extends Controller
         $charges = $this->chargeService->getCharges();
         $currencies = $this->currencyService->getCurrencies();
         $units = $this->unitService->getUnitCollections();
+        // dd($units);
 
         return view('pages.finance.billing.invoice.generate', compact('invoice', 'charges', 'currencies', 'units'));
     }
 
-    public function storeGenerate(Request $request)
+    public function storeGenerate(StoreInvoiceRequest $request)
     {
-        dd($request);
+        $requestDTO = $request->validated();
+        $createInvoiceResponse = $this->invoiceService->createInvoice($requestDTO);
+
+        return $createInvoiceResponse->success
+            ? to_route('finance.billing.invoice.index')->with('toastSuccess', $createInvoiceResponse->message)
+            : back()->with('toastError', $createInvoiceResponse->message)->withInput();
     }
 }

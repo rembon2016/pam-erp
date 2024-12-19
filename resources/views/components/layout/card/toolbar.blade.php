@@ -26,7 +26,7 @@
                     {{ $customLink['text'] }}
                 </a>
             @elseif (isset($customLink['is_modal']))
-                <button type="button" class="btn btn-sm custom-btn custom-btn-primary" data-bs-toggle="modal" data-bs-target="#custom_link_modal">
+                <button type="button" class="btn btn-sm custom-btn custom-btn-primary" data-bs-toggle="modal" data-bs-target="#custom_link_modal" id="custom-link-button">
                     @if (!empty($customLink['icon']))
                         <i class="{{ $customLink['icon'] }}"></i>
                     @endif

@@ -86,7 +86,6 @@
                 <div class="d-flex align-items-center justify-content-end gap-2">
                     <x:layout.card.toolbar
                         :customLink="[
-                            'is_modal' => true,
                             'text' => 'Update Multiple Billing Customer'
                         ]"
                         withFilter="true"
@@ -131,7 +130,6 @@
         </div>
     </x:layout.modal.form-modal>
 @endsection
-
 
 @push('js')
 <script>
@@ -252,6 +250,24 @@
             }
         }
     }();
+
+    $(document).ready(function () {
+        $("#custom-link-button").off('click').on('click', function (event) {
+            event.preventDefault();
+
+            if (selectedData.size == 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'No Selection',
+                    text: 'Please select at least 1 CTD'
+                });
+                return;
+            } else {
+                $("#custom_link_modal").modal('show');
+            }
+
+        });
+    })
 
     KTUtil.onDOMContentLoaded((function() {
         KTDataTable.init()

@@ -335,6 +335,7 @@ Route::group(['middleware' => ['auth']], function () {
             ], function () {
                 Route::get('/', [InvoiceController::class, 'index'])->name('index');
                 Route::get('/list', [InvoiceController::class, 'list'])->name('list');
+                Route::get('/shipment/list', [InvoiceController::class, 'shipmentList'])->name('shipment.list');
                 Route::get('/form/not-linked-billing-customer', [InvoiceController::class, 'createNotLinked'])->name('create.not-linked-billing-customer');
                 Route::post('/not-linked-billing-customer', [InvoiceController::class, 'storeNotLinked'])->name('store.not-linked-billing-customer');
                 Route::get('/form/linked-billing-customer', [InvoiceController::class, 'createLinked'])->name('create.linked-billing-customer');
@@ -353,6 +354,7 @@ Route::group(['middleware' => ['auth']], function () {
                 'as' => 'sea-air.'
             ], function () {
                 Route::get('/', [SeaAirController::class, 'index'])->name('index');
+                Route::get('/port', [SeaAirController::class, 'port'])->name('port');
                 Route::get('/list', [SeaAirController::class, 'list'])->name('list');
                 Route::post('/store', [SeaAirController::class, 'store'])->name('store');
                 Route::get('/status/{id}/{status}', [SeaAirController::class, 'status'])->name('status');

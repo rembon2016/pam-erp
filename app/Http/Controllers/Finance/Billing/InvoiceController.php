@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Finance\Billing;
 
 use App\Http\Requests\Finance\Billing\Invoice\StoreInvoiceRequest;
+use App\Service\Finance\MasterData\PortService;
 use Illuminate\View\View;
 use App\Functions\Utility;
 use Illuminate\Http\Request;
@@ -93,8 +94,9 @@ final class InvoiceController extends Controller
         $vessels = $this->generalWiseService->getVessels();
         $origins = $this->generalWiseService->getOrigins();
         $voyages = $this->generalWiseService->getVoyages();
+        $customers = $this->customerService->getCustomers();
 
-        return view('pages.finance.billing.invoice.form-not-linked', compact('months', 'years', 'service_types', 'vessels', 'origins', 'voyages'));
+        return view('pages.finance.billing.invoice.form-not-linked', compact('months', 'years', 'service_types', 'vessels', 'origins', 'voyages', 'customers'));
     }
 
     public function storeNotLinked(Request $request): RedirectResponse

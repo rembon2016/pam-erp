@@ -21,9 +21,23 @@
                         <i class="fas fa-copy cursor-pointer"
                             onclick="copyToClipboard('{{ $shipment['ctd_number'] }}')"></i>
                     </div>
-                    <span
-                        class="ctd-mini-info">{{ $shipment['shipment_by'] == 'SEAAIR' ? 'SEA - AIR' : ($shipment['shipment_by'] == 'AIR' ? 'CROSS-AIR' : $shipment['shipment_by'] ?? '-') }}
-                        TRANSPORT</span>
+                    <span class="ctd-mini-info">
+                        @php
+                            $shipmentType = match($shipment['shipment_by']) {
+                                'SEAAIR' => 'SEA - AIR TRANSPORT',
+                                'AIR' => 'CROSS - AIR TRANSPORT', 
+                                'SEAIMPORT' => 'SEA IMPORT TRANSPORT',
+                                'SEAEXPORT' => 'SEA EXPORT TRANSPORT',
+                                'AIRIMPORT' => 'AIR IMPORT TRANSPORT',
+                                'AIREXPORT' => 'AIR EXPORT TRANSPORT',
+                                'WAREHOUSE' => 'WAREHOUSE',
+                                'TRUCKING' => 'TRUCKING',
+                                'COURIER' => 'COURIER',
+                                default => $shipment['shipment_by'] ?? '-'
+                            };
+                        @endphp
+                        {{ $shipmentType }}
+                    </span>
                 </div>
                 <div class="d-flex gap-3 flex-column align-items-end">
                     <div>
@@ -35,10 +49,15 @@
                             onclick="downloadCTD('{{ $shipment['ctd_number'] }}', '{{ $shipment['job_id'] }}', this)">
                             CTD <i class="fas fa-download ms-1"></i>
                         </a>
-                    @elseif(in_array($shipment['shipment_by'], ['SEAIMPORT', 'SEAEXPORT', 'AIRIMPORT', 'AIREXPORT']))
+                    @elseif(in_array($shipment['shipment_by'], ['SEAIMPORT', 'SEAEXPORT']))
                         <a href="javascript:void(0)" class="btn btn-success btn-sm btn-ctd-download-detail"
                             onclick="downloadCTD('{{ $shipment['ctd_number'] }}', '{{ $shipment['job_id'] }}', this)">
                             HBL <i class="fas fa-download ms-1"></i>
+                        </a>
+                    @elseif(in_array($shipment['shipment_by'], ['AIRIMPORT', 'AIREXPORT']))
+                        <a href="javascript:void(0)" class="btn btn-success btn-sm btn-ctd-download-detail"
+                            onclick="downloadCTD('{{ $shipment['ctd_number'] }}', '{{ $shipment['job_id'] }}', this)">
+                            HAWB <i class="fas fa-download ms-1"></i>
                         </a>
                     @endif
                 </div>

@@ -97,13 +97,15 @@
             <x:layout.table.wrapper id="not-linked-table">
                 <thead>
                     <x:layout.table.row>
-                        <x:layout.table.heading widthPixel="50" title="#" />
-                        {{-- <x:layout.table.heading widthPixel="50" title="No" /> --}}
+                        <th class="min-w-50px">
+                            <input type="checkbox" class="row-checkbox" id="select_all">
+                        </th>
+                        <x:layout.table.heading widthPixel="50" title="No" />
                         <x:layout.table.heading widthPixel="100" title="CTD No" />
                         <x:layout.table.heading widthPixel="100" title="Job Order No" />
                         <x:layout.table.heading widthPixel="100" title="Origin" />
                         <x:layout.table.heading widthPixel="100" title="Qty" />
-                        <x:layout.table.heading widthPixel="100" title="CHW" /> --}}
+                        <x:layout.table.heading widthPixel="100" title="CHW" />
                     </x:layout.table.row>
                 </thead>
                 <tbody class="fw-semibold text-gray-600">

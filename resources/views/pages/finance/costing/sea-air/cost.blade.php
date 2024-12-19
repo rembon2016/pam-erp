@@ -75,7 +75,7 @@
                         </div>
 
                         <div class="tab-pane fade" id="port" role="tabpanel">
-                            <x-costing.port-form :port="$port" :costing="$costing" :vendorPort="$vendor_port" />
+                            <x-costing.port-form :costing="$costing" :vendorPort="$vendor_port" />
                         </div>
                         <div class="tab-pane fade" id="agent" role="tabpanel">
                             <x-costing.agent-form  :costing="$costing" :vendorAir="$vendor_air" />
@@ -144,4 +144,5 @@
         });
 
 </script>
+
 @endpush

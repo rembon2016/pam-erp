@@ -7,18 +7,10 @@
         @php
             $disabled = "";
         @endphp
-         @if($costing?->status != 1 && $costing != null)
-            <input type="hidden" name="port_id" type="text" class=" form-control" value="{{ $costing?->port?->port_id }}">
-            @php
-                $disabled = "disabled";
-            @endphp
-        @endif
-        <x:form.select2 label="Port Code" id="port_id" name="port_id" defaultOption="Select Port Code" disabled="{{ $disabled }}">
-            @foreach($port as $row)
-            <option value="{{ $row->port_id }}" @if($costing?->port != null && $costing?->port?->port_id == $row->port_id) selected @endif data-port-code="{{ $row->port_code }}" @if($row->port_code == "AEJEA") selected @endif>{{ $row->port_code }}</option>
-            <option value="{{ $row->port_id }}" @if($costing?->port != null && $costing?->port?->port_id == $row->port_id) selected @endif data-port-code="{{ $row->port_code }}" @if($row->port_code == "AEJEA") selected @endif>{{ $row->port_code }}</option>
-            @endforeach
-        </x:form.select2>
+        <label for="#vendor_id" class='form-label'>Port Code</label>
+        <select class="form-select" name="port_id" id="port_id"  data-placeholder="Port Code" @if($costing?->status != 1 && $costing != null) disabled @endif>
+
+        </select>
         <input type="hidden" name="port_code" id="port_code" value="AEJEA">`
     </div>
     <div class='col-md-4'>
@@ -52,12 +44,56 @@
         var vendorName = $dropdown.find(':selected').data('vendor-name');
 
         $('#vendor_port_name').val(vendorName);
+
     }
+
+    $('#port_id').select2({
+        ajax: {
+            url: '{{ route("finance.costing.sea-air.port") }}',
+            dataType: 'json',
+            delay: 250, // Delay for debouncing user input
+            data: function (params) {
+                return {
+                    search: params.term, // Search term
+                    page: params.page || 1 // Current page
+                };
+            },
+            processResults: function (data) {
+                console.log(data);
+                return {
+                    results: data.results.map(item => ({
+                        id: item.port_id, // Adjust as per your model
+                        text: item.port_code // Adjust as per your model
+                    })),
+                    pagination: {
+                        more: data.pagination.more
+                    }
+                };
+            },
+            cache: true
+        },
+        placeholder: 'Select Port',
+
+    });
+
+    const defaultPortId = "b384b57a-142f-4b64-8c83-3e5b0601cd3c"; // Replace with your default value
+    const defaultPortCode = "AEJEA"; // Replace with the corresponding text for the default value
+
+    // Add the default option and select it
+    @if($costing?->port != null)
+        const defaultOption = new Option("{{ $costing?->port?->port_code }}", "{{ $costing?->port?->id }}", true, true);
+        $('#port_id').append(defaultOption).trigger('change');
+    @else
+        const defaultOption = new Option(defaultPortCode, defaultPortId, true, true);
+        $('#port_id').append(defaultOption).trigger('change');
+    @endif
 
     $("#port_id").change(function () {
         var $dropdown = $(this);
         var portCode = $dropdown.find(':selected').data('port-code');
         $("#port_code").val(portCode);
     });
+
+
 </script>
 @endpush

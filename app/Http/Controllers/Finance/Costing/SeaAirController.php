@@ -23,6 +23,9 @@ use App\Models\Finance\CostingVendorAgent;
 use App\Models\Finance\CostingVendorPort;
 use App\Models\Finance\CostingVendorTrucking;
 use App\Models\Finance\Customer;
+use App\Models\Finance\AgentContract;
+use App\Models\Finance\AgentContractService;
+use App\Models\Finance\AgentContractCharge;
 
 
 use Illuminate\View\View;
@@ -130,13 +133,36 @@ final class SeaAirController extends Controller
         return view('pages.finance.costing.sea-air.show', compact('id','joborder','op','lpdoc','costing'));
     }
 
+    public function port(Request $request){
+        $query = Port::query();
+
+        // Apply search filter
+        if ($search = $request->input('search')) {
+            $query->where('port_code', 'ilike', '%' . $search . '%');
+            $query->orWhere('port_name', 'ilike', '%' . $search . '%');
+        }
+
+        // Paginate the results
+        $options = $query->orderBy('port_code','ASC')->paginate(1000); // Adjust the pagination size as needed
+
+        return response()->json([
+            'results' => $options->items(),
+            'pagination' => ['more' => $options->hasMorePages()]
+        ]);
+    }
+
     public function cost($id){
+
         $joborder = JobOrder::with(['detail', 'loading','doc'])->findOrFail($id);
-        $loading = LoadingReportDetail::where('status',"!=",3)->where('bl_id', $joborder->loading_plan_id)->get();
-        $port = Port::where('status',"!=",3)->get();
+
+        $loading = LoadingReportDetail::with('bl')->where('status',"!=",3)->where('bl_id', $joborder->loading_plan_id)->get();
+
+        //$port = Port::where('status',"!=",3)->get();
+
         $vendor_truck = Customer::select('id as vendor_id','customer_name as vendor_name','customer_code as vendor_code')->with("customerTypes")->whereHas("customerTypes", function ($query) {
             $query->where("name", "Trucking Company");
         })->get();
+
         $vendor_port = Customer::select('id as vendor_id','customer_name as vendor_name','customer_code as vendor_code')->with("customerTypes")->whereHas("customerTypes", function ($query) {
             $query->where("name", "Dubai Port");
         })->get();
@@ -144,11 +170,13 @@ final class SeaAirController extends Controller
             $query->where("name", "Carrier Agent");
         })->get();
         $vendor_line = Customer::select('id as vendor_id','customer_name as vendor_name','customer_code as vendor_code')->with("customerTypes")->whereHas("customerTypes", function ($query) {
-            $query->where("name", "Shipping line");
+            $query->where("name", "Shipping Line");
         })->get();
+
         $charge = Charge::whereNull('deleted_at')->get();
         $currency = Currency::whereNull('deleted_at')->get();
         $bl = LoadingReportBl::with('shipping')->where('loading_id', $joborder->loading_plan_id)->where('status','!=',3)->get();
+
         $ship = ShippingInstruction::where("status","!=",3)->where("loading_id", $joborder->loading_plan_id)->get();
         $loading_plan_dxb = $ship->pluck('loading_plan_dxb')->toArray();
        //return response()->json($ship);
@@ -168,7 +196,7 @@ final class SeaAirController extends Controller
                 'method' => 'POST',
              ];
         }
-        return view('pages.finance.costing.sea-air.cost', compact('id','joborder','loading','port','vendor_truck','vendor_port','vendor_air','vendor_line','charge','currency','bl','loadingplan','costing','data'));
+        return view('pages.finance.costing.sea-air.cost', compact('id','joborder','loading','vendor_truck','vendor_port','vendor_air','vendor_line','charge','currency','bl','loadingplan','costing','data'));
     }
 
     public function store(Request $request){
@@ -838,6 +866,95 @@ final class SeaAirController extends Controller
         }
 
         return to_route('finance.costing.sea-air.index')->with('toastSuccess', "Update Success");
+    }
+
+    public function contractbl($id, $bl_number){
+        $bl = LoadingReportBl::where("bl_number", $bl_number)->first();
+        $container = LoadingReportDetail::where("loading_report_bl_id", $bl->loading_report_bl_id)->count();
+        $contract = AgentContract::where("customer_id",$id)->first();
+        $ship = ShippingInstruction::where("loading_report_bl_id", $bl->loading_report_bl_id)->first();
+
+            $service = AgentContractService::where("agent_contract_id", $contract->id)->whereHas('serviceType', function ($query) use ($ship) {
+                $query->where("service_code", $ship->loading_type);
+            })->where('por_country_id', $ship->origin->country_id)->where('por_port_id',$ship->port_of_loading);
+            if($service->exists()){
+                $service = $service->first();
+            }else{
+                $service = AgentContractService::where("agent_contract_id", $contract->id)->whereHas('serviceType', function ($query) use ($ship) {
+                    $query->where("service_code", $ship->loading_type);
+                })->first();
+            }
+
+            $charge = AgentContractCharge::where("agent_contract_service_id", $service->id)->get();
+            $charge_bl = [];
+            foreach($charge as $row){
+                $shipping = ShippingInstruction::where("loading_report_bl_id", $bl->id)->get();
+                if($row->unit->unit_name == "KG"){
+                    $chw = 0.0;
+                    foreach($shipping as $r){
+                        $chw = $chw + $r->order->chw;
+                    }
+                    $currency = Currency::find($row->currency_id);
+                    if($currency->currency_code == "USD"){
+                        $amount_in_usd = $row->amount_per_unit * $chw;
+                        $amount_in_aed = $amount_in_usd * 3.67;
+                    }else{
+                        $amount_in_aed = $row->amount_per_unit * $chw;
+                        $amount_in_usd = $amount_in_aed / 3.67;
+                    }
+                }else if($row->unit->unit_name == "Shipment"){
+                    $count = count($shipping);
+                    $currency = Currency::find($row->currency_id);
+                    if($currency->currency_code == "USD"){
+                        $amount_in_usd = $row->amount_per_unit * $count;
+                        $amount_in_aed = $amount_in_usd * 3.67;
+                    }else{
+                        $amount_in_aed = $row->amount_per_unit * $count;
+                        $amount_in_usd = $amount_in_aed / 3.67;
+                    }
+                }else if($row->unit->unit_name == "Container"){
+                    $currency = Currency::find($row->currency_id);
+                    $jum = 0;
+                    if($currency->currency_code == "USD"){
+                        foreach($container as $x){
+                            if($x->container_type == "40 HC"){
+                                $jum += $row->forty_feet;
+                            }else{
+
+                            }
+                        }
+                        $amount_in_usd = $jum;
+                        $amount_in_aed = $jum * 3.67;
+                    }else{
+                        $amount_in_aed = $row->amount_per_unit * $container;
+                        $amount_in_usd = $amount_in_aed / 3.67;
+                    }
+                }
+                $charge_bl[] = [
+                    "charge_id"=>$row->charge_id,
+                    "charge_name"=>$row->charge->charge_name,
+                    "charge_code"=>$row->charge->charge_code,
+                    "currency_id"=>$row->currency_id,
+                    "rate"=>$row->amount_per_unit,
+                    "amount_in_usd"=> $amount_in_usd,
+                    "amount_in_aed"=>$amount_in_aed,
+                    "status"=>'Debit'
+                ];
+            }
+
+            if(!empty($charge_bl)){
+                return response()->json([
+                    "status"=>true,
+                    "data"=>$charge_bl
+                ]);
+            }else{
+                $charge_bl = null;
+                return response()->json([
+                    "status"=>false,
+                    "data"=>$charge_bl
+                ]);
+            }
+
     }
 
     public function status($id, $status){

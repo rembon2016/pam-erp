@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Finance\Billing;
 
 use App\Http\Requests\Finance\Billing\Invoice\StoreInvoiceRequest;
+use App\Http\Requests\Finance\Billing\Invoice\StoreNotLinkedCustomer;
 use App\Service\Finance\MasterData\PortService;
 use Illuminate\View\View;
 use App\Functions\Utility;
@@ -55,7 +56,7 @@ final class InvoiceController extends Controller
 
             return DataTables::of($instructions->data)
                 ->addColumn('row_checkbox', function ($col) {
-                    return "<input type='checkbox' class='row-checkbox' value='{{ $col->job_id }}' />";
+                    return "<input type='checkbox' class='row-checkbox' value='{$col->job_id}' />";
                 })
                 ->addColumn('billing_customer_name', function ($col) {
                     return $col->billingCustomer?->customer_name ?? '-';
@@ -97,14 +98,25 @@ final class InvoiceController extends Controller
         $vessels = $this->generalWiseService->getVessels();
         $origins = $this->generalWiseService->getOrigins();
         $voyages = $this->generalWiseService->getVoyages();
-        $customers = $this->customerService->getCustomers();
+        $customers = $this->customerService->getBillingCustomers();
 
         return view('pages.finance.billing.invoice.form-not-linked', compact('months', 'years', 'service_types', 'vessels', 'origins', 'voyages', 'customers'));
     }
 
-    public function storeNotLinked(Request $request): RedirectResponse
+    public function storeNotLinked(StoreNotLinkedCustomer $request): RedirectResponse
     {
-        dd($request);
+        $requestDTO = $request->validated();
+        $list_of_job_id = json_decode($requestDTO['data'], true);
+
+        $updateCustomerResponse = $this->shippingInstructionService->updateBillingCustomer(
+            customer_id: $requestDTO['customer_id'],
+            job_orders: $list_of_job_id
+        );
+
+        return to_route('finance.billing.invoice.create.not-linked-billing-customer')->with(
+            $updateCustomerResponse->success ? 'toastSuccess' : 'toastError',
+            $updateCustomerResponse->message
+        );
     }
 
     public function createLinked(): View
@@ -115,25 +127,33 @@ final class InvoiceController extends Controller
         $vessels = $this->generalWiseService->getVessels();
         $origins = $this->generalWiseService->getOrigins();
         $voyages = $this->generalWiseService->getVoyages();
-        $customers = $this->customerService->getCustomers();
+        $customers = $this->customerService->getBillingCustomers();
 
         return view('pages.finance.billing.invoice.form-linked', compact('months', 'years', 'service_types', 'customers', 'vessels', 'origins', 'voyages'));
     }
 
-    public function storeLinked(Request $request): RedirectResponse
+    public function viewGenerate(Request $request)
     {
-        dd($request);
-    }
+        $list_of_job_orders = explode(',' , (request()->query('selected') ?? ""));
+        if (
+            count($list_of_job_orders) < 1 ||
+            (count($list_of_job_orders) > 0 && $list_of_job_orders[0] == "")
+        ) {
+            return to_route('finance.billing.invoice.create.linked-billing-customer')->with('toastError', 'Please Select at least 1 CTD!');
+        }
 
-    public function viewGenerate()
-    {
+        $shippings = $this->shippingInstructionService->getShippingInstructionsByJobId($list_of_job_orders);
+
+        if ($shippings->count() < 1) {
+            return to_route('finance.billing.invoice.create.linked-billing-customer')->with('toastError', 'Please Select at least 1 CTD!');
+        }
+
         $invoice = new Invoice;
         $charges = $this->chargeService->getCharges();
         $currencies = $this->currencyService->getCurrencies();
         $units = $this->unitService->getUnitCollections();
-        // dd($units);
 
-        return view('pages.finance.billing.invoice.generate', compact('invoice', 'charges', 'currencies', 'units'));
+        return view('pages.finance.billing.invoice.generate', compact('invoice', 'charges', 'currencies', 'units', 'shippings'));
     }
 
     public function storeGenerate(StoreInvoiceRequest $request)

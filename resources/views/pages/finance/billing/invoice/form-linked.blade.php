@@ -75,7 +75,7 @@
             <div class='col-md-3'>
                 <x:form.select2 label="Billing Customer" name="customer" placeholder="Select Customer" :model="request()">
                     @foreach ($customers as $item)
-                    <option value="{{ $item->id }}" @selected($item->id == request()->query('customer'))>{{ $item->customer_name }}</option>
+                    <option value="{{ $item->customer_id }}" @selected($item->customer_id == request()->query('customer'))>{{ $item->customer_name }}</option>
                     @endforeach
                 </x:form.select>
             </div>
@@ -134,7 +134,7 @@
         table.rows().every(function() {
             const row = this.node();
             const data = this.data();
-            const uniqueId = data.port_id;
+            const uniqueId = data.job_id;
             $(row).find('.row-checkbox').prop('checked', selectedData.has(uniqueId));
         });
 
@@ -225,7 +225,7 @@
 
                             $(document).on('click', '.row-checkbox:not(#select_all)', function () {
                                 const row = e.row($(this).closest('tr')).data();
-                                const uniqueId = row.port_id;
+                                const uniqueId = row.job_id;
                                 if ($(this).prop('checked')) {
                                     selectedData.add(uniqueId);
                                 } else {
@@ -235,7 +235,6 @@
                                 updateCheckboxStates(e);
                             })
 
-
                             // Handle select all checkbox
                             $(document).on('click', '#select_all', function() {
                                 const isChecked = $(this).prop('checked');
@@ -243,7 +242,7 @@
                                     page: 'current'
                                 }).every(function() {
                                     const data = this.data();
-                                    const uniqueId = data.port_id;
+                                    const uniqueId = data.job_id;
                                     if (isChecked) {
                                         selectedData.add(uniqueId);
                                     } else {
@@ -279,7 +278,6 @@
                 generateInvoiceUrl += paramData;
 
                 window.location.href = generateInvoiceUrl;
-
             }
         });
     })

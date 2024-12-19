@@ -118,7 +118,7 @@
         <div class="col-12">
             <x:form.select2 label="Billing Customer" name="customer_id" required="true">
                 @foreach ($customers as $item)
-                    <option value="{{ $item->id }}">{{ $item->customer_name }}</option>
+                    <option value="{{ $item->customer_id }}">{{ $item->customer_name }}</option>
                 @endforeach
             </x:form.select2>
         </div>

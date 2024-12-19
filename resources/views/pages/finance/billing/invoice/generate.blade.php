@@ -29,11 +29,23 @@
                 <x:form.input type="date" label="Invoice Due Date" name="invoice_due_date" placeholder="Choose Date" :model="$invoice" readonly="true" />
             </div>
             <div class='col-md-3'>
-                <x:form.input label="Billing Customer" name="customer_billing_id" placeholder="Billing Customer" :model="$invoice" readonly="true" />
+                <div class="mb-3">
+                    <label for="#customer_billing_id" class="form-label">Billing Customer</label>
+                    <input type="text" class="form-control @error('customer_billing_id') is-invalid @enderror" placeholder="Billing Customer" id="customer_billing_id" value="{{ $shippings->first()?->billingCustomer->customer_name }}" readonly>
+                    @error('customer_billing_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+
+                    <input type="hidden" name="customer_billing_id" value="{{ $shippings->first()?->customer_id }}">
+                </div>
                 <input type="hidden" name="customer_credit_limit" id="customer_credit_limit" value="30">
             </div>
             <div class='col-md-3'>
-                <x:form.input label="Chargeable Weight" name="chw" placeholder="Chargeable Weight" :model="$invoice" readonly="true" />
+                <label for="#chw" class="form-label">Billing Customer</label>
+                <input type="text" class="form-control @error('chw') is-invalid @enderror" placeholder="Billing Customer" name="chw" id="chw" value="{{ $shippings->sum('order_sum_chw') }}" readonly>
+                @error('chw')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
             <div class="col-md-3 mt-3">
                 <div class="form-check mb-3">
@@ -48,84 +60,86 @@
             </div>
             <div class="col-12">
                 <div class="charge-wrapper">
-                    <div class="charge-item border px-4 py-2 my-3">
-                        <div class="d-flex align-items-center justify-content-between gap-3">
-                            <button type="button" class="btn btn-sm custom-btn custom-btn-primary">CTD: SZAXXX1</button>
-                            <input type="hidden" name="data[SZAXXX1][ctd_number]" value="SZAXXX1">
-                            <input type="hidden" name="data[SZAXXX1][job_id]" value="1">
-                            <div class="d-flex align-items-center justify-content-end gap-2">
-                                <button type="button" class="btn btn-icon btn-success rounded" data-type="add-item" style="width: 30px; height: 30px;">
-                                    <i class="fa fa-plus pe-0"></i>
-                                </button>
-                                <button type="button" class="btn btn-icon btn-primary rounded" data-type="expand-item" style="width: 30px; height: 30px;">
-                                    <i class="fa fa-angle-down"></i>
-                                </button>
+                    @foreach ($shippings as $item)
+                        <div class="charge-item border px-4 py-2 my-3">
+                            <div class="d-flex align-items-center justify-content-between gap-3">
+                                <button type="button" class="btn btn-sm custom-btn custom-btn-primary">CTD: {{ $item->ctd_number }}</button>
+                                <input type="hidden" name="data[{{ $item->ctd_number }}][ctd_number]" value="{{ $item->ctd_number }}">
+                                <input type="hidden" name="data[{{ $item->ctd_number }}][job_id]" value="{{ $item->job_id }}">
+                                <div class="d-flex align-items-center justify-content-end gap-2">
+                                    <button type="button" class="btn btn-icon btn-success rounded" data-type="add-item" style="width: 30px; height: 30px;">
+                                        <i class="fa fa-plus pe-0"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-icon btn-primary rounded" data-type="expand-item" style="width: 30px; height: 30px;">
+                                        <i class="fa fa-angle-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="table-responsive charge-table" data-is-expanded="true">
+                                <hr>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="required">Agreed Rate</th>
+                                            <th class="required">Currency</th>
+                                            <th>Rate</th>
+                                            <th class="required">Unit</th>
+                                            <th>CHW</th>
+                                            <th>Amount</th>
+                                            <th>Local Amount</th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="charge-row">
+                                            <td>
+                                                <select name="data[{{ $item->ctd_number }}][charges][0][charge_id]" data-type="charge_id" class="form-select" data-control="select2" data-placeholder="Choose" required>
+                                                    @foreach ($charges as $charge)
+                                                        <option value="{{ $charge->id }}">{{ $charge->charge_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select name="data[{{ $item->ctd_number }}][charges][0][currency_id]" data-type="currency_id" class="form-select" required>
+                                                    <option value="">Choose</option>
+                                                    @foreach ($currencies as $currency)
+                                                        <option value="{{ $currency->id }}">{{ $currency->currency_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="number" name="data[{{ $item->ctd_number }}][charges][0][rate]" data-type="rate" class="form-control" placeholder="0" min="0" required>
+                                            </td>
+                                            <td>
+                                                <select name="data[{{ $item->ctd_number }}][charges][0][unit_id]" data-type="unit_id" class="form-select" required>
+                                                    <option value="">Choose</option>
+                                                    @foreach ($units as $unit)
+                                                        <option value="{{ $unit->unit_id }}">{{ "{$unit->description} ({$unit->unit_name})" }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="number" name="data[{{ $item->ctd_number }}][charges][0][chw]" data-type="chw" class="form-control" placeholder="0" min="0" required>
+                                            </td>
+                                            <td>
+                                                <input type="number" name="data[{{ $item->ctd_number }}][charges][0][amount]" data-type="amount" class="form-control" placeholder="0" min="0" value="0" readonly>
+                                            </td>
+                                            <td>
+                                                <input type="number" name="data[{{ $item->ctd_number }}][charges][0][local_amount]" data-type="local_amount" class="form-control" placeholder="0" min="0" required>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-end">
+                                                    <button type="button" class="btn btn-icon btn-danger btn-sm" data-type="delete-item">
+                                                        <i class="bx bx-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <div class="table-responsive charge-table" data-is-expanded="true">
-                            <hr>
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th class="required">Agreed Rate</th>
-                                        <th class="required">Currency</th>
-                                        <th>Rate</th>
-                                        <th class="required">Unit</th>
-                                        <th>CHW</th>
-                                        <th>Amount</th>
-                                        <th>Local Amount</th>
-                                        <th>&nbsp;</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="charge-row">
-                                        <td>
-                                            <select name="data[SZAXXX1][charges][0][charge_id]" data-type="charge_id" class="form-select" data-control="select2" data-placeholder="Choose" required>
-                                                @foreach ($charges as $charge)
-                                                    <option value="{{ $charge->id }}">{{ $charge->charge_name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select name="data[SZAXXX1][charges][0][currency_id]" data-type="currency_id" class="form-select" required>
-                                                <option value="">Choose</option>
-                                                @foreach ($currencies as $currency)
-                                                    <option value="{{ $currency->id }}">{{ $currency->currency_name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <input type="number" name="data[SZAXXX1][charges][0][rate]" data-type="rate" class="form-control" placeholder="0" min="0" required>
-                                        </td>
-                                        <td>
-                                            <select name="data[SZAXXX1][charges][0][unit_id]" data-type="unit_id" class="form-select" required>
-                                                <option value="">Choose</option>
-                                                @foreach ($units as $unit)
-                                                    <option value="{{ $unit->unit_id }}">{{ "{$unit->description} ({$unit->unit_name})" }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <input type="number" name="data[SZAXXX1][charges][0][chw]" data-type="chw" class="form-control" placeholder="0" min="0" required>
-                                        </td>
-                                        <td>
-                                            <input type="number" name="data[SZAXXX1][charges][0][amount]" data-type="amount" class="form-control" placeholder="0" min="0" value="0" readonly>
-                                        </td>
-                                        <td>
-                                            <input type="number" name="data[SZAXXX1][charges][0][local_amount]" data-type="local_amount" class="form-control" placeholder="0" min="0" required>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center justify-content-end">
-                                                <button type="button" class="btn btn-icon btn-danger btn-sm" data-type="delete-item">
-                                                    <i class="bx bx-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
             <div class="col-md-3">

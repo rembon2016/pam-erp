@@ -339,7 +339,6 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/form/not-linked-billing-customer', [InvoiceController::class, 'createNotLinked'])->name('create.not-linked-billing-customer');
                 Route::post('/not-linked-billing-customer', [InvoiceController::class, 'storeNotLinked'])->name('store.not-linked-billing-customer');
                 Route::get('/form/linked-billing-customer', [InvoiceController::class, 'createLinked'])->name('create.linked-billing-customer');
-                Route::post('/linked-billing-customer', [InvoiceController::class, 'storeLinked'])->name('store.linked-billing-customer');
                 Route::get('/generate', [InvoiceController::class, 'viewGenerate'])->name('generate');
                 Route::post('/generate', [InvoiceController::class, 'storeGenerate'])->name('generate');
             });

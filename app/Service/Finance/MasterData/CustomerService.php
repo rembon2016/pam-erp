@@ -44,6 +44,11 @@ final class CustomerService
         })->orderBy('customer_name', 'asc')->get();
     }
 
+    public function getBillingCustomers(): Collection
+    {
+        return CustomerBilling::where('status', 1)->get();
+    }
+
     /**
      * Get the customer by id.
      *

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Service\Operation\Origin;
 
+use Illuminate\Http\Response;
 use App\Functions\ObjectResponse;
 use Illuminate\Support\Benchmark;
+use Illuminate\Database\Eloquent\Collection;
 use App\Models\Operation\Origin\ShippingInstruction;
 
 final class ShippingInstructionService
@@ -38,5 +40,36 @@ final class ShippingInstructionService
             message: __('crud.fetched', ['name' => 'Shipping Instruction']),
             data: $shippingInstructions
         );
+    }
+
+    public function getShippingInstructionsByJobId(string|array $job_orders): Collection
+    {
+        $data = ShippingInstruction::select(['job_id', 'ctd_number', 'customer_id'])
+            ->withSum('order', 'chw')
+            ->with(['billingCustomer'])
+            ->whereHas('billingCustomer')
+            ->whereIn('job_id', is_array($job_orders) ? $job_orders : [$job_orders])
+            ->get();
+
+        return $data;
+    }
+
+    public function updateBillingCustomer(string $customer_id, array|string $job_orders): object
+    {
+        try {
+            ShippingInstruction::whereIn('job_id', is_array($job_orders) ? $job_orders : [$job_orders])->update([
+                'customer_id' => $customer_id
+            ]);
+
+            return ObjectResponse::success(
+                message: "Billing Customer Successfully Updated to Related CTD",
+                statusCode: Response::HTTP_OK,
+            );
+        } catch (\Throwable $th) {
+            return ObjectResponse::error(
+                message: "Failed to Update Billing Customer on Related CTD",
+                statusCode: Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
     }
 }

@@ -255,7 +255,7 @@ class ShipmentColumnService
                 'data' => 'vessel_voyage',
                 'name' => 'vessel_voyage',
                 'orderable' => false,
-                'title' => 'VESSEL/CARRIERA', 
+                'title' => 'VESSEL/CARRIER', 
                 'width' => '300',
                 'cutText' => false,
                 'visible' => !in_array($type, ['courier']) 

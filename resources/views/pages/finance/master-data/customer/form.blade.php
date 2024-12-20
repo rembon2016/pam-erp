@@ -93,21 +93,9 @@
                         <button class="nav-link active" id="address-tab" data-bs-toggle="tab" data-bs-target="#address"
                             type="button" role="tab">Address</button>
                     </li>
-                    {{-- <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="gst-tab" data-bs-toggle="tab" data-bs-target="#gst" type="button"
-                            role="tab">GST</button>
-                    </li> --}}
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="vat-tab" data-bs-toggle="tab" data-bs-target="#vat" type="button"
-                            role="tab">VAT</button>
-                    </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="email-tab" data-bs-toggle="tab" data-bs-target="#email" type="button"
-                            role="tab">Email</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="sales-tab" data-bs-toggle="tab" data-bs-target="#sales" type="button"
-                            role="tab">Sales</button>
+                        role="tab">Email</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="bank-tab" data-bs-toggle="tab" data-bs-target="#bank" type="button"
@@ -116,6 +104,14 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="account-tab" data-bs-toggle="tab" data-bs-target="#account"
                             type="button" role="tab">Account</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="vat-tab" data-bs-toggle="tab" data-bs-target="#vat" type="button"
+                            role="tab">VAT</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="sales-tab" data-bs-toggle="tab" data-bs-target="#sales" type="button"
+                            role="tab">Sales</button>
                     </li>
                 </ul>
                 <div class="tab-content p-5 bg-white border border-top-0">
@@ -137,12 +133,6 @@
                             <div class="col-md-4">
                                 <x:form.input label="Address" name="customer_address[address]" placeholder="Type Address" :customModelling="@$customer->customerAddress->address" />
                             </div>
-                            <div class="col-md-6">
-                                <x:form.input label="City" name="customer_address[city]" placeholder="Type City" :customModelling="@$customer->customerAddress->city" />
-                            </div>
-                            <div class="col-md-6">
-                                <x:form.input label="State" name="customer_address[state]" placeholder="Type State" :customModelling="@$customer->customerAddress->state" />
-                            </div>
                             <div class="col-md-4">
                                 <x:form.select2 label="Country" name="customer_address[country]" placeholder="Select Country">
                                     @foreach ($countries as $country)
@@ -151,6 +141,12 @@
                                         </option>
                                     @endforeach
                                 </x:form.select2>
+                            </div>
+                            <div class="col-md-4">
+                                <x:form.input label="State" name="customer_address[state]" placeholder="Type State" :customModelling="@$customer->customerAddress->state" />
+                            </div>
+                            <div class="col-md-4">
+                                <x:form.input label="City" name="customer_address[city]" placeholder="Type City" :customModelling="@$customer->customerAddress->city" />
                             </div>
                             <div class="col-md-4">
                                 <x:form.input label="Zip Code" name="customer_address[zip_code]" placeholder="Type Zip Code" :customModelling="@$customer->customerAddress->zip_code" />
@@ -225,106 +221,6 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <div class="tab-pane fade" id="gst" role="tabpanel">
-                        <div class="row mb-4">
-                            <div class="col-md-4">
-                                <x:form.select label="Address Type" name="customer_gst[address_type]"
-                                    defaultOption="Select Address Type">
-                                    @foreach ($customerAddressTypes as $addressType)
-                                        <option value="{{ $addressType }}">
-                                            {{ $addressType }}
-                                        </option>
-                                    @endforeach
-                                </x:form.select>
-                            </div>
-                            <div class="col-md-4">
-                                <x:form.input label="ARN Number" name="customer_gst[arn_number]" placeholder="Type ARN Number" />
-                            </div>
-                            <div class="col-md-4">
-                                <x:form.select label="MSME" name="customer_gst[msme]"
-                                    defaultOption="Select MSME"></x:form.select>
-                            </div>
-                            <div class="col-md-6">
-                                <x:form.input label="City" name="customer_gst[city]" placeholder="Type City" />
-                            </div>
-                            <div class="col-md-6">
-                                <x:form.input label="HSN Codes" name="customer_gst[hsn_codes]" placeholder="Type HSN Codes" />
-                            </div>
-                            <div class="col-md-6">
-                                <x:form.input label="State" name="customer_gst[state]" placeholder="Type State" />
-                            </div>
-                            <div class="col-md-6">
-                                <x:form.input label="SAC Codes" name="customer_gst[sac_codes]" placeholder="Type SAC Codes" />
-                            </div>
-                            <div class="col-md-4">
-                                <x:form.select label="Type of Enterprise" name="customer_gst[type_of_enterprise]"
-                                    defaultOption="Select Type of Enterprise"></x:form.select>
-                            </div>
-                            <div class="col-md-4">
-                                <x:form.input label="Address" name="customer_gst[address]" placeholder="Type Address" />
-                            </div>
-                            <div class="col-md-4">
-                                <x:form.input label="UIN Number" name="customer_gst[uin_number]" placeholder="Type UIN Number" />
-                            </div>
-                            <div class="col-md-4">
-                                <x:form.input label="PAN Mandatory" name="customer_gst[pan_mandatory]" placeholder="Type PAN Mandatory" />
-                            </div>
-                            <div class="col-md-4">
-                                <x:form.input label="Composit Regular" name="customer_gst[composit_regular]" placeholder="Type Composit Regular" />
-                            </div>
-                            <div class="col-md-4">
-                                <x:form.input type="date" label="SEZ Valid From Date" name="customer_gst[sez_valid_from_date]" placeholder="Type SEZ Valid From Date" />
-                            </div>
-                            <div class="col-md-4">
-                                <x:form.input type="date" label="SEZ Valid To Date" name="customer_gst[sez_valid_from_date]" placeholder="Type SEZ Valid From Date" />
-                            </div>
-                            <div class="col-md-4">
-                                <x:form.input label="PAN Number" name="customer_gst[pan_number]" placeholder="Type PAN Number" />
-                            </div>
-                            <div class="col-md-4">
-                                <x:form.select label="SEZ" name="customer_gst[sez]"
-                                    defaultOption="Select SEZ"></x:form.select>
-                            </div>
-                            <div class="col-md-4">
-                                <x:form.select label="GST Registration Status" name="customer_gst[gst_registration_status]"
-                                    defaultOption="Select GST Registration Status"></x:form.select>
-                            </div>
-                            <div class="col-md-4">
-                                <x:form.input label="Passport Number" name="customer_gst[passport_number]" placeholder="Type Passport Number" />
-                            </div>
-                            <div class="col-md-4">
-                                <x:form.input label="TAN Number" name="customer_gst[tan_number]" placeholder="Type TAN Number" />
-                            </div>
-                            <div class="col-md-4">
-                                <x:form.input label="GSG ID" name="customer_gst[gsg_id]" placeholder="Type GSG ID" />
-                            </div>
-                            <div class="col-md-4">
-                                <x:form.input label="GSG Provisional ID" name="customer_gst[gsg_provisional_id]" placeholder="Type GSG Provisional ID" />
-                            </div>
-                            <div class="col-md-4">
-                                <x:form.input label="GSD ID" name="customer_gst[gsd_id]" placeholder="Type GSD ID" />
-                            </div>
-                        </div>
-                    </div> --}}
-                    <div class="tab-pane fade" id="vat" role="tabpanel">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <x:form.input label="VAT Number" name="customer_vat[vat_number]" placeholder="Type VAT Number" :customModelling="@$customer->customerVat->vat_number" />
-                            </div>
-                            <div class="col-md-6">
-                                <x:form.input label="VAT Number (Arabic)" name="customer_vat[local_vat_number]" placeholder="Type VAT Number (Arabic)" :customModelling="@$customer->customerVat->local_vat_number" />
-                            </div>
-                            <div class="col-md-4">
-                                <x:form.input label="VAT Excemted" name="customer_vat[vat_excemted]" placeholder="Type VAT Excemted" :customModelling="@$customer->customerVat->vat_excemted" />
-                            </div>
-                            <div class="col-md-4">
-                                <x:form.input label="Excemted Reason" name="customer_vat[excemted_reason]" placeholder="Type Excemted Reason" :customModelling="@$customer->customerVat->excemted_reason" />
-                            </div>
-                            <div class="col-md-4">
-                                <x:form.input label="AIT Number" name="customer_vat[ait_number]" placeholder="Type AIT Number" :customModelling="@$customer->customerVat->ait_number" />
-                            </div>
-                        </div>
-                    </div>
                     <div class="tab-pane fade" id="email" role="tabpanel">
                         <div class="row">
                             <div id="email-form">
@@ -356,80 +252,6 @@
                                         </div>
                                     </div>
                                 @endif
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="sales" role="tabpanel">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <x:form.input label="Location" name="customer_sales[location]" placeholder="Type Location" :customModelling="@$customer->customerSales->location" />
-                            </div>
-                            <div class="col-md-6">
-                                <x:form.input label="Segment" name="customer_sales[segment]" placeholder="Type Segment" :customModelling="@$customer->customerSales->segment" />
-                            </div>
-                            <div class="col-md-3">
-                                <x:form.input label="Salesman" name="customer_sales[salesman]" placeholder="Type Salesman" :customModelling="@$customer->customerSales->salesman" />
-                            </div>
-                            <div class="col-md-3">
-                                <x:form.input label="Customer Services" name="customer_sales[customer_services]" placeholder="Type Customer Services" :customModelling="@$customer->customerSales->customer_services" />
-                            </div>
-                            <div class="col-md-3">
-                                <x:form.input label="Credit Days" name="customer_sales[credit_days]" placeholder="Type Credit Days" :customModelling="@$customer->customerSales->credit_days" />
-                            </div>
-                            <div class="col-md-3">
-                                <x:form.input label="Limit Amount" name="customer_sales[limit_amount]" placeholder="Type Limit Amount" :customModelling="@$customer->customerSales->limit_amount" />
-                            </div>
-                            <div class="col-md-3">
-                                <x:form.input label="Publish Credit Days" name="customer_sales[publish_credit_days]" placeholder="Type Publish Credit Days" :customModelling="@$customer->customerSales->publish_credit_days" />
-                            </div>
-                            <div class="col-md-3">
-                                <x:form.input label="Publish Amount" name="customer_sales[publish_amount]" placeholder="Type Publish Amount" :customModelling="@$customer->customerSales->publish_amount" />
-                            </div>
-                            <div class="col-md-3">
-                                <label for="review_date" class="form-label">Review Date</label>
-                                <input id="review_date" type="date" class="@if($errors->has('review_date')) is-invalid @endif form-control" name="customer_sales[review_date]" value="{{ old('review_date', @$customer->customerSales->review_date) }}" />
-                                <div class="invalid-feedback">
-                                    {{ $errors->first('review_date') }}
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <x:form.input label="Override Amount" name="customer_sales[override_amount]" placeholder="Type Override Amount" :customModelling="@$customer->customerSales->override_amount" />
-                            </div>
-                            <div class="col-md-3">
-                                <x:form.input label="Allowed Days" name="customer_sales[allowed_days]" placeholder="Type Allowed Days" :customModelling="@$customer->customerSales->allowed_days" />
-                            </div>
-                            <div class="col-md-3">
-                                <x:form.input label="TOS" name="customer_sales[tos]" placeholder="Type TOS" :customModelling="@$customer->customerSales->tos" />
-                            </div>
-                            <div class="col-md-3">
-                                <x:form.input label="Contact Person" name="customer_sales[contact_person]" placeholder="Type Contact Person" :customModelling="@$customer->customerSales->contact_person" />
-                            </div>
-                            <div class="col-md-3">
-                                <x:form.input label="Customer Email" name="customer_sales[customer_email]" placeholder="Type Customer Email" :customModelling="@$customer->customerSales->customer_email" />
-                            </div>
-                            <div class="col-md-3">
-                                <x:form.input label="Auto > %" name="customer_sales[auto_more_than_percentage]" placeholder="Type Auto > %" :customModelling="@$customer->customerSales->auto_more_than_percentage" />
-                            </div>
-                            <div class="col-md-3">
-                                <x:form.input label="Email Days" name="customer_sales[email_days]" placeholder="Type Email Days" :customModelling="@$customer->customerSales->email_days" />
-                            </div>
-                            <div class="col-md-3">
-                                <x:form.input label="Auto O/S Email To" name="customer_sales[automatic_email_to]" placeholder="Type Auto O/S Email To" :customModelling="@$customer->customerSales->automatic_email_to" />
-                            </div>
-                            <div class="col-md-3">
-                                <x:form.input label="Sales Coordinator" name="customer_sales[sales_coordinator]" placeholder="Type Sales Coordinator" :customModelling="@$customer->customerSales->sales_coordinator" />
-                            </div>
-                            <div class="col-md-3">
-                                <x:form.input label="Acc Handling Person" name="customer_sales[acc_handling_person]" placeholder="Type Acc Handling Person" :customModelling="@$customer->customerSales->acc_handling_person" />
-                            </div>
-                            <div class="col-md-3">
-                                <x:form.input label="Note" name="customer_sales[note]" placeholder="Type Note" :customModelling="@$customer->customerSales->note" />
-                            </div>
-                            <div class="col-md-3">
-                                <x:form.input label="Invoices to Email" name="customer_sales[invoices_to_email]" placeholder="Type Invoices to Email" :customModelling="@$customer->customerSales->invoices_to_email" />
-                            </div>
-                            <div class="col-md-3">
-                                <x:form.input label="Clearance Email" name="customer_sales[clearance_email]" placeholder="Type Clearance Email" :customModelling="@$customer->customerSales->clearance_email" />
                             </div>
                         </div>
                     </div>
@@ -615,6 +437,99 @@
                                         </div>
                                     </div>
                                 @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="vat" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <x:form.input label="VAT Number" name="customer_vat[vat_number]" placeholder="Type VAT Number" :customModelling="@$customer->customerVat->vat_number" />
+                            </div>
+                            <div class="col-md-6">
+                                <x:form.input label="VAT Number (Arabic)" name="customer_vat[local_vat_number]" placeholder="Type VAT Number (Arabic)" :customModelling="@$customer->customerVat->local_vat_number" />
+                            </div>
+                            <div class="col-md-4">
+                                <x:form.input label="VAT Excemted" name="customer_vat[vat_excemted]" placeholder="Type VAT Excemted" :customModelling="@$customer->customerVat->vat_excemted" />
+                            </div>
+                            <div class="col-md-4">
+                                <x:form.input label="Excemted Reason" name="customer_vat[excemted_reason]" placeholder="Type Excemted Reason" :customModelling="@$customer->customerVat->excemted_reason" />
+                            </div>
+                            <div class="col-md-4">
+                                <x:form.input label="AIT Number" name="customer_vat[ait_number]" placeholder="Type AIT Number" :customModelling="@$customer->customerVat->ait_number" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="sales" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <x:form.input label="Location" name="customer_sales[location]" placeholder="Type Location" :customModelling="@$customer->customerSales->location" />
+                            </div>
+                            <div class="col-md-6">
+                                <x:form.input label="Segment" name="customer_sales[segment]" placeholder="Type Segment" :customModelling="@$customer->customerSales->segment" />
+                            </div>
+                            <div class="col-md-3">
+                                <x:form.input label="Salesman" name="customer_sales[salesman]" placeholder="Type Salesman" :customModelling="@$customer->customerSales->salesman" />
+                            </div>
+                            <div class="col-md-3">
+                                <x:form.input label="Customer Services" name="customer_sales[customer_services]" placeholder="Type Customer Services" :customModelling="@$customer->customerSales->customer_services" />
+                            </div>
+                            <div class="col-md-3">
+                                <x:form.input label="Credit Days" name="customer_sales[credit_days]" placeholder="Type Credit Days" :customModelling="@$customer->customerSales->credit_days" />
+                            </div>
+                            <div class="col-md-3">
+                                <x:form.input label="Limit Amount" name="customer_sales[limit_amount]" placeholder="Type Limit Amount" :customModelling="@$customer->customerSales->limit_amount" />
+                            </div>
+                            <div class="col-md-3">
+                                <x:form.input label="Publish Credit Days" name="customer_sales[publish_credit_days]" placeholder="Type Publish Credit Days" :customModelling="@$customer->customerSales->publish_credit_days" />
+                            </div>
+                            <div class="col-md-3">
+                                <x:form.input label="Publish Amount" name="customer_sales[publish_amount]" placeholder="Type Publish Amount" :customModelling="@$customer->customerSales->publish_amount" />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="review_date" class="form-label">Review Date</label>
+                                <input id="review_date" type="date" class="@if($errors->has('review_date')) is-invalid @endif form-control" name="customer_sales[review_date]" value="{{ old('review_date', @$customer->customerSales->review_date) }}" />
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('review_date') }}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <x:form.input label="Override Amount" name="customer_sales[override_amount]" placeholder="Type Override Amount" :customModelling="@$customer->customerSales->override_amount" />
+                            </div>
+                            <div class="col-md-3">
+                                <x:form.input label="Allowed Days" name="customer_sales[allowed_days]" placeholder="Type Allowed Days" :customModelling="@$customer->customerSales->allowed_days" />
+                            </div>
+                            <div class="col-md-3">
+                                <x:form.input label="TOS" name="customer_sales[tos]" placeholder="Type TOS" :customModelling="@$customer->customerSales->tos" />
+                            </div>
+                            <div class="col-md-3">
+                                <x:form.input label="Contact Person" name="customer_sales[contact_person]" placeholder="Type Contact Person" :customModelling="@$customer->customerSales->contact_person" />
+                            </div>
+                            <div class="col-md-3">
+                                <x:form.input label="Customer Email" name="customer_sales[customer_email]" placeholder="Type Customer Email" :customModelling="@$customer->customerSales->customer_email" />
+                            </div>
+                            <div class="col-md-3">
+                                <x:form.input label="Auto > %" name="customer_sales[auto_more_than_percentage]" placeholder="Type Auto > %" :customModelling="@$customer->customerSales->auto_more_than_percentage" />
+                            </div>
+                            <div class="col-md-3">
+                                <x:form.input label="Email Days" name="customer_sales[email_days]" placeholder="Type Email Days" :customModelling="@$customer->customerSales->email_days" />
+                            </div>
+                            <div class="col-md-3">
+                                <x:form.input label="Auto O/S Email To" name="customer_sales[automatic_email_to]" placeholder="Type Auto O/S Email To" :customModelling="@$customer->customerSales->automatic_email_to" />
+                            </div>
+                            <div class="col-md-3">
+                                <x:form.input label="Sales Coordinator" name="customer_sales[sales_coordinator]" placeholder="Type Sales Coordinator" :customModelling="@$customer->customerSales->sales_coordinator" />
+                            </div>
+                            <div class="col-md-3">
+                                <x:form.input label="Acc Handling Person" name="customer_sales[acc_handling_person]" placeholder="Type Acc Handling Person" :customModelling="@$customer->customerSales->acc_handling_person" />
+                            </div>
+                            <div class="col-md-3">
+                                <x:form.input label="Note" name="customer_sales[note]" placeholder="Type Note" :customModelling="@$customer->customerSales->note" />
+                            </div>
+                            <div class="col-md-3">
+                                <x:form.input label="Invoices to Email" name="customer_sales[invoices_to_email]" placeholder="Type Invoices to Email" :customModelling="@$customer->customerSales->invoices_to_email" />
+                            </div>
+                            <div class="col-md-3">
+                                <x:form.input label="Clearance Email" name="customer_sales[clearance_email]" placeholder="Type Clearance Email" :customModelling="@$customer->customerSales->clearance_email" />
                             </div>
                         </div>
                     </div>

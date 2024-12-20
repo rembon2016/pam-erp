@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Finance\Billing;
 
 use App\Http\Requests\Finance\Billing\Invoice\StoreInvoiceRequest;
+use App\Http\Requests\Finance\Billing\Invoice\StoreNotLinkedCustomer;
 use App\Service\Finance\MasterData\PortService;
 use Illuminate\View\View;
 use App\Functions\Utility;
@@ -23,6 +24,7 @@ use App\Service\Finance\MasterData\CurrencyService;
 use App\Service\Finance\MasterData\CustomerService;
 use App\Service\Finance\MasterData\ServiceTypeService;
 use App\Service\Finance\GeneralWise\GeneralWiseService;
+use App\Service\Operation\Origin\ShippingInstructionService;
 
 final class InvoiceController extends Controller
 {
@@ -33,7 +35,8 @@ final class InvoiceController extends Controller
         protected CustomerService $customerService,
         protected ChargeService $chargeService,
         protected CurrencyService $currencyService,
-        protected UnitService $unitService
+        protected UnitService $unitService,
+        protected ShippingInstructionService $shippingInstructionService,
     ) {}
 
     public function index(): View
@@ -43,43 +46,40 @@ final class InvoiceController extends Controller
 
     public function list(): JsonResponse
     {
+        $billingCustomerCondition = request()->get('billing-customer') == 'not-linked'
+            ? 'empty'
+            : 'exists';
+
         if (request()->ajax()) {
-            $invoices = $this->invoiceService->getInvoices(request()->query());
+            $instructions = $this->shippingInstructionService
+                ->getShippingInstructionByCustomerCondition(condition: $billingCustomerCondition);
 
-            return DataTables::of($invoices)
+            return DataTables::of($instructions->data)
+                ->addColumn('row_checkbox', function ($col) {
+                    return "<input type='checkbox' class='row-checkbox' value='{$col->job_id}' />";
+                })
+                ->addColumn('billing_customer_name', function ($col) {
+                    return $col->billingCustomer?->customer_name ?? '-';
+                })
+                ->addColumn('job_order_code', function ($col) {
+                    $jobOrderCode = $col->shipment_by == 'SEAAIR'
+                        ? $col->jobOrder->job_order_code ?? '-'
+                        : $col->jobOrderAir->job_order_code ?? '-';
+
+                    return $jobOrderCode;
+                })
+                ->addColumn('origin_name', function ($col) {
+                    $jobOrderOriginName = $col->origin_name;
+
+                    return $jobOrderOriginName;
+                })
+                ->addColumn('qty', function ($col) {
+                    return $col->order->qty ?? '-';
+                })
+                ->addColumn('chw', function ($col) {
+                    return $col->order->chw ?? '-';
+                })
                 ->addIndexColumn()
-                // ->editColumn('currency_date', function ($item) {
-                //     return $item->currency_date?->format('d-m-Y');
-                // })
-                ->addColumn('action', function ($item) {
-                    return Utility::generateTableActions([
-                        'edit' => route('finance.master-data.currency.edit', $item->id),
-                        'delete' => route('finance.master-data.currency.destroy', $item->id),
-                    ]);
-                })
-                ->rawColumns(['action'])
-                ->toJson();
-        }
-
-        return ResponseJson::error(
-            Response::HTTP_UNAUTHORIZED,
-            'Access Unauthorized',
-        );
-    }
-
-    public function shipmentList()
-    {
-        if (request()->ajax()) {
-            $data = (new PortService())->getPorts(request()->query());
-
-            return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('country_name', function ($item) {
-                    return $item->country?->country_name;
-                })
-                ->addColumn('row_checkbox', function ($item) {
-                    return "<input type='checkbox' value='{$item->id}' class='row-checkbox' />";
-                })
                 ->rawColumns(['row_checkbox'])
                 ->toJson();
         }
@@ -98,14 +98,25 @@ final class InvoiceController extends Controller
         $vessels = $this->generalWiseService->getVessels();
         $origins = $this->generalWiseService->getOrigins();
         $voyages = $this->generalWiseService->getVoyages();
-        $customers = $this->customerService->getCustomers();
+        $customers = $this->customerService->getBillingCustomers();
 
         return view('pages.finance.billing.invoice.form-not-linked', compact('months', 'years', 'service_types', 'vessels', 'origins', 'voyages', 'customers'));
     }
 
-    public function storeNotLinked(Request $request): RedirectResponse
+    public function storeNotLinked(StoreNotLinkedCustomer $request): RedirectResponse
     {
-        dd($request);
+        $requestDTO = $request->validated();
+        $list_of_job_id = json_decode($requestDTO['data'], true);
+
+        $updateCustomerResponse = $this->shippingInstructionService->updateBillingCustomer(
+            customer_id: $requestDTO['customer_id'],
+            job_orders: $list_of_job_id
+        );
+
+        return to_route('finance.billing.invoice.create.not-linked-billing-customer')->with(
+            $updateCustomerResponse->success ? 'toastSuccess' : 'toastError',
+            $updateCustomerResponse->message
+        );
     }
 
     public function createLinked(): View
@@ -116,25 +127,33 @@ final class InvoiceController extends Controller
         $vessels = $this->generalWiseService->getVessels();
         $origins = $this->generalWiseService->getOrigins();
         $voyages = $this->generalWiseService->getVoyages();
-        $customers = $this->customerService->getCustomers();
+        $customers = $this->customerService->getBillingCustomers();
 
         return view('pages.finance.billing.invoice.form-linked', compact('months', 'years', 'service_types', 'customers', 'vessels', 'origins', 'voyages'));
     }
 
-    public function storeLinked(Request $request): RedirectResponse
+    public function viewGenerate(Request $request)
     {
-        dd($request);
-    }
+        $list_of_job_orders = explode(',' , (request()->query('selected') ?? ""));
+        if (
+            count($list_of_job_orders) < 1 ||
+            (count($list_of_job_orders) > 0 && $list_of_job_orders[0] == "")
+        ) {
+            return to_route('finance.billing.invoice.create.linked-billing-customer')->with('toastError', 'Please Select at least 1 CTD!');
+        }
 
-    public function viewGenerate()
-    {
+        $shippings = $this->shippingInstructionService->getShippingInstructionsByJobId($list_of_job_orders);
+
+        if ($shippings->count() < 1) {
+            return to_route('finance.billing.invoice.create.linked-billing-customer')->with('toastError', 'Please Select at least 1 CTD!');
+        }
+
         $invoice = new Invoice;
         $charges = $this->chargeService->getCharges();
         $currencies = $this->currencyService->getCurrencies();
         $units = $this->unitService->getUnitCollections();
-        // dd($units);
 
-        return view('pages.finance.billing.invoice.generate', compact('invoice', 'charges', 'currencies', 'units'));
+        return view('pages.finance.billing.invoice.generate', compact('invoice', 'charges', 'currencies', 'units', 'shippings'));
     }
 
     public function storeGenerate(StoreInvoiceRequest $request)

@@ -2,6 +2,7 @@
 
 <x:layout.sidebar.wrapper>
 
+    <label class="title-menu-sidebar">MENU</label>
     <x:layout.sidebar.menu-item
         name="Dashboard"
         iconClass="bx bxs-dashboard"
@@ -64,7 +65,7 @@
 
     {{-- Billing --}}
     <x:layout.sidebar.parent-menu name="Billing" iconClass="bx bxs-file" :showCondition="Route::is('finance.billing.*')">
-        <x:layout.sidebar.child-menu name="Generate Invoice" link="{{ route('finance.billing.invoice.create.not-linked-billing-customer') }}" :activeCondition="Route::is('finance.billing.invoice.*') && !Route::is('finance.billing.invoice.index')" />
+        <x:layout.sidebar.child-menu name="Generate Invoice" link="{{ route('finance.billing.invoice.create.not-linked-billing-customer', ['billing-customer' => 'not-linked']) }}" :activeCondition="Route::is('finance.billing.invoice.*') && !Route::is('finance.billing.invoice.index')" />
         <x:layout.sidebar.child-menu name="Invoice List" link="{{ route('finance.billing.invoice.index') }}" :activeCondition="Route::is('finance.billing.invoice.index')" />
     </x:layout.sidebar.parent-menu>
 

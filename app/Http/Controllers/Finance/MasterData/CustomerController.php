@@ -39,8 +39,10 @@ final class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = $this->customerService->getCustomers();
-        return view('pages.finance.master-data.customer.index', compact('customers'));
+        $customers = $this->customerService->getCustomers()->get();
+        $customerTypes = Arr::sort(CustomerType::COLLECT);
+
+        return view('pages.finance.master-data.customer.index', compact('customers', 'customerTypes'));
     }
 
     public function list()
@@ -60,18 +62,6 @@ final class CustomerController extends Controller
                     $html .= '</ul>';
 
                     return $html;
-                })
-                ->addColumn('contact_person', function ($item) {
-                    return '-';
-                })
-                ->addColumn('contact_no', function ($item) {
-                    return '-';
-                })
-                ->addColumn('bank_account_no', function ($item) {
-                    return '-';
-                })
-                ->addColumn('bank_name', function ($item) {
-                    return '-';
                 })
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([

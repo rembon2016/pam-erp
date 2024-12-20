@@ -21,19 +21,45 @@
                         <i class="fas fa-copy cursor-pointer"
                             onclick="copyToClipboard('{{ $shipment['ctd_number'] }}')"></i>
                     </div>
-                    <span
-                        class="ctd-mini-info">{{ $shipment['shipment_by'] == 'SEAAIR' ? 'SEA - AIR' : ($shipment['shipment_by'] == 'AIR' ? 'CROSS-AIR' : $shipment['shipment_by'] ?? '-') }}
-                        TRANSPORT</span>
+                    <span class="ctd-mini-info">
+                        @php
+                            $shipmentType = match($shipment['shipment_by']) {
+                                'SEAAIR' => 'SEA - AIR TRANSPORT',
+                                'AIR' => 'CROSS - AIR TRANSPORT', 
+                                'SEAIMPORT' => 'SEA IMPORT TRANSPORT',
+                                'SEAEXPORT' => 'SEA EXPORT TRANSPORT',
+                                'AIRIMPORT' => 'AIR IMPORT TRANSPORT',
+                                'AIREXPORT' => 'AIR EXPORT TRANSPORT',
+                                'WAREHOUSE' => 'WAREHOUSE',
+                                'TRUCKING' => 'TRUCKING',
+                                'COURIER' => 'COURIER',
+                                default => $shipment['shipment_by'] ?? '-'
+                            };
+                        @endphp
+                        {{ $shipmentType }}
+                    </span>
                 </div>
                 <div class="d-flex gap-3 flex-column align-items-end">
                     <div>
                         <span class="text-dark fw-bold">Shipment Status : </span>
                         <span class="status-ship">{{ $shipment['status_shipment'] ?? '-' }}</span>
                     </div>
-                    <a href="javascript:void(0)" class="btn btn-success btn-sm btn-ctd-download-detail"
-                        onclick="downloadCTD('{{ $shipment['ctd_number'] }}', '{{ $shipment['job_id'] }}', this)">
-                        CTD <i class="fas fa-download ms-1"></i>
-                    </a>
+                    @if(in_array($shipment['shipment_by'], ['SEAAIR', 'AIR']))
+                        <a href="javascript:void(0)" class="btn btn-success btn-sm btn-ctd-download-detail"
+                            onclick="downloadCTD('{{ $shipment['ctd_number'] }}', '{{ $shipment['job_id'] }}', this)">
+                            CTD <i class="fas fa-download ms-1"></i>
+                        </a>
+                    @elseif(in_array($shipment['shipment_by'], ['SEAIMPORT', 'SEAEXPORT']))
+                        <a href="javascript:void(0)" class="btn btn-success btn-sm btn-ctd-download-detail"
+                            onclick="downloadCTD('{{ $shipment['ctd_number'] }}', '{{ $shipment['job_id'] }}', this)">
+                            HBL <i class="fas fa-download ms-1"></i>
+                        </a>
+                    @elseif(in_array($shipment['shipment_by'], ['AIRIMPORT', 'AIREXPORT']))
+                        <a href="javascript:void(0)" class="btn btn-success btn-sm btn-ctd-download-detail"
+                            onclick="downloadCTD('{{ $shipment['ctd_number'] }}', '{{ $shipment['job_id'] }}', this)">
+                            HAWB <i class="fas fa-download ms-1"></i>
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -41,100 +67,11 @@
 
 
     <div class="card-body p-9 pt-0">
-        <div class="row mb-7">
-            <div class="col-md-6">
-                <x-list.box-list icon="truck" title="Shipper" :value="$shipment['shipper_name'] ?? '-'" />
-            </div>
-            <div class="col-md-6">
-                <x-list.box-list icon="dolly-flatbed" title="Consignee" :value="$shipment['consigne_name'] ?? '-'" />
-            </div>
-        </div>
-
-        <div class="row mb-7">
-            <div class="col-md-6">
-                <x-list.box-list icon="anchor" title="Port of Loading" :value="$shipment['port_loading_code'] ?? '-'" />
-            </div>
-            <div class="col-md-6">
-                <x-list.box-list icon="ship" title="Port of Destination" :value="$shipment['port_destination_code'] ?? '-'" />
-            </div>
-        </div>
-
-        <div class="row mb-7">
-            <div class="col-md-6">
-                <x-list.box-list date="true" icon="calendar" title="Cargo Readiness Date" :value="$shipment['cargo_redines_date'] ?? '-'" />
-            </div>
-            <div class="col-md-6">
-                <x-list.box-list icon="box" title="Loading Type" :value="$shipment['loading_type'] ?? '-'" />
-            </div>
-        </div>
-
-        <div class="row mb-7">
-            <div class="col-md-6">
-                <x-list.box-list icon="money-bill" title="Freight Term" :value="$shipment['freight_term'] ?? '-'" />
-            </div>
-            <div class="col-md-6">
-                <x-list.box-list icon="file-contract" title="Incoterm" :value="$shipment['incoterm'] ?? '-'" />
-            </div>
-        </div>
-        <div class="row mb-7">
-            <div class="col-md-6">
-                <x-list.box-list icon="user" title="Notify Party" :value="$shipment['notify_of_party'] ?? '-'" />
-            </div>
-            <div class="col-md-6">
-                <x-list.box-list icon="boxes" title="Commodity" :value="$shipment['komoditi_name'] ?? '-'" />
-            </div>
-        </div>
-
-        <div class="row mb-7">
-            <div class="col-md-6">
-                <x-list.box-list icon="file-alt" title="In Order To" :value="$shipment['in_order_to'] ?? '-'" />
-            </div>
-            <div class="col-md-6">
-                <x-list.box-list icon="file" title="Permit Approval No" :value="$shipment['permit_approval_no'] ?? '-'" />
-            </div>
-        </div>
-
-        <div class="row mb-7">
-            <div class="col-md-4">
-                <x-list.box-list date="true" icon="calendar-alt" title="Permit Date" :value="$shipment['permit_date'] ?? '-'" />
-            </div>
-            <div class="col-md-4">
-                <x-list.box-list icon="file-contract" title="Permit No." :value="$shipment['permit_no'] ?? '-'" />
-            </div>
-            <div class="col-md-4">
-                <x-list.box-list icon="users" title="Customer Group" :value="$shipment['customer_group_name'] ?? '-'" />
-            </div>
-        </div>
-
-        <div class="row mb-7">
-            <div class="col-md-4">
-                <x-list.box-list icon="sign" title="Declared Value for Carriage" :value="$shipment['declare_value_forcariage'] ?? '-'" />
-            </div>
-            <div class="col-md-4">
-                <x-list.box-list icon="binoculars" title="Declared Value for Customs" :value="$shipment['declare_value_forcustom'] ?? '-'" />
-            </div>
-            <div class="col-md-4">
-                <x-list.box-list icon="briefcase-medical" title="Amount of Insurance" :value="$shipment['amount_of_insurance'] ?? '-'" />
-            </div>
-        </div>
-
-        <div class="row mb-7">
-            <div class="col-md-12">
-                <x-list.box-list icon="map-marker-alt" title="Delivery Name & Address" :value="$shipment['delivery_name'] ?? '-'" />
-            </div>
-        </div>
-
-        <div class="row mb-7">
-            <div class="col-md-12">
-                <x-list.box-list icon="hand-point-right" title="Handling Information" :value="$shipment['handling_information'] ?? '-'" />
-            </div>
-        </div>
-
-        <div class="row mb-7">
-            <div class="col-md-12">
-                <x-list.box-list icon="project-diagram" title="Project Name" :value="$shipment['project_name'] ?? '-'" />
-            </div>
-        </div>
+        @if(in_array($shipment['shipment_by'], ['COURIER']))
+            <x-shipment.booking-information-courier :shipment="$shipment" />
+        @else
+            <x-shipment.booking-information :shipment="$shipment" />
+        @endif
 
         <div class="title-head-shipping-detail">
             <h4>Order Detail :</h4>
@@ -419,276 +356,277 @@
             </div>
         @endif
 
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="title-head-shipping-detail">
-                    <h4>Sales Office: :</h4>
-                </div>
-
-                @if (isset($shipment['sales_office']) && count($shipment['sales_office']) > 0)
-                    @foreach ($shipment['sales_office'] as $office)
-                        <x:list.box-list icon="building" title="Sales Office"
-                            value="{{ $office['sales_office_name'] ?? '-' }}" />
-                    @endforeach
-                @else
-                    <span>No Data</span>
-                @endif
-            </div>
-            <div class="col-md-6">
-                <div class="title-head-shipping-detail">
-                    <h4>Sales Person :</h4>
-                </div>
-
-                @if (isset($shipment['sales_person']) && count($shipment['sales_person']) > 0)
-                    @foreach ($shipment['sales_person'] as $person)
-                        <x:list.box-list icon="user" title="Sales Person"
-                            value="{{ $person['sales_person_name'] ?? '-' }}" />
-                    @endforeach
-                @else
-                    <span>No Data</span>
-                @endif
-            </div>
-        </div>
-
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="title-head-shipping-detail">
-                    <h4>Billing Customer: :</h4>
-                </div>
-
-                <x-list.box-list icon="users" title="Billing Customer" :value="$shipment['customer_name'] ?? '-'" />
-            </div>
-            <div class="col-md-6">
-                <div class="title-head-shipping-detail">
-                    <h4>Customer Group :</h4>
-                </div>
-
-                <x-list.box-list icon="users" title="Customer Group" :value="$shipment['customer_group_name'] ?? '-'" />
-            </div>
-        </div>
-
-
-        @if (in_array($shipment['shipment_by'], ['SEAIMPORT', 'SEAEXPORT', 'AIRIMPORT', 'AIREXPORT', 'WAREHOUSE', 'TRUCKING', 'COURIER']))
-            <div class="title-head-shipping-detail">
-                <h4>Local Transport Details :</h4>
-            </div>
-
-            <div class="table-responsive">
-                <table class="table shipment-detail align-middle">
-                    <thead>
-                        <tr>
-                            <th class="custom-th">Driver</th>
-                            <th class="custom-th">Driver Phone</th>
-                            <th class="custom-th">Vehicle Number</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (!empty($shipment['local_transport']) && is_array($shipment['local_transport']))
-                            @foreach ($shipment['local_transport'] as $transport)
-                                <tr class="custom-tr">
-                                    <td class="custom-td">{{ $transport['vehicle_driver'] ?? '-' }}</td>
-                                    <td class="custom-td">{{ $transport['driver_phone'] ?? '-' }}</td>
-                                    <td class="custom-td">{{ $transport['vehicle_number'] ?? '-' }}</td>
-                                </tr>
-                            @endforeach
-                        @else
-                            <tr class="custom-tr">
-                                <td class="custom-td text-center" colspan="3">No local transport details available
-                                </td>
-                            </tr>
-                        @endif
-                    </tbody>
-                </table>
-            </div>
-
-            <x-list.box-list icon="sticky-note" title="Notes Local Transport" :value="$shipment['order']['notes'] ?? '-'" />
-        @endif
-
-        <div class="title-head-shipping-detail">
-            <h4>Documents :</h4>
-        </div>
-
-        @if (!in_array($shipment['shipment_by'], ['SEAIMPORT', 'SEAEXPORT', 'AIRIMPORT', 'AIREXPORT']))
+        @if (!in_array($shipment['shipment_by'], ['COURIER']))
             <div class="row mb-4">
-                <div
-                    class="{{ in_array($shipment['shipment_by'], ['AIR', 'AIRIMPORT', 'AIREXPORT']) ? 'col-md-12' : 'col-md-6' }} mb-3">
-                    <x:list.box-list-download name="ctd-file" title="CTD File"
-                        value="{{ $shipment['ctd_number'] ?? '-' }}"
-                        onclick="downloadCTD('{{ $shipment['ctd_number'] }}', '{{ $shipment['job_id'] }}', this)" />
-                </div>
-                @if (!in_array($shipment['shipment_by'], ['AIR', 'AIRIMPORT', 'AIREXPORT']))
-                    <div class="col-md-6 mb-3">
-                        <x:list.box-list-download name="final-alert" title="Final Alert"
-                            value="final-alert-{{ $shipment['ctd_number'] ?? '-' }}"
-                            onclick="downloadFinalAlert('{{ $shipment['ctd_number'] }}', '{{ $shipment['mother_vessel_id'] }}', '{{ $shipment['voyage_number_mother'] }}', '{{ $shipment['origin_id'] }}', '{{ $shipment['created_by'] }}', this)" />
+                <div class="col-md-6">
+                    <div class="title-head-shipping-detail">
+                        <h4>Sales Office: :</h4>
                     </div>
-                @endif
-            </div>
-        @endif
 
-        <div class="row mb-4">
-            @php
-                $documentTypes = [
-                    ['label' => 'Shipping Instruction', 'value' => 'si_doc'],
-                    ['label' => 'Container Loading Sheet', 'value' => 'container_loading_doc'],
-                    ['label' => 'Commercial Invoice', 'value' => 'com_invoices_doc'],
-                    ['label' => 'MSDS', 'value' => 'msds_doc'],
-                    ['label' => 'COO', 'value' => 'coo_doc'],
-                    ['label' => 'Packing List', 'value' => 'packing_list_doc'],
-                    ['label' => 'CFT', 'value' => 'cft_doc'],
-                    ['label' => 'Others', 'value' => 'other_doc'],
-                    ['label' => 'Bill Of Lading', 'value' => 'bil_doc', 'valueLoadingPlan' => 'lp_bl_doc'],
-                    ['label' => 'Test Report', 'value' => 'test_report_doc'],
-                    [
-                        'label' => 'MAWB',
-                        'value' => 'mawb_doc',
-                        'valueLoadingPlan' => 'lp_mawb',
-                        'type' => 'mawb_doc',
-                        'visible' => true,
-                    ],
-                    [
-                        'label' => 'Cargo Manifest',
-                        'value' => 'cargo_manifest',
-                        'valueLoadingPlan' => 'lp_cargo_manifest',
-                        'type' => 'cargo_manifest',
-                        'visible' => true,
-                    ],
-                    ['label' => 'Pictures', 'value' => 'pictures', 'type' => 'pictures', 'visible' => true],
-                ];
-
-                // Add conditional document types
-                if (isset($shipment['shipment_by'])) {
-                    if (in_array($shipment['shipment_by'], ['SEAIMPORT', 'SEAEXPORT', 'AIRIMPORT', 'AIREXPORT', 'WAREHOUSE', 'TRUCKING', 'COURIER'])) {
-                        array_unshift(
-                            $documentTypes,
-                            ['label' => 'Final Alert', 'value' => 'final_alert_doc'],
-                            ['label' => 'HAWB', 'value' => 'ctd_doc'],
-                        );
-                    } else {
-                        $documentTypes[] = [
-                            'label' => 'Origin Debit Note',
-                            'value' => 'debit_doc',
-                            'valueLoadingPlan' => 'lp_origin_debit',
-                        ];
-                        $documentTypes[] = [
-                            'label' => 'Attachment Of Goods',
-                            'value' => 'attachment_goods',
-                        ];
-                    }
-                }
-            @endphp
-
-            @foreach ($documentTypes as $docType)
-                @php
-                    $matchingDocs = collect($shipment['order_document'] ?? [])->filter(function ($doc) use ($docType) {
-                        return $doc['type_document'] === ($docType['valueOrderDocuments'] ?? $docType['value']);
-                    });
-                @endphp
-
-                <div class="col-md-4 mb-3">
-                    @if ($matchingDocs->isNotEmpty())
-                        <x-list.box-list-download name="{{ $docType['value'] }}" title="{{ $docType['label'] }}"
-                            :value="$matchingDocs
-                                ->map(function ($doc) {
-                                    return [
-                                        'name' => $doc['name_file'],
-                                        'id' => $doc['order_document_id'],
-                                    ];
-                                })
-                                ->toArray()" onclick="handleDocumentClick(event)" />
+                    @if (isset($shipment['sales_office']) && count($shipment['sales_office']) > 0)
+                        @foreach ($shipment['sales_office'] as $office)
+                            <x:list.box-list icon="building" title="Sales Office"
+                                value="{{ $office['sales_office_name'] ?? '-' }}" />
+                        @endforeach
                     @else
-                        <div class="d-block w-100">
-                            <div class="box-list">
-                                <div>
-                                    <div class="box-list-title mb-2">{{ $docType['label'] }}</div>
-                                    <span class="box-list-value">-</span>
-                                </div>
-                            </div>
+                        <span>No Data</span>
+                    @endif
+                </div>
+                <div class="col-md-6">
+                    <div class="title-head-shipping-detail">
+                        <h4>Sales Person :</h4>
+                    </div>
+
+                    @if (isset($shipment['sales_person']) && count($shipment['sales_person']) > 0)
+                        @foreach ($shipment['sales_person'] as $person)
+                            <x:list.box-list icon="user" title="Sales Person"
+                                value="{{ $person['sales_person_name'] ?? '-' }}" />
+                        @endforeach
+                    @else
+                        <span>No Data</span>
+                    @endif
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="title-head-shipping-detail">
+                        <h4>Billing Customer: :</h4>
+                    </div>
+
+                    <x-list.box-list icon="users" title="Billing Customer" :value="$shipment['customer_name'] ?? '-'" />
+                </div>
+                <div class="col-md-6">
+                    <div class="title-head-shipping-detail">
+                        <h4>Customer Group :</h4>
+                    </div>
+
+                    <x-list.box-list icon="users" title="Customer Group" :value="$shipment['customer_group_name'] ?? '-'" />
+                </div>
+            </div>
+       
+            @if (in_array($shipment['shipment_by'], ['SEAIMPORT', 'SEAEXPORT', 'AIRIMPORT', 'AIREXPORT', 'WAREHOUSE', 'TRUCKING']))
+                <div class="title-head-shipping-detail">
+                    <h4>Local Transport Details :</h4>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table shipment-detail align-middle">
+                        <thead>
+                            <tr>
+                                <th class="custom-th">Driver</th>
+                                <th class="custom-th">Driver Phone</th>
+                                <th class="custom-th">Vehicle Number</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (!empty($shipment['local_transport']) && is_array($shipment['local_transport']))
+                                @foreach ($shipment['local_transport'] as $transport)
+                                    <tr class="custom-tr">
+                                        <td class="custom-td">{{ $transport['vehicle_driver'] ?? '-' }}</td>
+                                        <td class="custom-td">{{ $transport['driver_phone'] ?? '-' }}</td>
+                                        <td class="custom-td">{{ $transport['vehicle_number'] ?? '-' }}</td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr class="custom-tr">
+                                    <td class="custom-td text-center" colspan="3">No local transport details available
+                                    </td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+
+                <x-list.box-list icon="sticky-note" title="Notes Local Transport" :value="$shipment['order']['notes'] ?? '-'" />
+            @endif
+
+            <div class="title-head-shipping-detail">
+                <h4>Documents :</h4>
+            </div>
+
+            @if (!in_array($shipment['shipment_by'], ['SEAIMPORT', 'SEAEXPORT', 'AIRIMPORT', 'AIREXPORT']))
+                <div class="row mb-4">
+                    <div
+                        class="{{ in_array($shipment['shipment_by'], ['AIR', 'AIRIMPORT', 'AIREXPORT']) ? 'col-md-12' : 'col-md-6' }} mb-3">
+                        <x:list.box-list-download name="ctd-file" title="CTD File"
+                            value="{{ $shipment['ctd_number'] ?? '-' }}"
+                            onclick="downloadCTD('{{ $shipment['ctd_number'] }}', '{{ $shipment['job_id'] }}', this)" />
+                    </div>
+                    @if (!in_array($shipment['shipment_by'], ['AIR', 'AIRIMPORT', 'AIREXPORT']))
+                        <div class="col-md-6 mb-3">
+                            <x:list.box-list-download name="final-alert" title="Final Alert"
+                                value="final-alert-{{ $shipment['ctd_number'] ?? '-' }}"
+                                onclick="downloadFinalAlert('{{ $shipment['ctd_number'] }}', '{{ $shipment['mother_vessel_id'] }}', '{{ $shipment['voyage_number_mother'] }}', '{{ $shipment['origin_id'] }}', '{{ $shipment['created_by'] }}', this)" />
                         </div>
                     @endif
                 </div>
-            @endforeach
-        </div>
-
-        @if (!in_array($shipment['shipment_by'], ['SEAIMPORT', 'SEAEXPORT', 'AIRIMPORT', 'AIREXPORT', 'WAREHOUSE', 'TRUCKING', 'COURIER']))
-            <div class="title-head-shipping-detail">
-                <h4>Notes :</h4>
-            </div>
+            @endif
 
             <div class="row mb-4">
-                <div class="col-md-12">
-                    <div class="view-notes">
-                        @foreach (['chat_origin' => 'Origin', 'chat_dxb' => 'DXB', 'chat_agent' => 'Agent'] as $chatKey => $sectionTitle)
-                            <div class="title">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                    fill="currentColor" class="bi bi-journal-text" viewBox="0 0 16 16">
-                                    <path
-                                        d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z">
-                                    </path>
-                                    <path
-                                        d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z">
-                                    </path>
-                                    <path
-                                        d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z">
-                                    </path>
-                                </svg>
-                                <span>{{ $sectionTitle }}</span>
-                            </div>
-                            @if (empty($shipment[$chatKey]))
-                                <div class="view-row-notes d-flex">
-                                    <div class="note-view no-border">
-                                        <div class="note-view-content">
-                                            <p class="note-view-content-text text-muted">No data notes</p>
-                                        </div>
+                @php
+                    $documentTypes = [
+                        ['label' => 'Shipping Instruction', 'value' => 'si_doc'],
+                        ['label' => 'Container Loading Sheet', 'value' => 'container_loading_doc'],
+                        ['label' => 'Commercial Invoice', 'value' => 'com_invoices_doc'],
+                        ['label' => 'MSDS', 'value' => 'msds_doc'],
+                        ['label' => 'COO', 'value' => 'coo_doc'],
+                        ['label' => 'Packing List', 'value' => 'packing_list_doc'],
+                        ['label' => 'CFT', 'value' => 'cft_doc'],
+                        ['label' => 'Others', 'value' => 'other_doc'],
+                        ['label' => 'Bill Of Lading', 'value' => 'bil_doc', 'valueLoadingPlan' => 'lp_bl_doc'],
+                        ['label' => 'Test Report', 'value' => 'test_report_doc'],
+                        [
+                            'label' => 'MAWB',
+                            'value' => 'mawb_doc',
+                            'valueLoadingPlan' => 'lp_mawb',
+                            'type' => 'mawb_doc',
+                            'visible' => true,
+                        ],
+                        [
+                            'label' => 'Cargo Manifest',
+                            'value' => 'cargo_manifest',
+                            'valueLoadingPlan' => 'lp_cargo_manifest',
+                            'type' => 'cargo_manifest',
+                            'visible' => true,
+                        ],
+                        ['label' => 'Pictures', 'value' => 'pictures', 'type' => 'pictures', 'visible' => true],
+                    ];
+
+                    // Add conditional document types
+                    if (isset($shipment['shipment_by'])) {
+                        if (in_array($shipment['shipment_by'], ['SEAIMPORT', 'SEAEXPORT', 'AIRIMPORT', 'AIREXPORT', 'WAREHOUSE', 'TRUCKING', 'COURIER'])) {
+                            array_unshift(
+                                $documentTypes,
+                                ['label' => 'Final Alert', 'value' => 'final_alert_doc'],
+                                ['label' => 'HAWB', 'value' => 'ctd_doc'],
+                            );
+                        } else {
+                            $documentTypes[] = [
+                                'label' => 'Origin Debit Note',
+                                'value' => 'debit_doc',
+                                'valueLoadingPlan' => 'lp_origin_debit',
+                            ];
+                            $documentTypes[] = [
+                                'label' => 'Attachment Of Goods',
+                                'value' => 'attachment_goods',
+                            ];
+                        }
+                    }
+                @endphp
+
+                @foreach ($documentTypes as $docType)
+                    @php
+                        $matchingDocs = collect($shipment['order_document'] ?? [])->filter(function ($doc) use ($docType) {
+                            return $doc['type_document'] === ($docType['valueOrderDocuments'] ?? $docType['value']);
+                        });
+                    @endphp
+
+                    <div class="col-md-4 mb-3">
+                        @if ($matchingDocs->isNotEmpty())
+                            <x-list.box-list-download name="{{ $docType['value'] }}" title="{{ $docType['label'] }}"
+                                :value="$matchingDocs
+                                    ->map(function ($doc) {
+                                        return [
+                                            'name' => $doc['name_file'],
+                                            'id' => $doc['order_document_id'],
+                                        ];
+                                    })
+                                    ->toArray()" onclick="handleDocumentClick(event)" />
+                        @else
+                            <div class="d-block w-100">
+                                <div class="box-list">
+                                    <div>
+                                        <div class="box-list-title mb-2">{{ $docType['label'] }}</div>
+                                        <span class="box-list-value">-</span>
                                     </div>
                                 </div>
-                            @else
-                                @foreach ($shipment[$chatKey] as $note)
+                            </div>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+
+            @if (!in_array($shipment['shipment_by'], ['SEAIMPORT', 'SEAEXPORT', 'AIRIMPORT', 'AIREXPORT', 'WAREHOUSE', 'TRUCKING', 'COURIER']))
+                <div class="title-head-shipping-detail">
+                    <h4>Notes :</h4>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="view-notes">
+                            @foreach (['chat_origin' => 'Origin', 'chat_dxb' => 'DXB', 'chat_agent' => 'Agent'] as $chatKey => $sectionTitle)
+                                <div class="title">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        fill="currentColor" class="bi bi-journal-text" viewBox="0 0 16 16">
+                                        <path
+                                            d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z">
+                                        </path>
+                                        <path
+                                            d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z">
+                                        </path>
+                                        <path
+                                            d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z">
+                                        </path>
+                                    </svg>
+                                    <span>{{ $sectionTitle }}</span>
+                                </div>
+                                @if (empty($shipment[$chatKey]))
                                     <div class="view-row-notes d-flex">
-                                        <div class="note-view">
-                                            <div class="note-view-header">
-                                                <div class="note-view-header-sender">{{ $note['created_by'] }}</div>
-                                                <div style="display: flex; align-items: center; gap: 10px;">
-                                                    {{ \Carbon\Carbon::parse($note['times'])->format('l, M d, Y') }}
-                                                </div>
-                                            </div>
+                                        <div class="note-view no-border">
                                             <div class="note-view-content">
-                                                <p class="note-view-content-text">{{ $note['noted'] }}</p>
+                                                <p class="note-view-content-text text-muted">No data notes</p>
                                             </div>
-                                            @if (isset($note['attachment']) && $note['attachment'] !== 'null')
-                                                <div class="note-view-content d-flex justify-content-end">
-                                                    <span title="Download Image" class="note-view-content-text"
-                                                        style="cursor: pointer;"
-                                                        onclick="downloadNoteAttachment('{{ $note['attachment'] }}')">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                                            height="20" fill="currentColor"
-                                                            class="bi bi-image-fill" viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M.002 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2V3zm1 9v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12zm5-6.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0z" />
-                                                        </svg>
-                                                    </span>
-                                                </div>
-                                            @endif
                                         </div>
                                     </div>
-                                @endforeach
-                            @endif
-                        @endforeach
+                                @else
+                                    @foreach ($shipment[$chatKey] as $note)
+                                        <div class="view-row-notes d-flex">
+                                            <div class="note-view">
+                                                <div class="note-view-header">
+                                                    <div class="note-view-header-sender">{{ $note['created_by'] }}</div>
+                                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                                        {{ \Carbon\Carbon::parse($note['times'])->format('l, M d, Y') }}
+                                                    </div>
+                                                </div>
+                                                <div class="note-view-content">
+                                                    <p class="note-view-content-text">{{ $note['noted'] }}</p>
+                                                </div>
+                                                @if (isset($note['attachment']) && $note['attachment'] !== 'null')
+                                                    <div class="note-view-content d-flex justify-content-end">
+                                                        <span title="Download Image" class="note-view-content-text"
+                                                            style="cursor: pointer;"
+                                                            onclick="downloadNoteAttachment('{{ $note['attachment'] }}')">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                height="20" fill="currentColor"
+                                                                class="bi bi-image-fill" viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M.002 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2V3zm1 9v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12zm5-6.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0z" />
+                                                            </svg>
+                                                        </span>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            @endforeach
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="title-head-shipping-detail">
-                <h4>Additional Description (printed as attachment page) :</h4>
-            </div>
+                <div class="title-head-shipping-detail">
+                    <h4>Additional Description (printed as attachment page) :</h4>
+                </div>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="ckeditor-content">
-                        {!! $shipment['order']['additional_description'] ?? '-' !!}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="ckeditor-content">
+                            {!! $shipment['order']['additional_description'] ?? '-' !!}
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
         @endif
 
 

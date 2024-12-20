@@ -11,6 +11,8 @@ use App\Models\Master\Port;
 use App\Models\Dxb\LoadingPlanDxb;
 use Illuminate\Support\Facades\Http;
 use App\Models\Dxb\LoadingPlanDxbDetail;
+use App\Models\Operation\Master\CustomerBilling;
+
 class ShippingInstruction extends Model
 {
 	protected $connection = 'pgsql';
@@ -23,6 +25,40 @@ class ShippingInstruction extends Model
         'amount_of_insurance','declare_value_forcariage','declare_value_forcustom','handling_information', 'customer_group_id', 'customer_group_name'
     ];
     protected $appends = ['pod_code','teus','teus_new','days_closed'];
+
+    public function jobOrderDetail()
+    {
+        return $this->hasOne(JobOrderDetail::class, 'job_id', 'job_id');
+    }
+
+    public function jobOrder()
+    {
+        return $this->hasOneThrough(
+            JobOrder::class,
+            JobOrderDetail::class,
+            'job_id',
+            'job_order_id',
+            'job_id',
+            'job_order_id'
+        );
+    }
+
+    public function jobOrderAir()
+    {
+        return $this->hasOneThrough(
+            JobOrderAir::class,
+            JobOrderDetail::class,
+            'job_id',
+            'job_order_id',
+            'job_id',
+            'job_order_id'
+        );
+    }
+
+    public function billingCustomer()
+    {
+        return $this->belongsTo(CustomerBilling::class, 'customer_id', 'customer_id');
+    }
 
     public function salesoffice()
     {

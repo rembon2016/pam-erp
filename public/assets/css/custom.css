@@ -462,6 +462,28 @@ table.text-normal :is(td, tr){
     color: #fff;
 }
 
+.default-costing-tabs {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.default-costing-tabs .nav-link {
+    background-color: #fff;
+    border: var(--bs-nav-tabs-border-width) solid transparent;
+    border-color: var(--bs-nav-tabs-link-active-border-color);
+    padding: 10px 20px;
+    font-size: 14px;
+}
+
+.default-costing-tabs .nav-link.active {
+    background-color: #DEDEDE;
+    color: #000;
+    font-weight: bold;
+}
+
 .costing-tabs {
     display: flex;
     flex-direction: row;
@@ -1130,4 +1152,79 @@ table#shipment_table .btn-view-shipment:hover {
 .cstm-f-color-magenta:hover {
     background: #ec3487;
     color: #fff;
+}
+
+.app-sidebar-logo {
+    background-color: #ffffff !important;
+}
+
+.app-sidebar-logo img {
+    object-fit: scale-down;
+    margin-left: 4px;
+}
+
+[data-kt-app-layout=dark-sidebar] .app-sidebar .app-sidebar-logo {
+    border-bottom: 0 !important;
+    max-height: 65px;
+}
+
+.app-header {
+    max-height: 65px;
+}
+
+.app-sidebar-toggle {
+    background: none !important;
+    box-shadow: none !important;
+    margin-left: 40px;
+}
+
+.wrapper-header {
+    align-items: center;
+}
+
+.search-headerbar {
+    border: 1px solid #e8e8f7;
+    border-radius: 5px;
+    height: 51px;
+    background-color: #fff;
+    max-width: 360px;
+    font-weight: 400 !important;
+    letter-spacing: -0.5px !important;
+    padding-left: 16px;
+}
+
+.icon-wrapper-header-toggle {
+    cursor: pointer;
+    position: relative;
+    left: -10px;
+}
+
+.title-menu-sidebar {
+    padding: 10px 20px 10px 20px;
+    color: #585865 !important;
+    font-weight: 800;
+    font-size: 11px;
+}
+
+.app-sidebar {
+    max-width: 240px;
+}
+
+.app-sidebar-wrapper.hover-scroll-overlay-y {
+    width: 100% !important;
+}
+
+.app-sidebar-menu {
+    background-color: #0E0E23;
+}
+
+@media (min-width: 992px) {
+    :root {
+        --kt-app-sidebar-width: 240px;
+        --kt-app-sidebar-width-actual: 240px;
+        --kt-app-sidebar-gap-start: 0px;
+        --kt-app-sidebar-gap-end: 0px;
+        --kt-app-sidebar-gap-top: 0px;
+        --kt-app-sidebar-gap-bottom: 0px;
+    }
 }

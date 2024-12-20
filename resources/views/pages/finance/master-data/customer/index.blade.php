@@ -24,10 +24,6 @@
                         <x:layout.table.heading widthPixel="100" title="Customer Code" />
                         <x:layout.table.heading widthPixel="100" title="Customer Name" />
                         <x:layout.table.heading widthPixel="100" title="Customer Type" />
-                        <x:layout.table.heading widthPixel="100" title="Contact Person" />
-                        <x:layout.table.heading widthPixel="100" title="Contact No." />
-                        <x:layout.table.heading widthPixel="100" title="Bank Account No." />
-                        <x:layout.table.heading widthPixel="100" title="Bank Name" />
                         <x:layout.table.heading widthPixel="100" customClass="text-center" title="Action" />
                     </x:layout.table.row>
                 </thead>
@@ -80,22 +76,6 @@
         [
             "data" => "customer_type",
             "name" => "customer_type",
-        ],
-        [
-            "data" => "contact_person",
-            "name" => "contact_person",
-        ],
-        [
-            "data" => "contact_no",
-            "name" => "contact_no",
-        ],
-        [
-            "data" => "bank_account_no",
-            "name" => "bank_account_no",
-        ],
-        [
-            "data" => "bank_name",
-            "name" => "bank_name",
         ],
         [
             "data" => "action",

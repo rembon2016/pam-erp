@@ -31,19 +31,18 @@
                 <x:form.input label="Customer Name" name="customer_name" placeholder="Type Customer Name" required="true" :model="@$customer" />
             </div>
             <div class='col-md-6'>
-                <x:form.input label="EORI Number" name="eori_number" placeholder="Type EORI Number" required="true" :model="@$customer" />
+                <x:form.input label="EORI Number" name="eori_number" placeholder="Type EORI Number" :model="@$customer" />
             </div>
             <div class='col-md-6'>
-                <x:form.select label="Credit Terms" name="credit_terms" defaultOption="Select Credit Terms" required="true">
-                    <option value="prepaid" @selected(old('credit_terms', @$customer->credit_terms) == 'prepaid')>Prepaid</option>
-                    <option value="collect" @selected(old('credit_terms', @$customer->credit_terms) == 'collect')>Collect</option>
-                    <option value="exwork" @selected(old('credit_terms', @$customer->credit_terms) == 'exwork')>Ex Work</option>
+                <x:form.input label="Credit Terms (Days)" name="credit_terms" placeholder="Type Credit Terms (Days)" :model="@$customer" required="true" />
+            </div>
+            <div class='col-md-6'>
+                <x:form.select label="Local/Overseas" name="overseas" defaultOption="Select Local/Overseas" required="true">
+                    <option value="local" @selected(old('overseas', @$customer->overseas) == 'local')>Local</option>
+                    <option value="overseas" @selected(old('overseas', @$customer->overseas) == 'overseas')>Overseas</option>
                 </x:form.select>
             </div>
-            <div class='col-md-4'>
-                <x:form.input label="Local/Overseas" name="overseas" placeholder="Type Local/Overseas" required="true" :model="@$customer" />
-            </div>
-            <div class='col-md-4'>
+            <div class='col-md-6'>
                 <x:form.select label="Currency" name="currency_id" defaultOption="Select Currency">
                     @foreach ($currencies as $currency)
                         <option value="{{ $currency->id }}" @selected(old('currency_id', @$customer->currency_id) == $currency->id)>
@@ -52,8 +51,8 @@
                     @endforeach
                 </x:form.select>
             </div>
-            <div class='col-md-4'>
-                <x:form.input type="number" label="Credit Limit" name="credit_limit" placeholder="Type Credit Limit" required="true" :model="@$customer" />
+            <div class='col-md-6'>
+                <x:form.input type="number" label="Credit Limit (Amount)" name="credit_limit" placeholder="Type Credit Limit" required="true" :model="@$customer" />
             </div>
             <div class="col-md-12">
                 <div class='mb-10'>

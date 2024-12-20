@@ -42,7 +42,7 @@ final class StoreCustomerRequest extends FormRequest
         return [
             // 'customer_code' => ['required', 'string', 'max:255'],
             'customer_name' => ['required', 'string', 'max:255'],
-            'eori_number' => ['required', 'string', 'max:255'],
+            'eori_number' => ['nullable', 'string', 'max:255'],
             'credit_terms' => ['nullable', 'string'],
             'overseas' => ['nullable', 'string'],
             'currency_id' => ['nullable', 'string', 'exists:pgsql.finance.currencies,id'],

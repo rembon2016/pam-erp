@@ -63,18 +63,6 @@ final class CustomerController extends Controller
 
                     return $html;
                 })
-                ->addColumn('contact_person', function ($item) {
-                    return '-';
-                })
-                ->addColumn('contact_no', function ($item) {
-                    return '-';
-                })
-                ->addColumn('bank_account_no', function ($item) {
-                    return '-';
-                })
-                ->addColumn('bank_name', function ($item) {
-                    return '-';
-                })
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([
                         'edit' => route('finance.master-data.customer.edit', $item->id),

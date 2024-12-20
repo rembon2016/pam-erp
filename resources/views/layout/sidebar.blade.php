@@ -2,6 +2,7 @@
 
 <x:layout.sidebar.wrapper>
 
+    <label class="title-menu-sidebar">MENU</label>
     <x:layout.sidebar.menu-item
         name="Dashboard"
         iconClass="bx bxs-dashboard"

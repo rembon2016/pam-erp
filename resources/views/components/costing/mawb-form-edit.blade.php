@@ -2,6 +2,7 @@
      @if($row->costing_type == 'mawb')
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
+         <input type="hidden" name="mawb_{{ $row->costing_value }}" id="mawb_{{ $row->costing_value }}" value="{{ $m }}">
             <button class="nav-link active" id="mawb-tab" data-bs-toggle="tab" data-bs-target="#mawb-tab-{{ $m }}" type="button" role="tab">MAWB: {{ $row->costing_value }}</button>
         </li>
         <li class="nav-item" role="presentation">

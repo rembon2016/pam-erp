@@ -2,6 +2,7 @@
     @if($row->costing_type == 'bl')
     <ul class="nav nav-tabs costing-tabs px-3" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
+            <input type="hidden" name="bl_{{ $row->costing_value }}" id="bl_{{$row->costing_value }}" value="{{ $k }}">
             <button class="nav-link active" id="bl-tab" data-bs-toggle="tab" data-bs-target="#bl-tab-{{ $k }}" type="button" role="tab">BL No: {{ $row->costing_value }}</button>
         </li>
         <li class="nav-item" role="presentation">

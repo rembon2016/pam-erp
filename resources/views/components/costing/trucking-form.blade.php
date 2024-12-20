@@ -5,6 +5,7 @@
             <div class='mb-10'>
                 <label for="#container_number" class='form-label '>Container No.</label>
                 <input id="container_number" name="container_number[]" type="text" class=" form-control" value="{{ $row->container_number }}" readonly="readonly">
+                <input type="hidden" id="index_trucking_{{ $key }}" value="">
             </div>
         </div>
         <div class='col-md-4'>
@@ -13,7 +14,7 @@
                 <select class="form-select" onChange="setVendorName('{{ $key }}', '{{ $row->bl->bl_number }}')" name="vendor_truck_id[]" id="vendor_id_{{ $key }}" data-control="select2" data-placeholder="Vendor Code">
                     <option></option>
                     @foreach($vendorTruck as $rows)
-                    <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}">{{ $rows->vendor_code }}</option>
+                    <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}</option>
                     @endforeach
 
                 </select>
@@ -31,21 +32,15 @@
 
 @push('js')
 <script>
- function setVendorName(key,bl) {
+ function setVendorName(ke,bl) {
 
-        var $dropdown = $(`#vendor_id_${key}`);
+        var $dropdown = $(`#vendor_id_${ke}`);
+        var vendorId = $dropdown.val();
         var vendorName = $dropdown.find(':selected').data('vendor-name');
+         var vendorCode = $dropdown.find(':selected').data('vendor-code');
          console.log(vendorName);
-        $('#vendor_name_' + key).val(vendorName);
-        var key = $("#bl_"+bl).val();
-
-
-        var index = window[`rowIndexBl${key}`];
-        console.log(index);
-
-        window[`setCharge${key}`](key, bl, index,'bl');
-
-
-    }
+        $('#vendor_name_' + ke).val(vendorName);
+        setChargeBl(vendorId,vendorName,vendorCode, bl, 'truck');
+ }
 </script>
 @endpush

@@ -355,6 +355,8 @@ Route::group(['middleware' => ['auth']], function () {
             ], function () {
                 Route::get('/', [SeaAirController::class, 'index'])->name('index');
                 Route::get('/port', [SeaAirController::class, 'port'])->name('port');
+                Route::get('/contractbl/{id}/{bl_number}', [SeaAirController::class, 'contractbl'])->name('contractbl');
+                Route::get('/contractmawb/{id}/{bl_number}', [SeaAirController::class, 'contractmawb'])->name('contractmawb');
                 Route::get('/list', [SeaAirController::class, 'list'])->name('list');
                 Route::post('/store', [SeaAirController::class, 'store'])->name('store');
                 Route::get('/status/{id}/{status}', [SeaAirController::class, 'status'])->name('status');

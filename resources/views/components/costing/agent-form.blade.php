@@ -23,7 +23,7 @@
                 <select class="form-select vendor-select" onchange="setVendorAirName({{ $key }})" data-control="select2" id="vendor_air_id_{{ $key }}" name="vendor_air_id[]" data-key="{{ $key }}" @if($costing?->status != 1 && $costing != null) disabled @endif>
                     <option>Select Vendor</option>
                     @foreach($vendorAir as $rows)
-                    <option value="{{ $rows->vendor_id }}" @if($rows->vendor_id == $row->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}">{{ $rows->vendor_code }}</option>
+                    <option value="{{ $rows->vendor_id }}" @if($rows->vendor_id == $row->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}</option>
                     @endforeach
                 </select>
             </div>
@@ -112,8 +112,13 @@ $(document).ready(function () {
 // Function to set vendor name based on selected vendor code
 function setVendorAirName(key) {
     var $dropdown = $(`#vendor_air_id_${key}`);
+    var mawb = $(`#mawb_${key}`).val();
+    var vendorId = $dropdown.val();
     var vendorName = $dropdown.find(':selected').data('vendor-name');
+    var vendorCode = $dropdown.find(':selected').data('vendor-code');
     $(`#vendor_air_name_${key}`).val(vendorName);
+
+    setChargeMawb(vendorId,vendorName,vendorCode, mawb, 'agent');
 }
 </script>
 @endpush

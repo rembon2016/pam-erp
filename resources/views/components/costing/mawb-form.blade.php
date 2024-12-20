@@ -2,6 +2,7 @@
 
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
+        <input type="hidden" name="mawb_{{ $row->mawb_number }}" id="mawb_{{ $row->mawb_number }}" value="{{ $m }}">
             <button class="nav-link active" id="mawb-tab" data-bs-toggle="tab" data-bs-target="#mawb-tab-{{ $m }}" type="button" role="tab">MAWB: {{ $row->mawb_number }}</button>
         </li>
         <li class="nav-item" role="presentation">

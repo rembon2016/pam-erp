@@ -14,10 +14,10 @@
                 @if($costing->status != 1)
                <input type="hidden" name="vendor_truck_id[]" type="text" class=" form-control" value="{{ $row->vendor_id }}">
                @endif
-                <select class="form-select" onChange="setVendorName('{{ $key }}')" name="vendor_truck_id[]" id="vendor_id_{{ $key }}" data-control="select2" data-placeholder="Vendor Code" @if($costing->status != 1) disabled @endif>
+                <select class="form-select" onChange="setVendorName('{{ $key }}','{{ $row->bl->bl_number }}')" name="vendor_truck_id[]" id="vendor_id_{{ $key }}" data-control="select2" data-placeholder="Vendor Code" @if($costing->status != 1) disabled @endif>
                     <option></option>
                     @foreach($vendorTruck as $rows)
-                    <option value="{{ $rows->vendor_id }}" @if($row->vendor_id == $rows->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}">{{ $rows->vendor_code }}</option>
+                    <option value="{{ $rows->vendor_id }}" @if($row->vendor_id == $rows->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}</option>
                     @endforeach
 
                 </select>
@@ -36,12 +36,14 @@
 
 @push('js')
 <script>
- function setVendorName(key) {
+ function setVendorName(key,bl) {
 
         var $dropdown = $(`#vendor_id_${key}`);
+        var vendorId = $dropdown.val();
         var vendorName = $dropdown.find(':selected').data('vendor-name');
-         console.log(vendorName);
+        var vendorCode = $dropdown.find(':selected').data('vendor-code');
         $('#vendor_name_' + key).val(vendorName);
+        setChargeBl(vendorId,vendorName,vendorCode, bl, 'truck');
     }
 </script>
 @endpush

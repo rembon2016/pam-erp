@@ -22,7 +22,7 @@
             <select class="form-select" onChange="setVendorPortName('0')" name="vendor_port_id" id="vendor_port_id" data-control="select2" data-placeholder="Vendor Code" @if($costing?->status != 1 && $costing != null) disabled @endif>
                 <option></option>
                 @foreach($vendorPort as $rows)
-                <option value="{{ $rows->vendor_id }}" @if($costing?->port != null && $costing?->port?->vendor_id == $rows->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}">{{ $rows->vendor_code }}</option>
+                <option value="{{ $rows->vendor_id }}" @if($costing?->port != null && $costing?->port?->vendor_id == $rows->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}</option>
                 @endforeach
 
             </select>
@@ -41,9 +41,14 @@
      function setVendorPortName() {
 
         var $dropdown = $(`#vendor_port_id`);
+        var vendorId = $dropdown.val();
         var vendorName = $dropdown.find(':selected').data('vendor-name');
-
+        var vendorCode = $dropdown.find(':selected').data('vendor-code');
         $('#vendor_port_name').val(vendorName);
+
+        @foreach($bl as $k => $row)
+             setChargeBl(vendorId,vendorName,vendorCode, '{{ $row->bl_number }}', 'port');
+        @endforeach
 
     }
 

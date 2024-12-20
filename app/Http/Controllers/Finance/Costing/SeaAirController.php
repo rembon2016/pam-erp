@@ -177,10 +177,16 @@ final class SeaAirController extends Controller
         $currency = Currency::whereNull('deleted_at')->get();
         $bl = LoadingReportBl::with('shipping')->where('loading_id', $joborder->loading_plan_id)->where('status','!=',3)->get();
 
-        $ship = ShippingInstruction::where("status","!=",3)->where("loading_id", $joborder->loading_plan_id)->get();
+        $ship = ShippingInstruction::where("status", "!=", 3)
+        ->where("loading_id", $joborder->loading_plan_id)
+        ->get();
+
         $loading_plan_dxb = $ship->pluck('loading_plan_dxb')->toArray();
-       //return response()->json($ship);
-        $loadingplan = LoadingPlan::with('shipping')->whereIn('plan_id', $loading_plan_dxb)->get();
+
+        $loadingplan = LoadingPlan::with(['shipping' => function($q) use ($ship) {
+            $jobIds = $ship->pluck('job_id')->toArray();
+            $q->whereIn('job_id', $jobIds);
+        }])->whereIn('plan_id', $loading_plan_dxb)->get();
         $cost = Costing::with(['truck','port','agent','special','head','head.detail'])->where("job_order_id",$joborder->job_order_id);
         if($cost->exists()){
             $costing = $cost->first();
@@ -699,6 +705,7 @@ final class SeaAirController extends Controller
                     $amount = $request["amount_bl_{$j}"][$k] ?? null;
                     $local_amount = $request["local_amount_bl_{$j}"][$k] ?? null;
                     $status = $request["status_bl_{$j}"][$k] ?? null;
+                    $type = $request["type_bl_{$j}"][$k] ?? null;
                     $email = auth()->user()->email;
                     $transaction_date = $request->transaction_date_import;
                     $data_special_export = [
@@ -716,7 +723,8 @@ final class SeaAirController extends Controller
                          'amount'=>$amount,
                          'local_amount'=>$local_amount,
                          'status'=>$status,
-                         'transaction_date'=>$transaction_date
+                         'transaction_date'=>$transaction_date,
+                         'type'=>$type
                     ];
                     if($costing_detail_id != null){
                         $data_special_export["updated_by"] = auth()->user()->email;
@@ -771,7 +779,8 @@ final class SeaAirController extends Controller
                              'amount'=>$amount,
                              'local_amount'=>$local_amount,
                              'status'=>$status,
-                             'transaction_date'=>$transaction_date
+                             'transaction_date'=>$transaction_date,
+                             'type'=>'manual'
                         ];
                         if($costing_detail_id != null){
                             $data_special_export["updated_by"] = auth()->user()->email;
@@ -830,6 +839,7 @@ final class SeaAirController extends Controller
                     $amount = $request["amount_mawb_{$j}"][$k] ?? null;
                     $local_amount = $request["local_amount_mawb_{$j}"][$k] ?? null;
                     $status = $request["status_mawb_{$j}"][$k] ?? null;
+                    $type = $request["type_mawb_{$j}"][$k] ?? null;
                     $transaction_date = $request->transaction_date_import;
                     $data_special_export = [
                         'costing_id'=> $id,
@@ -846,7 +856,8 @@ final class SeaAirController extends Controller
                          'amount'=>$amount,
                          'local_amount'=>$local_amount,
                          'status'=>$status,
-                         'transaction_date'=>$transaction_date
+                         'transaction_date'=>$transaction_date,
+                         'type'=>$type
                     ];
                     if($costing_detail_id != null){
                         $data_special_export["updated_by"] = auth()->user()->email;
@@ -872,6 +883,13 @@ final class SeaAirController extends Controller
         $bl = LoadingReportBl::where("bl_number", $bl_number)->first();
         $container = LoadingReportDetail::where("loading_report_bl_id", $bl->loading_report_bl_id)->count();
         $contract = AgentContract::where("customer_id",$id)->first();
+        if($contract == null){
+            $charge_bl = null;
+                return response()->json([
+                    "status"=>false,
+                    "data"=>$charge_bl
+                ]);
+        }
         $ship = ShippingInstruction::where("loading_report_bl_id", $bl->loading_report_bl_id)->first();
 
             $service = AgentContractService::where("agent_contract_id", $contract->id)->whereHas('serviceType', function ($query) use ($ship) {
@@ -890,10 +908,11 @@ final class SeaAirController extends Controller
             foreach($charge as $row){
                 $shipping = ShippingInstruction::where("loading_report_bl_id", $bl->id)->get();
                 if($row->unit->unit_name == "KG"){
-                    $chw = 0.0;
-                    foreach($shipping as $r){
-                        $chw = $chw + $r->order->chw;
-                    }
+                    // $chw = 0.0;
+                    // foreach($shipping as $r){
+                    //     $chw = $chw + $r->order->chw;
+                    // }
+                    $chw = $shipping->sum(fn($r) => $r->order->chw);
                     $currency = Currency::find($row->currency_id);
                     if($currency->currency_code == "USD"){
                         $amount_in_usd = $row->amount_per_unit * $chw;
@@ -915,22 +934,101 @@ final class SeaAirController extends Controller
                 }else if($row->unit->unit_name == "Container"){
                     $currency = Currency::find($row->currency_id);
                     $jum = 0;
-                    if($currency->currency_code == "USD"){
-                        foreach($container as $x){
-                            if($x->container_type == "40 HC"){
-                                $jum += $row->forty_feet;
-                            }else{
+                    // if($currency->currency_code == "USD"){
+                    //     foreach($container as $x){
+                    //         if (substr($x->container_type, 0, 2) == '12') {
+                    //             $jum += $row->forty_feet;
+                    //         }else if($x->container_type == "40 HC"){
 
-                            }
-                        }
-                        $amount_in_usd = $jum;
-                        $amount_in_aed = $jum * 3.67;
+                    //         }
+                    //     }
+                    //     $amount_in_usd = $jum;
+                    //     $amount_in_aed = $jum * 3.67;
+                    // }else{
+                    //     $amount_in_aed = $row->amount_per_unit * $container;
+                    //     $amount_in_usd = $amount_in_aed / 3.67;
+                    // }
+                }
+                $charge_bl[] = [
+                    "charge_id"=>$row->charge_id,
+                    "charge_name"=>$row->charge->charge_name,
+                    "charge_code"=>$row->charge->charge_code,
+                    "currency_id"=>$row->currency_id,
+                    "rate"=>$row->amount_per_unit,
+                    "amount_in_usd"=> $amount_in_usd,
+                    "amount_in_aed"=>$amount_in_aed,
+                    "status"=>'Debit'
+                ];
+            }
+
+            if(!empty($charge_bl)){
+                return response()->json([
+                    "status"=>true,
+                    "data"=>$charge_bl
+                ]);
+            }else{
+                $charge_bl = null;
+                return response()->json([
+                    "status"=>false,
+                    "data"=>$charge_bl
+                ]);
+            }
+
+    }
+
+    public function contractmawb($id, $mawb_number){
+        $lp = LoadingPlan::where("mawb_number", $mawb_number)->first();
+        $contract = AgentContract::where("customer_id",$id)->first();
+        if($contract == null){
+            $charge_mawb = null;
+                return response()->json([
+                    "status"=>false,
+                    "data"=>$charge_bl
+                ]);
+        }
+        $ship = ShippingInstruction::where("loading_plan_dxb", $lp->plan_id)->first();
+
+            $service = AgentContractService::where("agent_contract_id", $contract->id)->whereHas('serviceType', function ($query) use ($ship) {
+                $query->where("service_code", $ship->loading_type);
+            })->where('por_country_id', $ship->origin->country_id)->where('por_port_id',$ship->port_of_loading);
+            if($service->exists()){
+                $service = $service->first();
+            }else{
+                $service = AgentContractService::where("agent_contract_id", $contract->id)->whereHas('serviceType', function ($query) use ($ship) {
+                    $query->where("service_code", $ship->loading_type);
+                })->first();
+            }
+
+            $charge = AgentContractCharge::where("agent_contract_service_id", $service->id)->get();
+            $charge_mawb = [];
+            foreach($charge as $row){
+                $shipping = ShippingInstruction::where("loading_plan_dxb", $lp->plan_id)->get();
+                if($row->unit->unit_name == "KG"){
+                    // $chw = 0.0;
+                    // foreach($shipping as $r){
+                    //     $chw = $chw + $r->order->chw;
+                    // }
+                    $chw = $shipping->sum(fn($r) => $r->order->chw);
+                    $currency = Currency::find($row->currency_id);
+                    if($currency->currency_code == "USD"){
+                        $amount_in_usd = $row->amount_per_unit * $chw;
+                        $amount_in_aed = $amount_in_usd * 3.67;
                     }else{
-                        $amount_in_aed = $row->amount_per_unit * $container;
+                        $amount_in_aed = $row->amount_per_unit * $chw;
+                        $amount_in_usd = $amount_in_aed / 3.67;
+                    }
+                }else if($row->unit->unit_name == "Shipment"){
+                    $count = count($shipping);
+                    $currency = Currency::find($row->currency_id);
+                    if($currency->currency_code == "USD"){
+                        $amount_in_usd = $row->amount_per_unit * $count;
+                        $amount_in_aed = $amount_in_usd * 3.67;
+                    }else{
+                        $amount_in_aed = $row->amount_per_unit * $count;
                         $amount_in_usd = $amount_in_aed / 3.67;
                     }
                 }
-                $charge_bl[] = [
+                $charge_mawb[] = [
                     "charge_id"=>$row->charge_id,
                     "charge_name"=>$row->charge->charge_name,
                     "charge_code"=>$row->charge->charge_code,

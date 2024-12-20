@@ -75,7 +75,7 @@
                         </div>
 
                         <div class="tab-pane fade" id="port" role="tabpanel">
-                            <x-costing.port-form :costing="$costing" :vendorPort="$vendor_port" />
+                            <x-costing.port-form :bl="$bl" :costing="$costing" :vendorPort="$vendor_port" />
                         </div>
                         <div class="tab-pane fade" id="agent" role="tabpanel">
                             <x-costing.agent-form  :costing="$costing" :vendorAir="$vendor_air" />
@@ -144,5 +144,133 @@
         });
 
 </script>
+<script>
+function setChargeBl(vendorId,vendorName,vendorCode, bl, vendorType) {
+      var key = $("#bl_"+bl).val();
+      $(".bl-auto_"+vendorType).each(function () {
+            const $row = $(this);
+            const hiddenInput = $row.find(`input[name="costing_detail_bl_${key}_id[]"]`);
 
+            if (hiddenInput.length) {
+
+                const deletedId = hiddenInput.val(); // Ambil value ID dari input hidden
+                if (deletedId) {
+                    // Tambahkan input hidden untuk menandai ID yang dihapus
+                    $row.append(`
+                        <input type="hidden" name="costing_detail_bl_${key}_delete_id[]" value="${deletedId}">
+                    `);
+                }
+                $row.addClass('d-none');
+            } else {
+
+                $row.remove();
+            }
+        });
+
+
+            var index = window[`rowIndexBl${key}`];
+            console.log(index);
+            //ajax disini
+           $.ajax({
+            url: `/finance/costing/sea-air/contractbl/${vendorId}/${bl}`, // Replace with your actual route
+            method: 'GET', // Or 'POST' if your route uses POST
+            dataType: 'json',
+            success: function (response) {
+                if (response.status) {
+                    const charges = response.data;
+
+                // Process the charges
+                    charges.forEach(charge => {
+                        var data = {
+                            vendor_id: $dropdown.val(),
+                            vendor_name: vendorName,
+                            vendor_code: vendorCode,
+                            charge_id: charge.charge_id,
+                            charge_name: charge.charge_name,
+                            charge_code: charge.charge_code,
+                            currency_id: charge.currency_id,
+                            rate: charge.rate,
+                            amount_in_usd: charge.amount_in_usd,
+                            amount_in_aed: charge.amount_in_aed,
+                            status: charge.status,
+                        };
+
+                    // Call setCharge function
+                            window[`setCharge${key}`](data, key, bl, index, 'bl', vendorType);
+                        });
+                    } else {
+                        console.log("No charges available for this BL.");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching charges:", error);
+                }
+            });
+
+ }
+
+ function setChargeBl(vendorId,vendorName,vendorCode, mawb, vendorType) {
+      var key = $("#mawb_"+bl).val();
+      $(".mawb-auto_"+vendorType).each(function () {
+            const $row = $(this);
+            const hiddenInput = $row.find(`input[name="costing_detail_mawb_${key}_id[]"]`);
+
+            if (hiddenInput.length) {
+
+                const deletedId = hiddenInput.val(); // Ambil value ID dari input hidden
+                if (deletedId) {
+                    // Tambahkan input hidden untuk menandai ID yang dihapus
+                    $row.append(`
+                        <input type="hidden" name="costing_detail_mawb_${key}_delete_id[]" value="${deletedId}">
+                    `);
+                }
+                $row.addClass('d-none');
+            } else {
+
+                $row.remove();
+            }
+        });
+
+
+            var index = window[`rowIndexMawb${key}`];
+            console.log(index);
+            //ajax disini
+           $.ajax({
+            url: `/finance/costing/sea-air/contractmawb/${vendorId}/${mawb}`, // Replace with your actual route
+            method: 'GET', // Or 'POST' if your route uses POST
+            dataType: 'json',
+            success: function (response) {
+                if (response.status) {
+                    const charges = response.data;
+
+                // Process the charges
+                    charges.forEach(charge => {
+                        var data = {
+                            vendor_id: $dropdown.val(),
+                            vendor_name: vendorName,
+                            vendor_code: vendorCode,
+                            charge_id: charge.charge_id,
+                            charge_name: charge.charge_name,
+                            charge_code: charge.charge_code,
+                            currency_id: charge.currency_id,
+                            rate: charge.rate,
+                            amount_in_usd: charge.amount_in_usd,
+                            amount_in_aed: charge.amount_in_aed,
+                            status: charge.status,
+                        };
+
+                    // Call setCharge function
+                            window[`setCharge${key}`](data, key, bl, index, 'mawb', vendorType);
+                        });
+                    } else {
+                        console.log("No charges available for this MAWB.");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching charges:", error);
+                }
+            });
+
+ }
+</script>
 @endpush

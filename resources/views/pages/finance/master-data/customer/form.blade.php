@@ -24,9 +24,9 @@
 
     <x:form.wrapper action="{{ $data['action'] }}" method="{{ $data['method'] }}">
         <div class="row">
-            <div class='col-md-6'>
+            {{-- <div class='col-md-6'>
                 <x:form.input label="Customer Code" name="customer_code" placeholder="Type Customer Code" required="true" :model="@$customer" />
-            </div>
+            </div> --}}
             <div class='col-md-6'>
                 <x:form.input label="Customer Name" name="customer_name" placeholder="Type Customer Name" required="true" :model="@$customer" />
             </div>

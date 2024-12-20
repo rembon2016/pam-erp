@@ -40,7 +40,7 @@ final class StoreCustomerRequest extends FormRequest
     private function getBaseFinanceCustomerField(): array
     {
         return [
-            'customer_code' => ['required', 'string', 'max:255'],
+            // 'customer_code' => ['required', 'string', 'max:255'],
             'customer_name' => ['required', 'string', 'max:255'],
             'eori_number' => ['required', 'string', 'max:255'],
             'credit_terms' => ['nullable', 'string'],

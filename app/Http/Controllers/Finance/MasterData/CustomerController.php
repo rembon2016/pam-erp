@@ -39,8 +39,10 @@ final class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = $this->customerService->getCustomers();
-        return view('pages.finance.master-data.customer.index', compact('customers'));
+        $customers = $this->customerService->getCustomers()->get();
+        $customerTypes = Arr::sort(CustomerType::COLLECT);
+
+        return view('pages.finance.master-data.customer.index', compact('customers', 'customerTypes'));
     }
 
     public function list()

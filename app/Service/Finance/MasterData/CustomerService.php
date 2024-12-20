@@ -18,6 +18,7 @@ use App\Models\Finance\CustomerAddress;
 use App\Models\Operation\Master\Vendor;
 use App\Models\Operation\Master\Carrier;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Builder;
 use App\Models\Operation\Master\CustomerType;
 use App\Models\Operation\Master\CustomerBilling;
 use App\Models\Finance\CustomerType as FinanceCustomerType;
@@ -35,15 +36,27 @@ final class CustomerService
     /**
      * Get all customers ordered by customer name in ascending order.
      *
-     * @return \Illuminate\Database\Eloquent\Collection A collection of all customers.
+     * @param array $filters
+     *
+     * @return \Illuminate\Database\Eloquent\Builder A collection of all customers.
      */
-    public function getCustomers($filters = []): Collection
+    public function getCustomers($filters = []): Builder
     {
-        return Customer::when(!empty($filters['customer_name']), function ($query) use ($filters) {
-            return $query->where('customer_name', $filters['customer_name']);
-        })->orderBy('customer_name', 'asc')->get();
+        $customer = Customer::query()
+            ->when(!empty($filters['customer_name']), fn ($query)
+                => $query->where('customer_name',$filters['customer_name']))
+            ->when(!empty($filters['customer_type_name']), fn ($query)
+                => $query->whereHas('customerTypes', fn ($q) => $q->whereIn('name', $filters['customer_type_name'])))
+            ->orderBy('customer_name', 'asc');
+
+        return $customer;
     }
 
+    /**
+     * Get Billing Customers Collections
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     public function getBillingCustomers(): Collection
     {
         return CustomerBilling::where('status', 1)->get();

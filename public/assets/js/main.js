@@ -88,3 +88,20 @@ $(document).off('click', 'button[data-type="delete-dynamic-row"]').on('click', '
         });
     }
 });
+
+$(document).off('click', '.confirm-btn').on('click', '.confirm-btn', function (event) {
+    event.preventDefault();
+    const actionLink = $(this).data('href');
+
+    Swal.fire({
+        title: "Are you sure to do this action?",
+        showDenyButton: true,
+        confirmButtonText: "Yes",
+        icon: "warning"
+    }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            window.location.href = actionLink;
+        }
+    });
+})

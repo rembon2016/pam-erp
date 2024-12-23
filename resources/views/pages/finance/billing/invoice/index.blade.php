@@ -95,8 +95,8 @@
             "name" => "total",
         ],
         [
-            "data" => "approval",
-            "name" => "approval",
+            "data" => "is_approved",
+            "name" => "is_approved",
         ],
         [
             "data" => "status",

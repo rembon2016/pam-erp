@@ -343,6 +343,9 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/generate', [InvoiceController::class, 'viewGenerate'])->name('generate');
                 Route::post('/generate', [InvoiceController::class, 'storeGenerate'])->name('generate');
 
+                Route::get('/approve/{id}', [InvoiceController::class, 'approve'])->name('approve');
+                Route::get('/cancel/{id}', [InvoiceController::class, 'cancel'])->name('cancel');
+
                 // Export Route
                 Route::get('/export/pdf', [InvoiceController::class, 'exportPdf'])->name('export.pdf');
                 Route::get('/export/excel', [InvoiceController::class, 'exportExcel'])->name('export.excel');

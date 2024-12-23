@@ -28,6 +28,8 @@ final class Invoice extends Model
 
     public $incrementing = false;
 
+    const CANCEL_STATUS = 'Cancel';
+
     public function invoiceShipment()
     {
         return $this->hasMany(InvoiceShipment::class, 'invoice_id', 'id');

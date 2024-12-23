@@ -137,7 +137,13 @@
             </div>
 
             <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px">
-                <x:form.cancel-button href="{{ route('finance.master-data.agent-contract.index') }}" label="Close" />
+                <x:form.cancel-button href="{{ route('finance.billing.invoice.index') }}" label="Close" />
+
+                @if ($data->is_approved == 0)
+                    <a href="{{ route('finance.billing.invoice.approve', $data->id) }}" class="btn btn-sm custom-btn custom-btn-primary">Approve</a>
+                @else
+                    <button type="button" class="btn btn-sm custom-btn custom-btn-primary" disabled>Approved</button>
+                @endif
             </div>
         </div>
     </x:layout.card.wrapper>

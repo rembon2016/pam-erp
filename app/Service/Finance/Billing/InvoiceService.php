@@ -76,4 +76,22 @@ final class InvoiceService
             );
         }
     }
+
+    public function updateInvoice(string $id, array $dto): object
+    {
+        try {
+            Invoice::where('id', $id)->update($dto);
+
+            return ObjectResponse::success(
+                message: __('crud.updated', ['name' => 'Invoice']),
+                statusCode: Response::HTTP_OK,
+            );
+        } catch (\Throwable $th) {
+            return ObjectResponse::error(
+                message: __('crud.error_update', ['name' => 'Invoice']),
+                statusCode: Response::HTTP_INTERNAL_SERVER_ERROR,
+                errors: $th->getTrace()
+            );
+        }
+    }
 }

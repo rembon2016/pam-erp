@@ -6,6 +6,12 @@
     text-transform: uppercase;
 }
 
+button.action-btn {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
 .transparent-button{
     background-color: transparent;
     border: none;
@@ -315,7 +321,7 @@ table.text-normal :is(td, tr){
     gap: 2.5px;
 }
 
-.custom-btn-primary {
+.custom-btn-primary, .custom-btn-primary:disabled {
     background-color: #13BA18;
     color: #fff;
     border: 1px solid #13BA18 !important;

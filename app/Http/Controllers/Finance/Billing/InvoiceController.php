@@ -58,23 +58,30 @@ final class InvoiceController extends Controller
                 ->editColumn('customer_billing_id', function ($item) {
                     return $item->customer?->customer_name;
                 })
-                ->addColumn('approval', function ($item) {
+                ->addColumn('is_approved', function ($item) {
                     $approval = "<div class='d-flex align-items-center justify-content-center'>";
-                    $approval .= "-";
+                    $approval .= $item->is_approved == 1 ? "<i class='bx bx-check-square' style='font-size: 2rem; color: #13BA18;'></i>" : "-";
                     $approval .= "</div>";
                     return $approval;
                 })
                 ->addColumn('status', function ($item) {
-                    return "-";
+                    $status = $item->status ?? '-';
+                    return "<div class='d-flex align-items-center justify-content-center'>$status</div>";
                 })
                 ->addColumn('action', function ($item) {
-                    return Utility::generateTableActions([
+                    $actionButtons = [
                         'detail' => route('finance.billing.invoice.detail', $item->id),
                         'download' => '/',
-                    ]);
+                    ];
+
+                    if ($item->status != Invoice::CANCEL_STATUS) {
+                        $actionButtons['cancel'] = route('finance.billing.invoice.cancel', $item->id);
+                    }
+
+                    return Utility::generateTableActions($actionButtons);
                 })
                 ->addIndexColumn()
-                ->rawColumns(['action', 'approval'])
+                ->rawColumns(['action', 'is_approved', 'status'])
                 ->toJson();
         }
 
@@ -214,5 +221,27 @@ final class InvoiceController extends Controller
         return $createInvoiceResponse->success
             ? to_route('finance.billing.invoice.index')->with('toastSuccess', $createInvoiceResponse->message)
             : back()->with('toastError', $createInvoiceResponse->message)->withInput();
+    }
+
+    public function approve(string $id): RedirectResponse
+    {
+        $updateInvoiceResponse = $this->invoiceService->updateInvoice($id, [
+            'is_approved' => true
+        ]);
+
+        return $updateInvoiceResponse->success
+            ? to_route('finance.billing.invoice.index')->with('toastSuccess', $updateInvoiceResponse->message)
+            : back()->with('toastError', $updateInvoiceResponse->message);
+    }
+
+    public function cancel(string $id): RedirectResponse
+    {
+        $updateInvoiceResponse = $this->invoiceService->updateInvoice($id, [
+            'status' => "Cancel"
+        ]);
+
+        return $updateInvoiceResponse->success
+            ? to_route('finance.billing.invoice.index')->with('toastSuccess', $updateInvoiceResponse->message)
+            : back()->with('toastError', $updateInvoiceResponse->message);
     }
 }

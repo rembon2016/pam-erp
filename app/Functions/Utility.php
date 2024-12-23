@@ -48,6 +48,10 @@ final class Utility
                 $button = '<a href="'.$url.'" class="action-btn btn-icon" download><i class="bx bx-download text-action-success"></i></a>';
                 break;
 
+            case 'cancel':
+                $button = '<button data-href="'.$url.'" class="action-btn btn-icon rounded confirm-btn"><i class="bx bx-x-circle text-action-danger"></i></buttonn>';
+                break;
+
             default:
                 $button = '<a href="'.$url.'" class="action-btn btn-icon"><i class="bx bx-loader text-action-primary"></i></a>';
                 break;

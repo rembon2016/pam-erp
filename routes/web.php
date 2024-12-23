@@ -336,11 +336,17 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/', [InvoiceController::class, 'index'])->name('index');
                 Route::get('/list', [InvoiceController::class, 'list'])->name('list');
                 Route::get('/shipment/list', [InvoiceController::class, 'shipmentList'])->name('shipment.list');
+                Route::get('/detail/{id}', [InvoiceController::class, 'detail'])->name('detail');
                 Route::get('/form/not-linked-billing-customer', [InvoiceController::class, 'createNotLinked'])->name('create.not-linked-billing-customer');
                 Route::post('/not-linked-billing-customer', [InvoiceController::class, 'storeNotLinked'])->name('store.not-linked-billing-customer');
                 Route::get('/form/linked-billing-customer', [InvoiceController::class, 'createLinked'])->name('create.linked-billing-customer');
                 Route::get('/generate', [InvoiceController::class, 'viewGenerate'])->name('generate');
                 Route::post('/generate', [InvoiceController::class, 'storeGenerate'])->name('generate');
+
+                // Export Route
+                Route::get('/export/pdf', [InvoiceController::class, 'exportPdf'])->name('export.pdf');
+                Route::get('/export/excel', [InvoiceController::class, 'exportExcel'])->name('export.excel');
+                Route::get('/export/csv', [InvoiceController::class, 'exportCsv'])->name('export.csv');
             });
         });
 

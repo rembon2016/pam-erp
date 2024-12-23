@@ -18,6 +18,20 @@ final class InvoiceService
         return Invoice::orderBy('invoice_no', 'DESC')->get();
     }
 
+    public function getInvoiceById(string $id): object
+    {
+        $data = Invoice::with(['invoiceShipment'])->where('id', $id)->first();
+        return !is_null($data)
+            ? ObjectResponse::success(
+                message: __('crud.fetched', ['name' => 'Invoice']),
+                statusCode: Response::HTTP_OK,
+                data: $data,
+            ) : ObjectResponse::error(
+                message: __('crud.not_found', ['name' => 'Invoice']),
+                statusCode: Response::HTTP_NOT_FOUND
+            );
+    }
+
     public function createInvoice(array $dto): object
     {
         // dd($dto);

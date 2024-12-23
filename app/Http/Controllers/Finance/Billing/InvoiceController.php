@@ -59,16 +59,22 @@ final class InvoiceController extends Controller
                     return $item->customer?->customer_name;
                 })
                 ->addColumn('approval', function ($item) {
-                    return "-";
+                    $approval = "<div class='d-flex align-items-center justify-content-center'>";
+                    $approval .= "-";
+                    $approval .= "</div>";
+                    return $approval;
                 })
                 ->addColumn('status', function ($item) {
                     return "-";
                 })
                 ->addColumn('action', function ($item) {
-                    return "-";
+                    return Utility::generateTableActions([
+                        'detail' => route('finance.billing.invoice.detail', $item->id),
+                        'download' => '/',
+                    ]);
                 })
                 ->addIndexColumn()
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'approval'])
                 ->toJson();
         }
 
@@ -122,6 +128,16 @@ final class InvoiceController extends Controller
             Response::HTTP_UNAUTHORIZED,
             'Access Unauthorized',
         );
+    }
+
+    public function detail(string $id): View|RedirectResponse
+    {
+        $getInvoiceResponse = $this->invoiceService->getInvoiceById($id);
+        return $getInvoiceResponse->success
+            ? view('pages.finance.billing.invoice.detail', [
+                'data' => $getInvoiceResponse->data
+            ])
+            : redirect()->route('finance.billing.invoice.index')->with('error', $getInvoiceResponse->message);
     }
 
     public function createNotLinked(): View

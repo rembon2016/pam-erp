@@ -9,10 +9,14 @@
     <x:layout.card.wrapper>
         <x:layout.card.header>
             <x:layout.card.toolbar
-                {{-- createDataLink="{{ route('finance.billing.invoice.create') }}" --}}
-                {{-- exportExcelLink="{{ route('finance.billing.invoice.export.excel') }}"
+                createDataLink="{{ route('finance.billing.invoice.create.not-linked-billing-customer', ['billing-customer' => 'not-linked']) }}"
+                exportExcelLink="{{ route('finance.billing.invoice.export.excel') }}"
                 exportCsvLink="{{ route('finance.billing.invoice.export.csv') }}"
-                exportPdfLink="{{ route('finance.billing.invoice.export.pdf') }}" --}}
+                exportPdfLink="{{ route('finance.billing.invoice.export.pdf') }}"
+                :customLink="[
+                    'text' => 'Additional Invoices',
+                    'link' => route('finance.billing.invoice.create.linked-billing-customer', ['billing-customer' => 'linked']),
+                ]"
                 withFilter="true"
             />
         </x:layout.card.header>

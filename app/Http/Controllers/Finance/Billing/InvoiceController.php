@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\Billing;
 
-use App\Http\Requests\Finance\Billing\Invoice\StoreInvoiceRequest;
-use App\Http\Requests\Finance\Billing\Invoice\StoreNotLinkedCustomer;
-use App\Service\Finance\MasterData\PortService;
 use Illuminate\View\View;
 use App\Functions\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Functions\ResponseJson;
 use App\Models\Finance\Invoice;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
+use App\Exports\Billing\InvoiceExport;
 use Yajra\DataTables\Facades\DataTables;
 use App\Service\Finance\Billing\InvoiceService;
+use App\Service\Finance\MasterData\PortService;
 use App\Service\Finance\MasterData\UnitService;
 use App\Service\Finance\MasterData\ChargeService;
 use App\Service\Finance\MasterData\CurrencyService;
@@ -25,6 +26,8 @@ use App\Service\Finance\MasterData\CustomerService;
 use App\Service\Finance\MasterData\ServiceTypeService;
 use App\Service\Finance\GeneralWise\GeneralWiseService;
 use App\Service\Operation\Origin\ShippingInstructionService;
+use App\Http\Requests\Finance\Billing\Invoice\StoreInvoiceRequest;
+use App\Http\Requests\Finance\Billing\Invoice\StoreNotLinkedCustomer;
 
 final class InvoiceController extends Controller
 {
@@ -243,5 +246,26 @@ final class InvoiceController extends Controller
         return $updateInvoiceResponse->success
             ? to_route('finance.billing.invoice.index')->with('toastSuccess', $updateInvoiceResponse->message)
             : back()->with('toastError', $updateInvoiceResponse->message);
+    }
+
+    public function exportPdf()
+    {
+        $data = $this->invoiceService->getInvoices();
+        $pdf = Pdf::loadView('exports.pdf.invoice', compact('data'));
+        $file_name = 'list_invoice_' . time() . '.pdf';
+
+        return $pdf->download($file_name);
+    }
+
+    public function exportExcel()
+    {
+        $file_name = 'list_invoice_' . time() . '.xlsx';
+        return Excel::download(new InvoiceExport, $file_name);
+    }
+
+    public function exportCsv()
+    {
+        $file_name = 'list_invoice_' . time() . '.csv';
+        return Excel::download(new InvoiceExport, $file_name);
     }
 }

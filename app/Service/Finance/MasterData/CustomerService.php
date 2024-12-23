@@ -88,7 +88,6 @@ final class CustomerService
         DB::beginTransaction();
         try {
             $customer = Customer::create([
-                'customer_code' => $dto['customer_code'],
                 'customer_name' => $dto['customer_name'],
                 'eori_number' => $dto['eori_number'],
                 'credit_terms' => $dto['credit_terms'],
@@ -128,8 +127,6 @@ final class CustomerService
         } catch (\Throwable $th) {
             DB::rollBack();
 
-            dd($th);
-
             return ObjectResponse::error(
                 message: $th->getMessage(),
                 errors: $th->getTrace()
@@ -151,7 +148,6 @@ final class CustomerService
             $customer = Customer::findOrFail($id);
 
             $customer->update([
-                'customer_code' => $dto['customer_code'],
                 'customer_name' => $dto['customer_name'],
                 'eori_number' => $dto['eori_number'],
                 'credit_terms' => $dto['credit_terms'],
@@ -184,7 +180,7 @@ final class CustomerService
             DB::commit();
 
             return ObjectResponse::success(
-                message: __('crud.created', ['name' => 'Customer']),
+                message: __('crud.updated', ['name' => 'Customer']),
                 data: $customer
             );
 

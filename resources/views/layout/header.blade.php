@@ -15,7 +15,7 @@
 
             </span>
         </div>
-        <input type="text" class="form-control search-headerbar ms-4" placeholder="Search CTD (ex: PAMxxx)">
+        <input type="text" class="form-control search-headerbar ms-4 d-none" placeholder="Search CTD (ex: PAMxxx)" sty>
     </div>
 
     <div class="app-navbar flex-shrink-0">

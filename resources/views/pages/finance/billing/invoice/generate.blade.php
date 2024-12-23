@@ -41,8 +41,8 @@
                 <input type="hidden" name="customer_credit_limit" id="customer_credit_limit" value="30">
             </div>
             <div class='col-md-3'>
-                <label for="#chw" class="form-label">Billing Customer</label>
-                <input type="text" class="form-control @error('chw') is-invalid @enderror" placeholder="Billing Customer" name="chw" id="chw" value="{{ $shippings->sum('order_sum_chw') }}" readonly>
+                <label for="#chw" class="form-label">Chargeable Weight</label>
+                <input type="text" class="form-control @error('chw') is-invalid @enderror" placeholder="Chargeable Weight" name="chw" id="chw" value="{{ $shippings->sum('order_sum_chw') }}" readonly>
                 @error('chw')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror

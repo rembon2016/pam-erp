@@ -44,7 +44,41 @@ final class InvoiceController extends Controller
         return view('pages.finance.billing.invoice.index');
     }
 
-    public function list(): JsonResponse
+    public function list()
+    {
+        if (request()->ajax()) {
+            $data = $this->invoiceService->getInvoices();
+            return DataTables::of($data)
+                ->editColumn('invoice_date', function ($item) {
+                    return $item->invoice_date?->format('d/m/y');
+                })
+                ->editColumn('invoice_due_date', function ($item) {
+                    return $item->invoice_due_date?->format('d/m/y');
+                })
+                ->editColumn('customer_billing_id', function ($item) {
+                    return $item->customer?->customer_name;
+                })
+                ->addColumn('approval', function ($item) {
+                    return "-";
+                })
+                ->addColumn('status', function ($item) {
+                    return "-";
+                })
+                ->addColumn('action', function ($item) {
+                    return "-";
+                })
+                ->addIndexColumn()
+                ->rawColumns(['action'])
+                ->toJson();
+        }
+
+        return ResponseJson::error(
+            Response::HTTP_UNAUTHORIZED,
+            'Access Unauthorized',
+        );
+    }
+
+    public function shipmentList(): JsonResponse
     {
         $billingCustomerCondition = request()->get('billing-customer') == 'not-linked'
             ? 'empty'

@@ -130,7 +130,7 @@
 
 @push('js')
 <script>
-    const ajaxUrl = "{{ route('finance.billing.invoice.list') }}" + "?billing-customer=not-linked" ;
+    const ajaxUrl = "{{ route('finance.billing.invoice.shipment.list') }}" + "?billing-customer=not-linked" ;
     const selectedData = new Set();
 
     function updateCheckboxStates(table) {

@@ -127,7 +127,7 @@
 
 @push('js')
 <script>
-    const ajaxUrl = "{{ route('finance.billing.invoice.list') }}";
+    const ajaxUrl = "{{ route('finance.billing.invoice.shipment.list') }}";
     const selectedData = new Set();
 
     function updateCheckboxStates(table) {

@@ -22,11 +22,13 @@
                     <x:layout.table.row>
                         <x:layout.table.heading widthPixel="50" title="No" />
                         <x:layout.table.heading widthPixel="100" title="Invoice No" />
-                        {{-- <x:layout.table.heading widthPixel="100" title="Invoice Date" />
+                        <x:layout.table.heading widthPixel="100" title="Invoice Date" />
                         <x:layout.table.heading widthPixel="100" title="Invoice Due Date" />
                         <x:layout.table.heading widthPixel="100" title="Customer Name" />
                         <x:layout.table.heading widthPixel="100" title="Amount in USD" />
-                        <x:layout.table.heading widthPixel="100" title="Amount in AED" /> --}}
+                        <x:layout.table.heading widthPixel="100" title="Amount in AED" />
+                        <x:layout.table.heading widthPixel="50" title="Approval" />
+                        <x:layout.table.heading widthPixel="50" title="Status" />
                         <x:layout.table.heading widthPixel="100" customClass="text-center" title="Action" />
                     </x:layout.table.row>
                 </thead>
@@ -68,30 +70,34 @@
             "data" => "invoice_no",
             "name" => "invoice_no",
         ],
-        // [
-        //     "data" => "invoice_no",
-        //     "name" => "invoice_no",
-        // ],
-        // [
-        //     "data" => "invoice_no",
-        //     "name" => "invoice_no",
-        // ],
-        // [
-        //     "data" => "invoice_no",
-        //     "name" => "invoice_no",
-        // ],
-        // [
-        //     "data" => "invoice_no",
-        //     "name" => "invoice_no",
-        // ],
-        // [
-        //     "data" => "invoice_no",
-        //     "name" => "invoice_no",
-        // ],
-        // [
-        //     "data" => "invoice_no",
-        //     "name" => "invoice_no",
-        // ],
+        [
+            "data" => "invoice_date",
+            "name" => "invoice_date",
+        ],
+        [
+            "data" => "invoice_due_date",
+            "name" => "invoice_due_date",
+        ],
+        [
+            "data" => "customer_billing_id",
+            "name" => "customer_billing_id",
+        ],
+        [
+            "data" => "total",
+            "name" => "total",
+        ],
+        [
+            "data" => "total",
+            "name" => "total",
+        ],
+        [
+            "data" => "approval",
+            "name" => "approval",
+        ],
+        [
+            "data" => "status",
+            "name" => "status",
+        ],
         [
             "data" => "action",
             "name" => "action",

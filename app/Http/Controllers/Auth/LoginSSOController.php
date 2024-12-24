@@ -41,11 +41,10 @@ final class LoginSSOController extends Controller
             'username' => Auth::user()->email,
         ]);
 
-        $salt = Str::random(20);
-        $token = base64_encode($response->object()->access_token."|{$salt}");
+        $token = base64_encode($response->object()->access_token);
 
         return redirect()
-            ->to(config('app.frontend_url')."redirect?auth={$token}");
+            ->to(config('pds-operation.logichain.frontend')."redirect?auth={$token}");
     }
 
     /**

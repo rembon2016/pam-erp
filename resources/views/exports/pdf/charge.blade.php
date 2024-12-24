@@ -59,6 +59,7 @@
                 <th>Charge Name</th>
                 <th>Transport Type</th>
                 <th>Unit</th>
+                <th>Agreed Rate Charge</th>
                 <th>Revenue Account</th>
                 <th>Cost Account</th>
             </tr>
@@ -71,6 +72,7 @@
                     <td>{{ $item->charge_name }}</td>
                     <td>{{ $item->transport_type }}</td>
                     <td align="center">{{ $item->unit?->unit_name }}</td>
+                    <td align="center">{{ $item->is_agreed_rate == 1 ? 'Yes' : 'No' }}</td>
                     <td>{{ $item->revenue_id }}</td>
                     <td>{{ $item->cost_id }}</td>
                 </tr>

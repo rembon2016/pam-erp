@@ -17,6 +17,8 @@ final class ChargeService
             return $query->where('charge_code', $filters['charge_code']);
         })->when(!empty($filters['charge_name']), function ($query) use ($filters) {
             return $query->where('charge_name', $filters['charge_name']);
+        })->when(!empty($filters['is_agreed_rate']), function ($query) use ($filters) {
+            return $query->where('is_agreed_rate', $filters['is_agreed_rate']);
         })->orderBy('charge_code', 'ASC')->get();
     }
 

@@ -98,7 +98,9 @@ final class CustomerContractController extends Controller
 
         $customer_contract = new CustomerContract;
         $customers = $this->customerService->getCustomers();
-        $charges = $this->chargeService->getCharges();
+        $charges = $this->chargeService->getCharges([
+            'is_agreed_rate' => true
+        ]);
         $currencies = $this->currencyService->getCurrencies();
         $units = Unit::orderBy('unit_name', 'asc')->get();
 
@@ -129,7 +131,9 @@ final class CustomerContractController extends Controller
         if (!$getCustomerContractResponse->success) return to_route('finance.master-data.customer-contract.index')->with('toastError', $getCustomerContractResponse->message);
 
         $customers = $this->customerService->getCustomers();
-        $charges = $this->chargeService->getCharges();
+        $charges = $this->chargeService->getCharges([
+            'is_agreed_rate' => true
+        ]);
         $currencies = $this->currencyService->getCurrencies();
         $units = Unit::orderBy('unit_name', 'asc')->get();
 

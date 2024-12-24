@@ -56,6 +56,9 @@ final class ChargeController extends Controller
                         'delete' => route('finance.master-data.charge.destroy', $item->id),
                     ]);
                 })
+                ->editColumn('is_agreed_rate', function ($item) {
+                    return $item->is_agreed_rate == 1 ? 'Yes' : 'No';
+                })
                 ->editColumn('revenue_id', function ($item) {
                     return $item?->revenue?->account_name ?? '-';
                 })

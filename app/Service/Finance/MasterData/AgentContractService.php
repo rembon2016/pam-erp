@@ -210,8 +210,14 @@ final class AgentContractService
                 'from_1000_to_infinity' => isset($charge['from_1000_to_infinity']) ? $charge['from_1000_to_infinity'] : 0,
 
                 'twenty_feet' => isset($charge['20_feet']) ? $charge['20_feet'] : 0,
+                'twenty_feet_goh' => isset($charge['20_feet_goh']) ? $charge['20_feet_goh'] : 0,
+
                 'forty_feet' => isset($charge['40_feet']) ? $charge['40_feet'] : 0,
-                'forty_five_feet_hc' => isset($charge['45_feet_hc']) ? $charge['45_feet_hc'] : 0,
+                'forty_feet_goh' => isset($charge['40_feet_goh']) ? $charge['40_feet_goh'] : 0,
+                'forty_feet_hc' => isset($charge['40_feet_hc']) ? $charge['40_feet_hc'] : 0,
+                'forty_feet_hc_goh' => isset($charge['40_feet_hc_goh']) ? $charge['40_feet_hc_goh'] : 0,
+
+                'forty_five_feet_goh' => isset($charge['45_feet_goh']) ? $charge['45_feet_goh'] : 0,
                 'forty_five_feet' => isset($charge['45_feet']) ? $charge['45_feet'] : 0,
 
                 'manual_input_routed' => isset($charge['manual_input_routed']) ? $charge['manual_input_routed'] : null,

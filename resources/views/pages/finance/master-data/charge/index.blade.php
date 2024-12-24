@@ -24,6 +24,7 @@
                         <x:layout.table.heading widthPixel="100" title="Charge Name" />
                         <x:layout.table.heading widthPixel="100" title="Revenue Account" />
                         <x:layout.table.heading widthPixel="100" title="Cost Account" />
+                        <x:layout.table.heading widthPixel="100" title="Agreed Rate Charge" />
                         <x:layout.table.heading widthPixel="100" customClass="text-center" title="Action" />
                     </x:layout.table.row>
                 </thead>
@@ -76,6 +77,10 @@
         [
             "data" => "cost_id",
             "name" => "cost_id",
+        ],
+        [
+            "data" => "is_agreed_rate",
+            "name" => "is_agreed_rate",
         ],
         [
             "data" => "action",

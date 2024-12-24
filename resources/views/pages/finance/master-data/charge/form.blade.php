@@ -14,15 +14,21 @@
             <div class='col-md-6'>
                 <x:form.input label="Charge Name" name="charge_name" placeholder="Type Name of Charge" :model="$charge" required="true" />
             </div>
-            <div class='col-md-6'>
+            <div class='col-md-4'>
                 <x:form.input label="Transport Type" name="transport_type" placeholder="Type of Transport" :model="$charge" required="true" />
             </div>
-            <div class='col-md-6'>
+            <div class='col-md-4'>
                 <x:form.select2 label="Unit" name="unit_id" placeholder="Select Unit" required="true" :model="$charge">
                     @foreach ($units as $unit)
                         <option value="{{ $unit->unit_id }}" @selected(old('unit_id', $charge->unit_id) == $unit->unit_id)>{{ $unit->unit_name }}</option>
                     @endforeach
                 </x:form.select2>
+            </div>
+            <div class='col-md-4'>
+                <x:form.select label="Agreed Rate Charge?" name="is_agreed_rate" required="true" :model="$charge">
+                    <option value="1" @selected(old('is_agreed_rate', $charge->is_agreed_rate == 1))>Yes</option>
+                    <option value="0" @selected(old('is_agreed_rate', $charge->is_agreed_rate == 0))>No</option>
+                </x:form.select>
             </div>
             <div class='col-md-6'>
                 <x:form.select2 label="Revenue Account Name" name="revenue_id" placeholder="Select Account" required="true" :model="$charge">

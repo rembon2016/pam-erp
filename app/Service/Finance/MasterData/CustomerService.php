@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Models\Operation\Master\CustomerType;
 use App\Models\Operation\Master\CustomerBilling;
 use App\Models\Finance\CustomerType as FinanceCustomerType;
+use Illuminate\Support\Facades\Cache;
 
 final class CustomerService
 {
@@ -55,11 +56,23 @@ final class CustomerService
     /**
      * Get Billing Customers Collections
      *
+     * @param array $columns = []
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getBillingCustomers(): Collection
+    public function getBillingCustomers(array $columns = []): Collection
     {
-        return CustomerBilling::where('status', 1)->get();
+        return Cache::remember('biling-customers-select2', 60 * 5, function () use ($columns) {
+            return CustomerBilling::query()
+                ->when(empty($columns), function ($query) {
+                    return $query->select('customer_id', 'customer_code', 'customer_name', 'status');
+                })
+                ->when(!empty($columns), function ($query) use ($columns) {
+                    return $query->select($columns);
+                })
+                ->where('status', 1)
+                ->get();
+        });
     }
 
     /**

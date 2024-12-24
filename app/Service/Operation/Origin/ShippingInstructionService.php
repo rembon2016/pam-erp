@@ -28,7 +28,6 @@ final class ShippingInstructionService
      */
     public function getShippingInstructionByCustomerCondition(string $condition = 'exists'): object
     {
-        // dd($condition);
         $shippingInstructions = ShippingInstruction::query()
             ->select(['job_id', 'shipment_by', 'origin_name', 'ctd_number', 'customer_id', 'customer_name', 'date_created'])
             ->with(['jobOrder', 'jobOrderAir', 'jobOrderDetail', 'billingCustomer'])

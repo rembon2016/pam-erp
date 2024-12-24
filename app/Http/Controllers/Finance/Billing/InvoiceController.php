@@ -28,6 +28,7 @@ use App\Service\Finance\GeneralWise\GeneralWiseService;
 use App\Service\Operation\Origin\ShippingInstructionService;
 use App\Http\Requests\Finance\Billing\Invoice\StoreInvoiceRequest;
 use App\Http\Requests\Finance\Billing\Invoice\StoreNotLinkedCustomer;
+use Illuminate\Support\Benchmark;
 
 final class InvoiceController extends Controller
 {
@@ -158,9 +159,8 @@ final class InvoiceController extends Controller
         $vessels = $this->generalWiseService->getVessels();
         $origins = $this->generalWiseService->getOrigins();
         $voyages = $this->generalWiseService->getVoyages();
-        $customers = $this->customerService->getBillingCustomers();
 
-        return view('pages.finance.billing.invoice.form-not-linked', compact('months', 'years', 'service_types', 'vessels', 'origins', 'voyages', 'customers'));
+        return view('pages.finance.billing.invoice.form-not-linked', compact('months', 'years', 'service_types', 'vessels', 'origins', 'voyages'));
     }
 
     public function storeNotLinked(StoreNotLinkedCustomer $request): RedirectResponse

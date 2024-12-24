@@ -1,449 +1,3 @@
-{{-- <div class="row">
-    <div class="col-12">
-        <div class="mb-10">
-
-            <div
-                class="d-flex align-items-center mb-5">
-                <h4 class="my-5 mx-3">Charge Details</h4>
-                <div class="ms-5">
-                    <button type="button"
-                        id="add_charge_{{$index + 1}}"
-                        class="addCharges btn btn-icon btn-success rounded" style="height: 30px; width: 30px;">
-                        <i class="fa fa-plus pe-0"></i>
-                    </button>
-                    <button type="button"
-                        id="remove_charge_{{$index + 1}}"
-                        class="removeCharges btn btn-icon btn-warning rounded" style="height: 30px; width: 30px;"
-                        disabled>
-                        <i class="fa fa-minus pe-0"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12">
-
-                    <table class="table tableChargeForm">
-                        <thead>
-                            <tr>
-                                <th style="width: 20px;" class="align-middle text-center" scope="col">#</th>
-                                <th class="align-middle text-center" scope="col">Charge</th>
-                                <th class="align-middle text-center" scope="col">Charge Name</th>
-                                <th class="align-middle text-center" scope="col">C/R/N</th>
-                                <th class="align-middle text-center" scope="col">Currency</th>
-                                <th class="align-middle text-center" scope="col">Unit</th>
-                                <th class="align-middle text-center" scope="col">Amount per Unit</th>
-                                <th class="align-middle text-center" scope="col">Minimum Amount</th>
-                                <th class="align-middle text-center" scope="col">Via Port</th>
-                                <th class="align-middle text-center" scope="col">From (0) - To (44)</th>
-                                <th class="align-middle text-center" scope="col">From (45) - To (99)</th>
-                                <th class="align-middle text-center" scope="col">From (100) - To (299)</th>
-                                <th class="align-middle text-center" scope="col">From (300) - To (499)</th>
-                                <th class="align-middle text-center" scope="col">From (500) - To (999)</th>
-                                <th class="align-middle text-center" scope="col">From (1000) - To (∞)</th>
-                                <th class="align-middle text-center" scope="col">20°</th>
-                                <th class="align-middle text-center" scope="col">40°</th>
-                                <th class="align-middle text-center" scope="col">45° HC</th>
-                                <th class="align-middle text-center" scope="col">45°</th>
-                                <th class="align-middle text-center" scope="col">POR</th>
-                                <th class="align-middle text-center" scope="col">FDC</th>
-                                <th class="align-middle text-center" scope="col">PP/CC</th>
-                                <th class="align-middle text-center" scope="col">Routed</th>
-                                <th class="align-middle text-center" scope="col">Manual Input Routed</th>
-                                <th class="align-middle text-center" scope="col">IMCO</th>
-                                <th class="align-middle text-center" scope="col">Loading Bay</th>
-                                <th class="align-middle text-center" scope="col">Commodity</th>
-                                <th class="align-middle text-center" scope="col">Valid from Date</th>
-                                <th class="align-middle text-center" scope="col">Valid to Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @foreach($service->contractAgentCharge as $chargeIndex => $chargeValue)
-                                <tr class="chargeTableItemRow_{{$chargeIndex + 1}}">
-                                    <td>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            value="{{ $chargeIndex + 1 }}"
-                                            style="width: 80px;"
-                                            readonly>
-                                    </td>
-                                    <td>
-                                        <select
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][charge_id]"
-                                            class="form-select chargeIdClass"
-                                            id="charge_id_{{$index + 1}}_{{$chargeIndex + 1}}"
-                                            style="width: 200px;">
-                                            <option value="" selected hidden>
-                                                Charge
-                                            </option>
-                                            @foreach ($charges as $charge)
-                                                <option
-                                                    value="{{ $charge->charge_id }}"
-                                                    data-charge-name="{{ $charge->charge_name }}"
-                                                    @selected($chargeValue->charge_id == $charge->charge_id)>
-                                                    {{ $charge->charge_code }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][charge_name]"
-                                            class="form-control"
-                                            value="{{ $chargeValue->charge_name }}"
-                                            id="charge_name_{{$index + 1}}_{{$chargeIndex + 1}}"
-                                            style="width: 200px;"
-                                            readonly>
-                                    </td>
-                                    <td>
-                                        <select
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][c_r_n]"
-                                            class="form-select"
-                                            style="width: 200px;">
-                                            <option value="" selected hidden>
-                                                C/R/N
-                                            </option>
-                                            <option value="cost" @selected($chargeValue->crn == 'cost')>
-                                                Cost
-                                            </option>
-                                            <option value="R" @selected($chargeValue->crn == 'R')>
-                                                R
-                                            </option>
-                                            <option value="N" @selected($chargeValue->crn == 'N')>
-                                                N
-                                            </option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][currency]"
-                                            id="currency_id_{{$index + 1}}_{{$chargeIndex + 1}}"
-                                            class="form-select"
-                                            style="width: 200px;">
-                                            <option value="" selected hidden>
-                                                Currency
-                                            </option>
-                                            <option value="USD" @selected($chargeValue->currency == 'USD')>
-                                                USD
-                                            </option>
-                                            <option value="IDR" @selected($chargeValue->currency == 'IDR')>
-                                                IDR
-                                            </option>
-                                            <option value="AED" @selected($chargeValue->currency == 'AED')>
-                                                AED
-                                            </option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][unit_id]"
-                                            id="unit_id_{{$index + 1}}_{{$chargeIndex + 1}}"
-                                            class="form-select"
-                                            style="width: 200px;">
-                                            <option value="" selected hidden>
-                                                Unit
-                                            </option>
-                                            @foreach($units as $unit)
-                                                <option
-                                                    value="{{ $unit->unit_id }}"
-                                                    data-unit-code="{{ $unit->unit_name }}"
-                                                    @selected($chargeValue->unit_id == $unit->unit_id)>
-                                                    {{ $unit->description." ({$unit->unit_name})" }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            id="amount_per_unit_{{$index + 1}}_{{$chargeIndex + 1}}"
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][amount_per_unit]"
-                                            style="width: 200px;"
-                                            value="{{ $chargeValue->amount_per_unit }}"
-                                            @if($chargeValue?->unit?->unit_name == 'KG')
-                                                disabled
-                                            @endif>
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            id="minimum_amount_{{$index + 1}}_{{$chargeIndex + 1}}"
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][minimum_amount]"
-                                            style="width: 200px;"
-                                            value="{{ $chargeValue->minimum_amount }}"
-                                            @if($chargeValue?->unit?->unit_name == 'CNTR')
-                                                disabled
-                                            @elseif($chargeValue?->unit?->unit_name == 'KG')
-                                                disabled
-                                            @endif>
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            id="via_port_{{$index + 1}}_{{$chargeIndex + 1}}"
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][via_port]"
-                                            style="width: 200px;"
-                                            value="{{ $chargeValue->via_port }}"
-                                            @if($chargeValue?->unit?->unit_name == 'KG')
-                                                disabled
-                                            @elseif($chargeValue?->unit?->unit_name == 'SHPT')
-                                                disabled
-                                            @endif>
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            class="form-control unitKilogramField_{{$index + 1}}_{{$chargeIndex + 1}}"
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][from_0_to_44]"
-                                            value="{{ $chargeValue->from_0_to_44 == 0 ? '' : $chargeValue->from_0_to_44 }}"
-                                            style="width: 200px;"
-                                            @if($chargeValue?->unit?->unit_name != 'KG')
-                                                disabled
-                                            @endif>
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            class="form-control unitKilogramField_{{$index + 1}}_{{$chargeIndex + 1}}"
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][from_45_to_99]"
-                                            value="{{ $chargeValue->from_45_to_99 == 0 ? '' : $chargeValue->from_45_to_99 }}"
-                                            style="width: 200px;"
-                                            @if($chargeValue?->unit?->unit_name != 'KG')
-                                                disabled
-                                            @endif>
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            class="form-control unitKilogramField_{{$index + 1}}_{{$chargeIndex + 1}}"
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][from_100_to_299]"
-                                            value="{{ $chargeValue->from_100_to_299 == 0 ? '' : $chargeValue->from_100_to_299 }}"
-                                            style="width: 200px;"
-                                            @if($chargeValue?->unit?->unit_name != 'KG')
-                                                disabled
-                                            @endif>
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            class="form-control unitKilogramField_{{$index + 1}}_{{$chargeIndex + 1}}"
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][from_300_to_499]"
-                                            value="{{ $chargeValue->from_300_to_499 == 0 ? '' : $chargeValue->from_300_to_499 }}"
-                                            style="width: 200px;"
-                                            @if($chargeValue?->unit?->unit_name != 'KG')
-                                                disabled
-                                            @endif>
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            class="form-control unitKilogramField_{{$index + 1}}_{{$chargeIndex + 1}}"
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][from_500_to_999]"
-                                            value="{{ $chargeValue->from_500_to_999 == 0 ? '' : $chargeValue->from_500_to_999 }}"
-                                            style="width: 200px;"
-                                            @if($chargeValue?->unit?->unit_name != 'KG')
-                                                disabled
-                                            @endif>
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            class="form-control unitKilogramField_{{$index + 1}}_{{$chargeIndex + 1}}"
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][from_1000_to_infinity]"
-                                            value="{{ $chargeValue->from_1000_to_infinity == 0 ? '' : $chargeValue->from_1000_to_infinity }}"
-                                            style="width: 200px;"
-                                            @if($chargeValue?->unit?->unit_name != 'KG')
-                                                disabled
-                                            @endif>
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            class="form-control unitContainerField_{{$index + 1}}_{{$chargeIndex + 1}}"
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][20_feet]"
-                                            value="{{ $chargeValue->{'20_feet'} == 0 ? '' : $chargeValue->{'20_feet'}  }}"
-                                            style="width: 200px;"
-                                            @if($chargeValue?->unit?->unit_name != 'CNTR')
-                                                disabled
-                                            @endif>
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            class="form-control unitContainerField_{{$index + 1}}_{{$chargeIndex + 1}}"
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][40_feet]"
-                                            value="{{ $chargeValue->{'40_feet'} == 0 ? '' : $chargeValue->{'40_feet'} }}"
-                                            style="width: 200px;"
-                                            @if($chargeValue?->unit?->unit_name != 'CNTR')
-                                                disabled
-                                            @endif>
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            class="form-control unitContainerField_{{$index + 1}}_{{$chargeIndex + 1}}"
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][45_feet_hc]"
-                                            value="{{ $chargeValue->{'45_feet_hc'} == 0 ? '' : $chargeValue->{'45_feet_hc'} }}"
-                                            style="width: 200px;"
-                                            @if($chargeValue?->unit?->unit_name != 'CNTR')
-                                                disabled
-                                            @endif>
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            class="form-control unitContainerField_{{$index + 1}}_{{$chargeIndex + 1}}"
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][45_feet]"
-                                            value="{{ $chargeValue->{'45_feet'} == 0 ? '' : $chargeValue->{'45_feet'} }}"
-                                            style="width: 200px;"
-                                            @if($chargeValue?->unit?->unit_name != 'CNTR')
-                                                disabled
-                                            @endif>
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][por]"
-                                            value="{{ $chargeValue->por }}"
-                                            style="width: 200px;">
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][fdc]"
-                                            value="{{ $chargeValue->fdc }}"
-                                            style="width: 200px;">
-                                    </td>
-                                    <td>
-                                        <select
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][pp_cc]"
-                                            class="form-select"
-                                            style="width: 200px;">
-                                            <option value="" selected hidden>
-                                                PP/CC
-                                            </option>
-                                            <option value="KG" @selected($chargeValue->pp_cc == 'KG')>
-                                                KG
-                                            </option>
-                                            <option value="SHPT" @selected($chargeValue->pp_cc == 'SHPT')>
-                                                SHPT
-                                            </option>
-                                            <option value="CNTR" @selected($chargeValue->pp_cc == 'CNTR')>
-                                                CNTR
-                                            </option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][routed]"
-                                            class="form-select selectRouted"
-                                            id="select_routed_{{$index + 1}}_{{$chargeIndex + 1}}"
-                                            style="width: 200px;">
-                                            <option value="" selected hidden>
-                                                Routed
-                                            </option>
-                                            @foreach ($routedTransits as $data)
-                                                <option
-                                                    value="{{ $data['value'] }}"
-                                                    @selected($chargeValue->routed == $data['value'])>
-                                                    {{ $data['label'] }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][manual_input_routed]"
-                                            class="form-control"
-                                            id="input_routed_{{$index + 1}}_{{$chargeIndex + 1}}"
-                                            value="{{ $chargeValue->manual_input_routed }}"
-                                            style="width: 200px;"
-                                            @if(is_null($chargeValue->manual_input_routed)) disabled @endif>
-                                    </td>
-                                    <td>
-                                        <select
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][imco]"
-                                            class="form-select"
-                                            style="width: 200px;">
-                                            <option value="" selected hidden>
-                                                IMCO
-                                            </option>
-                                            <option value="KG" @selected($chargeValue->imco == 'KG')>
-                                                KG
-                                            </option>
-                                            <option value="SHPT" @selected($chargeValue->imco == 'SHPT')>
-                                                SHPT
-                                            </option>
-                                            <option value="CNTR" @selected($chargeValue->imco == 'CNTR')>
-                                                CNTR
-                                            </option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][loading_bay]"
-                                            class="form-select"
-                                            style="width: 200px;">
-                                            <option value="" selected hidden>
-                                                Loading Bay
-                                            </option>
-                                            <option value="KG" @selected($chargeValue->loading_bay == 'KG')>
-                                                KG
-                                            </option>
-                                            <option value="SHPT" @selected($chargeValue->loading_bay == 'SHPT')>
-                                                SHPT
-                                            </option>
-                                            <option value="CNTR" @selected($chargeValue->loading_bay == 'CNTR')>
-                                                CNTR
-                                            </option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][commodity]"
-                                            value="{{ $chargeValue->commodity }}"
-                                            style="width: 200px;">
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="date"
-                                            class="form-control"
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][valid_from_date]"
-                                            value="{{ $chargeValue->valid_from_date }}"
-                                            style="width: 200px;">
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="date"
-                                            class="form-control"
-                                            name="service_data[{{$index}}][charge_data][{{$chargeIndex}}][valid_to_date]"
-                                            value="{{ $chargeValue->valid_to_date }}"
-                                            style="width: 200px;">
-                                    </td>
-                                </tr>
-                            @endforeach
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <hr>
-        </div>
-    </div>
-</div> --}}
-
 <div class="row">
     <div class="col-12">
         <div class="mb-10">
@@ -553,17 +107,37 @@
                             </div>
                             <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                 <span class="tableChargeForm-heading-text">
+                                    20° GOH
+                                </span>
+                            </div>
+                            <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                                <span class="tableChargeForm-heading-text">
                                     40°
                                 </span>
                             </div>
                             <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                 <span class="tableChargeForm-heading-text">
-                                    45° HC
+                                    40° GOH
+                                </span>
+                            </div>
+                            <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                                <span class="tableChargeForm-heading-text">
+                                    40° HC
+                                </span>
+                            </div>
+                            <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                                <span class="tableChargeForm-heading-text">
+                                    40° HC GOH
                                 </span>
                             </div>
                             <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                 <span class="tableChargeForm-heading-text">
                                     45°
+                                </span>
+                            </div>
+                            <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                                <span class="tableChargeForm-heading-text">
+                                    45° GOH
                                 </span>
                             </div>
                             <div class="tableChargeForm-box text-center" style="min-width: 130px;">
@@ -831,6 +405,17 @@
                                         <input
                                             type="text"
                                             class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
+                                            name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][20_feet_goh]"
+                                            value="{{ $chargeValue->twenty_feet_goh == 0 ? '' : $chargeValue->twenty_feet_goh  }}"
+                                            style="width: 100%;"
+                                            @if($chargeValue?->unit?->unit_name != 'CNTR')
+                                                disabled
+                                            @endif>
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 130px;">
+                                        <input
+                                            type="text"
+                                            class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][40_feet]"
                                             value="{{ $chargeValue->forty_feet == 0 ? '' : $chargeValue->forty_feet }}"
                                             style="width: 100%;"
@@ -842,8 +427,30 @@
                                         <input
                                             type="text"
                                             class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
-                                            name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][45_feet_hc]"
-                                            value="{{ $chargeValue->forty_five_feet_hc == 0 ? '' : $chargeValue->forty_five_feet_hc }}"
+                                            name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][40_feet_goh]"
+                                            value="{{ $chargeValue->forty_feet_goh == 0 ? '' : $chargeValue->forty_feet_goh }}"
+                                            style="width: 100%;"
+                                            @if($chargeValue?->unit?->unit_name != 'CNTR')
+                                                disabled
+                                            @endif>
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 130px;">
+                                        <input
+                                            type="text"
+                                            class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
+                                            name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][40_feet_hc]"
+                                            value="{{ $chargeValue->forty_feet_hc == 0 ? '' : $chargeValue->forty_feet_hc }}"
+                                            style="width: 100%;"
+                                            @if($chargeValue?->unit?->unit_name != 'CNTR')
+                                                disabled
+                                            @endif>
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 130px;">
+                                        <input
+                                            type="text"
+                                            class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
+                                            name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][40_feet_hc_goh]"
+                                            value="{{ $chargeValue->forty_feet_hc_goh == 0 ? '' : $chargeValue->forty_feet_hc_goh }}"
                                             style="width: 100%;"
                                             @if($chargeValue?->unit?->unit_name != 'CNTR')
                                                 disabled
@@ -855,6 +462,17 @@
                                             class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][45_feet]"
                                             value="{{ $chargeValue->forty_five_feet == 0 ? '' : $chargeValue->forty_five_feet }}"
+                                            style="width: 100%;"
+                                            @if($chargeValue?->unit?->unit_name != 'CNTR')
+                                                disabled
+                                            @endif>
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 130px;">
+                                        <input
+                                            type="text"
+                                            class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
+                                            name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][45_feet_goh]"
+                                            value="{{ $chargeValue->forty_five_feet_goh == 0 ? '' : $chargeValue->forty_five_feet_goh }}"
                                             style="width: 100%;"
                                             @if($chargeValue?->unit?->unit_name != 'CNTR')
                                                 disabled

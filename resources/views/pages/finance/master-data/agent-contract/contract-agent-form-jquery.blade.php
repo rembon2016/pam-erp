@@ -40,31 +40,26 @@
 
         // Work as Expected
         $(document).on('click', '.addCharges', function () {
-
             let serviceIdFromChargeBtn = $(this).attr('id').split('_')
             serviceIdFromChargeBtn = serviceIdFromChargeBtn[serviceIdFromChargeBtn.length - 1]
 
-            let chargeItem = $(`.chargeTableItemRow_${serviceIdFromChargeBtn}`)
+            const chargeBody = $(this).parents('.chargeTableRow').find('.tableChargeForm-body');
+            const chargeItem = $(chargeBody).find('.tableChargeForm-body-row').length;
+            const chargeHtml = chargeItemHtml(serviceIdFromChargeBtn, (chargeItem + 1), 1);
 
-            $(`${chargeItemHtml(serviceIdFromChargeBtn, (chargeItem.length + 1), 1)}`)
-                .insertAfter(chargeItem[chargeItem.length - 1])
-
+            $(chargeBody).append(chargeHtml);
             activateSelect2()
 
-            if (chargeItem.length >= 1) $(`#remove_charge_${serviceIdFromChargeBtn}`).removeAttr('disabled')
+            if (chargeItem >= 1) $(this).parent().find('.removeCharges').removeAttr('disabled')
         })
 
         // Work as Expected
         $(document).on('click', '.removeCharges', function () {
-            let serviceIdFromChargeBtn = $(this).attr('id').split('_')
-            serviceIdFromChargeBtn = serviceIdFromChargeBtn[serviceIdFromChargeBtn.length -1]
+            const chargeBody = $(this).parents('.chargeTableRow').find('.tableChargeForm-body');
+            const chargeItem = $(chargeBody).find('.tableChargeForm-body-row').length;
+            $(chargeBody).find('.tableChargeForm-body-row').eq(chargeItem - 1).remove();
 
-            let chargeItem = $(`.chargeTableItemRow_${serviceIdFromChargeBtn}`)
-
-            let lastChargeItem = chargeItem.last()
-            lastChargeItem.remove()
-
-            if ((chargeItem.length - 1) <= 1) $(`#remove_charge_${serviceIdFromChargeBtn}`).attr('disabled', 'disabled')
+            if (chargeItem <= 2) $(this).attr('disabled', 'disabled')
         })
 
         $(document).off('click', '.addDetailCharges').on('click', '.addDetailCharges', function (event) {

@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
-use App\Functions\ResponseJson;
-use Illuminate\Http\Response;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Service\Auth\LoginService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;

@@ -116,11 +116,7 @@
 
     <x:layout.modal.form-modal action="{{ route('finance.billing.invoice.store.not-linked-billing-customer') }}" method="POST" title="Update Billing Customer" >
         <div class="col-12">
-            <x:form.select2 label="Billing Customer" name="customer_id" required="true">
-                @foreach ($customers as $item)
-                    <option value="{{ $item->customer_id }}">{{ $item->customer_name }}</option>
-                @endforeach
-            </x:form.select2>
+            <x:form.select label="Billing Customer" name="customer_id" required="true"></x:form.select>
         </div>
         <div class="col-12">
             <input type="hidden" name="data" id="ctd_data" value="[]">
@@ -130,6 +126,26 @@
 
 @push('js')
 <script>
+
+    $('#customer_id').select2({
+        ajax: {
+            url: "{{ route('api.finance.master-data.customer.billing.list') }}",
+            dataType: 'json',
+            delay: 250,
+            processResults: function (result) {
+                console.log(result)
+                return {
+                    results: result.data.map(item => ({
+                        id: item.customer_id, // Adjust as per your model
+                        text: item.customer_name // Adjust as per your model
+                    })),
+                };
+            },
+            cache: true
+        },
+        placeholder: 'Select Billing Customer',
+    });
+
     const ajaxUrl = "{{ route('finance.billing.invoice.shipment.list') }}" + "?billing-customer=not-linked" ;
     const selectedData = new Set();
 

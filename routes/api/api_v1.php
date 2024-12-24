@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\Finance\Billing\ApiInvoiceController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiChargeController;
+use App\Http\Controllers\Api\Finance\MasterData\ApiCustomerController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiPortController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +18,15 @@ Route::group([
         'prefix' => 'master-data',
         'as' => 'master-data.',
     ], function () {
+
+        // Customer Route
+        Route::group([
+            'prefix' => 'customer',
+            'as' => 'customer.'
+        ], function () {
+            Route::get('/', [ApiCustomerController::class, 'getBillingCustomers'])->name('billing.list');
+        });
+
         // Port Route
         Route::group([
             'prefix' => 'port',

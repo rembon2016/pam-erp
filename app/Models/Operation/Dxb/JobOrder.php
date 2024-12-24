@@ -3,7 +3,8 @@
 namespace App\Models\Operation\Dxb;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Operation\Master\Office;
+use App\Models\Finance\Costing;
 class JobOrder extends Model
 {
     protected $table = 'dxb.job_order';
@@ -17,7 +18,56 @@ class JobOrder extends Model
 
     public function loadingplan()
     {
-        return $this->belongsTo(LoadingPlanLocal::class, 'mawb_number', 'mawb_number');
+        return $this->belongsTo(LoadingPlanLocal::class, 'loading_plan_id', 'plan_id');
+    }
+
+    public function costing()
+    {
+        return $this->belongsTo(Costing::class, 'job_order_id', 'job_order_id');
+    }
+    public function detail()
+    {
+        return $this->hasMany(JobOrderDetail::class, 'job_order_id', 'job_order_id');
+    }
+
+    public function vendor()
+    {
+        return $this->hasMany(JobOrderVendor::class, 'job_order_id', 'job_order_id');
+    }
+    public function doc()
+    {
+        return $this->hasMany(JobOrderDocument::class, 'job_order_id', 'job_order_id');
+    }
+
+    public function loading()
+    {
+        return $this->belongsTo(LoadingReport::class, 'loading_plan_id', 'loading_id');
+    }
+
+    public function ctd()
+    {
+        return $this->hasMany(ShippingInstruction::class, 'loading_id', 'loading_plan_id');
+    }
+
+    public function shipping()
+    {
+        //only origin_name
+        return $this->hasOne(ShippingInstruction::class, 'loading_id', 'loading_plan_id')->select('loading_id','origin_name');
+    }
+
+    public function origin()
+    {
+        return $this->belongsTo(Office::class, 'origin_id', 'office_id');
+    }
+
+    function lpdetail(){
+        return $this->hasOne(LoadingPlanDetailLocal::class, 'loading_plan_id', 'loading_plan_id')
+                    ->orderBy('date_departure', 'asc');
+    }
+
+    function lparrival(){
+        return $this->hasOne(LoadingPlanDetailLocal::class, 'loading_plan_id', 'loading_plan_id')
+                    ->orderBy('date_arival', 'desc');
     }
 
 }

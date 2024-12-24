@@ -13,6 +13,13 @@ use App\Http\Controllers\Finance\Billing\InvoiceController;
 use App\Http\Controllers\Finance\MasterData\PortController;
 use App\Http\Controllers\Finance\MasterData\UnitController;
 use App\Http\Controllers\Finance\Costing\CrossAirController;
+use App\Http\Controllers\Finance\Costing\DubaiBusiness\SeaImportController;
+use App\Http\Controllers\Finance\Costing\DubaiBusiness\SeaExportController;
+use App\Http\Controllers\Finance\Costing\DubaiBusiness\AirImportController;
+use App\Http\Controllers\Finance\Costing\DubaiBusiness\AirExportController;
+use App\Http\Controllers\Finance\Costing\DubaiBusiness\WarehouseController;
+use App\Http\Controllers\Finance\Costing\DubaiBusiness\TruckingController;
+use App\Http\Controllers\Finance\Costing\DubaiBusiness\CourierController;
 use App\Http\Controllers\Finance\MasterData\ChargeController;
 use App\Http\Controllers\Finance\MasterData\CountryController;
 use App\Http\Controllers\Finance\MasterData\DaybookController;
@@ -374,6 +381,7 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/export/csv', [SeaAirController::class, 'exportCsv'])->name('export.csv');
             });
 
+
             Route::group([
                 'prefix' => 'cross-air',
                 'as' => 'cross-air.'
@@ -383,6 +391,88 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/show/{id}', [CrossAirController::class, 'show'])->name('show');
                 Route::get('/cost/{id}', [CrossAirController::class, 'cost'])->name('cost');
                 Route::get('/export/csv', [CrossAirController::class, 'exportCsv'])->name('export.csv');
+            });
+
+            Route::group([
+                'prefix' => 'dubai-business',
+                'as' => 'dubai-business.'
+            ], function () {
+                Route::group([
+                    'prefix' => 'sea-import',
+                    'as' => 'sea-import.'
+                ], function () {
+                    Route::get('/', [SeaImportController::class, 'index'])->name('index');
+                    Route::get('/list', [SeaImportController::class, 'list'])->name('list');
+                    Route::get('/show/{id}', [SeaImportController::class, 'show'])->name('show');
+                    Route::get('/cost/{id}', [SeaImportController::class, 'cost'])->name('cost');
+                    Route::get('/export/csv', [SeaImportController::class, 'exportCsv'])->name('export.csv');
+                });
+
+                Route::group([
+                    'prefix' => 'sea-export',
+                    'as' => 'sea-export.'
+                ], function () {
+                    Route::get('/', [SeaExportController::class, 'index'])->name('index');
+                    Route::get('/list', [SeaExportController::class, 'list'])->name('list');
+                    Route::get('/show/{id}', [SeaExportController::class, 'show'])->name('show');
+                    Route::get('/cost/{id}', [SeaExportController::class, 'cost'])->name('cost');
+                    Route::get('/export/csv', [SeaExportController::class, 'exportCsv'])->name('export.csv');
+                });
+
+                Route::group([
+                    'prefix' => 'air-import',
+                    'as' => 'air-import.'
+                ], function () {
+                    Route::get('/', [AirImportController::class, 'index'])->name('index');
+                    Route::get('/list', [AirImportController::class, 'list'])->name('list');
+                    Route::get('/show/{id}', [AirImportController::class, 'show'])->name('show');
+                    Route::get('/cost/{id}', [AirImportController::class, 'cost'])->name('cost');
+                    Route::get('/export/csv', [AirImportController::class, 'exportCsv'])->name('export.csv');
+                });
+
+                Route::group([
+                    'prefix' => 'air-export',
+                    'as' => 'air-export.'
+                ], function () {
+                    Route::get('/', [AirExportController::class, 'index'])->name('index');
+                    Route::get('/list', [AirExportController::class, 'list'])->name('list');
+                    Route::get('/show/{id}', [AirExportController::class, 'show'])->name('show');
+                    Route::get('/cost/{id}', [AirExportController::class, 'cost'])->name('cost');
+                    Route::get('/export/csv', [AirExportController::class, 'exportCsv'])->name('export.csv');
+                });
+
+                Route::group([
+                    'prefix' => 'warehouse',
+                    'as' => 'warehouse.'
+                ], function () {
+                    Route::get('/', [WarehouseController::class, 'index'])->name('index');
+                    Route::get('/list', [WarehouseController::class, 'list'])->name('list');
+                    Route::get('/show/{id}', [WarehouseController::class, 'show'])->name('show');
+                    Route::get('/cost/{id}', [WarehouseController::class, 'cost'])->name('cost');
+                    Route::get('/export/csv', [WarehouseController::class, 'exportCsv'])->name('export.csv');
+                });
+
+                Route::group([
+                    'prefix' => 'trucking',
+                    'as' => 'trucking.'
+                ], function () {
+                    Route::get('/', [TruckingController::class, 'index'])->name('index');
+                    Route::get('/list', [TruckingController::class, 'list'])->name('list');
+                    Route::get('/show/{id}', [TruckingController::class, 'show'])->name('show');
+                    Route::get('/cost/{id}', [TruckingController::class, 'cost'])->name('cost');
+                    Route::get('/export/csv', [TruckingController::class, 'exportCsv'])->name('export.csv');
+                });
+
+                Route::group([
+                    'prefix' => 'courier',
+                    'as' => 'courier.'
+                ], function () {
+                    Route::get('/', [CourierController::class, 'index'])->name('index');
+                    Route::get('/list', [CourierController::class, 'list'])->name('list');
+                    Route::get('/show/{id}', [CourierController::class, 'show'])->name('show');
+                    Route::get('/cost/{id}', [CourierController::class, 'cost'])->name('cost');
+                    Route::get('/export/csv', [CourierController::class, 'exportCsv'])->name('export.csv');
+                });
             });
         });
     });

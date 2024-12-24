@@ -193,358 +193,362 @@
                             </div>
                         </div>
                         <div class="tableChargeForm-body">
-                            <div class="chargeTableItemRow_1 tableChargeForm-body-row">
-                                <div class="tableChargeForm-box" style="min-width: 80px;">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        value="1"
-                                        style=""
-                                        readonly>
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 170px;">
-                                    <select
-                                        name="service_data[0][charge_data][0][charge_id]"
-                                        class="form-select chargeIdClass"
-                                        id="charge_id_1_1"
-                                        style="width: 100%;">
-                                        <option value="" selected hidden>
-                                            Charge
-                                        </option>
-                                        @foreach ($charges as $charge)
-                                            <option
-                                                value="{{ $charge->charge_id }}"
-                                                data-charge-name="{{ $charge->charge_name }}">
-                                                {{ $charge->charge_code }}
+                            <div class="chargeTableItemRow_1 tableChargeForm-body-row flex-column">
+                                <div class="d-flex flex-row p-0">
+                                    <div class="tableChargeForm-box trigger-show-detail" style="min-width: 80px;">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            value="1 ↓"
+                                            style=""
+                                            readonly>
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 170px;">
+                                        <select
+                                            name="service_data[0][charge_data][0][charge_id]"
+                                            class="form-select chargeIdClass"
+                                            id="charge_id_1_1"
+                                            style="width: 100%;">
+                                            <option value="" selected hidden>
+                                                Charge
                                             </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="tableChargeForm-box">
-                                    <input
-                                        type="text"
-                                        name="service_data[0][charge_data][0][charge_name]"
-                                        class="form-control"
-                                        value=""
-                                        id="charge_name_1_1"
-                                        style="width: 100%;"
-                                        readonly>
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 115px;">
-                                    <select
-                                        name="service_data[0][charge_data][0][c_r_n]"
-                                        class="form-select"
-                                        style="width: 100%;">
-                                        <option value="" selected hidden>
-                                            C/R/N
-                                        </option>
-                                        <option value="cost">
-                                            Cost
-                                        </option>
-                                        <option value="R">
-                                            R
-                                        </option>
-                                        <option value="N">
-                                            N
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 100px;">
-                                    <select
-                                        name="service_data[0][charge_data][0][currency]"
-                                        id="currency_id_1_1"
-                                        class="form-select"
-                                        style="width: 100%;"
-                                        disabled>
-                                        <option value="" selected hidden>
-                                            Currency
-                                        </option>
-                                        @foreach ($currencies as $currency)
-                                            <option value="{{ $currency->id }}">
-                                                {{ $currency->currency_name }}
+                                            @foreach ($charges as $charge)
+                                                <option
+                                                    value="{{ $charge->charge_id }}"
+                                                    data-charge-name="{{ $charge->charge_name }}">
+                                                    {{ $charge->charge_code }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="tableChargeForm-box">
+                                        <input
+                                            type="text"
+                                            name="service_data[0][charge_data][0][charge_name]"
+                                            class="form-control"
+                                            value=""
+                                            id="charge_name_1_1"
+                                            style="width: 100%;"
+                                            readonly>
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 115px;">
+                                        <select
+                                            name="service_data[0][charge_data][0][c_r_n]"
+                                            class="form-select"
+                                            style="width: 100%;">
+                                            <option value="" selected hidden>
+                                                C/R/N
                                             </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="tableChargeForm-box">
-                                    <select
-                                        name="service_data[0][charge_data][0][unit_id]"
-                                        id="unit_id_1_1"
-                                        class="form-select"
-                                        style="width: 100%;"
-                                        disabled>
-                                        <option value="" selected hidden>
-                                            Unit
-                                        </option>
-                                        @foreach($units as $unit)
-                                            <option
-                                                value="{{ $unit->unit_id }}"
-                                                data-unit-code="{{ $unit->unit_name }}">
-                                                {{ $unit->description." ({$unit->unit_name})" }}
+                                            <option value="cost">
+                                                Cost
                                             </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 130px;">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="amount_per_unit_1_1"
-                                        name="service_data[0][charge_data][0][amount_per_unit]"
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 130px;">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="minimum_amount_1_1"
-                                        name="service_data[0][charge_data][0][minimum_amount]"
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="via_port_1_1"
-                                        name="service_data[0][charge_data][0][via_port]"
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 130px;">
-                                    <input
-                                        type="text"
-                                        class="form-control unitKilogramField_1_1"
-                                        name="service_data[0][charge_data][0][from_0_to_44]"
-                                        value=""
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 135px;">
-                                    <input
-                                        type="text"
-                                        class="form-control unitKilogramField_1_1"
-                                        name="service_data[0][charge_data][0][from_45_to_99]"
-                                        value=""
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 145px;">
-                                    <input
-                                        type="text"
-                                        class="form-control unitKilogramField_1_1"
-                                        name="service_data[0][charge_data][0][from_100_to_299]"
-                                        value=""
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 150px;">
-                                    <input
-                                        type="text"
-                                        class="form-control unitKilogramField_1_1"
-                                        name="service_data[0][charge_data][0][from_300_to_499]"
-                                        value=""
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 150px;">
-                                    <input
-                                        type="text"
-                                        class="form-control unitKilogramField_1_1"
-                                        name="service_data[0][charge_data][0][from_500_to_999]"
-                                        value=""
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 145px;">
-                                    <input
-                                        type="text"
-                                        class="form-control unitKilogramField_1_1"
-                                        name="service_data[0][charge_data][0][from_1000_to_infinity]"
-                                        value=""
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 130px;">
-                                    <input
-                                        type="text"
-                                        class="form-control unitContainerField_1_1"
-                                        name="service_data[0][charge_data][0][20_feet]"
-                                        value=""
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 130px;">
-                                    <input
-                                        type="text"
-                                        class="form-control unitContainerField_1_1"
-                                        name="service_data[0][charge_data][0][20_feet_goh]"
-                                        value=""
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 130px;">
-                                    <input
-                                        type="text"
-                                        class="form-control unitContainerField_1_1"
-                                        name="service_data[0][charge_data][0][40_feet]"
-                                        value=""
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 130px;">
-                                    <input
-                                        type="text"
-                                        class="form-control unitContainerField_1_1"
-                                        name="service_data[0][charge_data][0][40_feet_goh]"
-                                        value=""
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 130px;">
-                                    <input
-                                        type="text"
-                                        class="form-control unitContainerField_1_1"
-                                        name="service_data[0][charge_data][0][40_feet_hc]"
-                                        value=""
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 130px;">
-                                    <input
-                                        type="text"
-                                        class="form-control unitContainerField_1_1"
-                                        name="service_data[0][charge_data][0][40_feet_hc_goh]"
-                                        value=""
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 130px;">
-                                    <input
-                                        type="text"
-                                        class="form-control unitContainerField_1_1"
-                                        name="service_data[0][charge_data][0][45_feet]"
-                                        value=""
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 130px;">
-                                    <input
-                                        type="text"
-                                        class="form-control unitContainerField_1_1"
-                                        name="service_data[0][charge_data][0][45_feet_goh]"
-                                        value=""
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 130px;">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        name="service_data[0][charge_data][0][por]"
-                                        value=""
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 130px;">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        name="service_data[0][charge_data][0][fdc]"
-                                        value=""
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 110px;">
-                                    <select
-                                        name="service_data[0][charge_data][0][pp_cc]"
-                                        class="form-select"
-                                        style="width: 100%;">
-                                        <option value="" selected hidden>
-                                            PP/CC
-                                        </option>
-                                        <option value="KG">
-                                            KG
-                                        </option>
-                                        <option value="SHPT">
-                                            SHPT
-                                        </option>
-                                        <option value="CNTR">
-                                            CNTR
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 150px;">
-                                    <select
-                                        name="service_data[0][charge_data][0][routed]"
-                                        class="form-select selectRouted"
-                                        id="select_routed_1_1"
-                                        style="width: 100%;">
-                                        <option value="" selected hidden>
-                                            Routed
-                                        </option>
-                                        @foreach ($routedTransits as $data)
-                                            <option
-                                                value="{{ $data['value'] }}">
-                                                {{ $data['label'] }}
+                                            <option value="R">
+                                                R
                                             </option>
-                                        @endforeach
-                                    </select>
+                                            <option value="N">
+                                                N
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 100px;">
+                                        <select
+                                            name="service_data[0][charge_data][0][currency]"
+                                            id="currency_id_1_1"
+                                            class="form-select"
+                                            style="width: 100%;"
+                                            disabled>
+                                            <option value="" selected hidden>
+                                                Currency
+                                            </option>
+                                            @foreach ($currencies as $currency)
+                                                <option value="{{ $currency->id }}">
+                                                    {{ $currency->currency_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="tableChargeForm-box">
+                                        <select
+                                            name="service_data[0][charge_data][0][unit_id]"
+                                            id="unit_id_1_1"
+                                            class="form-select"
+                                            style="width: 100%;"
+                                            disabled>
+                                            <option value="" selected hidden>
+                                                Unit
+                                            </option>
+                                            @foreach($units as $unit)
+                                                <option
+                                                    value="{{ $unit->unit_id }}"
+                                                    data-unit-code="{{ $unit->unit_name }}">
+                                                    {{ $unit->description." ({$unit->unit_name})" }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 130px;">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="amount_per_unit_1_1"
+                                            name="service_data[0][charge_data][0][amount_per_unit]"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 130px;">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="minimum_amount_1_1"
+                                            name="service_data[0][charge_data][0][minimum_amount]"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="via_port_1_1"
+                                            name="service_data[0][charge_data][0][via_port]"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 130px;">
+                                        <input
+                                            type="text"
+                                            class="form-control unitKilogramField_1_1"
+                                            name="service_data[0][charge_data][0][from_0_to_44]"
+                                            value=""
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 135px;">
+                                        <input
+                                            type="text"
+                                            class="form-control unitKilogramField_1_1"
+                                            name="service_data[0][charge_data][0][from_45_to_99]"
+                                            value=""
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 145px;">
+                                        <input
+                                            type="text"
+                                            class="form-control unitKilogramField_1_1"
+                                            name="service_data[0][charge_data][0][from_100_to_299]"
+                                            value=""
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 150px;">
+                                        <input
+                                            type="text"
+                                            class="form-control unitKilogramField_1_1"
+                                            name="service_data[0][charge_data][0][from_300_to_499]"
+                                            value=""
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 150px;">
+                                        <input
+                                            type="text"
+                                            class="form-control unitKilogramField_1_1"
+                                            name="service_data[0][charge_data][0][from_500_to_999]"
+                                            value=""
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 145px;">
+                                        <input
+                                            type="text"
+                                            class="form-control unitKilogramField_1_1"
+                                            name="service_data[0][charge_data][0][from_1000_to_infinity]"
+                                            value=""
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 130px;">
+                                        <input
+                                            type="text"
+                                            class="form-control unitContainerField_1_1"
+                                            name="service_data[0][charge_data][0][20_feet]"
+                                            value=""
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 130px;">
+                                        <input
+                                            type="text"
+                                            class="form-control unitContainerField_1_1"
+                                            name="service_data[0][charge_data][0][20_feet_goh]"
+                                            value=""
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 130px;">
+                                        <input
+                                            type="text"
+                                            class="form-control unitContainerField_1_1"
+                                            name="service_data[0][charge_data][0][40_feet]"
+                                            value=""
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 130px;">
+                                        <input
+                                            type="text"
+                                            class="form-control unitContainerField_1_1"
+                                            name="service_data[0][charge_data][0][40_feet_goh]"
+                                            value=""
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 130px;">
+                                        <input
+                                            type="text"
+                                            class="form-control unitContainerField_1_1"
+                                            name="service_data[0][charge_data][0][40_feet_hc]"
+                                            value=""
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 130px;">
+                                        <input
+                                            type="text"
+                                            class="form-control unitContainerField_1_1"
+                                            name="service_data[0][charge_data][0][40_feet_hc_goh]"
+                                            value=""
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 130px;">
+                                        <input
+                                            type="text"
+                                            class="form-control unitContainerField_1_1"
+                                            name="service_data[0][charge_data][0][45_feet]"
+                                            value=""
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 130px;">
+                                        <input
+                                            type="text"
+                                            class="form-control unitContainerField_1_1"
+                                            name="service_data[0][charge_data][0][45_feet_goh]"
+                                            value=""
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 130px;">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            name="service_data[0][charge_data][0][por]"
+                                            value=""
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 130px;">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            name="service_data[0][charge_data][0][fdc]"
+                                            value=""
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 110px;">
+                                        <select
+                                            name="service_data[0][charge_data][0][pp_cc]"
+                                            class="form-select"
+                                            style="width: 100%;">
+                                            <option value="" selected hidden>
+                                                PP/CC
+                                            </option>
+                                            <option value="KG">
+                                                KG
+                                            </option>
+                                            <option value="SHPT">
+                                                SHPT
+                                            </option>
+                                            <option value="CNTR">
+                                                CNTR
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 150px;">
+                                        <select
+                                            name="service_data[0][charge_data][0][routed]"
+                                            class="form-select selectRouted"
+                                            id="select_routed_1_1"
+                                            style="width: 100%;">
+                                            <option value="" selected hidden>
+                                                Routed
+                                            </option>
+                                            @foreach ($routedTransits as $data)
+                                                <option
+                                                    value="{{ $data['value'] }}">
+                                                    {{ $data['label'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="tableChargeForm-box">
+                                        <input
+                                            type="text"
+                                            name="service_data[0][charge_data][0][manual_input_routed]"
+                                            class="form-control"
+                                            id="input_routed_1_1"
+                                            value=""
+                                            style="width: 100%;"
+                                            disabled>
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 120px;">
+                                        <select
+                                            name="service_data[0][charge_data][0][imco]"
+                                            class="form-select"
+                                            style="width: 100%;">
+                                            <option value="" selected hidden>
+                                                IMCO
+                                            </option>
+                                            <option value="KG">
+                                                KG
+                                            </option>
+                                            <option value="SHPT">
+                                                SHPT
+                                            </option>
+                                            <option value="CNTR">
+                                                CNTR
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 120px;">
+                                        <select
+                                            name="service_data[0][charge_data][0][loading_bay]"
+                                            class="form-select"
+                                            style="width: 100%;">
+                                            <option value="" selected hidden>
+                                                Loading Bay
+                                            </option>
+                                            <option value="KG">
+                                                KG
+                                            </option>
+                                            <option value="SHPT">
+                                                SHPT
+                                            </option>
+                                            <option value="CNTR">
+                                                CNTR
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="tableChargeForm-box">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            name="service_data[0][charge_data][0][commodity]"
+                                            value=""
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 150px;">
+                                        <input
+                                            type="date"
+                                            class="form-control"
+                                            name="service_data[0][charge_data][0][valid_from_date]"
+                                            value=""
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="tableChargeForm-box" style="min-width: 150px;">
+                                        <input
+                                            type="date"
+                                            class="form-control"
+                                            name="service_data[0][charge_data][0][valid_to_date]"
+                                            value=""
+                                            style="width: 100%;">
+                                    </div>
                                 </div>
-                                <div class="tableChargeForm-box">
-                                    <input
-                                        type="text"
-                                        name="service_data[0][charge_data][0][manual_input_routed]"
-                                        class="form-control"
-                                        id="input_routed_1_1"
-                                        value=""
-                                        style="width: 100%;"
-                                        disabled>
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 120px;">
-                                    <select
-                                        name="service_data[0][charge_data][0][imco]"
-                                        class="form-select"
-                                        style="width: 100%;">
-                                        <option value="" selected hidden>
-                                            IMCO
-                                        </option>
-                                        <option value="KG">
-                                            KG
-                                        </option>
-                                        <option value="SHPT">
-                                            SHPT
-                                        </option>
-                                        <option value="CNTR">
-                                            CNTR
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 120px;">
-                                    <select
-                                        name="service_data[0][charge_data][0][loading_bay]"
-                                        class="form-select"
-                                        style="width: 100%;">
-                                        <option value="" selected hidden>
-                                            Loading Bay
-                                        </option>
-                                        <option value="KG">
-                                            KG
-                                        </option>
-                                        <option value="SHPT">
-                                            SHPT
-                                        </option>
-                                        <option value="CNTR">
-                                            CNTR
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="tableChargeForm-box">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        name="service_data[0][charge_data][0][commodity]"
-                                        value=""
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 150px;">
-                                    <input
-                                        type="date"
-                                        class="form-control"
-                                        name="service_data[0][charge_data][0][valid_from_date]"
-                                        value=""
-                                        style="width: 100%;">
-                                </div>
-                                <div class="tableChargeForm-box" style="min-width: 150px;">
-                                    <input
-                                        type="date"
-                                        class="form-control"
-                                        name="service_data[0][charge_data][0][valid_to_date]"
-                                        value=""
-                                        style="width: 100%;">
-                                </div>
+
+                                @include('pages.finance.master-data.agent-contract.pieces.create.charge-detail-form')
                             </div>
                         </div>
                     </div>

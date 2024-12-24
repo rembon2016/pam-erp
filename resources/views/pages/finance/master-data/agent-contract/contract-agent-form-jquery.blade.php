@@ -1,5 +1,14 @@
 @push('js')
     <script>
+        $(document).off('click', '.trigger-show-detail').on('click', '.trigger-show-detail', function (event) {
+            event.preventDefault();
+
+            const bodyRowElement = $(this).parents('.tableChargeForm-body-row');
+            const detailElement = bodyRowElement.find('.tableChargeDetailContent');
+
+            $(".tableChargeDetailContent").not(detailElement).slideUp();
+            $(detailElement).slideToggle();
+        })
 
         // Work as Expected
         $('#addServices').click(function() {
@@ -7,7 +16,7 @@
             let chargeTableRow = $('.chargeTableRow')
             let chargeItemTableRow = $(`.chargeItemTableRow_1`)
 
-            $(`${serviceItemRow((serviceTableRow.length + 1), (chargeItemTableRow.length + 1))}`)
+            $(`${serviceItemRow((serviceTableRow.length + 1), (chargeItemTableRow.length + 1), 1)}`)
                 .insertAfter(chargeTableRow.last())
 
             activateSelect2()
@@ -37,7 +46,7 @@
 
             let chargeItem = $(`.chargeTableItemRow_${serviceIdFromChargeBtn}`)
 
-            $(`${chargeItemHtml(serviceIdFromChargeBtn, (chargeItem.length + 1))}`)
+            $(`${chargeItemHtml(serviceIdFromChargeBtn, (chargeItem.length + 1), 1)}`)
                 .insertAfter(chargeItem[chargeItem.length - 1])
 
             activateSelect2()
@@ -57,6 +66,34 @@
 
             if ((chargeItem.length - 1) <= 1) $(`#remove_charge_${serviceIdFromChargeBtn}`).attr('disabled', 'disabled')
         })
+
+        $(document).off('click', '.addDetailCharges').on('click', '.addDetailCharges', function (event) {
+            event.preventDefault();
+
+            const splittedId = $(this).attr('id').split('|')[1];
+            const spslittedServiceAndChargeId = splittedId.split("_");
+            const serviceIdFromBtn = spslittedServiceAndChargeId[0];
+            const chargeIdFromBtn = spslittedServiceAndChargeId[1];
+
+            const tableContent = $(this).parents('.tableChargeDetailContent');
+            const bodyWrapper = $(tableContent).find('.tableChargeDetailForm-body');
+            const chargeDetailItem = $(bodyWrapper).find(".tableChargeDetailForm-body-row").length;
+            const chargeDetailHtml = chargeDetailItemHtml(serviceIdFromBtn, chargeIdFromBtn, (chargeDetailItem + 1));
+
+            $(bodyWrapper).append(chargeDetailHtml);
+
+            if (chargeDetailItem >= 1) $(tableContent).find(".removeDetailCharges").removeAttr('disabled')
+        });
+
+        $(document).off('click', '.removeDetailCharges').on('click', '.removeDetailCharges', function (event) {
+            event.preventDefault();
+
+            const tableContent = $(this).parents('.tableChargeDetailContent');
+            const chargeDetailItem = $(tableContent).find(".tableChargeDetailForm-body-row").length;
+            $(tableContent).find(".tableChargeDetailForm-body-row").eq(chargeDetailItem - 1).remove();
+
+            if (chargeDetailItem <= 2) $(this).attr('disabled', 'disabled');
+        });
 
         // Work as Expected
         $('select[name="vendor_id"]').change(function() {
@@ -199,357 +236,377 @@
 
         activateSelect2()
 
-        function serviceItemRow(index, chargeIndex) {
+        function serviceItemRow(index, chargeIndex, detailIndex) {
             return `
-        <div class="serviceTableRow">
-            <div class="tableServiceForm-body-row">
-                <div class="accordion-toggle tableServiceForm-box" data-bs-toggle="collapse" data-bs-target="#r${index}" aria-expanded="false" style="min-width: 80px;">
-                    <input type="text" value="${index} ↓" class="form-control" style="width: 100%;" readonly>
-                </div>
-                <div class="tableServiceForm-box" style="min-width: 130px;">
-                    <select
-                        name="service_data[${index - 1}][service]"
-                        class="form-select serviceList"
-                        id="service_id_${index}"
-                        style="min-width: 100%;"
-                        required>
-                        <option value="" selected hidden>
-                            Service
-                        </option>
-                        @foreach ($serviceVendors as $serviceVendor)
-                            <option
-                                value="{{ $serviceVendor->id }}">
-                                {{ $serviceVendor->service_code }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="tableServiceForm-box">
-                    <select
-                        name="service_data[${index - 1}][por_country]"
-                        class="form-select selectLists countryList"
-                        id="por_country_id_${index}"
-                        data-placeholder="Select an option"
-                        style="min-width: 100%;">
-                        <option value="" selected hidden>
-                            Country
-                        </option>
-                        @foreach ($countries as $country)
-                            <option
-                                value="{{ $country->country_id }}">
-                                {{ $country->country_name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="tableServiceForm-box">
-                    <select
-                        name="service_data[${index - 1}][por_port]"
-                        class="form-select selectLists"
-                        id="por_port_id_${index}"
-                        data-placeholder="Select an option"
-                        style="min-width: 100%;"
-                        disabled>
-                        <option value="" selected hidden>
-                            Port
-                        </option>
-                    </select>
-                </div>
-                <div class="tableServiceForm-box">
-                    <select
-                        name="service_data[${index - 1}][fdc_country]"
-                        class="form-select selectLists countryList"
-                        id="fdc_country_id_${index}"
-                        data-placeholder="Select an option"
-                        style="min-width: 100%;">
-                        <option value="" selected hidden>
-                            Country
-                        </option>
-                        @foreach ($countries as $country)
-                            <option
-                                value="{{ $country->country_id }}">
-                                {{ $country->country_name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="tableServiceForm-box">
-                    <select
-                        name="service_data[${index - 1}][fdc_port]"
-                        class="form-select selectLists"
-                        id="fdc_port_id_${index}"
-                        data-placeholder="Select an option"
-                        style="min-width: 100%;"
-                        disabled>
-                        <option value="" selected hidden>
-                            Port
-                        </option>
-                    </select>
-                </div>
-                <div class="tableServiceForm-box">
-                    <input
-                        type="text"
-                        name="service_data[${index - 1}][tos]"
-                        class="form-control"
-                        value=""
-                        style="min-width: 100%;">
-                </div>
-                <div class="tableServiceForm-box">
-                    <input
-                        type="text"
-                        name="service_data[${index - 1}][tos_name]"
-                        class="form-control"
-                        value=""
-                        style="min-width: 100%;">
-                </div>
-                <div class="tableServiceForm-box" style="min-width: 150px">
-                    <select
-                        name="service_data[${index - 1}][transit]"
-                        class="form-select selectTransit"
-                        id="select_transit_${index}"
-                        style="min-width: 100%;">
-                        <option value="" selected hidden>
-                            Transit
-                        </option>
-                        @foreach ($routedTransits as $data)
-                            <option value="{{ $data['value'] }}">
-                                {{ $data['label'] }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="tableServiceForm-box">
-                    <input
-                        type="text"
-                        name="service_data[${index - 1}][manual_input_transit]"
-                        class="form-control"
-                        id="input_transit_${index}"
-                        value=""
-                        style="min-width: 100%;"
-                        disabled>
-                </div>
-                <div class="tableServiceForm-box">
-                    <select
-                        name="service_data[${index - 1}][carrier_id]"
-                        class="form-select selectLists carrierList"
-                        id="carrier_id_${index}"
-                        data-placeholder="Select an option"
-                        style="min-width: 100%;">
-                        <option value="" selected hidden>
-                            Carrier
-                        </option>
-                        @foreach ($carriers as $carrier)
-                            <option
-                                value="{{ $carrier->carrier_id }}"
-                                data-carrier-name="{{ $carrier->carrier_name }}">
-                                {{ $carrier->carrier_code.'-'.$carrier->carrier_name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="tableServiceForm-box">
-                    <input
-                        type="text"
-                        name="service_data[${index - 1}][carrier_name]"
-                        class="form-control"
-                        value=""
-                        id="carrier_name_${index}"
-                        style="min-width: 100%;"
-                        readonly>
-                </div>
-                <div class="tableServiceForm-box">
-                    <input
-                        type="text"
-                        name="service_data[${index - 1}][party]"
-                        class="form-control"
-                        value=""
-                        style="min-width: 100%;">
-                </div>
-                <div class="tableServiceForm-box">
-                    <input
-                        type="text"
-                        name="service_data[${index - 1}][service_note]"
-                        class="form-control"
-                        value=""
-                        style="min-width: 100%;">
-                </div>
-            </div>
-            <div class="collapse accordion-collapse chargeTableRow" id="r${index}" data-bs-parent=".tableServiceForm">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="mb-10">
-
-                            <div
-                                class="d-flex align-items-center mb-1 ps-3">
-                                <h4 class="my-5 mx-3">Charge Details</h4>
-                                <div class="ms-5">
-                                    <button type="button"
-                                        id="add_charge_${index}"
-                                        class="addCharges btn btn-icon btn-success rounded" style="height: 30px; width: 30px;">
-                                        <i class="fa fa-plus pe-0"></i>
-                                    </button>
-                                    <button type="button"
-                                        id="remove_charge_${index}"
-                                        class="removeCharges btn btn-icon btn-warning rounded" style="height: 30px; width: 30px;"
-                                        disabled>
-                                        <i class="fa fa-minus pe-0"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-12">
-
-                                    <div class="table tableChargeForm">
-                                        <div class="tableChargeForm-heading">
-                                            <div class="tableChargeForm-box text-center" style="min-width: 80px !important;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    #
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 170px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    Charge
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center">
-                                                <span class="tableChargeForm-heading-text">
-                                                    Charge Name
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 115px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    C/R/N
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 100px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    Currency
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center">
-                                                <span class="tableChargeForm-heading-text">
-                                                    Unit
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 130px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    Amount per Unit
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 130px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    Minimum Amount
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center">
-                                                <span class="tableChargeForm-heading-text">
-                                                    Via Port
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 130px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    From (0) - To (44)
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 135px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    From (45) - To (99)
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 145px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    From (100) - To (299)
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 150px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    From (300) - To (499)
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 150px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    From (500) - To (999)
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 145px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    From (1000) - To (∞)
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 130px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    20°
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 130px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    40°
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 130px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    45° HC
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 130px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    45°
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 130px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    POR
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 130px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    FDC
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 110px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    PP/CC
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 150px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    Routed
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center">
-                                                <span class="tableChargeForm-heading-text">
-                                                    Manual Input Routed
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 120px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    IMCO
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 120px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    Loading Bay
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center">
-                                                <span class="tableChargeForm-heading-text">
-                                                    Commodity
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 150px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    Valid from Date
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeForm-box text-center" style="min-width: 150px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    Valid to Date
-                                                </span>
-                                            </div>
+                <div class="serviceTableRow">
+                    <div class="tableServiceForm-body-row">
+                        <div class="accordion-toggle tableServiceForm-box" data-bs-toggle="collapse" data-bs-target="#r${index}" aria-expanded="false" style="min-width: 80px;">
+                            <input type="text" value="${index} ↓" class="form-control" style="width: 100%;" readonly>
+                        </div>
+                        <div class="tableServiceForm-box" style="min-width: 130px;">
+                            <select
+                                name="service_data[${index - 1}][service]"
+                                class="form-select serviceList"
+                                id="service_id_${index}"
+                                style="min-width: 100%;"
+                                required>
+                                <option value="" selected hidden>
+                                    Service
+                                </option>
+                                @foreach ($serviceVendors as $serviceVendor)
+                                    <option
+                                        value="{{ $serviceVendor->id }}">
+                                        {{ $serviceVendor->service_code }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="tableServiceForm-box">
+                            <select
+                                name="service_data[${index - 1}][por_country]"
+                                class="form-select selectLists countryList"
+                                id="por_country_id_${index}"
+                                data-placeholder="Select an option"
+                                style="min-width: 100%;">
+                                <option value="" selected hidden>
+                                    Country
+                                </option>
+                                @foreach ($countries as $country)
+                                    <option
+                                        value="{{ $country->country_id }}">
+                                        {{ $country->country_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="tableServiceForm-box">
+                            <select
+                                name="service_data[${index - 1}][por_port]"
+                                class="form-select selectLists"
+                                id="por_port_id_${index}"
+                                data-placeholder="Select an option"
+                                style="min-width: 100%;"
+                                disabled>
+                                <option value="" selected hidden>
+                                    Port
+                                </option>
+                            </select>
+                        </div>
+                        <div class="tableServiceForm-box">
+                            <select
+                                name="service_data[${index - 1}][fdc_country]"
+                                class="form-select selectLists countryList"
+                                id="fdc_country_id_${index}"
+                                data-placeholder="Select an option"
+                                style="min-width: 100%;">
+                                <option value="" selected hidden>
+                                    Country
+                                </option>
+                                @foreach ($countries as $country)
+                                    <option
+                                        value="{{ $country->country_id }}">
+                                        {{ $country->country_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="tableServiceForm-box">
+                            <select
+                                name="service_data[${index - 1}][fdc_port]"
+                                class="form-select selectLists"
+                                id="fdc_port_id_${index}"
+                                data-placeholder="Select an option"
+                                style="min-width: 100%;"
+                                disabled>
+                                <option value="" selected hidden>
+                                    Port
+                                </option>
+                            </select>
+                        </div>
+                        <div class="tableServiceForm-box">
+                            <input
+                                type="text"
+                                name="service_data[${index - 1}][tos]"
+                                class="form-control"
+                                value=""
+                                style="min-width: 100%;">
+                        </div>
+                        <div class="tableServiceForm-box">
+                            <input
+                                type="text"
+                                name="service_data[${index - 1}][tos_name]"
+                                class="form-control"
+                                value=""
+                                style="min-width: 100%;">
+                        </div>
+                        <div class="tableServiceForm-box" style="min-width: 150px">
+                            <select
+                                name="service_data[${index - 1}][transit]"
+                                class="form-select selectTransit"
+                                id="select_transit_${index}"
+                                style="min-width: 100%;">
+                                <option value="" selected hidden>
+                                    Transit
+                                </option>
+                                @foreach ($routedTransits as $data)
+                                    <option value="{{ $data['value'] }}">
+                                        {{ $data['label'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="tableServiceForm-box">
+                            <input
+                                type="text"
+                                name="service_data[${index - 1}][manual_input_transit]"
+                                class="form-control"
+                                id="input_transit_${index}"
+                                value=""
+                                style="min-width: 100%;"
+                                disabled>
+                        </div>
+                        <div class="tableServiceForm-box">
+                            <select
+                                name="service_data[${index - 1}][carrier_id]"
+                                class="form-select selectLists carrierList"
+                                id="carrier_id_${index}"
+                                data-placeholder="Select an option"
+                                style="min-width: 100%;">
+                                <option value="" selected hidden>
+                                    Carrier
+                                </option>
+                                @foreach ($carriers as $carrier)
+                                    <option
+                                        value="{{ $carrier->carrier_id }}"
+                                        data-carrier-name="{{ $carrier->carrier_name }}">
+                                        {{ $carrier->carrier_code.'-'.$carrier->carrier_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="tableServiceForm-box">
+                            <input
+                                type="text"
+                                name="service_data[${index - 1}][carrier_name]"
+                                class="form-control"
+                                value=""
+                                id="carrier_name_${index}"
+                                style="min-width: 100%;"
+                                readonly>
+                        </div>
+                        <div class="tableServiceForm-box">
+                            <input
+                                type="text"
+                                name="service_data[${index - 1}][party]"
+                                class="form-control"
+                                value=""
+                                style="min-width: 100%;">
+                        </div>
+                        <div class="tableServiceForm-box">
+                            <input
+                                type="text"
+                                name="service_data[${index - 1}][service_note]"
+                                class="form-control"
+                                value=""
+                                style="min-width: 100%;">
+                        </div>
+                    </div>
+                    <div class="collapse accordion-collapse chargeTableRow" id="r${index}" data-bs-parent=".tableServiceForm">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mb-10">
+                                    <div
+                                        class="d-flex align-items-center mb-1 ps-3">
+                                        <h4 class="my-5 mx-3">Charge Details</h4>
+                                        <div class="ms-5">
+                                            <button type="button"
+                                                id="add_charge_${index}"
+                                                class="addCharges btn btn-icon btn-success rounded" style="height: 30px; width: 30px;">
+                                                <i class="fa fa-plus pe-0"></i>
+                                            </button>
+                                            <button type="button"
+                                                id="remove_charge_${index}"
+                                                class="removeCharges btn btn-icon btn-warning rounded" style="height: 30px; width: 30px;"
+                                                disabled>
+                                                <i class="fa fa-minus pe-0"></i>
+                                            </button>
                                         </div>
-                                        <div class="tableChargeForm-body">
-                                            ${chargeItemHtml((index), (chargeIndex))}
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="table tableChargeForm">
+                                                <div class="tableChargeForm-heading">
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 80px !important;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            #
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 170px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            Charge
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            Charge Name
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 115px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            C/R/N
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 100px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            Currency
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            Unit
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            Amount per Unit
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            Minimum Amount
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            Via Port
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            From (0) - To (44)
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 135px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            From (45) - To (99)
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 145px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            From (100) - To (299)
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 150px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            From (300) - To (499)
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 150px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            From (500) - To (999)
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 145px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            From (1000) - To (∞)
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            20°
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            20° GOH
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            40°
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            40° GOH
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            40° HC
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            40° HC GOH
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            45°
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            45° GOH
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            POR
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            FDC
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 110px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            PP/CC
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 150px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            Routed
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            Manual Input Routed
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 120px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            IMCO
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 120px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            Loading Bay
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            Commodity
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 150px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            Valid from Date
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 150px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            Valid to Date
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="tableChargeForm-body">
+                                                    ${chargeItemHtml((index), (chargeIndex), (detailIndex))}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -557,15 +614,426 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
             `
         }
 
-        function chargeItemHtml(serviceIndex, index) {
+        function chargeItemHtml(serviceIndex, index, detailIndex) {
             return `
-                <div class="chargeTableItemRow_${serviceIndex} tableChargeForm-body-row">
-                    <div class="tableChargeForm-box" style="min-width: 80px;">
+                <div class="chargeTableItemRow_${serviceIndex} tableChargeForm-body-row flex-column">
+                    <div class="d-flex flex-row p-0">
+                        <div class="tableChargeForm-box trigger-show-detail" style="min-width: 80px;">
+                            <input
+                                type="text"
+                                class="form-control"
+                                value="${index} ↓"
+                                style=""
+                                readonly>
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 170px;">
+                            <select
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][charge_id]"
+                                class="form-select chargeIdClass"
+                                id="charge_id_${serviceIndex}_${index}"
+                                style="width: 100%;">
+                                <option value="" selected hidden>
+                                    Charge
+                                </option>
+                                @foreach ($charges as $charge)
+                                    <option
+                                        value="{{ $charge->charge_id }}"
+                                        data-charge-name="{{ $charge->charge_name }}">
+                                        {{ $charge->charge_code }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="tableChargeForm-box">
+                            <input
+                                type="text"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][charge_name]"
+                                class="form-control"
+                                value=""
+                                id="charge_name_${serviceIndex}_${index}"
+                                style="width: 100%;"
+                                readonly>
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 115px;">
+                            <select
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][c_r_n]"
+                                class="form-select"
+                                style="width: 100%;">
+                                <option value="" selected hidden>
+                                    C/R/N
+                                </option>
+                                <option value="cost">
+                                    Cost
+                                </option>
+                                <option value="R">
+                                    R
+                                </option>
+                                <option value="N">
+                                    N
+                                </option>
+                            </select>
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 100px;">
+                            <select
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][currency]"
+                                id="currency_id_${serviceIndex}_${index}"
+                                class="form-select"
+                                style="width: 100%;"
+                                disabled>
+                                <option value="" selected hidden>
+                                    Currency
+                                </option>
+                                @foreach ($currencies as $currency)
+                                    <option value="{{ $currency->id }}">
+                                        {{ $currency->currency_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="tableChargeForm-box">
+                            <select
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][unit_id]"
+                                id="unit_id_${serviceIndex}_${index}"
+                                class="form-select"
+                                style="width: 100%;"
+                                disabled>
+                                <option value="" selected hidden>
+                                    Unit
+                                </option>
+                                @foreach($units as $unit)
+                                    <option
+                                        value="{{ $unit->unit_id }}"
+                                        data-unit-code="{{ $unit->unit_name }}">
+                                        {{ $unit->description." ({$unit->unit_name})" }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 130px;">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="amount_per_unit_${serviceIndex}_${index}"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][amount_per_unit]"
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 130px;">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="minimum_amount_${serviceIndex}_${index}"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][minimum_amount]"
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="via_port_${serviceIndex}_${index}"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][via_port]"
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 130px;">
+                            <input
+                                type="text"
+                                class="form-control unitKilogramField_${serviceIndex}_${index}"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][from_0_to_44]"
+                                value=""
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 135px;">
+                            <input
+                                type="text"
+                                class="form-control unitKilogramField_${serviceIndex}_${index}"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][from_45_to_99]"
+                                value=""
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 145px;">
+                            <input
+                                type="text"
+                                class="form-control unitKilogramField_${serviceIndex}_${index}"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][from_100_to_299]"
+                                value=""
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 150px;">
+                            <input
+                                type="text"
+                                class="form-control unitKilogramField_${serviceIndex}_${index}"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][from_300_to_499]"
+                                value=""
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 150px;">
+                            <input
+                                type="text"
+                                class="form-control unitKilogramField_${serviceIndex}_${index}"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][from_500_to_999]"
+                                value=""
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 145px;">
+                            <input
+                                type="text"
+                                class="form-control unitKilogramField_${serviceIndex}_${index}"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][from_1000_to_infinity]"
+                                value=""
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 130px;">
+                            <input
+                                type="text"
+                                class="form-control unitContainerField_${serviceIndex}_${index}"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][20_feet]"
+                                value=""
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 130px;">
+                            <input
+                                type="text"
+                                class="form-control unitContainerField_${serviceIndex}_${index}"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][20_feet_goh]"
+                                value=""
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 130px;">
+                            <input
+                                type="text"
+                                class="form-control unitContainerField_${serviceIndex}_${index}"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][40_feet]"
+                                value=""
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 130px;">
+                            <input
+                                type="text"
+                                class="form-control unitContainerField_${serviceIndex}_${index}"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][40_feet_goh]"
+                                value=""
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 130px;">
+                            <input
+                                type="text"
+                                class="form-control unitContainerField_${serviceIndex}_${index}"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][40_feet_hc]"
+                                value=""
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 130px;">
+                            <input
+                                type="text"
+                                class="form-control unitContainerField_${serviceIndex}_${index}"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][40_feet_hc_goh]"
+                                value=""
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 130px;">
+                            <input
+                                type="text"
+                                class="form-control unitContainerField_${serviceIndex}_${index}"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][45_feet]"
+                                value=""
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 130px;">
+                            <input
+                                type="text"
+                                class="form-control unitContainerField_${serviceIndex}_${index}"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][45_feet_goh]"
+                                value=""
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 130px;">
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][por]"
+                                value=""
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 130px;">
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][fdc]"
+                                value=""
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 110px;">
+                            <select
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][pp_cc]"
+                                class="form-select"
+                                style="width: 100%;">
+                                <option value="" selected hidden>
+                                    PP/CC
+                                </option>
+                                <option value="KG">
+                                    KG
+                                </option>
+                                <option value="SHPT">
+                                    SHPT
+                                </option>
+                                <option value="CNTR">
+                                    CNTR
+                                </option>
+                            </select>
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 150px;">
+                            <select
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][routed]"
+                                class="form-select selectRouted"
+                                id="select_routed_${serviceIndex}_${index}"
+                                style="width: 100%;">
+                                <option value="" selected hidden>
+                                    Routed
+                                </option>
+                                @foreach ($routedTransits as $data)
+                                    <option
+                                        value="{{ $data['value'] }}">
+                                        {{ $data['label'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="tableChargeForm-box">
+                            <input
+                                type="text"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][manual_input_routed]"
+                                class="form-control"
+                                id="input_routed_${serviceIndex}_${index}"
+                                value=""
+                                style="width: 100%;"
+                                disabled>
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 120px;">
+                            <select
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][imco]"
+                                class="form-select"
+                                style="width: 100%;">
+                                <option value="" selected hidden>
+                                    IMCO
+                                </option>
+                                <option value="KG">
+                                    KG
+                                </option>
+                                <option value="SHPT">
+                                    SHPT
+                                </option>
+                                <option value="CNTR">
+                                    CNTR
+                                </option>
+                            </select>
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 120px;">
+                            <select
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][loading_bay]"
+                                class="form-select"
+                                style="width: 100%;">
+                                <option value="" selected hidden>
+                                    Loading Bay
+                                </option>
+                                <option value="KG">
+                                    KG
+                                </option>
+                                <option value="SHPT">
+                                    SHPT
+                                </option>
+                                <option value="CNTR">
+                                    CNTR
+                                </option>
+                            </select>
+                        </div>
+                        <div class="tableChargeForm-box">
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][commodity]"
+                                value=""
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 150px;">
+                            <input
+                                type="date"
+                                class="form-control"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][valid_from_date]"
+                                value=""
+                                style="width: 100%;">
+                        </div>
+                        <div class="tableChargeForm-box" style="min-width: 150px;">
+                            <input
+                                type="date"
+                                class="form-control"
+                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][valid_to_date]"
+                                value=""
+                                style="width: 100%;">
+                        </div>
+                    </div>
+
+                    <div class="tableChargeDetailContent" style="display: none;">
+                        <div class="row" style="margin-left: auto; flex-basis: 100% !important; width: 100%; !important;">
+                            <div class="col-12">
+                                <div class="mb-2">
+                                    <div
+                                        class="d-flex align-items-center justify-content-start mb-1 ps-3">
+                                        <div class="ms-5">
+                                            <button type="button"
+                                                id="add_charge_detail|${serviceIndex}_${index}"
+                                                class="addDetailCharges btn btn-icon btn-success rounded" style="height: 30px; width: 30px;">
+                                                <i class="fa fa-plus pe-0"></i>
+                                            </button>
+                                            <button type="button"
+                                                id="remove_charge_detail|${serviceIndex}_${index}"
+                                                class="removeDetailCharges btn btn-icon btn-warning rounded" style="height: 30px; width: 30px;"
+                                                disabled>
+                                                <i class="fa fa-minus pe-0"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="table tableChargeDetailForm">
+                                        <div class="tableChargeDetailForm-heading">
+                                            <div class="tableChargeDetailForm-box text-center" style="min-width: 70px;">
+                                                <span class="tableChargeForm-heading-text">
+                                                    #
+                                                </span>
+                                            </div>
+                                            <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
+                                                <span class="tableChargeForm-heading-text">
+                                                    From
+                                                </span>
+                                            </div>
+                                            <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
+                                                <span class="tableChargeForm-heading-text">
+                                                    To
+                                                </span>
+                                            </div>
+                                            <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
+                                                <span class="tableChargeForm-heading-text">
+                                                    Value
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="tableChargeDetailForm-body">
+                                            ${chargeDetailItemHtml((serviceIndex), (index), (detailIndex))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
+        }
+
+        function chargeDetailItemHtml(serviceIndex, chargeIndex, index) {
+            return `
+                <div class="chargeDetailTableItemRow_${index} tableChargeDetailForm-body-row">
+                    <div class="tableChargeDetailForm-box" style="min-width: 70px;">
                         <input
                             type="text"
                             class="form-control"
@@ -573,315 +1041,31 @@
                             style=""
                             readonly>
                     </div>
-                    <div class="tableChargeForm-box" style="min-width: 170px;">
-                        <select
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][charge_id]"
-                            class="form-select chargeIdClass"
-                            id="charge_id_${serviceIndex}_${index}"
-                            style="width: 100%;">
-                            <option value="" selected hidden>
-                                Charge
-                            </option>
-                            @foreach ($charges as $charge)
-                                <option
-                                    value="{{ $charge->charge_id }}"
-                                    data-charge-name="{{ $charge->charge_name }}">
-                                    {{ $charge->charge_code }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="tableChargeForm-box">
+                    <div class="tableChargeDetailForm-box" style="min-width: 100px;">
                         <input
                             type="text"
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][charge_name]"
+                            name="service_data[${serviceIndex - 1}][charge_data][${chargeIndex - 1}][charge_detail_data][${index - 1}][from]"
                             class="form-control"
                             value=""
-                            id="charge_name_${serviceIndex}_${index}"
-                            style="width: 100%;"
-                            readonly>
-                    </div>
-                    <div class="tableChargeForm-box" style="min-width: 115px;">
-                        <select
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][c_r_n]"
-                            class="form-select"
+                            id="from_${serviceIndex}_${chargeIndex}_${index}"
                             style="width: 100%;">
-                            <option value="" selected hidden>
-                                C/R/N
-                            </option>
-                            <option value="cost">
-                                Cost
-                            </option>
-                            <option value="R">
-                                R
-                            </option>
-                            <option value="N">
-                                N
-                            </option>
-                        </select>
                     </div>
-                    <div class="tableChargeForm-box" style="min-width: 100px;">
-                        <select
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][currency]"
-                            id="currency_id_${serviceIndex}_${index}"
-                            class="form-select"
-                            style="width: 100%;"
-                            disabled>
-                            <option value="" selected hidden>
-                                Currency
-                            </option>
-                            @foreach ($currencies as $currency)
-                                <option value="{{ $currency->id }}">
-                                    {{ $currency->currency_name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="tableChargeForm-box">
-                        <select
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][unit_id]"
-                            id="unit_id_${serviceIndex}_${index}"
-                            class="form-select"
-                            style="width: 100%;"
-                            disabled>
-                            <option value="" selected hidden>
-                                Unit
-                            </option>
-                            @foreach($units as $unit)
-                                <option
-                                    value="{{ $unit->unit_id }}"
-                                    data-unit-code="{{ $unit->unit_name }}">
-                                    {{ $unit->description." ({$unit->unit_name})" }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="tableChargeForm-box" style="min-width: 130px;">
+                    <div class="tableChargeDetailForm-box" style="min-width: 100px;">
                         <input
                             type="text"
+                            name="service_data[${serviceIndex - 1}][charge_data][${chargeIndex - 1}][charge_detail_data][${index - 1}][to]"
                             class="form-control"
-                            id="amount_per_unit_${serviceIndex}_${index}"
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][amount_per_unit]"
+                            value=""
+                            id="to_${serviceIndex}_${chargeIndex}_${index}"
                             style="width: 100%;">
                     </div>
-                    <div class="tableChargeForm-box" style="min-width: 130px;">
+                    <div class="tableChargeDetailForm-box" style="min-width: 100px;">
                         <input
                             type="text"
+                            name="service_data[${serviceIndex - 1}][charge_data][${chargeIndex - 1}][charge_detail_data][${index - 1}][value]"
                             class="form-control"
-                            id="minimum_amount_${serviceIndex}_${index}"
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][minimum_amount]"
-                            style="width: 100%;">
-                    </div>
-                    <div class="tableChargeForm-box">
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="via_port_${serviceIndex}_${index}"
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][via_port]"
-                            style="width: 100%;">
-                    </div>
-                    <div class="tableChargeForm-box" style="min-width: 130px;">
-                        <input
-                            type="text"
-                            class="form-control unitKilogramField_${serviceIndex}_${index}"
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][from_0_to_44]"
                             value=""
-                            style="width: 100%;">
-                    </div>
-                    <div class="tableChargeForm-box" style="min-width: 135px;">
-                        <input
-                            type="text"
-                            class="form-control unitKilogramField_${serviceIndex}_${index}"
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][from_45_to_99]"
-                            value=""
-                            style="width: 100%;">
-                    </div>
-                    <div class="tableChargeForm-box" style="min-width: 145px;">
-                        <input
-                            type="text"
-                            class="form-control unitKilogramField_${serviceIndex}_${index}"
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][from_100_to_299]"
-                            value=""
-                            style="width: 100%;">
-                    </div>
-                    <div class="tableChargeForm-box" style="min-width: 150px;">
-                        <input
-                            type="text"
-                            class="form-control unitKilogramField_${serviceIndex}_${index}"
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][from_300_to_499]"
-                            value=""
-                            style="width: 100%;">
-                    </div>
-                    <div class="tableChargeForm-box" style="min-width: 150px;">
-                        <input
-                            type="text"
-                            class="form-control unitKilogramField_${serviceIndex}_${index}"
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][from_500_to_999]"
-                            value=""
-                            style="width: 100%;">
-                    </div>
-                    <div class="tableChargeForm-box" style="min-width: 145px;">
-                        <input
-                            type="text"
-                            class="form-control unitKilogramField_${serviceIndex}_${index}"
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][from_1000_to_infinity]"
-                            value=""
-                            style="width: 100%;">
-                    </div>
-                    <div class="tableChargeForm-box" style="min-width: 130px;">
-                        <input
-                            type="text"
-                            class="form-control unitContainerField_${serviceIndex}_${index}"
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][20_feet]"
-                            value=""
-                            style="width: 100%;">
-                    </div>
-                    <div class="tableChargeForm-box" style="min-width: 130px;">
-                        <input
-                            type="text"
-                            class="form-control unitContainerField_${serviceIndex}_${index}"
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][40_feet]"
-                            value=""
-                            style="width: 100%;">
-                    </div>
-                    <div class="tableChargeForm-box" style="min-width: 130px;">
-                        <input
-                            type="text"
-                            class="form-control unitContainerField_${serviceIndex}_${index}"
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][45_feet_hc]"
-                            value=""
-                            style="width: 100%;">
-                    </div>
-                    <div class="tableChargeForm-box" style="min-width: 130px;">
-                        <input
-                            type="text"
-                            class="form-control unitContainerField_${serviceIndex}_${index}"
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][45_feet]"
-                            value=""
-                            style="width: 100%;">
-                    </div>
-                    <div class="tableChargeForm-box" style="min-width: 130px;">
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][por]"
-                            value=""
-                            style="width: 100%;">
-                    </div>
-                    <div class="tableChargeForm-box" style="min-width: 130px;">
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][fdc]"
-                            value=""
-                            style="width: 100%;">
-                    </div>
-                    <div class="tableChargeForm-box" style="min-width: 110px;">
-                        <select
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][pp_cc]"
-                            class="form-select"
-                            style="width: 100%;">
-                            <option value="" selected hidden>
-                                PP/CC
-                            </option>
-                            <option value="KG">
-                                KG
-                            </option>
-                            <option value="SHPT">
-                                SHPT
-                            </option>
-                            <option value="CNTR">
-                                CNTR
-                            </option>
-                        </select>
-                    </div>
-                    <div class="tableChargeForm-box" style="min-width: 150px;">
-                        <select
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][routed]"
-                            class="form-select selectRouted"
-                            id="select_routed_${serviceIndex}_${index}"
-                            style="width: 100%;">
-                            <option value="" selected hidden>
-                                Routed
-                            </option>
-                            @foreach ($routedTransits as $data)
-                                <option
-                                    value="{{ $data['value'] }}">
-                                    {{ $data['label'] }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="tableChargeForm-box">
-                        <input
-                            type="text"
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][manual_input_routed]"
-                            class="form-control"
-                            id="input_routed_${serviceIndex}_${index}"
-                            value=""
-                            style="width: 100%;"
-                            disabled>
-                    </div>
-                    <div class="tableChargeForm-box" style="min-width: 120px;">
-                        <select
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][imco]"
-                            class="form-select"
-                            style="width: 100%;">
-                            <option value="" selected hidden>
-                                IMCO
-                            </option>
-                            <option value="KG">
-                                KG
-                            </option>
-                            <option value="SHPT">
-                                SHPT
-                            </option>
-                            <option value="CNTR">
-                                CNTR
-                            </option>
-                        </select>
-                    </div>
-                    <div class="tableChargeForm-box" style="min-width: 120px;">
-                        <select
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][loading_bay]"
-                            class="form-select"
-                            style="width: 100%;">
-                            <option value="" selected hidden>
-                                Loading Bay
-                            </option>
-                            <option value="KG">
-                                KG
-                            </option>
-                            <option value="SHPT">
-                                SHPT
-                            </option>
-                            <option value="CNTR">
-                                CNTR
-                            </option>
-                        </select>
-                    </div>
-                    <div class="tableChargeForm-box">
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][commodity]"
-                            value=""
-                            style="width: 100%;">
-                    </div>
-                    <div class="tableChargeForm-box" style="min-width: 150px;">
-                        <input
-                            type="date"
-                            class="form-control"
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][valid_from_date]"
-                            value=""
-                            style="width: 100%;">
-                    </div>
-                    <div class="tableChargeForm-box" style="min-width: 150px;">
-                        <input
-                            type="date"
-                            class="form-control"
-                            name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][valid_to_date]"
-                            value=""
+                            id="value_${serviceIndex}_${chargeIndex}_${index}"
                             style="width: 100%;">
                     </div>
                 </div>

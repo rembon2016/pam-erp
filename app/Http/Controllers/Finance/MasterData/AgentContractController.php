@@ -121,7 +121,7 @@ final class AgentContractController extends Controller
          ];
 
         $agent_contract = new AgentContract;
-        $customers = $this->customerService->getCustomers();
+        $customers = $this->customerService->getCustomers()->get();
         $serviceVendors = $this->serviceTypeService->getServiceTypes();
         $countries = $this->countryService->getCountries();
         $charges = $this->chargeService->getCharges();
@@ -171,7 +171,7 @@ final class AgentContractController extends Controller
             'method' => 'PUT',
          ];
 
-        $customers = $this->customerService->getCustomers();
+        $customers = $this->customerService->getCustomers()->get();
         $serviceVendors = $this->serviceTypeService->getServiceTypes();
         $countries = $this->countryService->getCountries();
         $charges = $this->chargeService->getCharges();

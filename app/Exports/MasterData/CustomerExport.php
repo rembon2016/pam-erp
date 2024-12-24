@@ -13,7 +13,7 @@ class CustomerExport implements FromCollection
     public function collection()
     {
         $customerService = new CustomerService;
-        return $customerService->getCustomers();
+        return $customerService->getCustomers()->get();
     }
 
     public function map($item): array

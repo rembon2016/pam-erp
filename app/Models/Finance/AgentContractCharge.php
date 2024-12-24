@@ -8,6 +8,7 @@ use App\Models\Finance\Charge;
 use App\Models\Operation\Master\Unit;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Finance\AgentContractService;
+use App\Models\Finance\AgentContractChargeDetail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -70,5 +71,10 @@ final class AgentContractCharge extends Model
     public function unit()
     {
         return $this->belongsTo(Unit::class, 'unit_id', 'unit_id');
+    }
+
+    public function chargeDetails()
+    {
+        return $this->hasMany(AgentContractChargeDetail::class, 'agent_contract_charge_id', 'id');
     }
 }

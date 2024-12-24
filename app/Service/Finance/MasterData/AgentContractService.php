@@ -133,6 +133,9 @@ final class AgentContractService
 
     public function upsertAgentContractService($agentContract, $serviceData): void
     {
+        $includedServiceId = collect($serviceData)->pluck('service_id')->filter(fn ($item) => $item != null || $item != '')->values();
+        if ($includedServiceId->count() > 0) $agentContract->serviceContract()->whereNotIn('id', $includedServiceId)->delete();
+
         foreach ($serviceData as $serviceKey => $service) {
             $serviceContractData = [
                 'service_type_id' => $service['service'],
@@ -164,23 +167,19 @@ final class AgentContractService
                 $this->syncServiceContractChargeData($serviceData[$serviceKey]['charge_data'], $serviceContract, $agentContract);
             }
         }
-
-        // return (object) [
-        //     'success' => true,
-        //     'data' => [
-        //         'contract_agent' => $agentContract,
-        //     ],
-        // ];
     }
 
     /**
      * @param $arrayOfCharges
      * @param $serviceContract
      * @param $agentContract
-     * @return object
+     * @return void
      */
     private function syncServiceContractChargeData($arrayOfCharges, $serviceContract, $agentContract): void
     {
+        $includedChargeId = collect($arrayOfCharges)->pluck('contract_agent_charge_id')->filter(fn ($item) => $item != null || $item != '')->values();
+        if ($includedChargeId->count() > 0) $serviceContract->contractAgentCharge()->whereNotIn('id', $includedChargeId)->delete();
+
         foreach ($arrayOfCharges as $charge) {
             $chargeData = [
                 'agent_contract_service_id' => $serviceContract->id,
@@ -225,12 +224,41 @@ final class AgentContractService
             ];
 
             if (!empty($charge['contract_agent_charge_id'])) {
-                $serviceContract
+                $serviceCharge = $serviceContract
                     ->contractAgentCharge()
                     ->where('id', $charge['contract_agent_charge_id'])
-                    ->update($chargeData);
+                    ->firstOrFail();
+
+                $serviceCharge->update($chargeData);
+                $this->syncServiceContractChargeDetailData($charge['charge_detail_data'], $serviceContract, $agentContract, $serviceCharge);
             } else {
-                $serviceContract->contractAgentCharge()->create($chargeData);
+                $serviceCharge = $serviceContract->contractAgentCharge()->create($chargeData);
+                $this->syncServiceContractChargeDetailData($charge['charge_detail_data'], $serviceContract, $agentContract, $serviceCharge);
+            }
+        }
+    }
+
+    private function syncServiceContractChargeDetailData($arrayOfDetails, $serviceContract, $agentContract, $serviceCharge): void
+    {
+        $includedDetailId = collect($arrayOfDetails)->pluck('contract_agent_charge_detail_id')->filter(fn ($item) => $item != null || $item != '')->values();
+        if ($includedDetailId->count() > 0) $serviceCharge->chargeDetails()->whereNotIn('id', $includedDetailId)->delete();
+
+        foreach ($arrayOfDetails as $detail) {
+            $chargeDetailData = [
+                'agent_contract_id' => $agentContract->id,
+                'agent_contract_service_id' => $serviceContract->id,
+                'from' => isset($detail['from']) ? $detail['from'] : null,
+                'to' => isset($detail['to']) ? $detail['to'] : null,
+                'value' => isset($detail['value']) ? $detail['value'] : null,
+            ];
+
+            if (!empty($detail['contract_agent_charge_detail_id'])) {
+                $serviceCharge
+                    ->chargeDetails()
+                    ->where('id', $detail['contract_agent_charge_detail_id'])
+                    ->update($chargeDetailData);
+            } else {
+                $serviceCharge->chargeDetails()->create($chargeDetailData);
             }
         }
     }

@@ -74,13 +74,13 @@
         <x:layout.sidebar.child-menu name="Sea Air" link="{{ route('finance.costing.sea-air.index') }}" />
         <x:layout.sidebar.child-menu name="Cross Air" link="{{ route('finance.costing.cross-air.index') }}" />
         <x:layout.sidebar.parent-menu name="Dubai Business" iconClass="bx bxs-file">
-            <x:layout.sidebar.child-menu name="Sea Import" link="/" />
-            <x:layout.sidebar.child-menu name="Sea Export" link="/" />
-            <x:layout.sidebar.child-menu name="Air Import" link="/" />
-            <x:layout.sidebar.child-menu name="Air Export" link="/" />
-            <x:layout.sidebar.child-menu name="Warehouse" link="/" />
-            <x:layout.sidebar.child-menu name="Trucking" link="/" />
-            <x:layout.sidebar.child-menu name="Courier" link="/" />
+            <x:layout.sidebar.child-menu name="Sea Import" link="{{ route('finance.costing.dubai-business.sea-import.index') }}" />
+            <x:layout.sidebar.child-menu name="Sea Export" link="{{ route('finance.costing.dubai-business.sea-export.index') }}" />
+            <x:layout.sidebar.child-menu name="Air Import" link="{{ route('finance.costing.dubai-business.air-import.index') }}" />
+            <x:layout.sidebar.child-menu name="Air Export" link="{{ route('finance.costing.dubai-business.air-export.index') }}" />
+            <x:layout.sidebar.child-menu name="Warehouse" link="{{ route('finance.costing.dubai-business.warehouse.index') }}" />
+            <x:layout.sidebar.child-menu name="Trucking" link="{{ route('finance.costing.dubai-business.trucking.index') }}" />
+            <x:layout.sidebar.child-menu name="Courier" link="{{ route('finance.costing.dubai-business.courier.index') }}" />
         </x:layout.sidebar.parent-menu>
     </x:layout.sidebar.parent-menu>
 

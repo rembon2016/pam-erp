@@ -16,7 +16,7 @@ Route::group(['as' => 'auth.', 'middleware' => ['guest']], function () {
         ->withoutMiddleware(['guest'])
         ->middleware(['auth']);
 
-    Route::post('/login-operation-to-erp', [LoginSSOController::class, 'redirectToErp'])
+    Route::get('/login-operation-to-erp', [LoginSSOController::class, 'redirectToErp'])
         ->withoutMiddleware(['guest'])
         ->name('redirect.erp');
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Auth;
 
 use App\Functions\ResponseJson;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Service\Auth\LoginService;
@@ -58,7 +59,14 @@ final class LoginSSOController extends Controller
         $response = $this->loginService->authenticateWithoutPassword(dto: $request->only('email'));
 
         return $response->success
-            ? redirect()->route('dashboard')
+            ? ResponseJson::success(
+                code: Response::HTTP_OK,
+                message: $response->message,
+                data: [
+                    'redirect_url' => route('dashboard'),
+                    'auth' => $response->data,
+                ]
+            )
             : ResponseJson::error(
                 code: $response->code,
                 message: $response->message,

@@ -28,7 +28,16 @@ final class LoginSSORequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email', 'exists:pgsql.user.account,username'],
+            'email' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    $encodedEmail = base64_decode($value);
+
+                    if (!filter_var($encodedEmail, FILTER_VALIDATE_EMAIL)) {
+                        $fail('Invalid email format');
+                    }
+                }
+            ],
             'signature' => [
                 'required',
                 function ($attribute, $value, $fail) {

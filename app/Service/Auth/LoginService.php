@@ -49,8 +49,10 @@ final class LoginService
      */
     public function authenticateWithoutPassword(array $dto): object
     {
-        $this->registeringNewUser(email: $dto['email']);
-        $account = Account::where('username', $dto['email'])->first();
+        $decodedEmail = base64_decode($dto['email']);
+
+        $this->registeringNewUser(email: $decodedEmail);
+        $account = Account::where('username', $decodedEmail)->first();
         $user = User::where('email', $account->username)->first();
 
         if (empty($account)) return ObjectResponse::error(

@@ -56,20 +56,9 @@ final class LoginSSOController extends Controller
      */
     public function redirectToErp(LoginSSORequest $request)
     {
-        $response = $this->loginService->authenticateWithoutPassword(dto: $request->only('email'));
+        $this->loginService->authenticateWithoutPassword(dto: $request->only('email'));
 
-        return $response->success
-            ? ResponseJson::success(
-                code: Response::HTTP_OK,
-                message: $response->message,
-                data: [
-                    'redirect_url' => route('dashboard'),
-                    'auth' => $response->data,
-                ]
-            )
-            : ResponseJson::error(
-                code: $response->code,
-                message: $response->message,
-            );
+        return redirect()->route('dashboard')
+            ->with('toastSuccess', __('Successfully logged in.'));
     }
 }

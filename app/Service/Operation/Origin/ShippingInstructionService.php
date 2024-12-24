@@ -28,12 +28,23 @@ final class ShippingInstructionService
      */
     public function getShippingInstructionByCustomerCondition(string $condition = 'exists'): object
     {
+        // dd($condition);
         $shippingInstructions = ShippingInstruction::query()
             ->select(['job_id', 'shipment_by', 'origin_name', 'ctd_number', 'customer_id', 'customer_name', 'date_created'])
-            ->with(['jobOrder', 'jobOrderAir', 'jobOrderDetail'])
-            ->{$condition == 'exists' ? "whereNotNull" : "whereNull"}('customer_id')
-            ->whereHas('jobOrder')
-            ->orWhereHas('jobOrderAir')
+            ->with(['jobOrder', 'jobOrderAir', 'jobOrderDetail', 'billingCustomer'])
+            ->when($condition == 'empty', function ($query) {
+                return $query->whereNull('customer_id');
+            })
+            ->when($condition == 'exists', function ($query) {
+                return $query
+                    ->whereNotNull('customer_id')
+                    ->whereHas('billingCustomer');
+            })
+            ->where(function ($query) {
+                return $query
+                    ->whereHas('jobOrder')
+                    ->orWhereHas('jobOrderAir');
+            })
             ->orderBy('date_created', 'desc');
 
         return ObjectResponse::success(

@@ -27,6 +27,7 @@ final class GlobalChargeRequest extends FormRequest
             'charge_code' => 'required|string|max:255',
             'charge_name' => 'required|string|max:255',
             'transport_type' => 'required|string|max:255',
+            'is_agreed_rate' => 'required|boolean',
             'unit_id' => 'nullable',
             'cost_id' => 'nullable',
             'revenue_id' => 'nullable'
@@ -41,7 +42,8 @@ final class GlobalChargeRequest extends FormRequest
             'transport_type' => 'Transport Type',
             'unit_id' => 'Unit',
             'revenue_id' => 'Revenue Account',
-            'cost_id' => 'Cost Account'
+            'cost_id' => 'Cost Account',
+            'is_agreed_rate' => 'Agreed Rate Charge',
         ];
     }
 }

@@ -26,8 +26,8 @@
         <div class="row">
             <div class='col-md-3'>
                 <x:form.select label="Service Type" name="service_type" defaultOption="Select Service Type" :model="request()">
-                    @foreach ($service_types as $item)
-                        <option value="{{ $item->id }}" @selected($item->id == request()->query('service_type'))>{{ $item->service_name }}</option>
+                    @foreach ($service_types as $key => $value)
+                        <option value="{{ $key }}" @selected($key == request()->query('service_type'))>{{ $value }}</option>
                     @endforeach
                 </x:form.select>
             </div>

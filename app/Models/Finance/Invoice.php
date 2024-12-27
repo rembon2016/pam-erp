@@ -28,6 +28,18 @@ final class Invoice extends Model
 
     public $incrementing = false;
 
+    const SERVICE_TYPES = [
+        'origin.seaair' => 'Sea Air',
+        'origin.crossair' => 'Cross Air',
+        'dxb.sea-import' => 'Sea Import',
+        'dxb.sea-export' => 'Sea Export',
+        'dxb.air-import' => 'Air Import',
+        'dxb.air-export' => 'Air Export',
+        'dxb.warehouse' => 'Warehouse',
+        'dxb.trucking' => 'Trucking',
+        'dxb.courier' => 'Courier',
+    ];
+
     const CANCEL_STATUS = 'Cancel';
 
     public function invoiceShipment()

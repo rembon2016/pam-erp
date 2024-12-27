@@ -153,7 +153,7 @@ final class InvoiceController extends Controller
 
     public function createNotLinked(): View
     {
-        $service_types = $this->serviceTypeService->getServiceTypes();
+        $service_types = Invoice::SERVICE_TYPES;
         $months = Utility::getListOfMonths();
         $years = Utility::getListOfYears(15);
         $vessels = $this->generalWiseService->getVessels();
@@ -181,7 +181,7 @@ final class InvoiceController extends Controller
 
     public function createLinked(): View
     {
-        $service_types = $this->serviceTypeService->getServiceTypes();
+        $service_types = Invoice::SERVICE_TYPES;
         $months = Utility::getListOfMonths();
         $years = Utility::getListOfYears(15);
         $vessels = $this->generalWiseService->getVessels();

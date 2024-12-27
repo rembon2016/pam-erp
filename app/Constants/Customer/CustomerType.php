@@ -126,6 +126,20 @@ final class CustomerType
     const BILLING_CUSTOMER = 'Billing Customer';
 
     /**
+     * Represents the 'Lubricants' constant value.
+     *
+     * @var string
+     */
+    const LUBRICANTS = 'Lubricants';
+
+    /**
+     * Represents the 'Dubai Port' constant value.
+     *
+     * @var string
+     */
+    const DUBAI_PORT = 'Dubai Port';
+
+    /**
      * Represents the 'Customer Types' constant value.
      *
      * @var array
@@ -147,6 +161,8 @@ final class CustomerType
         self::CONSIGNEE,
         self::NOTIFY_PARTY,
         self::SUB_ADDRESS,
-        self::BILLING_CUSTOMER
+        self::BILLING_CUSTOMER,
+        self::LUBRICANTS,
+        self::DUBAI_PORT,
     ];
 }

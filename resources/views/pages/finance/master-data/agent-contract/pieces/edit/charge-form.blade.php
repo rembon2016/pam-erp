@@ -215,9 +215,9 @@
                                                 </option>
                                                 @foreach ($charges as $charge)
                                                     <option
-                                                        value="{{ $charge->charge_id }}"
+                                                        value="{{ $charge->id }}"
                                                         data-charge-name="{{ $charge->charge_name }}"
-                                                        @selected($chargeValue->charge_id == $charge->charge_id)>
+                                                        @selected($chargeValue->charge_id == $charge->id)>
                                                         {{ $charge->charge_code }}
                                                     </option>
                                                 @endforeach

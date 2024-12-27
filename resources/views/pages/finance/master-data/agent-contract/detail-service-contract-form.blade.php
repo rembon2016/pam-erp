@@ -613,11 +613,11 @@
                                                                         <option value="KG" @selected($chargeValue->pp_cc == 'KG')>
                                                                             KG
                                                                         </option>
-                                                                        <option value="SHPT" @selected($chargeValue->pp_cc == 'SHPT')>
-                                                                            SHPT
+                                                                        <option value="SHIPMENT" @selected($chargeValue->pp_cc == 'SHIPMENT')>
+                                                                            SHIPMENT
                                                                         </option>
-                                                                        <option value="CNTR" @selected($chargeValue->pp_cc == 'CNTR')>
-                                                                            CNTR
+                                                                        <option value="CONTAINER" @selected($chargeValue->pp_cc == 'CONTAINER')>
+                                                                            CONTAINER
                                                                         </option>
                                                                     </select>
                                                                 </div>
@@ -653,11 +653,11 @@
                                                                         <option value="KG" @selected($chargeValue->imco == 'KG')>
                                                                             KG
                                                                         </option>
-                                                                        <option value="SHPT" @selected($chargeValue->imco == 'SHPT')>
-                                                                            SHPT
+                                                                        <option value="SHIPMENT" @selected($chargeValue->imco == 'SHIPMENT')>
+                                                                            SHIPMENT
                                                                         </option>
-                                                                        <option value="CNTR" @selected($chargeValue->imco == 'CNTR')>
-                                                                            CNTR
+                                                                        <option value="CONTAINER" @selected($chargeValue->imco == 'CONTAINER')>
+                                                                            CONTAINER
                                                                         </option>
                                                                     </select>
                                                                 </div>
@@ -672,11 +672,11 @@
                                                                         <option value="KG" @selected($chargeValue->loading_bay == 'KG')>
                                                                             KG
                                                                         </option>
-                                                                        <option value="SHPT" @selected($chargeValue->loading_bay == 'SHPT')>
-                                                                            SHPT
+                                                                        <option value="SHIPMENT" @selected($chargeValue->loading_bay == 'SHIPMENT')>
+                                                                            SHIPMENT
                                                                         </option>
-                                                                        <option value="CNTR" @selected($chargeValue->loading_bay == 'CNTR')>
-                                                                            CNTR
+                                                                        <option value="CONTAINER" @selected($chargeValue->loading_bay == 'CONTAINER')>
+                                                                            CONTAINER
                                                                         </option>
                                                                     </select>
                                                                 </div>

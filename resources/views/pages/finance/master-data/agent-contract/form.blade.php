@@ -43,7 +43,7 @@
         width: 3px;
     }
 
-    .tableServiceForm .tableServiceForm-content::-webkit-scrollbar-track, .tableChargeForm::-webkit-scrollbar-tra{
+    .tableServiceForm .tableServiceForm-content::-webkit-scrollbar-track, .tableChargeForm::-webkit-scrollbar-track{
         background-color: #000;
     }
 
@@ -89,7 +89,7 @@
             <div class='col-md-6'>
                 <x:form.select2 label="Customer" name="customer_id" placeholder="Select Customer" :model="$agent_contract" required="true">
                     @foreach ($customers as $customer)
-                        <option value="{{ $customer->id }}" @selected(old('customer_id', $agent_contract?->customer_id))>{{ $customer->customer_name }}</option>
+                        <option value="{{ $customer->id }}" @selected(old('customer_id', $agent_contract?->customer_id) == $customer->id)>{{ $customer->customer_name }}</option>
                     @endforeach
                 </x:form.select2>
             </div>

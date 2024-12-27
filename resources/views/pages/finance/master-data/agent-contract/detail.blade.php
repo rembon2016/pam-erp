@@ -41,7 +41,7 @@
         width: 3px;
     }
 
-    .tableServiceForm .tableServiceForm-content::-webkit-scrollbar-track, .tableChargeForm::-webkit-scrollbar-tra{
+    .tableServiceForm .tableServiceForm-content::-webkit-scrollbar-track, .tableChargeForm::-webkit-scrollbar-track{
         background-color: #000;
     }
 
@@ -51,21 +51,21 @@
         border-radius: 5px;
     }
 
-    .tableServiceForm :is(.tableServiceForm-heading, .tableServiceForm-body .tableServiceForm-body-row), .tableChargeForm :is(.tableChargeForm-heading, .tableChargeForm-body .tableChargeForm-body-row) {
+    .tableServiceForm :is(.tableServiceForm-heading, .tableServiceForm-body .tableServiceForm-body-row), .tableChargeForm :is(.tableChargeForm-heading, .tableChargeForm-body .tableChargeForm-body-row), .tableChargeDetailForm :is(.tableChargeDetailForm-heading, .tableChargeDetailForm-body .tableChargeDetailForm-body-row) {
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
         white-space: nowrap;
     }
 
-    .tableServiceForm .tableServiceForm-box, .tableChargeForm .tableChargeForm-box {
+    .tableServiceForm .tableServiceForm-box, .tableChargeForm .tableChargeForm-box, .tableChargeDetailForm .tableChargeDetailForm-box  {
         flex: 1;
         /* border: 1px solid #ededed; */
         min-width: 200px;
         padding: 5px;
     }
 
-    .tableChargeForm .tableChargeForm-box .tableChargeForm-heading-text {
+    .tableChargeForm .tableChargeForm-box .tableChargeForm-heading-text, .tableChargeDetailForm .tableChargeDetailForm-box .tableChargeDetailForm-heading-text  {
         font-size: 12px;
     }
 </style>

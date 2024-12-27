@@ -24,7 +24,122 @@
             <div class="col-md-4">
                 <x:form.input label="Attachment" name="contract_file" placeholder="Choose File" type="file" :model="$customer_contract" file="true" />
             </div>
-            <div class="col-12 dynamic-row-wrapper mx-0 mb-5" data-array-type="associative">
+
+            <div class="d-flex align-items-center justify-content-between gap-2 mb-5">
+                <h5 class="mb-0">Charges</h5>
+                <button type="button" class="btn btn-success btn-icon btn-sm" data-type="add-dynamic-row">
+                    <i class="bx bx-plus"></i>
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>
+                                <label for="" class="form-label required mb-0">Charge Name</label>
+                            </th>
+                            <th>
+                                <label for="" class="form-label required mb-0">Unit</label>
+                            </th>
+                            <th>
+                                <label for="" class="form-label required mb-0">Currency</label>
+                            </th>
+                            <th>
+                                <label for="" class="form-label required mb-0">Quantity</label>
+                            </th>
+                            <th>
+                                <label for="" class="form-label required mb-0">Rate</label>
+                            </th>
+                            {{-- <th>
+                                <label for="" class="form-label required mb-0">Amount</label>
+                            </th> --}}
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody class="dynamic-row-wrapper" data-array-type="associative">
+                        @php
+                            $existingCharges = old('charges', $customer_contract->charges?->toArray());
+                            if (count($existingCharges) < 1) {
+                                $existingCharges = [
+                                        [
+                                            'id' => null,
+                                            "charge_id" => null,
+                                            "currency_id" => null,
+                                            "rate" => null,
+                                            "unit_id" => null,
+                                            "quantity" => null,
+                                            "amount" => null,
+                                        ]
+                                ];
+                            }
+                        @endphp
+
+                        @foreach ($existingCharges as $index => $item)
+                            <tr class="dynamic-row-item">
+                                <input type="hidden" name="charges[{{ $index }}][customer_contract_charge_id]" value="{{ $item['id'] }}">
+                                <td>
+                                    <select name="charges[{{ $index }}][charge_id]" id="charge_id" data-type="charge" class="form-select @error('charges.{{ $index }}.charge_id') is-invalid @enderror" required>
+                                        <option value="">Select Charge</option>
+                                        @foreach ($charges as $charge)
+                                            <option value="{{ $charge->id }}" data-unit-id="{{ $charge->unit_id }}" @selected($item['charge_id'] == $charge->id)>{{ $charge->charge_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('charges.{{ $index }}.charge_id')
+                                        <div class="invalid-feedback">{{ $messages }}</div>
+                                    @enderror
+                                </td>
+                                <td>
+                                    <select name="charges[{{ $index }}][unit_id]" id="unit_id" class="form-select @error('charges.{{ $index }}.unit_id') is-invalid @enderror" required>
+                                        <option value="">Select Unit</option>
+                                        @foreach ($units as $unit)
+                                            <option value="{{ $unit->unit_id }}" @selected($item['unit_id'] == $unit->unit_id)>{{ "{$unit->description} ({$unit->unit_name})" }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('charges.{{ $index }}.unit_id')
+                                        <div class="invalid-feedback">{{ $messages }}</div>
+                                    @enderror
+                                </td>
+                                <td>
+                                    <select name="charges[{{ $index }}][currency_id]" id="currency_id" class="form-select @error('charges.{{ $index }}.currency_id') is-invalid @enderror" required>
+                                        <option value="">Select Currency</option>
+                                        @foreach ($currencies as $currency)
+                                            <option value="{{ $currency->id }}" @selected($item['currency_id'] == $currency->id)>{{ $currency->currency_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('charges.{{ $index }}.currency_id')
+                                        <div class="invalid-feedback">{{ $messages }}</div>
+                                    @enderror
+                                </td>
+                                <td>
+                                    <input type="number" name="charges[{{ $index }}][quantity]" data-type="quantity" id="quantity" class="@error('charges.{{ $index }}.quantity') is-invalid @enderror form-control" value="{{ $item['quantity'] }}" min="0" placeholder="0" required>
+                                    @error('charges.{{ $index }}.quantity')
+                                        <div class="invalid-feedback">{{ $messages }}</div>
+                                    @enderror
+                                </td>
+                                <td>
+                                    <input type="number" name="charges[{{ $index }}][rate]" data-type="rate" id="rate" class="@error('charges.{{ $index }}.rate') is-invalid @enderror form-control" value="{{ $item['rate'] }}" min="0" placeholder="0" required>
+                                    @error('charges.{{ $index }}.rate')
+                                        <div class="invalid-feedback">{{ $messages }}</div>
+                                    @enderror
+                                </td>
+                                {{-- <td>
+                                    <input type="number" name="charges[{{ $index }}][amount]" id="amount" class="@error('charges.{{ $index }}.amount') is-invalid @enderror form-control" value="{{ $item['amount'] }}" min="0" placeholder="0" readonly>
+                                    @error('charges.{{ $index }}.amount')
+                                        <div class="invalid-feedback">{{ $messages }}</div>
+                                    @enderror
+                                </td> --}}
+                                <td>
+                                    <button type="button" class="btn btn-icon btn-danger" data-type="delete-dynamic-row">
+                                        <i class="bx bx-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            {{-- <div class="col-12 dynamic-row-wrapper mx-0 mb-5" data-array-type="associative">
                 <div class="d-flex align-items-center justify-content-between gap-2 mb-5">
                     <h5 class="mb-0">Charges</h5>
                     <button type="button" class="btn btn-success btn-icon btn-sm" data-type="add-dynamic-row">
@@ -100,7 +215,7 @@
                         </div>
                     </div>
                 @endforeach
-            </div>
+            </div> --}}
             <div class="col-12">
                 <x:form.textarea label="Description" name="contract_description" placeholder="Type Description of Contract" required="true" :model="$customer_contract" />
             </div>
@@ -111,3 +226,41 @@
         </div>
     </x:form.wrapper>
 @endsection
+
+@push('js')
+    <script>
+        function calculateAmount(rowItem) {
+            const quantity = ~~parseFloat($(rowItem).find('input[data-type="quantity"]').val());
+            const rate = ~~parseFloat($(rowItem).find('input[data-type="rate"]').val());
+            const amount = quantity * rate;
+
+            $(rowItem).find("input#amount").val(amount);
+        }
+
+        $(document).on('change', "select[data-type='charge']", function (event) {
+            const rowItem = $(this).parents('.dynamic-row-item');
+            const unitId = $(this).children('option:selected').data('unit-id') || '';
+
+            $(rowItem).find('select#unit_id').val(unitId);
+        });
+
+        // $(document).on('keyup', 'input[data-type="quantity"], input[data-type="rate"]', function (event) {
+        //     const rowItem = $(this).parents(".dynamic-row-item");
+        //     calculateAmount(rowItem);
+        // })
+
+        $(document).ready(function () {
+            // Protect Contract Start and Contract End Date
+            $("#contract_start").change(function (event) {
+                $("#contract_end").val("");
+
+                const contract_start = $("#contract_start").val();
+                if (contract_start) {
+                    $("#contract_end").attr('min', contract_start);
+                } else {
+                    $("#contract_end").removeAttr('min');
+                }
+            })
+        });
+    </script>
+@endpush

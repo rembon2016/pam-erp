@@ -77,7 +77,7 @@
             <h4>Order Detail :</h4>
         </div>
 
-        <div class="row mb-7">
+        <div class="row mb-1">
             <div class="col-md-4">
                 <x-list.box-list icon="weight" title="Gross Weight" :value="$shipment['order']['gross_weight'] ?? '-'" />
             </div>
@@ -89,7 +89,7 @@
             </div>
         </div>
 
-        <div class="row mb-7">
+        <div class="row mb-1">
             <div class="col-md-4">
                 <x-list.box-list icon="sort-amount-up" title="Quantity" :value="$shipment['order']['qty'] ?? '-'" />
             </div>
@@ -101,7 +101,7 @@
             </div>
         </div>
 
-        <div class="row mb-7">
+        <div class="row mb-1">
             <div class="col-md-12">
                 <x-list.box-list icon="box-open" title="Description Of Goods" :value="!empty($shipment['order']['description_of_goods'])
                     ? Str::of($shipment['order']['description_of_goods'])->toHtmlString()
@@ -213,7 +213,7 @@
             </div>
 
             @if (!in_array($shipment['shipment_by'], ['WAREHOUSE', 'TRUCKING', 'COURIER', 'AIRIMPORT', 'AIREXPORT']))
-                <div class="row mb-4" id="flight-detail-origin-content">
+                <div class="row mb-1" id="flight-detail-origin-content">
                     <div class="col-md-3">
                         <x:list.box-list icon="plane" title="Carrier Name"
                             value="{{ $shipment['loading_plan']['carrier_name'] ?? '-' }}" />
@@ -234,7 +234,7 @@
             @endif
 
             @if (in_array($shipment['shipment_by'], ['AIRIMPORT', 'AIREXPORT']))
-                <div class="row mb-4" id="flight-detail-origin-content">
+                <div class="row mb-1" id="flight-detail-origin-content">
                     <div class="col-md-4">
                         <x:list.box-list icon="plane" title="Carrier Name"
                             value="{{ $shipment['loadingplandetail']['carrier_name'] ?? '-' }}" />
@@ -313,7 +313,7 @@
                 <h4>Delivery Information :</h4>
             </div>
 
-            <div class="row mb-7">
+            <div class="row mb-1">
                 <div class="col-md-6">
                     <x-list.box-list icon="truck" title="Truck Code" :value="$shipment['jobtruckdelivery']['truck_code'] ?? '-'" />
                 </div>
@@ -324,7 +324,7 @@
         @endif
 
         @if (!in_array($shipment['shipment_by'], ['SEAIMPORT', 'SEAEXPORT', 'AIRIMPORT', 'AIREXPORT', 'WAREHOUSE', 'TRUCKING', 'COURIER']))
-            <div class="row mb-4">
+            <div class="row mb-1">
                 <div class="col-md-6">
                     <div class="title-head-shipping-detail">
                         <h4>Destination Handling Agent :</h4>
@@ -357,7 +357,7 @@
         @endif
 
         @if (!in_array($shipment['shipment_by'], ['COURIER']))
-            <div class="row mb-4">
+            <div class="row mb-1">
                 <div class="col-md-6">
                     <div class="title-head-shipping-detail">
                         <h4>Sales Office: :</h4>
@@ -388,7 +388,7 @@
                 </div>
             </div>
 
-            <div class="row mb-4">
+            <div class="row mb-1">
                 <div class="col-md-6">
                     <div class="title-head-shipping-detail">
                         <h4>Billing Customer: :</h4>
@@ -446,7 +446,7 @@
             </div>
 
             @if (!in_array($shipment['shipment_by'], ['SEAIMPORT', 'SEAEXPORT', 'AIRIMPORT', 'AIREXPORT']))
-                <div class="row mb-4">
+                <div class="row mb-1">
                     <div
                         class="{{ in_array($shipment['shipment_by'], ['AIR', 'AIRIMPORT', 'AIREXPORT']) ? 'col-md-12' : 'col-md-6' }} mb-3">
                         <x:list.box-list-download name="ctd-file" title="CTD File"
@@ -463,7 +463,7 @@
                 </div>
             @endif
 
-            <div class="row mb-4">
+            <div class="row mb-1">
                 @php
                     $documentTypes = [
                         ['label' => 'Shipping Instruction', 'value' => 'si_doc'],
@@ -552,7 +552,7 @@
                     <h4>Notes :</h4>
                 </div>
 
-                <div class="row mb-4">
+                <div class="row mb-1">
                     <div class="col-md-12">
                         <div class="view-notes">
                             @foreach (['chat_origin' => 'Origin', 'chat_dxb' => 'DXB', 'chat_agent' => 'Agent'] as $chatKey => $sectionTitle)

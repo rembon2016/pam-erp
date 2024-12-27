@@ -70,7 +70,7 @@
                                     Via Port
                                 </span>
                             </div>
-                            <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                            {{-- <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                 <span class="tableChargeForm-heading-text">
                                     From (0) - To (44)
                                 </span>
@@ -99,7 +99,7 @@
                                 <span class="tableChargeForm-heading-text">
                                     From (1000) - To (∞)
                                 </span>
-                            </div>
+                            </div> --}}
                             <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                 <span class="tableChargeForm-heading-text">
                                     20°
@@ -215,9 +215,9 @@
                                                 </option>
                                                 @foreach ($charges as $charge)
                                                     <option
-                                                        value="{{ $charge->charge_id }}"
+                                                        value="{{ $charge->id }}"
                                                         data-charge-name="{{ $charge->charge_name }}"
-                                                        @selected($chargeValue->charge_id == $charge->charge_id)>
+                                                        @selected($chargeValue->charge_id == $charge->id)>
                                                         {{ $charge->charge_code }}
                                                     </option>
                                                 @endforeach
@@ -305,7 +305,7 @@
                                                 name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][minimum_amount]"
                                                 value="{{ $chargeValue->minimum_amount }}"
                                                 style="width: 100%;"
-                                                @if($chargeValue?->unit?->unit_name == 'CNTR')
+                                                @if($chargeValue?->unit?->unit_name == 'CONTAINER')
                                                     disabled
                                                 @elseif($chargeValue?->unit?->unit_name == 'KG')
                                                     disabled
@@ -321,11 +321,11 @@
                                                 value="{{ $chargeValue->via_port }}"
                                                 @if($chargeValue?->unit?->unit_name == 'KG')
                                                     disabled
-                                                @elseif($chargeValue?->unit?->unit_name == 'SHPT')
+                                                @elseif($chargeValue?->unit?->unit_name == 'SHIPMENT')
                                                     disabled
                                                 @endif>
                                         </div>
-                                        <div class="tableChargeForm-box" style="min-width: 130px;">
+                                        {{-- <div class="tableChargeForm-box" style="min-width: 130px;">
                                             <input
                                                 type="text"
                                                 class="form-control unitKilogramField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
@@ -390,7 +390,7 @@
                                                 @if($chargeValue?->unit?->unit_name != 'KG')
                                                     disabled
                                                 @endif>
-                                        </div>
+                                        </div> --}}
                                         <div class="tableChargeForm-box" style="min-width: 130px;">
                                             <input
                                                 type="text"
@@ -398,7 +398,7 @@
                                                 name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][20_feet]"
                                                 value="{{ $chargeValue->twenty_feet == 0 ? '' : $chargeValue->twenty_feet  }}"
                                                 style="width: 100%;"
-                                                @if($chargeValue?->unit?->unit_name != 'CNTR')
+                                                @if($chargeValue?->unit?->unit_name != 'CONTAINER')
                                                     disabled
                                                 @endif>
                                         </div>
@@ -409,7 +409,7 @@
                                                 name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][20_feet_goh]"
                                                 value="{{ $chargeValue->twenty_feet_goh == 0 ? '' : $chargeValue->twenty_feet_goh  }}"
                                                 style="width: 100%;"
-                                                @if($chargeValue?->unit?->unit_name != 'CNTR')
+                                                @if($chargeValue?->unit?->unit_name != 'CONTAINER')
                                                     disabled
                                                 @endif>
                                         </div>
@@ -420,7 +420,7 @@
                                                 name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][40_feet]"
                                                 value="{{ $chargeValue->forty_feet == 0 ? '' : $chargeValue->forty_feet }}"
                                                 style="width: 100%;"
-                                                @if($chargeValue?->unit?->unit_name != 'CNTR')
+                                                @if($chargeValue?->unit?->unit_name != 'CONTAINER')
                                                     disabled
                                                 @endif>
                                         </div>
@@ -431,7 +431,7 @@
                                                 name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][40_feet_goh]"
                                                 value="{{ $chargeValue->forty_feet_goh == 0 ? '' : $chargeValue->forty_feet_goh }}"
                                                 style="width: 100%;"
-                                                @if($chargeValue?->unit?->unit_name != 'CNTR')
+                                                @if($chargeValue?->unit?->unit_name != 'CONTAINER')
                                                     disabled
                                                 @endif>
                                         </div>
@@ -442,7 +442,7 @@
                                                 name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][40_feet_hc]"
                                                 value="{{ $chargeValue->forty_feet_hc == 0 ? '' : $chargeValue->forty_feet_hc }}"
                                                 style="width: 100%;"
-                                                @if($chargeValue?->unit?->unit_name != 'CNTR')
+                                                @if($chargeValue?->unit?->unit_name != 'CONTAINER')
                                                     disabled
                                                 @endif>
                                         </div>
@@ -453,7 +453,7 @@
                                                 name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][40_feet_hc_goh]"
                                                 value="{{ $chargeValue->forty_feet_hc_goh == 0 ? '' : $chargeValue->forty_feet_hc_goh }}"
                                                 style="width: 100%;"
-                                                @if($chargeValue?->unit?->unit_name != 'CNTR')
+                                                @if($chargeValue?->unit?->unit_name != 'CONTAINER')
                                                     disabled
                                                 @endif>
                                         </div>
@@ -464,7 +464,7 @@
                                                 name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][45_feet]"
                                                 value="{{ $chargeValue->forty_five_feet == 0 ? '' : $chargeValue->forty_five_feet }}"
                                                 style="width: 100%;"
-                                                @if($chargeValue?->unit?->unit_name != 'CNTR')
+                                                @if($chargeValue?->unit?->unit_name != 'CONTAINER')
                                                     disabled
                                                 @endif>
                                         </div>
@@ -475,7 +475,7 @@
                                                 name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][45_feet_goh]"
                                                 value="{{ $chargeValue->forty_five_feet_goh == 0 ? '' : $chargeValue->forty_five_feet_goh }}"
                                                 style="width: 100%;"
-                                                @if($chargeValue?->unit?->unit_name != 'CNTR')
+                                                @if($chargeValue?->unit?->unit_name != 'CONTAINER')
                                                     disabled
                                                 @endif>
                                         </div>
@@ -506,11 +506,11 @@
                                                 <option value="KG" @selected($chargeValue->pp_cc == 'KG')>
                                                     KG
                                                 </option>
-                                                <option value="SHPT" @selected($chargeValue->pp_cc == 'SHPT')>
-                                                    SHPT
+                                                <option value="SHIPMENT" @selected($chargeValue->pp_cc == 'SHIPMENT')>
+                                                    SHIPMENT
                                                 </option>
-                                                <option value="CNTR" @selected($chargeValue->pp_cc == 'CNTR')>
-                                                    CNTR
+                                                <option value="CONTAINER" @selected($chargeValue->pp_cc == 'CONTAINER')>
+                                                    CONTAINER
                                                 </option>
                                             </select>
                                         </div>
@@ -553,11 +553,11 @@
                                                 <option value="KG" @selected($chargeValue->imco == 'KG')>
                                                     KG
                                                 </option>
-                                                <option value="SHPT" @selected($chargeValue->imco == 'SHPT')>
-                                                    SHPT
+                                                <option value="SHIPMENT" @selected($chargeValue->imco == 'SHIPMENT')>
+                                                    SHIPMENT
                                                 </option>
-                                                <option value="CNTR" @selected($chargeValue->imco == 'CNTR')>
-                                                    CNTR
+                                                <option value="CONTAINER" @selected($chargeValue->imco == 'CONTAINER')>
+                                                    CONTAINER
                                                 </option>
                                             </select>
                                         </div>
@@ -572,11 +572,11 @@
                                                 <option value="KG" @selected($chargeValue->loading_bay == 'KG')>
                                                     KG
                                                 </option>
-                                                <option value="SHPT" @selected($chargeValue->loading_bay == 'SHPT')>
-                                                    SHPT
+                                                <option value="SHIPMENT" @selected($chargeValue->loading_bay == 'SHIPMENT')>
+                                                    SHIPMENT
                                                 </option>
-                                                <option value="CNTR" @selected($chargeValue->loading_bay == 'CNTR')>
-                                                    CNTR
+                                                <option value="CONTAINER" @selected($chargeValue->loading_bay == 'CONTAINER')>
+                                                    CONTAINER
                                                 </option>
                                             </select>
                                         </div>

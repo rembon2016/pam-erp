@@ -1,7 +1,7 @@
 @props(['shipment'])
 
 <div class="row" id="sailing-schedule-detail">
-    <div class="row mb-4">
+    <div class="row mb-1">
         <div class="col-md-6">
             <x:list.box-list icon="plane" title="Carrier Name"
                 value="{{ $shipment['mother_vessel_name'] ?? '-' }}" />
@@ -12,7 +12,7 @@
                 value="{{ $shipment['estimated_time_departure'] ?? '-' }}" date="true" />
         </div>
     </div>
-    <div class="row mb-4">
+    <div class="row mb-1">
         <div class="col-md-6">
             <x:list.box-list icon="file-alt" title="Flight Number"
                 value="{{ $shipment['voyage_number_mother'] ?? '-' }}" />
@@ -22,7 +22,7 @@
                 value="{{ $shipment['eta_dubai'] ?? '-' }}" />
         </div>
     </div>
-    <div class="row mb-4">
+    <div class="row mb-1">
         <div class="col-md-6">
             <x:list.box-list icon="calendar-check" title="Onboard Date"
                 value="{{ $shipment['onBoardDate'] ?? '-' }}" date="true" />
@@ -32,7 +32,7 @@
                 value="{{ $shipment['time_closing_mother'] ?? '-' }}" date="true" />
         </div>
     </div>
-    <div class="row mb-4">
+    <div class="row mb-1">
         <div class="col-md-6">
             <x:list.box-list icon="file-alt" title="Loading Plan Number"
                 value="{{ $shipment['loading_plan']['loading_plan_number'] ?? '-' }}" />
@@ -42,7 +42,7 @@
                 value="{{ $shipment['loading_plan']['mawb_number'] ?? '-' }}" />
         </div>
     </div>
-    <div class="row mb-4">
+    <div class="row mb-1">
         <div class="col-md-6">
             <x:list.box-list icon="calendar-check" title="Actual Arrival Date"
                 value="{{ $shipment['actualArrivalDate'] ?? '-' }}" date="true" />
@@ -52,7 +52,7 @@
                 value="{{ $shipment['days_closed']['days'] ?? '-' }}" />
         </div>
     </div>
-    <div class="row mb-4">
+    <div class="row mb-1">
         <div class="col-md-6">
             <x:list.box-list icon="hand-point-right" title="Closed Shipment By"
                 value="{{ $shipment['days_closed']['user'] ?? '-' }}" />
@@ -62,7 +62,7 @@
                 value="{{ $shipment['arrived']['tgl_aktual'] ?? '-' }}" date="true" />
         </div>
     </div>
-    <div class="row mb-4">
+    <div class="row mb-1">
         <div class="col-md-6">
             <x:list.box-list icon="calendar" title="Date Arrived At Destination"
                 value="{{ $shipment['destination_arrived']['tgl_aktual'] ?? '-' }}" date="true" />

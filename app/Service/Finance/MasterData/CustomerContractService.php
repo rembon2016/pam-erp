@@ -43,7 +43,6 @@ final class CustomerContractService
             );
 
             $charges = collect($dto['charges']);
-            // dd($charges);
             unset($dto['charges']);
 
             if (!empty($dto['contract_file'])) $dto['contract_file'] = $this->uploadFile(

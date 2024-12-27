@@ -113,6 +113,7 @@ final class CustomerContractController extends Controller
     public function store(StoreCustomerContractRequest $request): RedirectResponse
     {
         $requestDTO = $request->validated();
+        $requestDTO['unit_id'] = Unit::select('unit_id')->where('unit_name', 'KG')->first()?->unit_id;
         $createCustomerContractResponse = $this->customerContractService->createCustomerContract(
             dto: $requestDTO
         );
@@ -159,6 +160,7 @@ final class CustomerContractController extends Controller
     public function update(UpdateCustomerContractRequest $request, string $id): RedirectResponse
     {
         $requestDTO = $request->validated();
+        $requestDTO['unit_id'] = Unit::select('unit_id')->where('unit_name', 'KG')->first()?->unit_id;
         $updateCustomerContractResponse = $this->customerContractService->updateCustomerContract(
             id: $id,
             dto: $requestDTO

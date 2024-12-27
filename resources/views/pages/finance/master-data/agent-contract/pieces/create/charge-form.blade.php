@@ -71,7 +71,7 @@
                                     Via Port
                                 </span>
                             </div>
-                            <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                            {{-- <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                 <span class="tableChargeForm-heading-text">
                                     From (0) - To (44)
                                 </span>
@@ -100,7 +100,7 @@
                                 <span class="tableChargeForm-heading-text">
                                     From (1000) - To (∞)
                                 </span>
-                            </div>
+                            </div> --}}
                             <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                 <span class="tableChargeForm-heading-text">
                                     20°
@@ -310,7 +310,7 @@
                                             name="service_data[0][charge_data][0][via_port]"
                                             style="width: 100%;">
                                     </div>
-                                    <div class="tableChargeForm-box" style="min-width: 130px;">
+                                    {{-- <div class="tableChargeForm-box" style="min-width: 130px;">
                                         <input
                                             type="text"
                                             class="form-control unitKilogramField_1_1"
@@ -357,7 +357,7 @@
                                             name="service_data[0][charge_data][0][from_1000_to_infinity]"
                                             value=""
                                             style="width: 100%;">
-                                    </div>
+                                    </div> --}}
                                     <div class="tableChargeForm-box" style="min-width: 130px;">
                                         <input
                                             type="text"
@@ -449,11 +449,11 @@
                                             <option value="KG">
                                                 KG
                                             </option>
-                                            <option value="SHPT">
-                                                SHPT
+                                            <option value="SHIPMENT">
+                                                SHIPMENT
                                             </option>
-                                            <option value="CNTR">
-                                                CNTR
+                                            <option value="CONTAINER">
+                                                CONTAINER
                                             </option>
                                         </select>
                                     </div>
@@ -495,11 +495,11 @@
                                             <option value="KG">
                                                 KG
                                             </option>
-                                            <option value="SHPT">
-                                                SHPT
+                                            <option value="SHIPMENT">
+                                                SHIPMENT
                                             </option>
-                                            <option value="CNTR">
-                                                CNTR
+                                            <option value="CONTAINER">
+                                                CONTAINER
                                             </option>
                                         </select>
                                     </div>
@@ -514,11 +514,11 @@
                                             <option value="KG">
                                                 KG
                                             </option>
-                                            <option value="SHPT">
-                                                SHPT
+                                            <option value="SHIPMENT">
+                                                SHIPMENT
                                             </option>
-                                            <option value="CNTR">
-                                                CNTR
+                                            <option value="CONTAINER">
+                                                CONTAINER
                                             </option>
                                         </select>
                                     </div>

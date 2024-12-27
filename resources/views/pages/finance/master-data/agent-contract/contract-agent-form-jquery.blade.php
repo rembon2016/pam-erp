@@ -479,36 +479,6 @@
                                                     </div>
                                                     <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                                         <span class="tableChargeForm-heading-text">
-                                                            From (0) - To (44)
-                                                        </span>
-                                                    </div>
-                                                    <div class="tableChargeForm-box text-center" style="min-width: 135px;">
-                                                        <span class="tableChargeForm-heading-text">
-                                                            From (45) - To (99)
-                                                        </span>
-                                                    </div>
-                                                    <div class="tableChargeForm-box text-center" style="min-width: 145px;">
-                                                        <span class="tableChargeForm-heading-text">
-                                                            From (100) - To (299)
-                                                        </span>
-                                                    </div>
-                                                    <div class="tableChargeForm-box text-center" style="min-width: 150px;">
-                                                        <span class="tableChargeForm-heading-text">
-                                                            From (300) - To (499)
-                                                        </span>
-                                                    </div>
-                                                    <div class="tableChargeForm-box text-center" style="min-width: 150px;">
-                                                        <span class="tableChargeForm-heading-text">
-                                                            From (500) - To (999)
-                                                        </span>
-                                                    </div>
-                                                    <div class="tableChargeForm-box text-center" style="min-width: 145px;">
-                                                        <span class="tableChargeForm-heading-text">
-                                                            From (1000) - To (∞)
-                                                        </span>
-                                                    </div>
-                                                    <div class="tableChargeForm-box text-center" style="min-width: 130px;">
-                                                        <span class="tableChargeForm-heading-text">
                                                             20°
                                                         </span>
                                                     </div>
@@ -734,54 +704,6 @@
                         <div class="tableChargeForm-box" style="min-width: 130px;">
                             <input
                                 type="text"
-                                class="form-control unitKilogramField_${serviceIndex}_${index}"
-                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][from_0_to_44]"
-                                value=""
-                                style="width: 100%;">
-                        </div>
-                        <div class="tableChargeForm-box" style="min-width: 135px;">
-                            <input
-                                type="text"
-                                class="form-control unitKilogramField_${serviceIndex}_${index}"
-                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][from_45_to_99]"
-                                value=""
-                                style="width: 100%;">
-                        </div>
-                        <div class="tableChargeForm-box" style="min-width: 145px;">
-                            <input
-                                type="text"
-                                class="form-control unitKilogramField_${serviceIndex}_${index}"
-                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][from_100_to_299]"
-                                value=""
-                                style="width: 100%;">
-                        </div>
-                        <div class="tableChargeForm-box" style="min-width: 150px;">
-                            <input
-                                type="text"
-                                class="form-control unitKilogramField_${serviceIndex}_${index}"
-                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][from_300_to_499]"
-                                value=""
-                                style="width: 100%;">
-                        </div>
-                        <div class="tableChargeForm-box" style="min-width: 150px;">
-                            <input
-                                type="text"
-                                class="form-control unitKilogramField_${serviceIndex}_${index}"
-                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][from_500_to_999]"
-                                value=""
-                                style="width: 100%;">
-                        </div>
-                        <div class="tableChargeForm-box" style="min-width: 145px;">
-                            <input
-                                type="text"
-                                class="form-control unitKilogramField_${serviceIndex}_${index}"
-                                name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][from_1000_to_infinity]"
-                                value=""
-                                style="width: 100%;">
-                        </div>
-                        <div class="tableChargeForm-box" style="min-width: 130px;">
-                            <input
-                                type="text"
                                 class="form-control unitContainerField_${serviceIndex}_${index}"
                                 name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][20_feet]"
                                 value=""
@@ -870,11 +792,11 @@
                                 <option value="KG">
                                     KG
                                 </option>
-                                <option value="SHPT">
-                                    SHPT
+                                <option value="SHIPMENT">
+                                    SHIPMENT
                                 </option>
-                                <option value="CNTR">
-                                    CNTR
+                                <option value="CONTAINER">
+                                    CONTAINER
                                 </option>
                             </select>
                         </div>
@@ -916,11 +838,11 @@
                                 <option value="KG">
                                     KG
                                 </option>
-                                <option value="SHPT">
-                                    SHPT
+                                <option value="SHIPMENT">
+                                    SHIPMENT
                                 </option>
-                                <option value="CNTR">
-                                    CNTR
+                                <option value="CONTAINER">
+                                    CONTAINER
                                 </option>
                             </select>
                         </div>
@@ -935,11 +857,11 @@
                                 <option value="KG">
                                     KG
                                 </option>
-                                <option value="SHPT">
-                                    SHPT
+                                <option value="SHIPMENT">
+                                    SHIPMENT
                                 </option>
-                                <option value="CNTR">
-                                    CNTR
+                                <option value="CONTAINER">
+                                    CONTAINER
                                 </option>
                             </select>
                         </div>
@@ -1102,7 +1024,7 @@
                 })
                 // End Kilogram Row
 
-            } else if (unitName == 'SHPT') {
+            } else if (unitName == 'SHIPMENT') {
 
                 // Amount Minimum Via Row
                 $(`#amount_per_unit_${serviceId}_${chargeId}`).removeAttr('disabled')
@@ -1124,7 +1046,7 @@
                 })
                 // End Kilogram Row
 
-            } else if (unitName == 'CNTR' || unitName == 'CN') {
+            } else if (unitName == 'CONTAINER' || unitName == 'CN') {
 
                 // Amount Minimum Via Row
                 $(`#amount_per_unit_${serviceId}_${chargeId}`).removeAttr('disabled')

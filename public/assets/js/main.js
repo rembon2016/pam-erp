@@ -18,6 +18,28 @@ function debounce(func, delay) {
     };
 }
 
+async function generateAjaxSelect2(id, url, placeholder, processFunction) {
+    const currentUrl = new URL(window.location.href)
+    const queryParamValue = currentUrl.searchParams.get(id);
+
+    $(`#${id}`).select2({
+        ajax: {
+            url,
+            dataType: 'json',
+            delay: 250,
+            processResults: processFunction,
+            cache: true
+        },
+        placeholder: placeholder,
+    });
+
+
+    if (queryParamValue) {
+        const option = new Option(queryParamValue, queryParamValue, true, true);
+        $(`#${id}`).append(option).trigger('change');
+    }
+}
+
 function syncSelect2Element(elementWrapper, executedFunction) {
     $(elementWrapper).find('select[data-control="select2"]').each(function (index) {
         $(this).select2('destroy');

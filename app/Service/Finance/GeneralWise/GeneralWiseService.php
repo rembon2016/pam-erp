@@ -11,22 +11,22 @@ use Illuminate\Support\Facades\Http;
 
 final class GeneralWiseService
 {
-    public function getVessels(): array
+    public function getVessels(): object
     {
         $response = $this->processApiRequest('api/shippinginstruction/vessel');
-        return $response->success ? $response->data : [];
+        return $response;
     }
 
-    public function getOrigins(): array
+    public function getOrigins(): object
     {
         $response = $this->processApiRequest('api/shippinginstruction/origin/name');
-        return $response->success ? $response->data : [];
+        return $response;
     }
 
-    public function getVoyages(): array
+    public function getVoyages(): object
     {
         $response = $this->processApiRequest('api/shippinginstruction/voyage');
-        return $response->success ? $response->data : [];
+        return $response;
     }
 
     private function processApiRequest(string $url)

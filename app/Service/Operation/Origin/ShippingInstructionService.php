@@ -30,10 +30,11 @@ final class ShippingInstructionService
      */
     public function getShippingInstructionByCustomerCondition(string $condition = 'exists'): object
     {
+        $customer_column = $condition == 'exists' ? 'c.customer_name' : 'si.customer_name';
         $originQuery = DB::table('origin.shipping_instruction as si')->select([
             'si.job_id',
             'si.ctd_number as ctd_number',
-            DB::raw('COALESCE(c.customer_name, NULL) AS customer_name'),
+            DB::raw("$customer_column AS customer_name"),
             'si.origin_name as origin_name',
             'sio.qty as qty',
             'sio.chw as chw',
@@ -47,20 +48,19 @@ final class ShippingInstructionService
         ->leftJoin(DB::raw('origin.job_order_air as joa'), function ($join) {
             $join->on('joa.job_order_id', '=', 'jod.job_order_id')->where('si.shipment_by', '=', 'AIR');
         })
-        ->join('accounting.customer as c', 'si.customer_id', '=', 'c.customer_id')
         ->where(function ($query) {
             $query->whereNotNull('jo.job_order_code')->orWhereNotNull('joa.job_order_code');
         })->when($condition == 'empty', function ($query) {
             return $query->whereNull('si.customer_id');
         })
         ->when($condition == 'exists', function ($query) {
-            return $query->whereNotNull('si.customer_id');
+            return $query->whereNotNull('si.customer_id')->join('accounting.customer as c', 'si.customer_id', '=', 'c.customer_id');
         })->orderBy('si.date_created', 'desc');
 
         $dxbQuery = DB::table('dxb.shipping_instruction as si')->select([
             'si.job_id',
             'si.ctd_number as ctd_number',
-            DB::raw('COALESCE(c.customer_name, NULL) AS customer_name'),
+            DB::raw("$customer_column AS customer_name"),
             'si.origin_name as origin_name',
             'sio.qty as qty',
             'sio.chw as chw',
@@ -69,12 +69,11 @@ final class ShippingInstructionService
         ->join('dxb.si_order as sio', 'si.job_id', '=', 'sio.job_id')
         ->join(DB::raw('dxb.job_order_detail as jod'), 'si.job_id', '=', 'jod.job_id')
         ->leftJoin('dxb.job_order as jo', 'jo.job_order_id', '=', 'jod.job_order_id')
-        ->join('accounting.customer as c', 'si.customer_id', '=', 'c.customer_id')
         ->when($condition == 'empty', function ($query) {
             return $query->whereNull('si.customer_id');
         })
         ->when($condition == 'exists', function ($query) {
-            return $query->whereNotNull('si.customer_id');
+            return $query->whereNotNull('si.customer_id')->join('accounting.customer as c', 'si.customer_id', '=', 'c.customer_id');
         })->orderBy('si.date_created', 'desc');
 
         $shippingInstructions = $originQuery->union($dxbQuery)->get();

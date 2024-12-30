@@ -40,7 +40,8 @@
          var vendorCode = $dropdown.find(':selected').data('vendor-code');
          console.log(vendorName);
         $('#vendor_name_' + ke).val(vendorName);
-        setChargeBl(vendorId,vendorName,vendorCode, bl, 'truck');
+        var vendorType = 'truck-'+vendorCode;
+        setChargeBl(vendorId,vendorName,vendorCode, bl, vendorType,'LAND');
  }
 </script>
 @endpush

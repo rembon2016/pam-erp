@@ -66,7 +66,7 @@ $(document).ready(function () {
                     <select class="form-select vendor-select" onchange="setVendorAirName(${rowId})" id="vendor_air_id_${rowId}" name="vendor_air_id[]" data-control="select2" data-key="${rowId}">
                         <option>Select Vendor</option>
                         @foreach($vendorAir as $rows)
-                            <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}">{{ $rows->vendor_code }}</option>
+                            <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -116,8 +116,9 @@ function setVendorAirName(key) {
     var vendorId = $dropdown.val();
     var vendorName = $dropdown.find(':selected').data('vendor-name');
     var vendorCode = $dropdown.find(':selected').data('vendor-code');
+    console.log(vendorCode);
     $(`#vendor_air_name_${key}`).val(vendorName);
-
+    
     setChargeMawb(vendorId,vendorName,vendorCode, mawb, 'agent');
 }
 </script>

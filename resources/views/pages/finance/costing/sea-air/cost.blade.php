@@ -1,4 +1,20 @@
 @extends('layout.app')
+@push('css')
+<style>
+td {
+    padding-inline: 2px !important;
+}
+
+input,
+select,
+.select2-container .select2-selection--single,
+.select2-container .select2-results__option {
+    font-size: 13px !important; /* Ubah ukuran sesuai kebutuhan */
+}
+
+</style>
+
+@endpush
 @section('body')
 <x:layout.breadcrumb.wrapper module="Costing" pageName="SEA AIR">
     <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />
@@ -145,8 +161,10 @@
 
 </script>
 <script>
-function setChargeBl(vendorId,vendorName,vendorCode, bl, vendorType) {
+function setChargeBl(vendorId,vendorName,vendorCode, bl, vendorType, type) {
       var key = $("#bl_"+bl).val();
+      if(vendorType != 'manual-bl' && vendorType != 'manual-mawb'){
+        console.log("XCA");
       $(".bl-auto_"+vendorType).each(function () {
             const $row = $(this);
             const hiddenInput = $row.find(`input[name="costing_detail_bl_${key}_id[]"]`);
@@ -166,13 +184,14 @@ function setChargeBl(vendorId,vendorName,vendorCode, bl, vendorType) {
                 $row.remove();
             }
         });
+      }
 
 
             var index = window[`rowIndexBl${key}`];
             console.log(index);
             //ajax disini
            $.ajax({
-            url: `/finance/costing/sea-air/contractbl/${vendorId}/${bl}`, // Replace with your actual route
+            url: `/finance/costing/sea-air/contractbl/${vendorId}/${bl}/${type}`, // Replace with your actual route
             method: 'GET', // Or 'POST' if your route uses POST
             dataType: 'json',
             success: function (response) {
@@ -180,23 +199,25 @@ function setChargeBl(vendorId,vendorName,vendorCode, bl, vendorType) {
                     const charges = response.data;
 
                 // Process the charges
-                    charges.forEach(charge => {
-                        var data = {
-                            vendor_id: $dropdown.val(),
-                            vendor_name: vendorName,
-                            vendor_code: vendorCode,
-                            charge_id: charge.charge_id,
-                            charge_name: charge.charge_name,
-                            charge_code: charge.charge_code,
-                            currency_id: charge.currency_id,
-                            rate: charge.rate,
-                            amount_in_usd: charge.amount_in_usd,
-                            amount_in_aed: charge.amount_in_aed,
-                            status: charge.status,
-                        };
-
-                    // Call setCharge function
-                            window[`setCharge${key}`](data, key, bl, index, 'bl', vendorType);
+                        charges.forEach((charge, idx) => {
+                            var typex = idx === 0 ? 'parent' : 'child';
+                            var data = {
+                                vendor_id: vendorId,
+                                vendor_name: vendorName,
+                                vendor_code: vendorCode,
+                                charge_id: charge.charge_id,
+                                charge_name: charge.charge_name,
+                                charge_code: charge.charge_code,
+                                currency_id: charge.currency_id,
+                                rate: charge.rate,
+                                amount_in_usd: charge.amount_in_usd,
+                                amount_in_aed: charge.amount_in_aed,
+                                status: charge.status,
+                            };
+                            var indx = index + idx;
+                           var vendorLine = @json($vendor_line);
+                            // Call setCharge function
+                            window[`setCharge${key}`](data, key, bl, indx, 'bl', vendorType, typex, vendorLine);
                         });
                     } else {
                         console.log("No charges available for this BL.");
@@ -209,8 +230,8 @@ function setChargeBl(vendorId,vendorName,vendorCode, bl, vendorType) {
 
  }
 
- function setChargeBl(vendorId,vendorName,vendorCode, mawb, vendorType) {
-      var key = $("#mawb_"+bl).val();
+ function setChargeMawb(vendorId,vendorName,vendorCode, mawb, vendorType) {
+      var key = $("#mawb_"+mawb).val();
       $(".mawb-auto_"+vendorType).each(function () {
             const $row = $(this);
             const hiddenInput = $row.find(`input[name="costing_detail_mawb_${key}_id[]"]`);
@@ -244,9 +265,10 @@ function setChargeBl(vendorId,vendorName,vendorCode, bl, vendorType) {
                     const charges = response.data;
 
                 // Process the charges
-                    charges.forEach(charge => {
+                   charges.forEach((charge, idx) => {
+                        var type = idx === 0 ? 'parent' : 'child';
                         var data = {
-                            vendor_id: $dropdown.val(),
+                            vendor_id: vendorId,
                             vendor_name: vendorName,
                             vendor_code: vendorCode,
                             charge_id: charge.charge_id,
@@ -258,9 +280,11 @@ function setChargeBl(vendorId,vendorName,vendorCode, bl, vendorType) {
                             amount_in_aed: charge.amount_in_aed,
                             status: charge.status,
                         };
-
+                         var indx = index + idx;
+                        console.log(data);
+                         var vendorAir = @json($vendor_air);
                     // Call setCharge function
-                            window[`setCharge${key}`](data, key, bl, index, 'mawb', vendorType);
+                            window[`setCharge${key}`](data, key, mawb, indx, 'mawb', vendorType, type, vendorAir);
                         });
                     } else {
                         console.log("No charges available for this MAWB.");

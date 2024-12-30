@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Origin\HistoriJob;
 
 use App\Models\Master\Customer;
-use App\Models\Master\Office;
-use App\Models\Master\Port;
+use App\Models\Operation\Master\Office;
+use App\Models\Operation\Master\Port;
 use App\Models\Dxb\LoadingPlanDxb;
 use Illuminate\Support\Facades\Http;
 use App\Models\Dxb\LoadingPlanDxbDetail;

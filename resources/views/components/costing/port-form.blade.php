@@ -47,7 +47,7 @@
         $('#vendor_port_name').val(vendorName);
 
         @foreach($bl as $k => $row)
-             setChargeBl(vendorId,vendorName,vendorCode, '{{ $row->bl_number }}', 'port');
+             setChargeBl(vendorId,vendorName,vendorCode, '{{ $row->bl_number }}', 'port','LAND');
         @endforeach
 
     }

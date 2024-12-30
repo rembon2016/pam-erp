@@ -56,7 +56,7 @@
                     @if($costing != null)
                     @foreach($costing->special as $key => $row)
                      @if($row->costing_type === 'import')
-                    <tr id="row-{{ $key }}">
+                    <tr id="row-special-import-{{ $key }}">
                         <td>
                         <input type="hidden" name="costing_special_import_id[]" value="{{ $row->id }}">
                          @if($costing->status != 1)
@@ -69,7 +69,7 @@
                                                 " data-control="select2" id="vendor_special_import_id_{{ $key }}" name="vendor_special_import_id[]" data-key="{{ $key }}" @if($costing->status != 1) disabled @endif>
                                 <option>Select</option>
                                 @foreach($vendorLine as $rows)
-                                <option value="{{ $rows->vendor_id }}" @if($row->vendor_id == $rows->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}">{{ $rows->vendor_code }}</option>
+                                <option value="{{ $rows->vendor_id }}" @if($row->vendor_id == $rows->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}</option>
                                 @endforeach
                             </select></td>
                         <td><input type="text" class="form-control" value="{{ $row->vendor_name }}" id="vendor_special_import_name_{{ $key }}" placeholder="Name" name="vendor_special_import_name[]" readonly></td>
@@ -193,9 +193,12 @@ let isVisible = true; // Track the visibility state
  function setVendorSpecialImportName(key) {
 
         var $dropdown = $(`#vendor_special_import_id_${key}`);
+         var vendorId = $dropdown.val();
         var vendorName = $dropdown.find(':selected').data('vendor-name');
+         var vendorCode = $dropdown.find(':selected').data('vendor-code');
 
         $('#vendor_special_import_name_' + key).val(vendorName);
+        //setChargesSpecialImport(vendorId,vendorName,vendorCode);
     }
     @if($costing != null)
         @if($costing->special->contains(fn($item) => $item->costing_type === 'import'))
@@ -214,13 +217,13 @@ let isVisible = true; // Track the visibility state
     // Add Row
     $('#add-row-special').on('click', function () {
         const newRow = `
-            <tr id="row-${rowIndex}">
+            <tr id="row-special-import-${rowIndex}">
                 <td>
                     <select class="form-select vendor-select" onchange="setVendorSpecialImportName(${rowIndex})"
                         data-control="select2" id="vendor_special_import_id_${rowIndex}" name="vendor_special_import_id[]" data-key="${rowIndex}">
                         <option>Select</option>
                         @foreach($vendorLine as $rows)
-                        <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}">{{ $rows->vendor_code }}</option>
+                        <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}</option>
                         @endforeach
                     </select>
                 </td>
@@ -280,6 +283,7 @@ let isVisible = true; // Track the visibility state
     // Tambahkan class untuk menyembunyikan baris
     rowToHide.addClass('d-none');
 });
+
 
 
 

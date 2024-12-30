@@ -26,6 +26,7 @@ use App\Models\Finance\Customer;
 use App\Models\Finance\AgentContract;
 use App\Models\Finance\AgentContractService;
 use App\Models\Finance\AgentContractCharge;
+use App\Models\Finance\AgentContractChargeDetail;
 
 
 use Illuminate\View\View;
@@ -879,9 +880,9 @@ final class SeaAirController extends Controller
         return to_route('finance.costing.sea-air.index')->with('toastSuccess', "Update Success");
     }
 
-    public function contractbl($id, $bl_number){
+    public function contractbl($id, $bl_number, $type){
         $bl = LoadingReportBl::where("bl_number", $bl_number)->first();
-        $container = LoadingReportDetail::where("loading_report_bl_id", $bl->loading_report_bl_id)->count();
+        $container = LoadingReportDetail::where("loading_report_bl_id", $bl->loading_report_bl_id)->get();
         $contract = AgentContract::where("customer_id",$id)->first();
         if($contract == null){
             $charge_bl = null;
@@ -892,26 +893,38 @@ final class SeaAirController extends Controller
         }
         $ship = ShippingInstruction::where("loading_report_bl_id", $bl->loading_report_bl_id)->first();
 
-            $service = AgentContractService::where("agent_contract_id", $contract->id)->whereHas('serviceType', function ($query) use ($ship) {
-                $query->where("service_code", $ship->loading_type);
+            $service = AgentContractService::where("agent_contract_id", $contract->id)->whereHas('serviceType', function ($query) use ($type, $ship) {
+                if($type == 'All'){
+                    $query->where("service_code", $ship->loading_type);
+                }else{
+                    $query->where("service_code", $type);
+                }
             })->where('por_country_id', $ship->origin->country_id)->where('por_port_id',$ship->port_of_loading);
             if($service->exists()){
                 $service = $service->first();
             }else{
-                $service = AgentContractService::where("agent_contract_id", $contract->id)->whereHas('serviceType', function ($query) use ($ship) {
-                    $query->where("service_code", $ship->loading_type);
+                $service = AgentContractService::where("agent_contract_id", $contract->id)->whereHas('serviceType', function ($query) use ($type, $ship) {
+                    if($type == 'All'){
+                        $query->where("service_code", $ship->loading_type);
+                    }else{
+                        $query->where("service_code", $type);
+                    }
                 })->first();
             }
+            if($service == null){
+                $charge_bl = null;
+                    return response()->json([
+                        "status"=>false,
+                        "data"=>$charge_bl
+                    ]);
+            }
 
-            $charge = AgentContractCharge::where("agent_contract_service_id", $service->id)->get();
+            $charge = AgentContractCharge::with(['charge','unit'])->where("agent_contract_service_id", $service->id)->get();
             $charge_bl = [];
+            //return response()->json($charge);
             foreach($charge as $row){
-                $shipping = ShippingInstruction::where("loading_report_bl_id", $bl->id)->get();
+                $shipping = ShippingInstruction::where("loading_report_bl_id", $bl->loading_report_bl_id)->get();
                 if($row->unit->unit_name == "KG"){
-                    // $chw = 0.0;
-                    // foreach($shipping as $r){
-                    //     $chw = $chw + $r->order->chw;
-                    // }
                     $chw = $shipping->sum(fn($r) => $r->order->chw);
                     $currency = Currency::find($row->currency_id);
                     if($currency->currency_code == "USD"){
@@ -921,40 +934,66 @@ final class SeaAirController extends Controller
                         $amount_in_aed = $row->amount_per_unit * $chw;
                         $amount_in_usd = $amount_in_aed / 3.67;
                     }
-                }else if($row->unit->unit_name == "Shipment"){
+                    $rate = $row->amount_per_unit;
+                }else if($row->unit->unit_name == "SHIPMENT"){
                     $count = count($shipping);
                     $currency = Currency::find($row->currency_id);
                     if($currency->currency_code == "USD"){
+
                         $amount_in_usd = $row->amount_per_unit * $count;
                         $amount_in_aed = $amount_in_usd * 3.67;
                     }else{
                         $amount_in_aed = $row->amount_per_unit * $count;
                         $amount_in_usd = $amount_in_aed / 3.67;
                     }
-                }else if($row->unit->unit_name == "Container"){
+                    $rate = $row->amount_per_unit;
+                }else if($row->unit->unit_name == "CONTAINER"){
                     $currency = Currency::find($row->currency_id);
                     $jum = 0;
-                    // if($currency->currency_code == "USD"){
-                    //     foreach($container as $x){
-                    //         if (substr($x->container_type, 0, 2) == '12') {
-                    //             $jum += $row->forty_feet;
-                    //         }else if($x->container_type == "40 HC"){
 
-                    //         }
-                    //     }
-                    //     $amount_in_usd = $jum;
-                    //     $amount_in_aed = $jum * 3.67;
-                    // }else{
-                    //     $amount_in_aed = $row->amount_per_unit * $container;
-                    //     $amount_in_usd = $amount_in_aed / 3.67;
-                    // }
+                    foreach($container as $x){
+
+                        if (substr($x->container_type, 0, 5) == '20 FT') {
+                            if (strpos($x->container_type, 'GOH') !== false) {
+                                $jum += $row->twenty_feet_goh;
+                            } else {
+                                $jum += $row->twenty_feet;
+                            }
+                        } else if (substr($x->container_type, 0, 5) == '40 FT') {
+
+                            if (strpos($x->container_type, 'HC GOH') !== false) {
+                                $jum += $row->forty_feet_hc_goh;
+                            } else if (strpos($x->container_type, 'HC') !== false) {
+                                $jum += $row->forty_feet_hc;
+                            } else if (strpos($x->container_type, 'GOH') !== false) {
+                                $jum += $row->forty_feet_goh;
+                            } else {
+                                $jum += $row->forty_feet;
+                            }
+                        } else if (substr($x->container_type, 0, 5) == '45 FT') {
+                            if (strpos($x->container_type, 'GOH') !== false) {
+                                $jum += $row->forty_five_feet_goh;
+                            } else {
+                                $jum += $row->forty_five_feet;
+                            }
+                        }
+                    }
+
+                    if($currency->currency_code == "USD"){
+                        $amount_in_usd = $jum;
+                        $amount_in_aed = $jum * 3.67;
+                    }else{
+                        $amount_in_aed = $jum;
+                        $amount_in_usd = $amount_in_aed / 3.67;
+                    }
+                    $rate = $jum;
                 }
                 $charge_bl[] = [
                     "charge_id"=>$row->charge_id,
                     "charge_name"=>$row->charge->charge_name,
                     "charge_code"=>$row->charge->charge_code,
                     "currency_id"=>$row->currency_id,
-                    "rate"=>$row->amount_per_unit,
+                    "rate"=>$rate,
                     "amount_in_usd"=> $amount_in_usd,
                     "amount_in_aed"=>$amount_in_aed,
                     "status"=>'Debit'
@@ -988,15 +1027,23 @@ final class SeaAirController extends Controller
         }
         $ship = ShippingInstruction::where("loading_plan_dxb", $lp->plan_id)->first();
 
-            $service = AgentContractService::where("agent_contract_id", $contract->id)->whereHas('serviceType', function ($query) use ($ship) {
-                $query->where("service_code", $ship->loading_type);
+            $service = AgentContractService::where("agent_contract_id", $contract->id)->where('carrier_id',$lp->carrier_id)->whereHas('serviceType', function ($query) use ($ship) {
+                $query->where("service_code", 'AIR');
             })->where('por_country_id', $ship->origin->country_id)->where('por_port_id',$ship->port_of_loading);
             if($service->exists()){
                 $service = $service->first();
             }else{
-                $service = AgentContractService::where("agent_contract_id", $contract->id)->whereHas('serviceType', function ($query) use ($ship) {
-                    $query->where("service_code", $ship->loading_type);
+                $service = AgentContractService::where("agent_contract_id", $contract->id)->where('carrier_id',$lp->carrier_id)->whereHas('serviceType', function ($query) use ($ship) {
+                    $query->where("service_code", 'AIR');
                 })->first();
+            }
+
+            if($service == null){
+                $charge_mawb = null;
+                    return response()->json([
+                        "status"=>false,
+                        "data"=>$charge_mawb
+                    ]);
             }
 
             $charge = AgentContractCharge::where("agent_contract_service_id", $service->id)->get();
@@ -1010,13 +1057,16 @@ final class SeaAirController extends Controller
                     // }
                     $chw = $shipping->sum(fn($r) => $r->order->chw);
                     $currency = Currency::find($row->currency_id);
+                    $detail = AgentContractChargeDetail::where("agent_contract_charge_id", $row->id)->where('from','<=', $chw)->where('to','>=', $chw)->first();
+                    $jum = $detail->value ?? 0;
                     if($currency->currency_code == "USD"){
-                        $amount_in_usd = $row->amount_per_unit * $chw;
-                        $amount_in_aed = $amount_in_usd * 3.67;
+                        $amount_in_usd = $jum;
+                        $amount_in_aed = $jum * 3.67;
                     }else{
-                        $amount_in_aed = $row->amount_per_unit * $chw;
+                        $amount_in_aed = $jum;
                         $amount_in_usd = $amount_in_aed / 3.67;
                     }
+                    $rate = $jum;
                 }else if($row->unit->unit_name == "Shipment"){
                     $count = count($shipping);
                     $currency = Currency::find($row->currency_id);
@@ -1027,29 +1077,30 @@ final class SeaAirController extends Controller
                         $amount_in_aed = $row->amount_per_unit * $count;
                         $amount_in_usd = $amount_in_aed / 3.67;
                     }
+                    $rate = $row->amount_per_unit;
                 }
                 $charge_mawb[] = [
                     "charge_id"=>$row->charge_id,
                     "charge_name"=>$row->charge->charge_name,
                     "charge_code"=>$row->charge->charge_code,
                     "currency_id"=>$row->currency_id,
-                    "rate"=>$row->amount_per_unit,
+                    "rate"=>$rate,
                     "amount_in_usd"=> $amount_in_usd,
                     "amount_in_aed"=>$amount_in_aed,
                     "status"=>'Debit'
                 ];
             }
 
-            if(!empty($charge_bl)){
+            if(!empty($charge_mawb)){
                 return response()->json([
                     "status"=>true,
-                    "data"=>$charge_bl
+                    "data"=>$charge_mawb
                 ]);
             }else{
-                $charge_bl = null;
+                $charge_mawb = null;
                 return response()->json([
                     "status"=>false,
-                    "data"=>$charge_bl
+                    "data"=>$charge_mawb
                 ]);
             }
 

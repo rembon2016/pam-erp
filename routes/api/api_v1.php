@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Api\Finance\Billing\ApiInvoiceController;
+use App\Http\Controllers\Api\Finance\GeneralWise\ApiGeneralWiseController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiChargeController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiCustomerController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiPortController;
@@ -18,7 +19,6 @@ Route::group([
         'prefix' => 'master-data',
         'as' => 'master-data.',
     ], function () {
-
         // Customer Route
         Route::group([
             'prefix' => 'customer',
@@ -43,6 +43,15 @@ Route::group([
             Route::get('/', [ApiChargeController::class, 'list'])->name('list');
             Route::get('/{id}', [ApiChargeController::class, 'show'])->name('show');
         });
+    });
+
+    Route::group([
+        'prefix' => 'general-wise',
+        'as' => 'general-wise.',
+    ], function () {
+        Route::get('/vessel', [ApiGeneralWiseController::class, 'vessel'])->name('vessel');
+        Route::get('/voyage', [ApiGeneralWiseController::class, 'voyage'])->name('voyage');
+        Route::get('/origin', [ApiGeneralWiseController::class, 'origin'])->name('origin');
     });
 
     Route::group([

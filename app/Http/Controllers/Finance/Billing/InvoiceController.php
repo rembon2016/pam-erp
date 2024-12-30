@@ -18,13 +18,11 @@ use Illuminate\Http\RedirectResponse;
 use App\Exports\Billing\InvoiceExport;
 use Yajra\DataTables\Facades\DataTables;
 use App\Service\Finance\Billing\InvoiceService;
-use App\Service\Finance\MasterData\PortService;
 use App\Service\Finance\MasterData\UnitService;
 use App\Service\Finance\MasterData\ChargeService;
 use App\Service\Finance\MasterData\CurrencyService;
 use App\Service\Finance\MasterData\CustomerService;
 use App\Service\Finance\MasterData\ServiceTypeService;
-use App\Service\Finance\GeneralWise\GeneralWiseService;
 use App\Service\Operation\Origin\ShippingInstructionService;
 use App\Http\Requests\Finance\Billing\Invoice\StoreInvoiceRequest;
 use App\Http\Requests\Finance\Billing\Invoice\StoreNotLinkedCustomer;
@@ -34,7 +32,6 @@ final class InvoiceController extends Controller
 {
     public function __construct(
         protected InvoiceService $invoiceService,
-        protected GeneralWiseService $generalWiseService,
         protected ServiceTypeService $serviceTypeService,
         protected CustomerService $customerService,
         protected ChargeService $chargeService,
@@ -156,11 +153,8 @@ final class InvoiceController extends Controller
         $service_types = Invoice::SERVICE_TYPES;
         $months = Utility::getListOfMonths();
         $years = Utility::getListOfYears(15);
-        $vessels = $this->generalWiseService->getVessels();
-        $origins = $this->generalWiseService->getOrigins();
-        $voyages = $this->generalWiseService->getVoyages();
 
-        return view('pages.finance.billing.invoice.form-not-linked', compact('months', 'years', 'service_types', 'vessels', 'origins', 'voyages'));
+        return view('pages.finance.billing.invoice.form-not-linked', compact('months', 'years', 'service_types'));
     }
 
     public function storeNotLinked(StoreNotLinkedCustomer $request): RedirectResponse
@@ -184,12 +178,9 @@ final class InvoiceController extends Controller
         $service_types = Invoice::SERVICE_TYPES;
         $months = Utility::getListOfMonths();
         $years = Utility::getListOfYears(15);
-        $vessels = $this->generalWiseService->getVessels();
-        $origins = $this->generalWiseService->getOrigins();
-        $voyages = $this->generalWiseService->getVoyages();
         $customers = $this->customerService->getBillingCustomers();
 
-        return view('pages.finance.billing.invoice.form-linked', compact('months', 'years', 'service_types', 'customers', 'vessels', 'origins', 'voyages'));
+        return view('pages.finance.billing.invoice.form-linked', compact('months', 'years', 'service_types', 'customers'));
     }
 
     public function viewGenerate(Request $request)

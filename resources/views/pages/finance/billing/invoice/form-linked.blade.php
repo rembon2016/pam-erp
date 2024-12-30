@@ -52,36 +52,20 @@
                 <x:form.input type="date" label="End Date" name="end_date" placeholder="Choose Date" :model="request()" />
             </div>
             <div class='col-md-3'>
-                <x:form.select2 label="Vessel" name="mother_vessel_name" placeholder="Select Vessel" :model="request()">
-                    @foreach ($vessels as $item)
-                        <option value="{{ $item['mother_vessel_name'] }}" @selected($item['mother_vessel_name'] == request()->query('mother_vessel_name'))>{{ "{$item['mother_vessel_name']} - {$item['voyage_number_mother']}" }}</option>
-                    @endforeach
-                </x:form.select>
+                <x:form.select2 label="Vessel" name="mother_vessel_name" placeholder="Select Vessel" :model="request()" />
             </div>
             <div class='col-md-3'>
-                <x:form.select2 label="Voyage" name="voyage" placeholder="Select Voyage" :model="request()">
-                    @foreach ($voyages as $item)
-                    <option value="{{ $item['voyage_number_mother'] }}" @selected($item['voyage_number_mother'] == request()->query('year'))>{{ $item['voyage_number_mother'] }}</option>
-                    @endforeach
-                </x:form.select>
+                <x:form.select2 label="Voyage" name="voyage" placeholder="Select Voyage" :model="request()" />
             </div>
             <div class='col-md-3'>
-                <x:form.select2 label="Origin" name="origin" placeholder="Select Origin" :model="request()">
-                    @foreach ($origins as $item)
-                    <option value="{{ $item['origin_name'] }}" @selected($item['origin_name'] == request()->query('origin'))>{{ $item['origin_name'] }}</option>
-                    @endforeach
-                </x:form.select>
+                <x:form.select2 label="Origin" name="origin" placeholder="Select Origin" :model="request()" />
             </div>
             <div class='col-md-3'>
-                <x:form.select2 label="Billing Customer" name="customer" placeholder="Select Customer" :model="request()">
-                    @foreach ($customers as $item)
-                    <option value="{{ $item->customer_id }}" @selected($item->customer_id == request()->query('customer'))>{{ $item->customer_name }}</option>
-                    @endforeach
-                </x:form.select>
+                <x:form.select2 label="Billing Customer" name="customer" placeholder="Select Customer" :model="request()" />
             </div>
         </div>
         <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px">
-            <x:form.cancel-button href="{{ route('finance.billing.invoice.create.not-linked-billing-customer') }}" label="Reset Filter" />
+            <x:form.cancel-button href="{{ route('finance.billing.invoice.create.linked-billing-customer') }}" label="Reset Filter" />
             <x:form.submit-button label="Apply Filter" />
         </div>
     </x:form.wrapper>
@@ -127,7 +111,7 @@
 
 @push('js')
 <script>
-    const ajaxUrl = "{{ route('finance.billing.invoice.shipment.list') }}";
+    const tableAjaxUrl = "{{ route('finance.billing.invoice.shipment.list') }}";
     const selectedData = new Set();
 
     function updateCheckboxStates(table) {
@@ -164,7 +148,7 @@
                         pageLength: 10,
                         processing: true,
                         serverSide: true,
-                        ajax: ajaxUrl,
+                        ajax: tableAjaxUrl,
                         columns: [
                             {
                                 data: "row_checkbox",
@@ -285,5 +269,67 @@
     KTUtil.onDOMContentLoaded((function() {
         KTDataTable.init()
     }));
+
+    $(document).ready(function () {
+        // Billing Customer Select2
+        generateAjaxSelect2(
+            'customer',
+            "{{ route('api.finance.master-data.customer.billing.list') }}",
+            "Select Billing Customer",
+            function (result) {
+                return {
+                    results: result.data.map(item => ({
+                        id: item.customer_id,
+                        text: item.customer_name
+                    })),
+                };
+            }
+        );
+
+        // Vessel Select2
+        generateAjaxSelect2(
+            'mother_vessel_name',
+            "{{ route('api.finance.general-wise.vessel') }}",
+            "Select Vessel",
+            function (result) {
+                return {
+                    results: result.data.map(item => ({
+                        id: `${item.mother_vessel_name} - ${item.voyage_number_mother}`,
+                        text: `${item.mother_vessel_name} - ${item.voyage_number_mother}`
+                    })),
+                };
+            }
+        );
+
+        // Voyage Select2
+        generateAjaxSelect2(
+            'voyage',
+            "{{ route('api.finance.general-wise.voyage') }}",
+            "Select Voyage",
+            function (result) {
+                return {
+                    results: result.data.map(item => ({
+                        id: item.voyage_number_mother,
+                        text: item.voyage_number_mother
+                    })),
+                };
+            }
+        );
+
+        // Origin Select2
+        generateAjaxSelect2(
+            'origin',
+            "{{ route('api.finance.general-wise.origin') }}",
+            "Select Origin",
+            function (result) {
+                return {
+                    results: result.data.map(item => ({
+                        id: item.origin_name,
+                        text: item.origin_name
+                    })),
+                };
+            }
+        );
+    });
 </script>
 @endpush

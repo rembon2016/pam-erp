@@ -1041,6 +1041,10 @@ final class SeaAirController extends Controller
                 $service = AgentContractService::where("agent_contract_id", $contract->id)->where('carrier_id',$lp->carrier_id)->whereHas('serviceType', function ($query) use ($ship) {
                     $query->where("service_code", 'AIR');
                 })->first();
+                if(!$service){
+                    $service = AgentContractService::where("agent_contract_id", $contract->id)->whereHas('serviceType', function ($query) use ($ship) {
+                    })->first();
+                }
             }
 
             if($service == null){
@@ -1051,7 +1055,7 @@ final class SeaAirController extends Controller
                     ]);
             }
 
-            $charge = AgentContractCharge::where("agent_contract_service_id", $service->id)->get();
+            $charge = AgentContractCharge::with(['charge','unit'])->where("agent_contract_service_id", $service->id)->get();
             $charge_mawb = [];
             foreach($charge as $row){
                 $shipping = ShippingInstruction::where("loading_plan_dxb", $lp->plan_id)->get();
@@ -1072,7 +1076,7 @@ final class SeaAirController extends Controller
                         $amount_in_usd = $amount_in_aed / 3.67;
                     }
                     $rate = $jum;
-                }else if($row->unit->unit_name == "Shipment"){
+                }else if($row->unit->unit_name == "SHIPMENT"){
                     $count = count($shipping);
                     $currency = Currency::find($row->currency_id);
                     if($currency->currency_code == "USD"){
@@ -1237,6 +1241,110 @@ final class SeaAirController extends Controller
                 return response()->json([
                     "status"=>false,
                     "data"=>$charge_bl
+                ]);
+            }
+
+    }
+
+    public function contractlpdxb($id, $loading_id){
+        $shipment = ShippingInstruction::where("status", "!=", 3)
+        ->where("loading_id", $loading_id)
+        ->get();
+
+        $loading_plan_dxb = $shipment->pluck('loading_plan_dxb')->toArray();
+
+        $lp = LoadingPlan::with(['shipping' => function($q) use ($shipment) {
+            $jobIds = $shipment->pluck('job_id')->toArray();
+            $q->whereIn('job_id', $jobIds);
+        }])->whereIn('plan_id', $loading_plan_dxb)->get();
+
+        $contract = AgentContract::where("customer_id",$id)->first();
+
+        if($contract == null){
+            $charge_mawb = null;
+                return response()->json([
+                    "status"=>false,
+                    "data"=>$charge_bl
+                ]);
+        }
+
+        $ship = ShippingInstruction::whereIn("loading_plan_dxb", $loading_plan_dxb)->first();
+
+            $service = AgentContractService::where("agent_contract_id", $contract->id)->whereHas('serviceType', function ($query) use ($ship) {
+
+            })->where('por_country_id', $ship->origin->country_id)->where('por_port_id',$ship->port_of_loading);
+            if($service->exists()){
+                $service = $service->first();
+            }else{
+                $service = AgentContractService::where("agent_contract_id", $contract->id)->whereHas('serviceType', function ($query) use ($ship) {
+
+                })->first();
+            }
+
+            if($service == null){
+                $charge_mawb = null;
+                    return response()->json([
+                        "status"=>false,
+                        "data"=>$charge_mawb
+                    ]);
+            }
+
+            $charge = AgentContractCharge::with(['charge','unit'])->where("agent_contract_service_id", $service->id)->get();
+            $charge_mawb = [];
+            foreach($charge as $row){
+                $shipping = ShippingInstruction::whereIn("loading_plan_dxb", $loading_plan_dxb)->get();
+                if($row->unit->unit_name == "KG"){
+                    // $chw = 0.0;
+                    // foreach($shipping as $r){
+                    //     $chw = $chw + $r->order->chw;
+                    // }
+                    $chw = $shipping->sum(fn($r) => $r->order->chw);
+                    $currency = Currency::find($row->currency_id);
+                    $detail = AgentContractChargeDetail::where("agent_contract_charge_id", $row->id)->where('from','<=', $chw)->where('to','>=', $chw)->first();
+                    $jum = $detail->value ?? 0;
+                    if($currency->currency_code == "USD"){
+                        $amount_in_usd = $jum;
+                        $amount_in_aed = $jum * 3.67;
+                    }else{
+                        $amount_in_aed = $jum;
+                        $amount_in_usd = $amount_in_aed / 3.67;
+                    }
+                    $rate = $jum;
+                }else if($row->unit->unit_name == "SHIPMENT"){
+                    $count = count($shipping);
+                    $currency = Currency::find($row->currency_id);
+                    if($currency->currency_code == "USD"){
+                        $amount_in_usd = $row->amount_per_unit * $count;
+                        $amount_in_aed = $amount_in_usd * 3.67;
+                    }else{
+                        $amount_in_aed = $row->amount_per_unit * $count;
+                        $amount_in_usd = $amount_in_aed / 3.67;
+                    }
+                    $rate = $row->amount_per_unit;
+                }
+
+                $charge_mawb[] = [
+                    "charge_id"=>$row->charge_id,
+                    "charge_name"=>$row->charge->charge_name,
+                    "charge_code"=>$row->charge->charge_code,
+                    "currency_id"=>$row->currency_id,
+                    "rate"=>$rate,
+                    "amount_in_usd"=> $amount_in_usd,
+                    "amount_in_aed"=>$amount_in_aed,
+                    "status"=>'Debit'
+                ];
+            }
+
+            if(!empty($charge_mawb)){
+                return response()->json([
+                    "status"=>true,
+                    "data"=>$charge_mawb
+                ]);
+            }else{
+                $charge_mawb = null;
+                return response()->json([
+                    "status"=>false,
+                    "data"=>$charge_mawb
                 ]);
             }
 

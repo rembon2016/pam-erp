@@ -116,7 +116,7 @@
                                                 " data-control="select2" id="vendor_special_import_id_0" name="vendor_special_import_id[]" data-key="0">
                                 <option>Select</option>
                                 @foreach($vendorLine as $rows)
-                                <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}">{{ $rows->vendor_code }}</option>
+                                <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}</option>
                                 @endforeach
                             </select></td>
                         <td><input type="text" class="form-control" id="vendor_special_import_name_0" placeholder="Name" name="vendor_special_import_name[]" readonly></td>

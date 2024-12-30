@@ -102,7 +102,7 @@ select,
                 </div>
 
                 <div class="tab-pane fade row" id="import" role="tabpanel">
-                    <x-costing.special-import :costing="$costing" :vendorLine="$vendor_line" :charge="$charge" :currency="$currency" />
+                    <x-costing.special-import :costing="$costing" :vendorLine="$vendor_all" :charge="$charge" :currency="$currency" :joborder='$joborder' :bl='$bl'/>
                     <div class="d-flex align-items-center justify-content-start mb-5">
                         <x:form.input label="Transaction Date" placeholder="Transaction Date" name="transaction_date_import" type="date" :model="$joborder" />
                     </div>

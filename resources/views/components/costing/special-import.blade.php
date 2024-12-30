@@ -111,7 +111,7 @@
                     @endif
                     @endforeach
                     @else
-                    <tr id="row-0">
+                    <tr id="row-special-import-0">
                         <td><select class="form-select vendor-select" onchange="setVendorSpecialImportName(0)
                                                 " data-control="select2" id="vendor_special_import_id_0" name="vendor_special_import_id[]" data-key="0">
                                 <option>Select</option>
@@ -198,7 +198,12 @@ let isVisible = true; // Track the visibility state
          var vendorCode = $dropdown.find(':selected').data('vendor-code');
 
         $('#vendor_special_import_name_' + key).val(vendorName);
-        //setChargesSpecialImport(vendorId,vendorName,vendorCode);
+          setVendorSpecialImport(vendorId,vendorName,vendorCode,'{{ $joborder->loading_plan_id }}');
+        @foreach($bl as $r)
+        var value = '{{ $r->bl_number }}';
+         setChargeBl(vendorId,vendorName,vendorCode, value, 'special-bl','all');
+        @endforeach
+
     }
     @if($costing != null)
         @if($costing->special->contains(fn($item) => $item->costing_type === 'import'))
@@ -285,7 +290,114 @@ let isVisible = true; // Track the visibility state
 });
 
 
+function setVendorSpecialImport(vendorId,vendorName, vendorCode, loadingId){
+    var index = rowIndex;
+     $.ajax({
+            url: `/finance/costing/sea-air/contractlp/${vendorId}/${loadingId}`, // Replace with your actual route
+            method: 'GET', // Or 'POST' if your route uses POST
+            dataType: 'json',
+            success: function (response) {
+                if (response.status) {
+                    const charges = response.data;
 
+                // Process the charges
+                        charges.forEach((charge, idx) => {
+                            var typex = idx === 0 ? 'parent' : 'child';
+                            var data = {
+                                vendor_id: vendorId,
+                                vendor_name: vendorName,
+                                vendor_code: vendorCode,
+                                charge_id: charge.charge_id,
+                                charge_name: charge.charge_name,
+                                charge_code: charge.charge_code,
+                                currency_id: charge.currency_id,
+                                rate: charge.rate,
+                                amount_in_usd: charge.amount_in_usd,
+                                amount_in_aed: charge.amount_in_aed,
+                                status: charge.status,
+                            };
+                            var indx = index + idx;
+
+                            setChargeSpecialImport(data,indx, typex);
+
+
+                        });
+                    } else {
+                        console.log("No charges available for this BL.");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching charges:", error);
+                }
+            });
+}
+
+function setChargeSpecialImport(data,index, type){
+     if(type == 'parent'){
+        $('#row-special-import-' + (index - 1)).remove();
+    }
+     var vendor_id = data['vendor_id'];
+        var vendor_code = data['vendor_code'];
+         var vendor_name = data['vendor_name'];
+         var rate = data['rate'] ?? null;
+          var charge_id = data['charge_id'] ?? null;
+         var currency_id = data['currency_id'] ?? null;
+         var amount_in_usd = data['amount_in_usd'] ?? null;
+         var amount_in_aed = data['amount_in_aed'] ?? null;
+         var status = data['status'] ?? null;
+    const newRow = `
+            <tr id="row-special-import-${index}">
+                <td>
+                <div ${type == 'child' ? 'style="display:none"' : ''}>
+                    <select class="form-select vendor-select" onchange="setVendorSpecialImportName(${index})"
+                        data-control="select2" id="vendor_special_import_id_${index}" name="vendor_special_import_id[]" data-key="${index}">
+                        <option>Select</option>
+                        @foreach($vendorLine as $rows)
+                        <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}" ${'{{ $rows->vendor_id }}' == vendor_id ? 'selected' : ''}>{{ $rows->vendor_code }}</option>
+                        @endforeach
+                    </select>
+                    </div>
+                </td>
+                <td>
+                <div ${type == 'child' ? 'style="display:none"' : ''}>
+                <input type="text" class="form-control" id="vendor_special_import_name_${index}" value='${vendor_name}' placeholder="Name" name="vendor_special_import_name[]" readonly></td>
+                </div>
+                <td>
+                    <select class="form-select" data-control="select2" id="charge_special_import_id_${index}" name="charge_special_import_id[]" data-key="${index}">
+                        <option>Select</option>
+                        @foreach($charge as $rows)
+                        <option value="{{ $rows->id }}" ${'{{ $rows->id }}' == charge_id ? 'selected' : ''}>{{ $rows->charge_code }}</option>
+                        @endforeach
+                    </select>
+                </td>
+                <td>
+                    <select class="form-select" data-control="select2" id="currency_special_import_id_${index}" name="currency_special_import_id[]" data-key="${index}">
+                        <option>Select</option>
+                        @foreach($currency as $rows)
+                        <option value="{{ $rows->id }}" ${'{{ $rows->id }}' == currency_id ? 'selected' : ''}>{{ $rows->currency_code }}</option>
+                        @endforeach
+                    </select>
+                </td>
+                <td><input type="text" class="form-control" name="rate_special_import[]" value='${rate}' placeholder="Type here.."></td>
+                <td><input type="text" class="form-control" name="amount_special_import[]" value='${amount_in_usd}' placeholder="Type here.."></td>
+                <td><input type="text" class="form-control" name="local_amount_special_import[]" value='${amount_in_aed}' placeholder="Type here.."></td>
+                <td>
+                    <select class="form-select" name="status_special_import[]">
+                        <option>Select</option>
+                        <option value="Debit" ${'Debit' == status ? 'selected' : ''}>Debit</option>
+                        <option value="Credit" ${'Credit' == status ? 'selected' : ''}>Credit</option>
+                    </select>
+                </td>
+                <td><button type="button" class="btn btn-icon btn-danger btn-remove-row" style="height: 30px; width: 30px;margin-top:5px;">
+                    <i class="fa fa-trash"></i>
+                </button>
+                </td>
+            </tr>
+        `;
+        $('#charges-rows').append(newRow); // Add the new row to the table
+        $('.vendor-select').select2();
+        rowIndex++; // Increment row index
+}
 
 </script>
 

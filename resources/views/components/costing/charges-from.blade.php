@@ -110,6 +110,25 @@
 
 @push('js')
 <script>
+@if(!empty($z))
+
+let isVisible{{ ucfirst($type) }}{{ $k }}{{ $z }} = true; // Track the visibility state
+
+        $('#updown-{{ $type }}-{{ $k }}').click(function () {
+            console.log('clicked');
+            if (isVisible{{ ucfirst($type) }}{{ $k }}{{ $z }}) {
+                // Hide the table and change the icon to "angle-up"
+                $('#table-{{ $type }}-{{ $k }}').slideUp();
+                $(this).find('i').removeClass('fa-angle-down').addClass('fa-angle-up');
+            } else {
+                // Show the table and change the icon to "angle-down"
+                $('#table-{{ $type }}-{{ $k }}').slideDown();
+                $(this).find('i').removeClass('fa-angle-up').addClass('fa-angle-down');
+            }
+            isVisible{{ ucfirst($type) }}{{ $k }}{{ $z }} = !isVisible{{ ucfirst($type) }}{{ $k }}{{ $z }}; // Toggle visibility state
+        });
+
+@else
 let isVisible{{ ucfirst($type) }}{{ $k }} = true; // Track the visibility state
 
         $('#updown-{{ $type }}-{{ $k }}').click(function () {
@@ -126,6 +145,8 @@ let isVisible{{ ucfirst($type) }}{{ $k }} = true; // Track the visibility state
             isVisible{{ ucfirst($type) }}{{ $k }} = !isVisible{{ ucfirst($type) }}{{ $k }}; // Toggle visibility state
         });
 
+@endif
+
  function setVendorName{{ ucfirst($type) }}(k,key,vendor = '') {
 
         var $dropdown = $(`#vendor_{{ $type }}_${k}_id_${key}`);
@@ -139,7 +160,7 @@ let isVisible{{ ucfirst($type) }}{{ $k }} = true; // Track the visibility state
         var value = '{{ $value }}';
         @if($type == 'bl')
         console.log("BABABA");
-        setChargeBl(vendorId,vendorName,vendorCode, value, 'manual-bl','All');
+        setChargeBl(vendorId,vendorName,vendorCode, value, 'manual-bl','or');
         @elseif($type == 'mawb')
         setChargeMawb(vendorId,vendorName,vendorCode, value, 'manual-mawb');
         @endif

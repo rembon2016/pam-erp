@@ -39,6 +39,7 @@ final class ShippingInstructionService
             'sio.qty as qty',
             'sio.chw as chw',
             DB::raw('COALESCE(jo.job_order_code, joa.job_order_code) AS job_order_code'),
+            'si.date_created as date_created',
         ])
         ->join('origin.si_order as sio', 'si.job_id', '=', 'sio.job_id')
         ->join(DB::raw('origin.job_order_detail as jod'), 'si.job_id', '=', 'jod.job_id')
@@ -55,7 +56,7 @@ final class ShippingInstructionService
         })
         ->when($condition == 'exists', function ($query) {
             return $query->whereNotNull('si.customer_id')->join('accounting.customer as c', 'si.customer_id', '=', 'c.customer_id');
-        })->orderBy('si.date_created', 'desc');
+        });
 
         $dxbQuery = DB::table('dxb.shipping_instruction as si')->select([
             'si.job_id',
@@ -65,6 +66,7 @@ final class ShippingInstructionService
             'sio.qty as qty',
             'sio.chw as chw',
             DB::raw('jo.job_order_code AS job_order_code'),
+            'si.date_created as date_created',
         ])
         ->join('dxb.si_order as sio', 'si.job_id', '=', 'sio.job_id')
         ->join(DB::raw('dxb.job_order_detail as jod'), 'si.job_id', '=', 'jod.job_id')
@@ -74,9 +76,12 @@ final class ShippingInstructionService
         })
         ->when($condition == 'exists', function ($query) {
             return $query->whereNotNull('si.customer_id')->join('accounting.customer as c', 'si.customer_id', '=', 'c.customer_id');
-        })->orderBy('si.date_created', 'desc');
+        });
 
-        $shippingInstructions = $originQuery->union($dxbQuery)->get();
+        $shippingInstructions = $originQuery->union($dxbQuery)
+            ->orderBy('date_created', 'DESC')
+            ->orderBy('ctd_number', 'ASC')
+            ->get();
 
         return ObjectResponse::success(
             message: __('crud.fetched', ['name' => 'Shipping Instruction']),

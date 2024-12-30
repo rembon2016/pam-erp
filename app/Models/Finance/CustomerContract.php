@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
+use App\Models\Finance\Currency;
 use App\Models\Finance\Customer;
 use Illuminate\Database\Eloquent\Model;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
@@ -45,9 +46,19 @@ final class CustomerContract extends Model
         return asset('storage/' . self::FOLDER_NAME . '/' . $this->contract_file);
     }
 
+    public function currency()
+    {
+        return $this->hasOne(Currency::class, 'id', 'currency_id');
+    }
+
     public function charges()
     {
         return $this->hasMany(CustomerContractCharge::class, 'customer_contract_id', 'id');
+    }
+
+    public function getChargeRate($quantity)
+    {
+        return $this->charges()->where('quantity', '<=', $quantity)->orderBy('quantity', 'desc')->first() ?? $this->charges()->orderBy('quantity', 'asc')->first();
     }
 
     public function customer()

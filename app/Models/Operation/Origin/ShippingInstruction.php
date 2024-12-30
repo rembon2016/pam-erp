@@ -60,6 +60,11 @@ class ShippingInstruction extends Model
         return $this->belongsTo(CustomerBilling::class, 'customer_id', 'customer_id');
     }
 
+    public function agreedRates()
+    {
+        return $this->hasMany(AgreedRate::class, 'job_id', 'job_id');
+    }
+
     public function salesoffice()
     {
         return $this->hasMany(SalesOffice::class, 'job_id', 'job_id');

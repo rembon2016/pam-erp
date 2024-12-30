@@ -98,44 +98,43 @@ final class InvoiceController extends Controller
             ? 'empty'
             : 'exists';
 
-        if (request()->ajax()) {
-            $instructions = $this->shippingInstructionService
-                ->getShippingInstructionByCustomerCondition(condition: $billingCustomerCondition);
+        // if (request()->ajax()) {
+            $instructions = $this->shippingInstructionService->getShippingInstructionByCustomerCondition(condition: $billingCustomerCondition);
 
             return DataTables::of($instructions->data)
                 ->addColumn('row_checkbox', function ($col) {
                     return "<input type='checkbox' class='row-checkbox' value='{$col->job_id}' />";
                 })
                 ->addColumn('billing_customer_name', function ($col) {
-                    return $col->billingCustomer?->customer_name ?? '-';
+                    return $col->customer_name ?? '-';
                 })
-                ->addColumn('job_order_code', function ($col) {
-                    $jobOrderCode = $col->shipment_by == 'SEAAIR'
-                        ? $col->jobOrder->job_order_code ?? '-'
-                        : $col->jobOrderAir->job_order_code ?? '-';
+                // ->addColumn('job_order_code', function ($col) {
+                //     $jobOrderCode = $col->shipment_by == 'SEAAIR'
+                //         ? $col->jobOrder->job_order_code ?? '-'
+                //         : $col->jobOrderAir->job_order_code ?? '-';
 
-                    return $jobOrderCode;
-                })
-                ->addColumn('origin_name', function ($col) {
-                    $jobOrderOriginName = $col->origin_name;
+                //     return $jobOrderCode;
+                // })
+                // ->addColumn('origin_name', function ($col) {
+                //     $jobOrderOriginName = $col->origin_name;
 
-                    return $jobOrderOriginName;
-                })
-                ->addColumn('qty', function ($col) {
-                    return $col->order->qty ?? '-';
-                })
-                ->addColumn('chw', function ($col) {
-                    return $col->order->chw ?? '-';
-                })
+                //     return $jobOrderOriginName;
+                // })
+                // ->addColumn('qty', function ($col) {
+                //     return $col->order->qty ?? '-';
+                // })
+                // ->addColumn('chw', function ($col) {
+                //     return $col->order->chw ?? '-';
+                // })
                 ->addIndexColumn()
                 ->rawColumns(['row_checkbox'])
                 ->toJson();
-        }
+        // }
 
-        return ResponseJson::error(
-            Response::HTTP_UNAUTHORIZED,
-            'Access Unauthorized',
-        );
+        // return ResponseJson::error(
+        //     Response::HTTP_UNAUTHORIZED,
+        //     'Access Unauthorized',
+        // );
     }
 
     public function detail(string $id): View|RedirectResponse

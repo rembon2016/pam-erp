@@ -7,8 +7,10 @@ namespace App\Service\Operation\Origin;
 use Illuminate\Http\Response;
 use App\Functions\ObjectResponse;
 use Illuminate\Support\Benchmark;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
 use App\Models\Operation\Origin\ShippingInstruction;
+use App\Models\Operation\Dxb\ShippingInstruction as OriginShippingInstruction;
 
 final class ShippingInstructionService
 {
@@ -28,23 +30,54 @@ final class ShippingInstructionService
      */
     public function getShippingInstructionByCustomerCondition(string $condition = 'exists'): object
     {
-        $shippingInstructions = ShippingInstruction::query()
-            ->select(['job_id', 'shipment_by', 'origin_name', 'ctd_number', 'customer_id', 'customer_name', 'date_created'])
-            ->with(['jobOrder', 'jobOrderAir', 'jobOrderDetail', 'billingCustomer'])
-            ->when($condition == 'empty', function ($query) {
-                return $query->whereNull('customer_id');
-            })
-            ->when($condition == 'exists', function ($query) {
-                return $query
-                    ->whereNotNull('customer_id')
-                    ->whereHas('billingCustomer');
-            })
-            ->where(function ($query) {
-                return $query
-                    ->whereHas('jobOrder')
-                    ->orWhereHas('jobOrderAir');
-            })
-            ->orderBy('date_created', 'desc');
+        $originQuery = DB::table('origin.shipping_instruction as si')->select([
+            'si.job_id',
+            'si.ctd_number as ctd_number',
+            DB::raw('COALESCE(c.customer_name, NULL) AS customer_name'),
+            'si.origin_name as origin_name',
+            'sio.qty as qty',
+            'sio.chw as chw',
+            DB::raw('COALESCE(jo.job_order_code, joa.job_order_code) AS job_order_code'),
+        ])
+        ->join('origin.si_order as sio', 'si.job_id', '=', 'sio.job_id')
+        ->join(DB::raw('origin.job_order_detail as jod'), 'si.job_id', '=', 'jod.job_id')
+        ->leftJoin(DB::raw('origin.job_order as jo'), function ($join) {
+            $join->on('jo.job_order_id', '=', 'jod.job_order_id')->where('si.shipment_by', '=', 'SEAAIR');
+        })
+        ->leftJoin(DB::raw('origin.job_order_air as joa'), function ($join) {
+            $join->on('joa.job_order_id', '=', 'jod.job_order_id')->where('si.shipment_by', '=', 'AIR');
+        })
+        ->join('accounting.customer as c', 'si.customer_id', '=', 'c.customer_id')
+        ->where(function ($query) {
+            $query->whereNotNull('jo.job_order_code')->orWhereNotNull('joa.job_order_code');
+        })->when($condition == 'empty', function ($query) {
+            return $query->whereNull('si.customer_id');
+        })
+        ->when($condition == 'exists', function ($query) {
+            return $query->whereNotNull('si.customer_id');
+        })->orderBy('si.date_created', 'desc');
+
+        $dxbQuery = DB::table('dxb.shipping_instruction as si')->select([
+            'si.job_id',
+            'si.ctd_number as ctd_number',
+            DB::raw('COALESCE(c.customer_name, NULL) AS customer_name'),
+            'si.origin_name as origin_name',
+            'sio.qty as qty',
+            'sio.chw as chw',
+            DB::raw('jo.job_order_code AS job_order_code'),
+        ])
+        ->join('dxb.si_order as sio', 'si.job_id', '=', 'sio.job_id')
+        ->join(DB::raw('dxb.job_order_detail as jod'), 'si.job_id', '=', 'jod.job_id')
+        ->leftJoin('dxb.job_order as jo', 'jo.job_order_id', '=', 'jod.job_order_id')
+        ->join('accounting.customer as c', 'si.customer_id', '=', 'c.customer_id')
+        ->when($condition == 'empty', function ($query) {
+            return $query->whereNull('si.customer_id');
+        })
+        ->when($condition == 'exists', function ($query) {
+            return $query->whereNotNull('si.customer_id');
+        })->orderBy('si.date_created', 'desc');
+
+        $shippingInstructions = $originQuery->union($dxbQuery)->get();
 
         return ObjectResponse::success(
             message: __('crud.fetched', ['name' => 'Shipping Instruction']),

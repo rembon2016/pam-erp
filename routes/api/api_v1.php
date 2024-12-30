@@ -63,10 +63,8 @@ Route::group([
             'prefix' => 'invoice',
             'as' => 'invoice.'
         ], function () {
-
             Route::get('/not-linked-list', [ApiInvoiceController::class, 'notLinkedList'])->name('not_linked_list');
             Route::get('/linked-list', [ApiInvoiceController::class, 'linkedList'])->name('linked_list');
-
         });
 
     });

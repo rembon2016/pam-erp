@@ -98,7 +98,7 @@ final class InvoiceController extends Controller
             ? 'empty'
             : 'exists';
 
-        // if (request()->ajax()) {
+        if (request()->ajax()) {
             $instructions = $this->shippingInstructionService->getShippingInstructionByCustomerCondition(condition: $billingCustomerCondition);
 
             return DataTables::of($instructions->data)
@@ -108,33 +108,15 @@ final class InvoiceController extends Controller
                 ->addColumn('billing_customer_name', function ($col) {
                     return $col->customer_name ?? '-';
                 })
-                // ->addColumn('job_order_code', function ($col) {
-                //     $jobOrderCode = $col->shipment_by == 'SEAAIR'
-                //         ? $col->jobOrder->job_order_code ?? '-'
-                //         : $col->jobOrderAir->job_order_code ?? '-';
-
-                //     return $jobOrderCode;
-                // })
-                // ->addColumn('origin_name', function ($col) {
-                //     $jobOrderOriginName = $col->origin_name;
-
-                //     return $jobOrderOriginName;
-                // })
-                // ->addColumn('qty', function ($col) {
-                //     return $col->order->qty ?? '-';
-                // })
-                // ->addColumn('chw', function ($col) {
-                //     return $col->order->chw ?? '-';
-                // })
                 ->addIndexColumn()
                 ->rawColumns(['row_checkbox'])
                 ->toJson();
-        // }
+        }
 
-        // return ResponseJson::error(
-        //     Response::HTTP_UNAUTHORIZED,
-        //     'Access Unauthorized',
-        // );
+        return ResponseJson::error(
+            Response::HTTP_UNAUTHORIZED,
+            'Access Unauthorized',
+        );
     }
 
     public function detail(string $id): View|RedirectResponse

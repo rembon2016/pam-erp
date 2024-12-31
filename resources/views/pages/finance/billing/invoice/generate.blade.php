@@ -93,52 +93,62 @@
                                     <tbody>
                                         {{-- Handle Generated Charges by Agreed Rate --}}
                                         @if ($item->agreedRates->count() > 0)
-                                            <tr class="charge-row">
-                                                <td>
-                                                    <select name="data[{{ $item->ctd_number }}][charges][0][charge_id]" data-type="charge_id" class="form-select" data-control="select2" data-placeholder="Choose" required>
-                                                        @foreach ($charges as $charge)
-                                                            <option value="{{ $charge->id }}">{{ $charge->charge_name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <select name="data[{{ $item->ctd_number }}][charges][0][currency_id]" data-type="currency_id" class="form-select" required>
-                                                        <option value="">Choose</option>
-                                                        @foreach ($currencies as $currency)
-                                                            <option value="{{ $currency->id }}">{{ $currency->currency_name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="number" name="data[{{ $item->ctd_number }}][charges][0][rate]" data-type="rate" class="form-control" placeholder="0" min="0" required>
-                                                </td>
-                                                <td>
-                                                    <select name="data[{{ $item->ctd_number }}][charges][0][unit_id]" data-type="unit_id" class="form-select" required>
-                                                        <option value="">Choose</option>
-                                                        @foreach ($units as $unit)
-                                                            <option value="{{ $unit->unit_id }}">{{ "{$unit->description} ({$unit->unit_name})" }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="number" name="data[{{ $item->ctd_number }}][charges][0][chw]" data-type="chw" class="form-control" placeholder="0" min="0" required>
-                                                </td>
-                                                <td>
-                                                    <input type="number" name="data[{{ $item->ctd_number }}][charges][0][amount]" data-type="amount" class="form-control" placeholder="0" min="0" value="0" readonly>
-                                                </td>
-                                                <td>
-                                                    <input type="number" name="data[{{ $item->ctd_number }}][charges][0][local_amount]" data-type="local_amount" class="form-control" placeholder="0" min="0" readonly>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex align-items-center justify-content-end">
-                                                        <button type="button" class="btn btn-icon btn-danger btn-sm" data-type="delete-item">
-                                                            <i class="bx bx-trash"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                            @foreach ($item->agreedRates as $agreedRate)
+                                                @php
+                                                    $rate = $agreedRate->price;
+                                                    $amount = $item->order_sum_chw * $rate;
+
+                                                    $currency_code = trim($agreedRate->currency);
+                                                    $local_amount = $currency_code == 'AED' ? ($amount * 3.67) : $amount;
+                                                @endphp
+
+                                                <tr class="charge-row">
+                                                    <td>
+                                                        <select name="data[{{ $item->ctd_number }}][charges][0][charge_id]" data-type="charge_id" class="form-select" data-control="select2" data-placeholder="Choose" required>
+                                                            @foreach ($charges as $charge)
+                                                                <option value="{{ $charge->id }}" @selected($agreedRate->charge_code == $charge->charge_code)>{{ $charge->charge_name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <select name="data[{{ $item->ctd_number }}][charges][0][currency_id]" data-type="currency_id" class="form-select" required>
+                                                            <option value="">Choose</option>
+                                                            @foreach ($currencies as $currency)
+                                                                <option value="{{ $currency->id }}" @selected($agreedRate->currency == trim($currency->currency_code))>{{ $currency->currency_name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" name="data[{{ $item->ctd_number }}][charges][0][rate]" data-type="rate" class="form-control" placeholder="0" min="0" value="{{ $rate }}" required>
+                                                    </td>
+                                                    <td>
+                                                        <select name="data[{{ $item->ctd_number }}][charges][0][unit_id]" data-type="unit_id" class="form-select" required>
+                                                            <option value="">Choose</option>
+                                                            @foreach ($units as $unit)
+                                                                <option value="{{ $unit->unit_id }}" @selected($agreedRate->unit == $unit->unit_name)>{{ "{$unit->description} ({$unit->unit_name})" }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" name="data[{{ $item->ctd_number }}][charges][0][chw]" data-type="chw" class="form-control" placeholder="0" min="0" value="{{ $item->order_sum_chw }}" required>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" name="data[{{ $item->ctd_number }}][charges][0][amount]" data-type="amount" class="form-control" placeholder="0" min="0" value="{{ $amount }}" readonly>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" name="data[{{ $item->ctd_number }}][charges][0][local_amount]" data-type="local_amount" class="form-control" placeholder="0" min="0" value="{{ $local_amount }}" readonly>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center justify-content-end">
+                                                            <button type="button" class="btn btn-icon btn-danger btn-sm" data-type="delete-item">
+                                                                <i class="bx bx-trash"></i>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         @else
-                                            @if (!is_null($item->billingCustomer && $item->billingCustomer?->customerContracts->count() > 0))
+                                            @if (!is_null($item->billingCustomer) && $item->billingCustomer?->customerContracts->count() > 0)
                                                 @foreach ($item->billingCustomer?->customerContracts as $contract)
                                                     @php
                                                         $chargeRate = $contract->getChargeRate($item->order_sum_chw);
@@ -230,7 +240,7 @@
                                                         <input type="number" name="data[{{ $item->ctd_number }}][charges][0][amount]" data-type="amount" class="form-control" placeholder="0" min="0" value="0" readonly>
                                                     </td>
                                                     <td>
-                                                        <input type="number" name="data[{{ $item->ctd_number }}][charges][0][local_amount]" data-type="local_amount" class="form-control" placeholder="0" min="0" readonly>
+                                                        <input type="number" name="data[{{ $item->ctd_number }}][charges][0][local_amount]" data-type="local_amount" class="form-control" placeholder="0" min="0" value="0" readonly>
                                                     </td>
                                                     <td>
                                                         <div class="d-flex align-items-center justify-content-end">

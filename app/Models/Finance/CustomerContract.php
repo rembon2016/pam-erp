@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
+use App\Models\Finance\Charge;
 use App\Models\Finance\Currency;
 use App\Models\Finance\Customer;
 use Illuminate\Database\Eloquent\Model;
@@ -54,6 +55,11 @@ final class CustomerContract extends Model
     public function charges()
     {
         return $this->hasMany(CustomerContractCharge::class, 'customer_contract_id', 'id');
+    }
+
+    public function charge()
+    {
+        return $this->hasOne(Charge::class, 'id', 'charge_id');
     }
 
     public function getChargeRate($quantity)

@@ -51,10 +51,13 @@
                     <thead>
                         <tr>
                             <th>
-                                <label for="" class="form-label required mb-0">Quantity</label>
+                                <label for="" class="form-label required mb-0">From</label>
                             </th>
                             <th>
-                                <label for="" class="form-label required mb-0">Rate</label>
+                                <label for="" class="form-label required mb-0">To</label>
+                            </th>
+                            <th>
+                                <label for="" class="form-label required mb-0">Value</label>
                             </th>
                             <th>&nbsp;</th>
                         </tr>
@@ -67,7 +70,8 @@
                                         [
                                             'id' => null,
                                             "rate" => null,
-                                            "quantity" => null,
+                                            "from" => null,
+                                            "to" => null,
                                         ]
                                 ];
                             }
@@ -77,8 +81,14 @@
                             <tr class="dynamic-row-item">
                                 <input type="hidden" name="charges[{{ $index }}][customer_contract_charge_id]" value="{{ $item['id'] }}">
                                 <td>
-                                    <input type="number" name="charges[{{ $index }}][quantity]" data-type="quantity" id="quantity" class="@error('charges.{{ $index }}.quantity') is-invalid @enderror form-control" value="{{ $item['quantity'] }}" min="0" placeholder="0" required>
-                                    @error('charges.{{ $index }}.quantity')
+                                    <input type="number" name="charges[{{ $index }}][from]" data-type="from" id="from" class="@error('charges.{{ $index }}.from') is-invalid @enderror form-control" value="{{ $item['from'] }}" min="0" placeholder="0" required>
+                                    @error('charges.{{ $index }}.from')
+                                        <div class="invalid-feedback">{{ $messages }}</div>
+                                    @enderror
+                                </td>
+                                <td>
+                                    <input type="number" name="charges[{{ $index }}][to]" data-type="to" id="to" class="@error('charges.{{ $index }}.to') is-invalid @enderror form-control" value="{{ $item['to'] }}" min="0" placeholder="0" required>
+                                    @error('charges.{{ $index }}.to')
                                         <div class="invalid-feedback">{{ $messages }}</div>
                                     @enderror
                                 </td>

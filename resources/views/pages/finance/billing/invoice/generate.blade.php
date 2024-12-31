@@ -152,7 +152,7 @@
                                                 @foreach ($item->billingCustomer?->customerContracts as $contract)
                                                     @php
                                                         $chargeRate = $contract->getChargeRate($item->order_sum_chw);
-                                                        $rate = $chargeRate->rate;
+                                                        $rate = $chargeRate?->rate;
                                                         $amount = $item->order_sum_chw * $rate;
 
                                                         $currency_code = trim($contract->currency?->currency_code);

@@ -64,7 +64,22 @@ final class CustomerContract extends Model
 
     public function getChargeRate($quantity)
     {
-        return $this->charges()->where('quantity', '<=', $quantity)->orderBy('quantity', 'desc')->first() ?? $this->charges()->orderBy('quantity', 'asc')->first();
+        $rate = $this->charges()->where('from', '<=', $quantity)
+            ->where('to', '>=', $quantity)
+            ->first();
+
+        // Jika tidak ada, cari nilai paling mendekati (di bawah atau di atas rentang)
+        if (!$rate) {
+            if ($quantity < $this->charges()->min('from')) {
+                // Quantity di bawah rentang, ambil nilai terkecil
+                $rate = $this->charges()->orderBy('from', 'asc')->first();
+            } else {
+                // Quantity di atas rentang, ambil nilai terbesar
+                $rate = $this->charges()->orderBy('to', 'desc')->first();
+            }
+        }
+
+        return $rate;
     }
 
     public function customer()

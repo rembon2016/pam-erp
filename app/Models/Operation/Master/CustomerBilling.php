@@ -2,6 +2,7 @@
 
 namespace App\Models\Operation\Master;
 
+use App\Models\Finance\Customer;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Finance\CustomerContract;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -86,4 +87,8 @@ class CustomerBilling extends Model
         return $this->hasMany(CustomerContract::class, 'customer_id', 'finance_customer_id');
     }
 
+    public function financeCustomer()
+    {
+        return $this->hasOne(Customer::class, 'id', 'finance_customer_id');
+    }
 }

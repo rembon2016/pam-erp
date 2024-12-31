@@ -38,7 +38,7 @@
 
                     <input type="hidden" name="customer_billing_id" value="{{ $shippings->first()?->customer_id }}">
                 </div>
-                <input type="hidden" name="customer_credit_limit" id="customer_credit_limit" value="30">
+                <input type="hidden" name="customer_credit_limit" id="customer_credit_limit" value="{{ (int) $shippings->first()?->billingCustomer?->financeCustomer?->credit_terms }}">
             </div>
             <div class='col-md-3'>
                 <label for="#chw" class="form-label">Chargeable Weight</label>

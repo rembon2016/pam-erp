@@ -101,6 +101,13 @@
                     @endforeach
                     @endif
                 </tbody>
+                {{-- <tr>
+                    <td colspan="4"></td>
+                    <td class="rate-{{ $type }}-{{ $k }} text-center" style="">0</td>
+                    <td class="amount-{{ $type }}-{{ $k }} text-center">0</td>
+                    <td class="local_amount-{{ $type }}-{{ $k }} text-center">0</td>
+                    <td colspan="2"></td>
+                </td> --}}
             </table>
         </div>
 

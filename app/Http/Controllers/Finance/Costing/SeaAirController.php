@@ -896,7 +896,7 @@ final class SeaAirController extends Controller
 
             $service = AgentContractService::where("agent_contract_id", $contract->id)->whereHas('serviceType', function ($query) use ($type, $ship) {
                 if($type == 'or'){
-                    $query->where("service_code", $ship->loading_type);
+                    $query->whereIn("service_code", [$ship->loading_type,'LAND']);
                 }else if($type == 'all'){
                     $query->whereIn('service_code',['LCL','FCL','LAND']);
                 }else{
@@ -908,7 +908,7 @@ final class SeaAirController extends Controller
             }else{
                 $service = AgentContractService::where("agent_contract_id", $contract->id)->whereHas('serviceType', function ($query) use ($type, $ship) {
                     if($type == 'or'){
-                        $query->where("service_code", $ship->loading_type);
+                        $query->whereIn("service_code", [$ship->loading_type,'LAND']);
                     }else if($type == 'all'){
                         $query->whereIn('service_code',['LCL','FCL','LAND']);
                     }else{

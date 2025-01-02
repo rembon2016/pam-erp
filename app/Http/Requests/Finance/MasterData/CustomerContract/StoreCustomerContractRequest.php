@@ -34,7 +34,8 @@ final class StoreCustomerContractRequest extends FormRequest
             'charges' => 'required|array',
             'charge_id' => 'required|exists:pgsql.finance.charges,id',
             'currency_id' => 'required|exists:pgsql.finance.currencies,id',
-            'charges.*.quantity' => 'nullable|numeric|min:0',
+            'charges.*.from' => 'required|numeric|min:0',
+            'charges.*.to' => 'required|numeric|min:0',
             'charges.*.rate' => 'required|numeric|min:0',
             // 'charges.*.unit_id' => 'nullable',
         ];
@@ -52,6 +53,8 @@ final class StoreCustomerContractRequest extends FormRequest
             'currency_id' => 'Currency',
             'charges.*.rate' => 'Rate',
             'charges.*.quantity' => 'Quantity',
+            'charges.*.from' => 'From',
+            'charges.*.to' => 'To',
             // 'charges.*.unit_id' => 'Unit',
         ];
     }

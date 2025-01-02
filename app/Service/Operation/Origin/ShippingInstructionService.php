@@ -10,7 +10,7 @@ use Illuminate\Support\Benchmark;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
 use App\Models\Operation\Origin\ShippingInstruction;
-use App\Models\Operation\Dxb\ShippingInstruction as OriginShippingInstruction;
+use App\Models\Operation\Dxb\ShippingInstruction as DxbShippingInstruction;
 
 final class ShippingInstructionService
 {
@@ -93,12 +93,19 @@ final class ShippingInstructionService
     {
         $data = ShippingInstruction::select(['job_id', 'ctd_number', 'customer_id'])
             ->withSum('order', 'chw')
-            ->with(['billingCustomer'])
+            ->with(['agreedRates', 'billingCustomer', 'billingCustomer.customerContracts', 'billingCustomer.customerContracts.currency', 'billingCustomer.customerContracts.charges'])
             ->whereHas('billingCustomer')
-            ->whereIn('job_id', is_array($job_orders) ? $job_orders : [$job_orders])
-            ->get();
+            ->whereIn('job_id', is_array($job_orders) ? $job_orders : [$job_orders]);
 
-        return $data;
+        $dxbData = DxbShippingInstruction::select(['job_id', 'ctd_number', 'customer_id'])
+            ->withSum('order', 'chw')
+            ->with(['agreedRates', 'billingCustomer', 'billingCustomer.customerContracts', 'billingCustomer.customerContracts.currency', 'billingCustomer.customerContracts.charges'])
+            ->whereHas('billingCustomer')
+            ->whereIn('job_id', is_array($job_orders) ? $job_orders : [$job_orders]);
+
+        $shippingInstructions = $data->union($dxbData)->get();
+
+        return $shippingInstructions;
     }
 
     public function updateBillingCustomer(string $customer_id, array|string $job_orders): object

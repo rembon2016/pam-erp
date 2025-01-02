@@ -2,8 +2,10 @@
 
 namespace App\Models\Operation\Master;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use App\Models\Finance\Customer;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Finance\CustomerContract;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CustomerBilling extends Model
@@ -79,4 +81,14 @@ class CustomerBilling extends Model
             ownerKey: 'customer_type_id'
         );
 	}
+
+    public function customerContracts()
+    {
+        return $this->hasMany(CustomerContract::class, 'customer_id', 'finance_customer_id');
+    }
+
+    public function financeCustomer()
+    {
+        return $this->hasOne(Customer::class, 'id', 'finance_customer_id');
+    }
 }

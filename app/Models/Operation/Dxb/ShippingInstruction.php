@@ -2,15 +2,17 @@
 
 namespace App\Models\Operation\Dxb;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Models\Dxb\HistoriJob;
 use App\Traits\Filterable;
-use App\Models\Master\LocalCustomer;
-use App\Models\Master\Office;
 use App\Models\Master\Port;
-use App\Models\Dxb\LoadingPlanDxb;
+use App\Models\Master\Office;
+use App\Models\Dxb\HistoriJob;
 use App\Models\Dxb\LoadingPlan;
+use App\Models\Dxb\LoadingPlanDxb;
+use App\Models\Master\LocalCustomer;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Operation\Dxb\AgreedRate;
+use App\Models\Operation\Dxb\CustomerBilling;
 
 class ShippingInstruction extends Model
 {
@@ -28,6 +30,16 @@ class ShippingInstruction extends Model
     public function order()
     {
         return $this->belongsTo(Order::class, 'job_id', 'job_id');
+    }
+
+    public function billingCustomer()
+    {
+        return $this->belongsTo(CustomerBilling::class, 'customer_id', 'customer_id');
+    }
+
+    public function agreedRates()
+    {
+        return $this->hasMany(AgreedRate::class, 'job_id', 'job_id');
     }
 
     public function consignee()

@@ -2,10 +2,12 @@
 
 namespace App\Models\Operation\Dxb;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Traits\Filterable;
 use App\Models\Master\Countries;
 use App\Models\Master\CustomerType;
-use App\Traits\Filterable;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Finance\CustomerContract;
+
 class CustomerBilling extends Model
 {
     use Filterable;
@@ -27,6 +29,11 @@ class CustomerBilling extends Model
 	public function customer_type_detail(){
 		return $this->belongsTo(CustomerType::class, 'customer_type', 'customer_type_id');
 	}
+
+    public function customerContracts()
+    {
+        return $this->hasMany(CustomerContract::class, 'customer_id', 'finance_customer_id');
+    }
 
 
 }

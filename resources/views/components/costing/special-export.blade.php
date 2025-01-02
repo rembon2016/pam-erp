@@ -55,8 +55,15 @@
                 <tbody id="charges-export-rows">
                     <!-- Rows will be dynamically added here -->
                      @if($costing != null)
+                      @php
+                            $seenVendorNames = []; // Array to track seen vendor names
+                        @endphp
                     @foreach($costing->special as $key => $row)
                      @if($row->costing_type === 'export')
+                     @php
+                                    $isDuplicateVendor = in_array($row->vendor_name, $seenVendorNames);
+                                    $seenVendorNames[] = $row->vendor_name; // Add current vendor name to seen list
+                                @endphp
                               <tr id="row-special-export-{{ $key }}">
                         <td>
                         <input type="hidden" name="costing_special_export_id[]" value="{{ $row->id }}">
@@ -66,14 +73,29 @@
                             <input type="hidden" name="currency_special_export_id[]" type="text" class=" form-control" value="{{ $row->currency_id }}">
                              <input type="hidden" name="status_special_export[]" type="text" class=" form-control" value="{{ $row->status }}">
                         @endif
+                          @if ($isDuplicateVendor)
+                                            <div style="display:none;">
+                                        @endif
                         <select class="form-select vendor-select" onchange="setVendorSpecialExportName({{ $key }})
                                                 " data-control="select2" id="vendor_special_export_id_{{ $key }}" name="vendor_special_export_id[]" data-key="{{ $key }}" @if($costing->status != 1) disabled @endif>
                                 <option>Select</option>
                                 @foreach($vendorLine as $rows)
                                 <option value="{{ $rows->vendor_id }}" @if($row->vendor_id == $rows->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}</option>
                                 @endforeach
-                            </select></td>
-                        <td><input type="text" class="form-control" value="{{ $row->vendor_name }}" id="vendor_special_export_name_{{ $key }}" placeholder="Name" name="vendor_special_export_name[]" readonly></td>
+                            </select>
+                             @if ($isDuplicateVendor)
+                                            </div>
+                                        @endif
+                            </td>
+                        <td>
+                        @if ($isDuplicateVendor)
+                <div style="display:none;">
+            @endif
+                        <input type="text" class="form-control" value="{{ $row->vendor_name }}" id="vendor_special_export_name_{{ $key }}" placeholder="Name" name="vendor_special_export_name[]" readonly>
+                        @if ($isDuplicateVendor)
+                                            </div>
+                                        @endif
+                        </td>
                         <td>
                             <select class="form-select" data-control="select2" id="charge_special_export_id_0" name="charge_special_export_id[]" data-key="{{ $key }}" @if($costing->status != 1) disabled @endif>
                                 <option>Select</option>
@@ -200,7 +222,7 @@ let isVisibleSpecialExport = true; // Track the visibility state
          setVendorSpecialExport(vendorId,vendorName,vendorCode,'{{ $joborder->loading_plan_id }}');
         @foreach($loadingplan as $r)
         var value = '{{ $r->mawb_number }}';
-         setChargeMawb(vendorId,vendorName,vendorCode, value, 'special-export');
+         setChargeMawb(vendorId,vendorName,vendorCode, value, 'special-export','all');
         @endforeach
     }
 

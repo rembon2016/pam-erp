@@ -40,7 +40,7 @@ final class Costing extends Model
 
     public function special()
     {
-        return $this->hasMany(CostingSpecial::class, 'costing_id', 'id');
+        return $this->hasMany(CostingSpecial::class, 'costing_id', 'id')->orderBy('vendor_name','asc');
     }
 
     public function head()

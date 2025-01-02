@@ -6,6 +6,7 @@
             <div class='mb-10'>
                 <label for="#container_number" class='form-label '>Container No.</label>
                 <input id="container_number" name="container_number[]" type="text" class=" form-control" value="{{ $row->container_no }}" readonly="readonly">
+                <input type="hidden" name="bl_number[]" value="{{ $row->value }}">
             </div>
         </div>
         <div class='col-md-4'>
@@ -14,7 +15,7 @@
                 @if($costing->status != 1)
                <input type="hidden" name="vendor_truck_id[]" type="text" class=" form-control" value="{{ $row->vendor_id }}">
                @endif
-                <select class="form-select" onChange="setVendorName('{{ $key }}','{{ $row->bl->bl_number }}')" name="vendor_truck_id[]" id="vendor_id_{{ $key }}" data-control="select2" data-placeholder="Vendor Code" @if($costing->status != 1) disabled @endif>
+                <select class="form-select" onChange="setVendorName('{{ $key }}','{{ $row->value }}')" name="vendor_truck_id[]" id="vendor_id_{{ $key }}" data-control="select2" data-placeholder="Vendor Code" @if($costing->status != 1) disabled @endif>
                     <option></option>
                     @foreach($vendorTruck as $rows)
                     <option value="{{ $rows->vendor_id }}" @if($row->vendor_id == $rows->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}</option>
@@ -43,7 +44,7 @@
         var vendorName = $dropdown.find(':selected').data('vendor-name');
         var vendorCode = $dropdown.find(':selected').data('vendor-code');
         $('#vendor_name_' + key).val(vendorName);
-        var vendorType = 'truck-'+vendorCode;
+       var vendorType = 'truck-'+bl+'-'+vendorCode;
         setChargeBl(vendorId,vendorName,vendorCode, bl, vendorType,'LAND');
     }
 </script>

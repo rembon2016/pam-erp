@@ -28,7 +28,7 @@ final class CostingHead extends Model
 
     public function detail()
     {
-        return $this->hasMany(CostingDetail::class, 'costing_head_id', 'id');
+        return $this->hasMany(CostingDetail::class, 'costing_head_id', 'id')->orderBy('vendor_name','asc');
     }
 
     public function getShippingAttribute()

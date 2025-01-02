@@ -230,7 +230,11 @@ function setChargeBl(vendorId,vendorName,vendorCode, bl, vendorType, type) {
 
  }
 
- function setChargeMawb(vendorId,vendorName,vendorCode, mawb, vendorType) {
+ function setChargeMawb(vendorId,vendorName,vendorCode, mawb, vendorType, type = '') {
+        var types = 'Air';
+        if(type == 'all'){
+            types = 'All';
+        }
       var key = $("#mawb_"+mawb).val();
       $(".mawb-auto_"+vendorType).each(function () {
             const $row = $(this);
@@ -257,7 +261,7 @@ function setChargeBl(vendorId,vendorName,vendorCode, bl, vendorType, type) {
             console.log(index);
             //ajax disini
            $.ajax({
-            url: `/finance/costing/sea-air/contractmawb/${vendorId}/${mawb}`, // Replace with your actual route
+            url: `/finance/costing/sea-air/contractmawb/${vendorId}/${mawb}/${types}`, // Replace with your actual route
             method: 'GET', // Or 'POST' if your route uses POST
             dataType: 'json',
             success: function (response) {

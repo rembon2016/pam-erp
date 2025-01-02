@@ -6,6 +6,7 @@
                 <label for="#container_number" class='form-label '>Container No.</label>
                 <input id="container_number" name="container_number[]" type="text" class=" form-control" value="{{ $row->container_number }}" readonly="readonly">
                 <input type="hidden" id="index_trucking_{{ $key }}" value="">
+                <input type="hidden" name="bl_number[]" value="{{ $row->bl->bl_number }}">
             </div>
         </div>
         <div class='col-md-4'>
@@ -40,7 +41,7 @@
          var vendorCode = $dropdown.find(':selected').data('vendor-code');
          console.log(vendorName);
         $('#vendor_name_' + ke).val(vendorName);
-        var vendorType = 'truck-'+vendorCode;
+        var vendorType = 'truck-'+bl+'-'+vendorCode;
         setChargeBl(vendorId,vendorName,vendorCode, bl, vendorType,'LAND');
  }
 </script>

@@ -1,5 +1,6 @@
 @foreach($bl as $k => $row)
 
+<div class="wrapper-ul-costing-tabs">
     <ul class="nav nav-tabs costing-tabs px-3" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
             <input type="hidden" name="bl_{{ $row->bl_number }}" id="bl_{{ $row->bl_number }}" value="{{ $k }}">
@@ -18,9 +19,10 @@
         <div class="tab-pane fade" id="ctd-tab-{{ $k }}" role="tabpanel">
 
           @foreach($row->shipping as $j => $ctd)
-            <button type="button" class="btn btn-sm custom-btn custom-btn-primary">CTD NO: {{ $ctd->ctd_number }}</button>
+            <span class="labeled-ctd">CTD NO: {{ $ctd->ctd_number }}</span>
             <x-costing.charges-from :costing="$costing" :k="$j" type="ctd" :value="$ctd->ctd_number" :vendor="$vendorLine" :z="$k" :charge="$charge" :currency="$currency" />
           @endforeach
         </div>
     </div>
+</div>
 @endforeach

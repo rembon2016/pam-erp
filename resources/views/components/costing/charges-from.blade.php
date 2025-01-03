@@ -27,7 +27,7 @@
             </button>
         </div>
 
-        <div class="table-responsive" id="table-{{ $type }}-{{ $k }}">
+        <div class="table-responsive mb-3" id="table-{{ $type }}-{{ $k }}">
             <table class="table table-bordered costing-table">
                 <thead>
                     <tr>

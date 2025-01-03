@@ -52,6 +52,7 @@ final class DumpSqlFileSeeder extends Seeder
     private function getSqlList(): array
     {
         return [
+            'finance',
             'accounting',
             'crm',
             'dxb',

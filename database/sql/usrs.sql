@@ -1,7 +1,7 @@
 /*
- Navicat Premium Dump SQL
+ Navicat Premium Data Transfer
 
- Source Server         : Dev-203.175.10.178
+ Source Server         : Rembon Development Connection
  Source Server Type    : PostgreSQL
  Source Server Version : 140012 (140012)
  Source Host           : 203.175.10.178:2408
@@ -12,7 +12,7 @@
  Target Server Version : 140012 (140012)
  File Encoding         : 65001
 
- Date: 09/12/2024 18:36:52
+ Date: 03/01/2025 09:46:57
 */
 
 
@@ -51,6 +51,8 @@ INSERT INTO "usrs"."model_has_roles" VALUES ('9d77dcc7-b14c-475e-8337-fb036fc0dd
 INSERT INTO "usrs"."model_has_roles" VALUES ('9d77dcc7-eb4b-4353-afce-1f866dba9d40', 'App\Models\User', '9d77dcca-95ba-466c-8c08-67007ae5f2b2');
 INSERT INTO "usrs"."model_has_roles" VALUES ('9d77dcc8-235a-42e0-83a9-c94eb07ec446', 'App\Models\User', '9d77dccb-106f-410a-add6-1c21a022af2b');
 INSERT INTO "usrs"."model_has_roles" VALUES ('9d77dcc7-1f73-4065-94ad-129747dd1a50', 'App\Models\Usr\User', '9d77dcc8-f58d-423c-b90f-ed86b0649e0b');
+INSERT INTO "usrs"."model_has_roles" VALUES ('9d77dcc7-1f73-4065-94ad-129747dd1a50', 'App\Models\User', '9dcc6c31-6d83-4ef2-ae4d-2e13da2863e2');
+INSERT INTO "usrs"."model_has_roles" VALUES ('9d77dcc7-1f73-4065-94ad-129747dd1a50', 'App\Models\User', '9dcc74df-7a5b-437a-b319-bd97808f5997');
 
 -- ----------------------------
 -- Table structure for password_reset_tokens
@@ -334,13 +336,41 @@ INSERT INTO "usrs"."roles" VALUES ('9d77dcc7-eb4b-4353-afce-1f866dba9d40', 'sale
 INSERT INTO "usrs"."roles" VALUES ('9d77dcc8-235a-42e0-83a9-c94eb07ec446', 'finance', 'web', '2024-11-12 03:15:07', '2024-11-12 03:15:07');
 
 -- ----------------------------
+-- Table structure for users
+-- ----------------------------
+DROP TABLE IF EXISTS "usrs"."users";
+CREATE TABLE "usrs"."users" (
+  "id" uuid NOT NULL,
+  "first_name" varchar(255) COLLATE "pg_catalog"."default",
+  "last_name" varchar(255) COLLATE "pg_catalog"."default",
+  "profile_image" varchar(255) COLLATE "pg_catalog"."default",
+  "email" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+  "password" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+  "email_verified_at" timestamp(0),
+  "sales_office_id" varchar(255) COLLATE "pg_catalog"."default",
+  "created_at" timestamp(0),
+  "updated_at" timestamp(0),
+  "deleted_at" timestamp(0),
+  "created_by" varchar(255) COLLATE "pg_catalog"."default",
+  "updated_by" varchar(255) COLLATE "pg_catalog"."default",
+  "deleted_by" varchar(255) COLLATE "pg_catalog"."default",
+  "type" varchar(255) COLLATE "pg_catalog"."default" DEFAULT 'erp'::character varying
+)
+;
+
+-- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO "usrs"."users" VALUES ('9d77dcc8-f58d-423c-b90f-ed86b0649e0b', 'Retta', 'Klein', 'https://via.placeholder.com/640x480.png/008844?text=excepturi', 'admin@pamcargo.com', '$2y$12$xCnocsG50KTKkyxtF.BfNeTgdqJlKLd4BzSqG6uZURPA10sURYm2C', '2024-11-12 03:15:07', NULL, '2024-11-12 03:15:08', '2024-11-12 03:15:08', NULL, NULL, NULL, NULL);
-INSERT INTO "usrs"."users" VALUES ('9d77dcc9-a493-4a66-a01d-c8e7c02e4318', 'Yessenia', 'Rolfson', 'https://via.placeholder.com/640x480.png/00cc44?text=autem', 'human_resource@pamcargo.com', '$2y$12$HwThvkLGEhiIInw9Im4lz.2nVvJCFpsJU7RcrY8IPQp1SMaT/XNB6', '2024-11-12 03:15:08', NULL, '2024-11-12 03:15:08', '2024-11-12 03:15:08', NULL, NULL, NULL, NULL);
-INSERT INTO "usrs"."users" VALUES ('9d77dcca-1a73-48ce-b7b5-a1524b19ecba', 'Moses', 'Haley', 'https://via.placeholder.com/640x480.png/002299?text=sit', 'accounting@pamcargo.com', '$2y$12$o64r38Xhd19Wu8zA4152FONj9orQwngr4e8O5Px3XLcbbHVV0HwF6', '2024-11-12 03:15:08', NULL, '2024-11-12 03:15:09', '2024-11-12 03:15:09', NULL, NULL, NULL, NULL);
-INSERT INTO "usrs"."users" VALUES ('9d77dcca-95ba-466c-8c08-67007ae5f2b2', 'Maximillian', 'Okuneva', 'https://via.placeholder.com/640x480.png/008855?text=amet', 'sales_team@pamcargo.com', '$2y$12$WL4NeyiJ08NjPduEpBGN9eAYw2D5ueTmFimstymnXJenclyNYTHsW', '2024-11-12 03:15:09', NULL, '2024-11-12 03:15:09', '2024-11-12 03:15:09', NULL, NULL, NULL, NULL);
-INSERT INTO "usrs"."users" VALUES ('9d77dccb-106f-410a-add6-1c21a022af2b', 'Annie', 'Smith', 'https://via.placeholder.com/640x480.png/0077ee?text=ut', 'finance@pamcargo.com', '$2y$12$okv7xsjkTAMoRYna3kOtEO2nuTFDKN/JVc7MUybcOkuGsM48UJvp2', '2024-11-12 03:15:09', NULL, '2024-11-12 03:15:09', '2024-11-12 03:15:09', NULL, NULL, NULL, NULL);
+INSERT INTO "usrs"."users" VALUES ('9d77dcc8-f58d-423c-b90f-ed86b0649e0b', 'Retta', 'Klein', 'https://via.placeholder.com/640x480.png/008844?text=excepturi', 'admin@pamcargo.com', '$2y$12$xCnocsG50KTKkyxtF.BfNeTgdqJlKLd4BzSqG6uZURPA10sURYm2C', '2024-11-12 03:15:07', NULL, '2024-11-12 03:15:08', '2024-11-12 03:15:08', NULL, NULL, NULL, NULL, 'erp');
+INSERT INTO "usrs"."users" VALUES ('9d77dcc9-a493-4a66-a01d-c8e7c02e4318', 'Yessenia', 'Rolfson', 'https://via.placeholder.com/640x480.png/00cc44?text=autem', 'human_resource@pamcargo.com', '$2y$12$HwThvkLGEhiIInw9Im4lz.2nVvJCFpsJU7RcrY8IPQp1SMaT/XNB6', '2024-11-12 03:15:08', NULL, '2024-11-12 03:15:08', '2024-11-12 03:15:08', NULL, NULL, NULL, NULL, 'erp');
+INSERT INTO "usrs"."users" VALUES ('9d77dcca-1a73-48ce-b7b5-a1524b19ecba', 'Moses', 'Haley', 'https://via.placeholder.com/640x480.png/002299?text=sit', 'accounting@pamcargo.com', '$2y$12$o64r38Xhd19Wu8zA4152FONj9orQwngr4e8O5Px3XLcbbHVV0HwF6', '2024-11-12 03:15:08', NULL, '2024-11-12 03:15:09', '2024-11-12 03:15:09', NULL, NULL, NULL, NULL, 'erp');
+INSERT INTO "usrs"."users" VALUES ('9d77dcca-95ba-466c-8c08-67007ae5f2b2', 'Maximillian', 'Okuneva', 'https://via.placeholder.com/640x480.png/008855?text=amet', 'sales_team@pamcargo.com', '$2y$12$WL4NeyiJ08NjPduEpBGN9eAYw2D5ueTmFimstymnXJenclyNYTHsW', '2024-11-12 03:15:09', NULL, '2024-11-12 03:15:09', '2024-11-12 03:15:09', NULL, NULL, NULL, NULL, 'erp');
+INSERT INTO "usrs"."users" VALUES ('9d77dccb-106f-410a-add6-1c21a022af2b', 'Annie', 'Smith', 'https://via.placeholder.com/640x480.png/0077ee?text=ut', 'finance@pamcargo.com', '$2y$12$okv7xsjkTAMoRYna3kOtEO2nuTFDKN/JVc7MUybcOkuGsM48UJvp2', '2024-11-12 03:15:09', NULL, '2024-11-12 03:15:09', '2024-11-12 03:15:09', NULL, NULL, NULL, NULL, 'erp');
+INSERT INTO "usrs"."users" VALUES ('9dc05260-50c0-4302-adfe-235dc6cbcadd', 'Thomas', 'Varghese', NULL, 'thomas@pamcargo.com', '$2y$12$xlg0GoIua/jsSzQ7dKbyR.gHyYnm.Ahlc2ItfN8Iv.Bg.mjK21Fea', '2024-12-18 03:43:33', NULL, '2024-12-18 03:43:33', '2024-12-20 03:09:05', NULL, NULL, NULL, NULL, 'operation');
+INSERT INTO "usrs"."users" VALUES ('9dcc5e72-4ec9-4b2f-a4a4-cd354a523735', NULL, NULL, NULL, 'admin@rembon.com', '$2y$10$a.WWm2N4dXXxwPj6IYDa4uOwMcrQ7en44hAsoOjGWEj07sYaKPrDO', '2024-12-24 03:27:14', NULL, '2024-12-24 03:27:14', '2024-12-24 03:27:14', NULL, NULL, NULL, NULL, 'operation');
+INSERT INTO "usrs"."users" VALUES ('9dcc6c31-6d83-4ef2-ae4d-2e13da2863e2', 'Joz', 'Sefriano', NULL, 'sefriano@gmail.com', '$2y$12$VlQi7qi6SGGzgJfeFA41be20FdNy/N99LSx/ZqUVfu40qSPImNsQO', NULL, NULL, '2024-12-24 04:05:40', '2024-12-24 04:05:40', NULL, NULL, NULL, NULL, 'erp');
+INSERT INTO "usrs"."users" VALUES ('9dcc74df-7a5b-437a-b319-bd97808f5997', 'Wibi', 'J', NULL, 'wibianzo@rembon.com', '$2y$12$FKNdVZWhLVv33BXQ6v4pYOrVo4OYAiV/wviZ9.Q1E0EbTeZqtyKN2', NULL, NULL, '2024-12-24 04:29:56', '2024-12-24 04:29:56', NULL, NULL, NULL, NULL, 'erp');
+INSERT INTO "usrs"."users" VALUES ('9dd2d783-6f28-48b1-a80a-c10533e8a93e', NULL, NULL, NULL, 'jakarta@pamcargo.com', '$2y$10$MHrFY6TmkTqCw1H.R.W.YuQmRUkWnTQmvS1LTnTrUwtdzwsatOL3q', '2024-12-27 08:40:44', NULL, '2024-12-27 08:40:44', '2024-12-27 08:40:44', NULL, NULL, NULL, NULL, 'operation');
 
 -- ----------------------------
 -- Indexes structure for table model_has_permissions
@@ -376,6 +406,7 @@ ALTER TABLE "usrs"."password_reset_tokens" ADD CONSTRAINT "password_reset_tokens
 -- ----------------------------
 -- Uniques structure for table permissions
 -- ----------------------------
+ALTER TABLE "usrs"."permissions" ADD CONSTRAINT "usrs_permissions_name_guard_name_unique" UNIQUE ("name", "guard_name");
 ALTER TABLE "usrs"."permissions" ADD CONSTRAINT "usr_permissions_name_guard_name_unique" UNIQUE ("name", "guard_name");
 
 -- ----------------------------
@@ -401,7 +432,13 @@ ALTER TABLE "usrs"."roles" ADD CONSTRAINT "roles_pkey" PRIMARY KEY ("id");
 -- ----------------------------
 -- Uniques structure for table users
 -- ----------------------------
+ALTER TABLE "usrs"."users" ADD CONSTRAINT "usrs_users_email_unique" UNIQUE ("email");
 ALTER TABLE "usrs"."users" ADD CONSTRAINT "usr_users_email_unique" UNIQUE ("email");
+
+-- ----------------------------
+-- Checks structure for table users
+-- ----------------------------
+ALTER TABLE "usrs"."users" ADD CONSTRAINT "users_type_check" CHECK (type::text = ANY (ARRAY['erp'::character varying, 'operation'::character varying]::text[]));
 
 -- ----------------------------
 -- Primary Key structure for table users

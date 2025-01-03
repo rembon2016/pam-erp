@@ -1,7 +1,7 @@
 /*
- Navicat Premium Dump SQL
+ Navicat Premium Data Transfer
 
- Source Server         : Dev-203.175.10.178
+ Source Server         : Rembon Development Connection
  Source Server Type    : PostgreSQL
  Source Server Version : 140012 (140012)
  Source Host           : 203.175.10.178:2408
@@ -12,7 +12,7 @@
  Target Server Version : 140012 (140012)
  File Encoding         : 65001
 
- Date: 09/12/2024 18:35:55
+ Date: 03/01/2025 09:40:22
 */
 
 
@@ -888,8 +888,12 @@ CREATE TABLE "accounting"."contract_agents" (
   "updated_at" timestamp(0),
   "contract_code" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
   "notes" text COLLATE "pg_catalog"."default" NOT NULL
-);
+)
+;
 
+-- ----------------------------
+-- Records of contract_agents
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for cost
@@ -912,7 +916,8 @@ CREATE TABLE "accounting"."cost" (
   "job_order_type" varchar(255) COLLATE "pg_catalog"."default",
   "charge_type" varchar(255) COLLATE "pg_catalog"."default",
   "position" int4
-);
+)
+;
 
 -- ----------------------------
 -- Records of cost
@@ -950,7 +955,8 @@ CREATE TABLE "accounting"."cost_details" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-);
+)
+;
 COMMENT ON COLUMN "accounting"."cost_details"."status_payment" IS '0:unpaid, 1:paid';
 
 -- ----------------------------
@@ -974,7 +980,8 @@ CREATE TABLE "accounting"."cost_job_order" (
   "date_modified" timestamp(6),
   "modified_by" varchar(255) COLLATE "pg_catalog"."default",
   "status" int4
-);
+)
+;
 
 -- ----------------------------
 -- Records of cost_job_order
@@ -1000,7 +1007,8 @@ CREATE TABLE "accounting"."costs" (
   "charge_name" varchar(255) COLLATE "pg_catalog"."default",
   "type" varchar(255) COLLATE "pg_catalog"."default",
   "job_id" uuid
-);
+)
+;
 
 -- ----------------------------
 -- Records of costs
@@ -1020,7 +1028,8 @@ CREATE TABLE "accounting"."countries" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-);
+)
+;
 
 -- ----------------------------
 -- Records of countries
@@ -1041,21 +1050,127 @@ CREATE TABLE "accounting"."customer" (
   "customer_tax_id" varchar(50) COLLATE "pg_catalog"."default",
   "customer_contact_person" varchar(200) COLLATE "pg_catalog"."default",
   "country_id" int8,
-  "date_created" timestamp(0) NOT NULL DEFAULT now(),
+  "date_created" timestamp(0) DEFAULT now(),
   "created_by" varchar(255) COLLATE "pg_catalog"."default",
   "date_modified" timestamp(0) DEFAULT now(),
   "modified_by" varchar(255) COLLATE "pg_catalog"."default",
-  "status" int4 NOT NULL DEFAULT 1,
-  "customer_type" uuid NOT NULL,
+  "status" int4 DEFAULT 1,
+  "customer_type" uuid,
   "customer_code" varchar(20) COLLATE "pg_catalog"."default",
   "customer_group_id" uuid,
   "iata_code" varchar(50) COLLATE "pg_catalog"."default",
   "office_id" uuid,
   "city" varchar(255) COLLATE "pg_catalog"."default",
   "zip_code" varchar(255) COLLATE "pg_catalog"."default",
-  "vendor_id" uuid
-);
+  "vendor_id" uuid,
+  "finance_customer_id" uuid
+)
+;
 
+-- ----------------------------
+-- Records of customer
+-- ----------------------------
+INSERT INTO "accounting"."customer" VALUES ('0f66e344-59db-4329-a466-133658f615f4', '	MILES GMBH	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('0351f848-1906-40b7-af7d-2cdc7c76c9c7', 'P A M INTERNATIONAL CARGO  BANGLADESH', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 18, NULL, NULL, NULL, 'admin@rembon.com', 1, '45de7c8a-c07d-4771-8c5d-16639bd60dd3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('5203fb47-5d70-4ac4-9127-31c36847d6d4', '	CENTRAL CARGO S.R.L	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('00383ddd-a381-40c1-8346-f0921073df8c', '	LINK LOGISTICS - CPH	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('07721a5b-9a23-49b2-98d1-a40e3f8573b6', '	APL LOGISTICS EUROPE B.V	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('09f83972-494c-4766-9ca4-07586f48b21f', '	GROUP7 AG INTERNATIONAL LOGISTICS - NURNBERG	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('0ac96f62-3954-49ae-bec3-6f7b69ca9503', '	JET SPEED AIR CARGO FORWARDERS (HK) LTD.	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('100b5423-ee20-427c-a95b-766fa8324982', '	MGL EUROPE S.R.L	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('11ba6d1d-434e-496f-8e89-69e488ff2b5d', '	SPARX EXPRESS ITALY SRL	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('1476c716-83ec-4dc9-a1b0-34aa4805f256', '	P.A.M. SEA-AIR TRANSPORT GMBH	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('1511bfbc-76c8-4567-ac77-012b6ffcabd7', '	ALPHA TRANS LUFT UND SEEFRACHTSPEDITION GMBH AND CO KG	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('1839a0a6-0918-425e-af36-f915add50b16', '	TRANS ASIA EXPRESS LIMITED	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('18762a27-a936-4099-bead-63b625b57149', '	LINK LOGISTICS AS	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('1aaf6c95-7e5a-4c56-8fc6-26c84f298a56', '	HERPORT SAS.	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('1def963c-a526-4e0f-b62c-5dd922946046', '	LA SPORTIVA SPA	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('1f193d7e-95d6-48cc-ada5-476996e70ab5', '	OTTO GROUP LOGISTICS GMBH	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('2200a496-c030-4215-990b-c2fb4db2a28f', '	EV CARGO	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('253c39c1-2069-4784-b742-b5db0d0fe46b', '	RABEN ITALY S.R.L.	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('27287760-111c-4d1f-8ff0-547fc5be9cbf', '	SHANGHAI EVEROK-AIR INTERNATIONAL AIRFREIGHT FORWARDING CO  LTD	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('2c66a392-169a-4d5c-a587-0fdd529ba934', '	BLUE WATER SHIPPING GERMANY GMBH	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('2cee99b0-eb94-4aec-885b-cf93ed08afbe', '	FGF INDUSTRY SPA	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('2e1fceb7-2153-45c6-bfe4-5bc9d027ff9e', '	JET-SPEED GMBH - NUREMBERG	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('2ec6cc53-e532-4f79-ab1e-1f768972dcf5', '	F.LLI COLO SRL	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('30baca84-6806-4176-8a95-9b5ce0cfaf4e', '	S.T.I ( DEUTSCHLAND ) GMBH	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('32919709-5a4a-42fd-829a-517adafac521', '	CLASQUIN ROISSY CDG	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('37277508-b3f7-4afc-8eec-8be06634d5e4', '	EMQ LOGISTICS	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('39b125a1-d82c-4847-8d74-260266d2f516', '	HERPORT OVERSEAS	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('39b1d680-69a8-4916-8cc1-37752d606691', '	CARGOCARE GLOBAL AG	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('3c216c47-6fd7-475f-ac9c-097062fe887c', '	HERMES  GERMANY GMBH	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('46118940-11f2-4811-809a-68fdf671d44d', '	CARGO PARTNER GMBH.	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('46abda7e-9df3-440f-b734-a0b9a452724b', '	LOGI SPED GMBH	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('4979b854-2e87-4d61-802e-03c597e2d84f', '	HAMBURG EXPRESS GMBH	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('4f08112c-c8de-47b8-b20c-12fbe96a2bd8', '	TRASPORTI INTERNAZIONALI TRANSMEC - S.P.A	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('50b52d3a-8481-4f87-b504-dcefd046f042', '	CLASQUIN T I INTERCARGO 1999 S.A	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('52685243-972a-4b6b-a503-b7cf7cea8912', '	GEIS AIR SEA GMBH NURNBERG	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('53eb31a1-7f8d-4c00-be55-2790a1d112c7', '	MAG SPED	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('54bd6983-6b5d-4fce-8cf3-290cde0906b4', '	MBS LOGISTICS GMBH , HALLBERGMOOS	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('54f82f0c-836f-4384-a6e5-af358587e9c3', '	COMEXAS AIRFREIGHT N.V.	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('5904ae3d-3baf-4897-ac86-35581fa08f07', '	HERPORT SAS BLAGNAC	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('5c0a6975-4be0-4765-9efb-44aa3db4bcaf', '	COURIER NETWORK LTD	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('5c3c56b3-dc8d-4fe4-b6a1-a259d4717802', '	JET-SPEED  GMBH-FRA	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('5e798223-d419-49e8-ac98-9f6384f8e72a', '	GROUP7 AG INTERNATIONAL LOGISTICS , STR	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('5f35fcb8-a3c1-4642-838a-2ac0d0c5a412', '	HERPORT MARSEILLE	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('6023bcc7-f6d4-4475-af32-5881a7072cf9', '	PAM CARGO INTERNATIONAL CO.LTD	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('68cb9ead-c102-4c32-a265-877ef2f4fd49', '	ORMESANI S.R.L.	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('6ab86cd6-f1a5-4c1f-9629-3da79f153ef2', '	QUALITAIR AND SEA INTL DIMOTRANS GROUP	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('6ad87c57-2cd2-4e8e-b668-ea794b49e2b1', '	LINK LOGISTICS - ARN	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('6d8927e8-52a7-4b6f-8454-bdc15d953df7', '	FERCAM S.P.A.	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('70010bba-480e-4b67-9db7-6db8b870c6dc', '	GLOBALTRANS INTERNATIONALE LOGISTIK GMBH	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('73c22aa7-f6f6-499a-a3a5-1c5a2f8f95cf', '	UBV OCEAN AND AIR	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('74c5fb6e-ae51-46fd-be17-d27e03fae258', '	ITALSEMPIONE SPA	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('74e050ad-ebc2-4519-8314-1958c14979ad', '	FIORAVANTI SRL	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('755a4cb6-b8b3-4071-b2cc-e7a395453243', '	VENTANA SERRA SPA	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('790cbd5b-9804-4df5-ac93-abebb56bfd43', '	CNW NFO PORTUGAL UNIPESSOAL, LDA	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('79775591-e562-4a46-aa0b-e072e055fe03', '	SEMAJ RISON (CAMBODIA) LLC	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('7c7b1e8b-c990-4899-95b2-c32ed67b9647', '	MBS LOGISTICS GMBH , KOLN	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('7e6183b5-7c4d-432a-8cff-ba2627460e21', '	MEDION AG	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('8069f57d-6a76-4013-9b80-fee422e3816b', '	NOATUM LOGISTICS UK LIMITED	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('80d07ed0-c956-43c3-bad0-8348e9bae7da', '	NOATUM LOGISTICS SPAIN	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('83ad4b10-a27b-4f70-8d24-3194bae157c7', '	LOTTO SPORT ITALIA SPA	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('853a3f3c-261a-42a4-abc2-449b95f70577', '	DIADORA S.P.A	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('853d2000-cf6a-4373-a869-7bfd335c525c', '	AIT WORLDWIDE LOGISTICS GERMANY GMBH	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('854b3d06-1068-4f6e-bb8b-d0c038898ae3', '	VAN DER HELM - VDH	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('868e00ef-6f9e-494e-a1d6-99128424d909', '	ALLMODE AG	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('89f1c119-0cad-4cb3-9c80-cd97480cdf3d', '	FREIGHT-LOGISTIC AG	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('8b8c0e2e-294b-4ef7-9209-ad41fec09112', '	PACIFIC AGENCY AVIATION AND MARINE - CTG	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('906a9386-b48b-434b-b8fd-e24edda0f8fe', '	CARGO-PARTNER GMBH - FRANZ	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('907f8b76-6f3c-4efe-a974-cef7231ac033', '	HERPORT NANTES	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('91a5f5a3-1b8c-421b-bf10-14f30cb6c704', '	CLASQUIN LYON	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('91ff8b4f-d8cc-4782-b6ad-1a31d391e780', '	GATE 41 LOGISTICS GMBH AND CO. KG	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('2aef223b-c151-46ae-aad2-cb3b8e2e5002', 'XLLOG GMBH', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('924a95df-1b03-4beb-9fa3-d145b0b217e9', '	ALISPED SPA.	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('963b9a64-8427-4768-99ed-cd9f729e0de4', '	CARGO MARKETING INTERNATIONAL CHENNAI	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('a5d4aeb3-e5af-42ca-9f05-1145b57fb223', '	JET-SPEED GMBH LADBERGEN	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('abbc2c6b-a7fb-4161-9533-88de26f2c9d3', '	UBV OCEAN AND AIR S.R.L.	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('b2b74294-56c1-475e-a93e-9e5f23f18db5', '	NOVA TRAFFIC AG	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('b72f7159-af43-482e-a45e-ab941c951907', '	BARBARINI AND FOGLIA S.R.L	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('b9766512-8835-462f-a865-0fea83b63b32', '	JET-SPEED  GMBH	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('bcb7fe01-05ed-4e7e-8adc-969ac3bcc6d2', '	D.B GROUP SPA	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('be4cf6f7-47b4-4e9a-8022-881944f311d3', '	CLASQUIN MRS	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('bf4785ef-9c26-4b22-bcde-ad7768cb2b99', '	GEIS AIR SEA GMBH BERLIN	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('c660bc53-1ad8-4d62-9257-c7a43b824153', '	NIPPON EXPRESS ITALIA SPA	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('c6d81131-15b1-4238-bbe6-d45dc3bc8c74', '	M R SPEDAG HORIZON AG	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('c7d7da2a-a91e-4aa7-b41f-a95767bbac4a', '	ML TRANSPORT EU	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('d1b2d637-e0c1-4119-89fa-f582b3268c94', '	FAROSPED SRL	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('d9bfdec9-86ab-4b51-b6a4-f4e3c0e78f23', '	SAVINO DEL BENE S. P. A	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('dbb05cb5-371a-4213-9106-ce08730d061a', '	EMQ LOGISTICS B.V	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('df107596-aa35-4b17-925f-dc1829568dd1', '	BLUE WATER SHIPPING A/S	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('dfc32b7c-b7a8-4e24-b6b1-c189cae779a5', '	FRACHT AG	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('e1642de0-a4b8-4c8f-8e69-64905e8abc0f', '	CENTRAL CARGO SRL	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('e2f7ba85-10be-4892-998a-67e5c6f4ff72', '	FOPPIANI SHIPPING AND LOGISTICS SRL.	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('ebb4caf2-ed5c-4926-99df-d4545f451967', '	GROUP7 AG INTERNATIONAL LOGISTICS	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('efcdd6ae-50fa-467b-b96f-0597520f10d8', '	FRIEDRICH ZUFALL GMBH AND CO. KG	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('f15634b6-28a3-46be-b76f-f313f08c2a69', '	HERPORT SAS	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('f16ff2da-09a5-4f0e-aeeb-1d09ebb96348', '	DAINESE S.P.A	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('f22c045a-03d9-495e-a88b-a1478a9c9a92', '	SHANGHAI STANDARD LOGISTICS CO., LTD	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('f243938a-66a9-4e8b-8abd-eb4d07031669', '	VAN DER HELM AIR AND OCEAN AMSTERDAM BV	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('fb8d36ad-9fae-45a9-8fa2-e25ad40dd99f', '	JP SA COUTO S A	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('fc436be0-8cb4-4be6-b87c-9dcafc764e81', '	SUNVILOG LOGISTICA E TRANSITOS LDA	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('fcfa6589-c19b-490e-ade7-bed95645d2fe', '	CLASQUIN LILLE OFFICE	 ', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 75, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO "accounting"."customer" VALUES ('2b8ca875-7b73-47e4-b805-66738883cb04', 'FUCEK LTD', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-12-20 07:52:01', 'thomas@pamcargo.com', '2024-12-20 07:52:01', NULL, 1, '08dc64df-4210-4c93-bf19-8ed8b0dc6658', 'FADKJFD', NULL, NULL, NULL, NULL, NULL, NULL, '9dc4b134-dac8-499d-8acc-50bafd68e70d');
 
 -- ----------------------------
 -- Table structure for customer_groups
@@ -1075,7 +1190,8 @@ CREATE TABLE "accounting"."customer_groups" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-);
+)
+;
 
 -- ----------------------------
 -- Records of customer_groups
@@ -1094,7 +1210,8 @@ CREATE TABLE "accounting"."customer_types" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-);
+)
+;
 
 -- ----------------------------
 -- Records of customer_types
@@ -1127,7 +1244,8 @@ CREATE TABLE "accounting"."customers" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-);
+)
+;
 
 -- ----------------------------
 -- Records of customers
@@ -1148,7 +1266,8 @@ CREATE TABLE "accounting"."group_charges" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-);
+)
+;
 
 -- ----------------------------
 -- Records of group_charges
@@ -1173,8 +1292,12 @@ CREATE TABLE "accounting"."invoices" (
   "invoices_number" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
   "created_at" timestamp(0),
   "updated_at" timestamp(0)
-);
+)
+;
 
+-- ----------------------------
+-- Records of invoices
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for invoices_detail
@@ -1189,8 +1312,12 @@ CREATE TABLE "accounting"."invoices_detail" (
   "ctd_number" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
   "created_at" timestamp(0),
   "updated_at" timestamp(0)
-);
+)
+;
 
+-- ----------------------------
+-- Records of invoices_detail
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for invoices_rate
@@ -1207,8 +1334,12 @@ CREATE TABLE "accounting"."invoices_rate" (
   "invoices_id" uuid NOT NULL,
   "created_at" timestamp(0),
   "updated_at" timestamp(0)
-);
+)
+;
 
+-- ----------------------------
+-- Records of invoices_rate
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for journal
@@ -1227,7 +1358,8 @@ CREATE TABLE "accounting"."journal" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-);
+)
+;
 
 -- ----------------------------
 -- Records of journal
@@ -1250,7 +1382,8 @@ CREATE TABLE "accounting"."journal_details" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-);
+)
+;
 
 -- ----------------------------
 -- Records of journal_details
@@ -1264,7 +1397,8 @@ CREATE TABLE "accounting"."journal_has_file_storages" (
   "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
   "journal_id" uuid NOT NULL,
   "file_storage_id" uuid NOT NULL
-);
+)
+;
 
 -- ----------------------------
 -- Records of journal_has_file_storages
@@ -1294,7 +1428,8 @@ CREATE TABLE "accounting"."offices" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-);
+)
+;
 
 -- ----------------------------
 -- Records of offices
@@ -1313,7 +1448,8 @@ CREATE TABLE "accounting"."regions" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-);
+)
+;
 
 -- ----------------------------
 -- Records of regions
@@ -1339,7 +1475,8 @@ CREATE TABLE "accounting"."sales_offices" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-);
+)
+;
 
 -- ----------------------------
 -- Records of sales_offices
@@ -1367,8 +1504,12 @@ CREATE TABLE "accounting"."service_contracts" (
   "contract_agent_id" uuid NOT NULL,
   "party" varchar(255) COLLATE "pg_catalog"."default",
   "manual_input_transit" varchar(255) COLLATE "pg_catalog"."default"
-);
+)
+;
 
+-- ----------------------------
+-- Records of service_contracts
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for statement_cashflow
@@ -1382,7 +1523,8 @@ CREATE TABLE "accounting"."statement_cashflow" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-);
+)
+;
 
 -- ----------------------------
 -- Records of statement_cashflow
@@ -1403,7 +1545,8 @@ CREATE TABLE "accounting"."statement_financial" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-);
+)
+;
 
 -- ----------------------------
 -- Records of statement_financial
@@ -1424,7 +1567,8 @@ CREATE TABLE "accounting"."transaction_recurring" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-);
+)
+;
 
 -- ----------------------------
 -- Records of transaction_recurring
@@ -1445,7 +1589,8 @@ CREATE TABLE "accounting"."transaction_recurring_detail" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-);
+)
+;
 
 -- ----------------------------
 -- Records of transaction_recurring_detail
@@ -1469,7 +1614,8 @@ CREATE TABLE "accounting"."vendor_rates" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-);
+)
+;
 
 -- ----------------------------
 -- Records of vendor_rates
@@ -1494,7 +1640,8 @@ CREATE TABLE "accounting"."vendors" (
   "date_created" timestamp(0),
   "date_modified" timestamp(0),
   "status" int4
-);
+)
+;
 
 -- ----------------------------
 -- Records of vendors
@@ -1821,85 +1968,46 @@ ALTER TABLE "accounting"."vendors" ADD CONSTRAINT "vendors_pkey" PRIMARY KEY ("i
 -- ----------------------------
 -- Foreign Keys structure for table charges
 -- ----------------------------
-ALTER TABLE "accounting"."charges" ADD CONSTRAINT "accounting_charges_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "accounting"."charges" ADD CONSTRAINT "accounting_charges_group_charge_id_foreign" FOREIGN KEY ("group_charge_id") REFERENCES "accounting"."group_charges" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "accounting"."charges" ADD CONSTRAINT "accounting_charges_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- ----------------------------
+-- Foreign Keys structure for table customer
+-- ----------------------------
+ALTER TABLE "accounting"."customer" ADD CONSTRAINT "accounting_customer_finance_customer_id_foreign" FOREIGN KEY ("finance_customer_id") REFERENCES "finance"."customer" ("id") ON DELETE SET NULL ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table journal_details
 -- ----------------------------
-ALTER TABLE "accounting"."journal_details" ADD CONSTRAINT "accounting_journal_details_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "accounting"."journal_details" ADD CONSTRAINT "accounting_journal_details_journal_id_foreign" FOREIGN KEY ("journal_id") REFERENCES "accounting"."journal" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "accounting"."journal_details" ADD CONSTRAINT "accounting_journal_details_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table journal_has_file_storages
 -- ----------------------------
-ALTER TABLE "accounting"."journal_has_file_storages" ADD CONSTRAINT "accounting_journal_has_file_storages_file_storage_id_foreign" FOREIGN KEY ("file_storage_id") REFERENCES "public"."file_storages" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 ALTER TABLE "accounting"."journal_has_file_storages" ADD CONSTRAINT "accounting_journal_has_file_storages_journal_id_foreign" FOREIGN KEY ("journal_id") REFERENCES "accounting"."journal" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table offices
 -- ----------------------------
 ALTER TABLE "accounting"."offices" ADD CONSTRAINT "accounting_offices_country_id_foreign" FOREIGN KEY ("country_id") REFERENCES "accounting"."countries" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "accounting"."offices" ADD CONSTRAINT "accounting_offices_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "accounting"."offices" ADD CONSTRAINT "accounting_offices_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table regions
--- ----------------------------
-ALTER TABLE "accounting"."regions" ADD CONSTRAINT "accounting_regions_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "accounting"."regions" ADD CONSTRAINT "accounting_regions_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table sales_offices
--- ----------------------------
-ALTER TABLE "accounting"."sales_offices" ADD CONSTRAINT "accounting_sales_offices_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "accounting"."sales_offices" ADD CONSTRAINT "accounting_sales_offices_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table service_contracts
 -- ----------------------------
-ALTER TABLE "accounting"."service_contracts" ADD CONSTRAINT "accounting_service_contracts_carrier_id_foreign" FOREIGN KEY ("carrier_id") REFERENCES "master"."carrier" ("carrier_id") ON DELETE CASCADE ON UPDATE NO ACTION;
 ALTER TABLE "accounting"."service_contracts" ADD CONSTRAINT "accounting_service_contracts_contract_agent_id_foreign" FOREIGN KEY ("contract_agent_id") REFERENCES "accounting"."contract_agents" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
-
--- ----------------------------
--- Foreign Keys structure for table statement_cashflow
--- ----------------------------
-ALTER TABLE "accounting"."statement_cashflow" ADD CONSTRAINT "accounting_statement_cashflow_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "accounting"."statement_cashflow" ADD CONSTRAINT "accounting_statement_cashflow_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table statement_financial
--- ----------------------------
-ALTER TABLE "accounting"."statement_financial" ADD CONSTRAINT "accounting_statement_financial_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "accounting"."statement_financial" ADD CONSTRAINT "accounting_statement_financial_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table transaction_recurring
--- ----------------------------
-ALTER TABLE "accounting"."transaction_recurring" ADD CONSTRAINT "accounting_transaction_recurring_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "accounting"."transaction_recurring" ADD CONSTRAINT "accounting_transaction_recurring_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table transaction_recurring_detail
 -- ----------------------------
 ALTER TABLE "accounting"."transaction_recurring_detail" ADD CONSTRAINT "accounting_transaction_recurring_detail_account_id_foreign" FOREIGN KEY ("account_id") REFERENCES "accounting"."account" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "accounting"."transaction_recurring_detail" ADD CONSTRAINT "accounting_transaction_recurring_detail_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "accounting"."transaction_recurring_detail" ADD CONSTRAINT "accounting_transaction_recurring_detail_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "accounting"."transaction_recurring_detail" ADD CONSTRAINT "accounting_transaction_recurring_detail_transaction_recurring_i" FOREIGN KEY ("transaction_recurring_id") REFERENCES "accounting"."transaction_recurring" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table vendor_rates
 -- ----------------------------
 ALTER TABLE "accounting"."vendor_rates" ADD CONSTRAINT "accounting_vendor_rates_charge_id_foreign" FOREIGN KEY ("charge_id") REFERENCES "accounting"."charges" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "accounting"."vendor_rates" ADD CONSTRAINT "accounting_vendor_rates_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "accounting"."vendor_rates" ADD CONSTRAINT "accounting_vendor_rates_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table vendors
 -- ----------------------------
 ALTER TABLE "accounting"."vendors" ADD CONSTRAINT "accounting_vendors_country_id_foreign" FOREIGN KEY ("country_id") REFERENCES "accounting"."countries" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "accounting"."vendors" ADD CONSTRAINT "accounting_vendors_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "accounting"."vendors" ADD CONSTRAINT "accounting_vendors_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "accounting"."vendors" ADD CONSTRAINT "accounting_vendors_vendor_type_id_foreign" FOREIGN KEY ("vendor_type_id") REFERENCES "accounting"."customer_types" ("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -27,7 +27,7 @@
             </button>
         </div>
 
-        <div class="table-responsive" id="table-{{ $type }}-{{ $k }}">
+        <div class="table-responsive mb-3" id="table-{{ $type }}-{{ $k }}">
             <table class="table table-bordered costing-table">
                 <thead>
                     <tr>
@@ -81,7 +81,7 @@
                                             <div style="display:none;">
                                         @endif
                                         <select class="form-select vendor-select"
-                                            onchange="setVendorName{{ ucfirst($type) }}({{ $k }}, {{ $m }})" " data-control=" select2" id="vendor_{{ $type }}_{{ $k }}_id_{{ $m }}" name="vendor_{{ $type }}_{{ $k }}_id[]" data-key="{{ $m }}" @if ($costing->status != 1) disabled @endif>
+                                            onchange="setVendorName{{ ucfirst($type) }}({{ $k }}, {{ $m }}, '{{ $row->costing_value }}')" " data-control=" select2" id="vendor_{{ $type }}_{{ $k }}_id_{{ $m }}" name="vendor_{{ $type }}_{{ $k }}_id[]" data-key="{{ $m }}" @if ($costing->status != 1) disabled @endif>
                                  @foreach ($vendor as $rows)
                                             <option value="{{ $rows->vendor_id }}"
                                                 @if ($row->vendor_id == $rows->vendor_id) selected @endif
@@ -216,7 +216,7 @@
             });
         @endif
 
-        function setVendorName{{ ucfirst($type) }}(k, key, vendor = '') {
+        function setVendorName{{ ucfirst($type) }}(k, key, bl, vendor = '') {
 
             var $dropdown = $(`#vendor_{{ $type }}_${k}_id_${key}`);
             var vendorId = $dropdown.val();
@@ -226,7 +226,7 @@
                 $(".vendor-" + vendor).remove();
             }
             $(`#vendor_{{ $type }}_${k}_name_` + key).val(vendorName);
-            var value = '{{ $value }}';
+            var value = bl;
             @if ($type == 'bl')
                 console.log("BABABA");
                 setChargeBl(vendorId, vendorName, vendorCode, value, 'manual-bl', 'or');
@@ -258,7 +258,7 @@
         <tr id="row-{{ $type }}-{{ $k }}-${rowIndex{{ ucfirst($type) }}{{ $k }}}" class="{{ $type }}-manual">
             <td>
                 <input type="hidden" name="type_{{ $type }}_{{ $k }}[]" value="manual">
-                <select class="form-select vendor-select" onchange="setVendorName{{ ucfirst($type) }}({{ $k }}, ${rowIndex{{ ucfirst($type) }}{{ $k }}})"
+                <select class="form-select vendor-select" onchange="setVendorName{{ ucfirst($type) }}({{ $k }}, ${rowIndex{{ ucfirst($type) }}{{ $k }}},'{{ $value }}')"
                     data-control="select2" id="vendor_{{ $type }}_{{ $k }}_id_${rowIndex{{ ucfirst($type) }}{{ $k }}}" name="vendor_{{ $type }}_{{ $k }}_id[]" data-key="${rowIndex{{ ucfirst($type) }}{{ $k }}}">
                     @foreach ($vendor as $rows)
                     <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}</option>
@@ -301,7 +301,7 @@
             rowIndex{{ ucfirst($type) }}{{ $k }}++; // Increment row index
         });
 
-        function setCharge{{ $k }}(data, key, bl, index, type, vendor, typeParent, vendorList) {
+        function setCharge{{ $k }}(data, key, bl, index, type, vendor, typeParent, vendorList, typeIndex = '') {
 
             console.log('set charge');
             var first = '';
@@ -328,12 +328,33 @@
                 }
 
             }
+            var exist = `${type}-${key}-${vendor}-${vendor_id}-${charge_id}`;
+            const existingIndex = findExistingCharge(exist,bl, type,key, vendor_id, charge_id);
+            console.log(existingIndex+'index');
+            if (existingIndex !== null) {
+               $(`#${type}-charges-rows-${bl} tr`).eq(existingIndex).find(`input[name="rate_${type}_${key}[]"]`).val(function () {
+                    const currentValue = parseFloat($(this).val()) || 0;
+                    return currentValue + parseFloat(rate || 0);
+                });
+
+                $(`#${type}-charges-rows-${bl} tr`).eq(existingIndex).find(`input[name="amount_${type}_${key}[]"]`).val(function () {
+                    const currentValue = parseFloat($(this).val()) || 0;
+                    return currentValue + parseFloat(amount_in_usd || 0);
+                });
+
+                $(`#${type}-charges-rows-${bl} tr`).eq(existingIndex).find(`input[name="local_amount_${type}_${key}[]"]`).val(function () {
+                    const currentValue = parseFloat($(this).val()) || 0;
+                    return currentValue + parseFloat(amount_in_aed || 0);
+                });
+
+                return false;
+            }
             let newRow = `
-        <tr id="row-${type}-${key}-${index}" class="${type}-auto_${vendor} vendor-${vendor_code}">
+        <tr id="row-${type}-${key}-${index} " class="${type}-auto_${vendor}  vendor-${vendor_code} ${typeIndex} ${exist}">
             <td >
                 <div ${typeParent == 'child' ? 'style="display:none"' : ''}>
                 <input type="hidden" value="auto_${vendor}" name="type_${type}_${key}[]">
-                <select class="form-select vendor-select" onchange="setVendorName${first}(${key}, ${index}, '${vendor_code}')"
+                <select class="form-select vendor-select" onchange="setVendorName${first}(${key}, ${index}, '${bl}', '${vendor_code}')"
                     data-control="select2" id="vendor_${type}_${key}_id_${index}"
                     name="vendor_${type}_${key}_id[]" data-key="${index}">`;
             vendorList.forEach(vendor => {
@@ -403,6 +424,20 @@
             $(`#amount_${type}_${key}_${index}`).val(amount_in_usd);
             $(`#local_amount_${type}_${key}_${index}`).val(amount_in_aed);
             window[`rowIndex${first}${key}`]++; // Increment row index
+
+        }
+
+        function findExistingCharge(exist,bl, type, key, vendor_id, charge_id) {
+            let foundIndex = null;
+
+            $(`#${type}-charges-rows-${bl} tr`).each(function (index) {
+                if ($(this).hasClass(exist)) {
+                    foundIndex = index; // Store the matching row index
+                    return false; // Exit the loop once the class is found
+                }
+            });
+
+            return foundIndex;
         }
 
 

@@ -23,34 +23,6 @@ use App\Models\Finance\Customer;
 
 final class CostingService
 {
-    public function getJobOrders(Request $request)
-    {
-        $start = $request->get('start', 0);
-        $pageSize = $request->get('length', 10);
-
-        $query = JobOrder::with(['detail', 'loading'])
-            ->where('status', '!=', 3);
-
-        if (!empty($request['search']['value'])) {
-            $search = $request['search']['value'];
-            $query->where('job_order_code', 'ilike', "%{$search}%");
-        }
-
-        $totalRecords = JobOrder::where('status', '!=', 3)->count();
-        $filteredRecords = $query->count();
-
-        $data = $query->skip($start)
-            ->take($pageSize)
-            ->orderBy('date_order', 'DESC')
-            ->get();
-
-        return [
-            'data' => $data,
-            'totalRecords' => $totalRecords,
-            'filteredRecords' => $filteredRecords,
-        ];
-    }
-
     public function createCosting(Request $request) {
         $data_costing = [
             'job_order_id' => $request->job_order_id,
@@ -632,7 +604,7 @@ final class CostingService
             $amount = $request["amount_mawb_{$j}"][$k] ?? null;
             $local_amount = $request["local_amount_mawb_{$j}"][$k] ?? null;
             $status = $request["status_mawb_{$j}"][$k] ?? null;
-            $transaction_date = $request->transaction_date_import;
+            $transaction_date = $request->transaction_date_export;
             $type = $request["type_bl_{$j}"][$k] ?? null;
             $email = auth()->user()->email;
             $data_special_export = [

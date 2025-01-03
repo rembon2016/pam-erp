@@ -314,7 +314,7 @@ let isVisibleSpecialExport = true; // Track the visibility state
 function setVendorSpecialExport(vendorId,vendorName, vendorCode, loadingId){
     var index = rowIndexSpecialExport;
      $.ajax({
-            url: `/finance/costing/sea-air/contractlpdxb/${vendorId}/${loadingId}`, // Replace with your actual route
+            url: `/finance/costing/{{ $type }}/contractlpdxb/${vendorId}/${loadingId}`, // Replace with your actual route
             method: 'GET', // Or 'POST' if your route uses POST
             dataType: 'json',
             success: function (response) {
@@ -367,7 +367,7 @@ function setChargeSpecialExport(data,index, type){
          var amount_in_aed = data['amount_in_aed'] ?? null;
          var status = data['status'] ?? null;
    const newRow = `
-            <tr id="row-special-import-${index}">
+            <tr id="row-special-export-${index}">
                 <td>
                 <div ${type == 'child' ? 'style="display:none"' : ''}>
                     <select class="form-select vendor-select" onchange="setVendorSpecialExportName(${index})"
@@ -399,11 +399,11 @@ function setChargeSpecialExport(data,index, type){
                         @endforeach
                     </select>
                 </td>
-                <td><input type="text" class="form-control" name="rate_special_import[]" value='${rate}' placeholder="Type here.."></td>
-                <td><input type="text" class="form-control" name="amount_special_import[]" value='${amount_in_usd}' placeholder="Type here.."></td>
-                <td><input type="text" class="form-control" name="local_amount_special_import[]" value='${amount_in_aed}' placeholder="Type here.."></td>
+                <td><input type="text" class="form-control" name="rate_special_export[]" value='${rate}' placeholder="Type here.."></td>
+                <td><input type="text" class="form-control" name="amount_special_export[]" value='${amount_in_usd}' placeholder="Type here.."></td>
+                <td><input type="text" class="form-control" name="local_amount_special_export[]" value='${amount_in_aed}' placeholder="Type here.."></td>
                 <td>
-                    <select class="form-select" name="status_special_import[]">
+                    <select class="form-select" name="status_special_export[]">
                         <option>Select</option>
                         <option value="Debit" ${'Debit' == status ? 'selected' : ''}>Debit</option>
                         <option value="Credit" ${'Credit' == status ? 'selected' : ''}>Credit</option>

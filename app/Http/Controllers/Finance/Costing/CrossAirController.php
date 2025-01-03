@@ -7,6 +7,10 @@ namespace App\Http\Controllers\Finance\Costing;
 use App\Models\Operation\Origin\JobOrderAir;
 use App\Models\Operation\Origin\OperationDocument;
 use App\Models\Operation\Origin\LoadingPlanDocument;
+use App\Models\Operation\Origin\LoadingPlan;
+use App\Models\Finance\Charge;
+use App\Models\Finance\Currency;
+use App\Models\Finance\Costing;
 
 use Illuminate\View\View;
 use App\Functions\Convert;
@@ -20,9 +24,18 @@ use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 use App\Exports\Costing\CrossAirExport;
+use App\Service\Finance\Costing\CostingService;
+use App\Service\Finance\Costing\DataService;
+use App\Service\Finance\Costing\Origin\CalculationService;
 
 final class CrossAirController extends Controller
 {
+    public function __construct(
+        protected CostingService $costingService,
+        protected CalculationService $calculationService,
+        protected DataService $dataService
+
+    ) {}
 
     public function index(): View
     {
@@ -107,8 +120,106 @@ final class CrossAirController extends Controller
         return view('pages.finance.costing.cross-air.show', compact('id','joborder','op','lpdoc'));
     }
 
-    public function cost($id){
+    public function port(Request $request){
+        $result = $this->dataService->getPort($request);
+        return response()->json($result);
+    }
 
+    public function cost($id){
+        $joborder = JobOrderAir::with(['detail', 'loading','doc'])->findOrFail($id);
+
+        $vendor_all = $this->dataService->getCustomer("All");
+        $vendor_truck = $this->dataService->getCustomer("Trucking Company");
+        $vendor_port = $this->dataService->getCustomer("Dubai Port");
+        $vendor_air = $this->dataService->getCustomer("Carrier Agent");
+        $vendor_line = $this->dataService->getCustomer("Shipping Line");
+
+        $charge = Charge::whereNull('deleted_at')->get();
+        $currency = Currency::whereNull('deleted_at')->get();
+
+        $loadingplan = LoadingPlan::where('plan_id', $joborder->loading_plan_id)->get();
+        $loading = LoadingPlan::where('plan_id', $joborder->loading_plan_id)->first();
+
+        $cost = Costing::with(['truck','port','agent','special','head','head.detail'])->where("job_order_id",$joborder->job_order_id);
+        if($cost->exists()){
+            $costing = $cost->first();
+           //return response()->json($costing);
+            $data = [
+                'action' => route('finance.costing.cross-air.update', $costing->id),
+                'method' => 'PUT',
+             ];
+        }else{
+            $costing = null;
+            $data = [
+                'action' => route('finance.costing.cross-air.store'),
+                'method' => 'POST',
+             ];
+        }
+
+        return view('pages.finance.costing.cross-air.cost', compact('joborder','vendor_all','vendor_truck','vendor_port','vendor_air','vendor_line','charge','currency','loadingplan','costing','data','loading'));
+
+    }
+
+    public function store(Request $request){
+        $loadingplan = LoadingPlan::with('shipping')->where('plan_id', $request->loading_plan_id)->get();
+        $shipment_by = 'CROSSAIR';
+        $costing = $this->costingService->createCosting($request);
+
+        $this->costingService->createCostingTruck($request, $costing->id);
+        $this->costingService->createCostingAgent($request, $costing->id);
+        $this->costingService->createCostingSpecialExport($request, $costing->id);
+
+        foreach($loadingplan as $j => $rx){
+            if (!empty($request["vendor_mawb_{$j}_id"])) {
+                $costing_head = $this->costingService->createCostingHead($request, $costing->id, $rx->mawb_number, 'mawb','CROSSAIR',$rx->plan_id);
+
+                $this->costingService->createCostingDetailMawb($request, $costing->id, $rx->mawb_number, $shipment_by,$costing_head->id, $j);
+            }
+        }
+
+        return to_route('finance.costing.cross-air.index')->with('toastSuccess', "Costing Success");
+    }
+
+    public function update($id, Request $request){
+        $costing = Costing::find($id);
+        $loadingplan = LoadingPlan::with('shipping')->where('plan_id', $request->loading_plan_id)->get();
+        $shipment_by = 'CROSSAIR';
+        $costing = $this->costingService->updateCosting($request, $id);
+
+        $this->costingService->updateCostingTruck($request, $id);
+        $this->costingService->updateCostingAgent($request, $id);
+        $this->costingService->updateCostingSpecialExport($request, $id);
+
+        foreach($loadingplan as $j => $rx){
+            if (!empty($request["vendor_mawb_{$j}_id"])) {
+
+                $costing_head = $this->costingService->updateCostingHead($request, $id, $rx->mawb_number, 'mawb','CROSSAIR',$rx->plan_id);
+
+                $this->costingService->updateCostingDetailMawb($request, $id, $rx->mawb_number, $shipment_by,$costing_head->id, $j);
+
+            }
+        }
+
+
+        return to_route('finance.costing.cross-air.index')->with('toastSuccess', "Update Success");
+    }
+
+    public function contractmawb($id, $mawb_number, $type){
+        $result = $this->calculationService->getChargeByMawb($id, $mawb_number, $type,'CROSSAIR');
+        return response()->json($result);
+
+    }
+
+    public function contractlpdxb($id, $loading_id){
+        $result = $this->calculationService->getChargeExportByLp($id, $loading_id, 'CROSSAIR');
+        return response()->json($result);
+    }
+
+    public function status($id, $status){
+        $costing = Costing::find($id);
+        $costing->status = $status;
+        $costing->save();
+        return to_route('finance.costing.sea-air.show',$costing->job_order_id)->with('toastSuccess', "Update Success");
     }
 
     public function exportCsv()

@@ -510,6 +510,7 @@ table.text-normal :is(td, tr){
 .costing-tabs .nav-link.active {
     background-color: #18BA43;
     color: #fff;
+    font-weight: bold;
 }
 
 .text-action-warning {
@@ -1249,4 +1250,18 @@ table#shipment_table .btn-view-shipment:hover {
     padding: 10px 10px;
     border-radius: 10px;
     margin-bottom: 10px;
+}
+
+.pam-tab {
+    background-color: #DEDEDE !important;
+    color: #000 !important;
+    border: none !important;
+    border-radius: 7px 7px 0 0 !important;
+    padding: 7.5px 15px !important;
+    margin: 0 2px !important;
+}
+
+.pam-tab.active {
+    background-color: #18BA43 !important;
+    color: #fff !important;
 }

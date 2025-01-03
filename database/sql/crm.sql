@@ -1,7 +1,7 @@
 /*
- Navicat Premium Dump SQL
+ Navicat Premium Data Transfer
 
- Source Server         : Dev-203.175.10.178
+ Source Server         : Rembon Development Connection
  Source Server Type    : PostgreSQL
  Source Server Version : 140012 (140012)
  Source Host           : 203.175.10.178:2408
@@ -12,7 +12,7 @@
  Target Server Version : 140012 (140012)
  File Encoding         : 65001
 
- Date: 09/12/2024 18:38:17
+ Date: 03/01/2025 09:41:43
 */
 
 
@@ -988,92 +988,41 @@ ALTER TABLE "crm"."web_forms" ADD CONSTRAINT "web_forms_pkey" PRIMARY KEY ("id")
 ALTER TABLE "crm"."workflows" ADD CONSTRAINT "workflows_pkey" PRIMARY KEY ("id");
 
 -- ----------------------------
--- Foreign Keys structure for table activities
--- ----------------------------
-ALTER TABLE "crm"."activities" ADD CONSTRAINT "crm_activities_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."activities" ADD CONSTRAINT "crm_activities_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
 -- Foreign Keys structure for table activity_files
 -- ----------------------------
 ALTER TABLE "crm"."activity_files" ADD CONSTRAINT "crm_activity_files_activity_id_foreign" FOREIGN KEY ("activity_id") REFERENCES "crm"."activities" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."activity_files" ADD CONSTRAINT "crm_activity_files_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."activity_files" ADD CONSTRAINT "crm_activity_files_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table activity_participants
 -- ----------------------------
 ALTER TABLE "crm"."activity_participants" ADD CONSTRAINT "crm_activity_participants_activity_id_foreign" FOREIGN KEY ("activity_id") REFERENCES "crm"."activities" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."activity_participants" ADD CONSTRAINT "crm_activity_participants_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."activity_participants" ADD CONSTRAINT "crm_activity_participants_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."activity_participants" ADD CONSTRAINT "crm_activity_participants_person_id_foreign" FOREIGN KEY ("person_id") REFERENCES "crm"."persons" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."activity_participants" ADD CONSTRAINT "crm_activity_participants_user_id_foreign" FOREIGN KEY ("user_id") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table attribute_options
 -- ----------------------------
 ALTER TABLE "crm"."attribute_options" ADD CONSTRAINT "crm_attribute_options_attribute_id_foreign" FOREIGN KEY ("attribute_id") REFERENCES "crm"."attributes" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."attribute_options" ADD CONSTRAINT "crm_attribute_options_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."attribute_options" ADD CONSTRAINT "crm_attribute_options_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table attribute_values
 -- ----------------------------
 ALTER TABLE "crm"."attribute_values" ADD CONSTRAINT "crm_attribute_values_attribute_id_foreign" FOREIGN KEY ("attribute_id") REFERENCES "crm"."attributes" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."attribute_values" ADD CONSTRAINT "crm_attribute_values_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."attribute_values" ADD CONSTRAINT "crm_attribute_values_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table attributes
--- ----------------------------
-ALTER TABLE "crm"."attributes" ADD CONSTRAINT "crm_attributes_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."attributes" ADD CONSTRAINT "crm_attributes_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table core_config
--- ----------------------------
-ALTER TABLE "crm"."core_config" ADD CONSTRAINT "crm_core_config_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."core_config" ADD CONSTRAINT "crm_core_config_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table countries
--- ----------------------------
-ALTER TABLE "crm"."countries" ADD CONSTRAINT "crm_countries_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."countries" ADD CONSTRAINT "crm_countries_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table country_states
 -- ----------------------------
 ALTER TABLE "crm"."country_states" ADD CONSTRAINT "crm_country_states_country_id_foreign" FOREIGN KEY ("country_id") REFERENCES "crm"."countries" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."country_states" ADD CONSTRAINT "crm_country_states_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."country_states" ADD CONSTRAINT "crm_country_states_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table email_attachments
 -- ----------------------------
-ALTER TABLE "crm"."email_attachments" ADD CONSTRAINT "crm_email_attachments_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."email_attachments" ADD CONSTRAINT "crm_email_attachments_email_id_foreign" FOREIGN KEY ("email_id") REFERENCES "crm"."emails" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."email_attachments" ADD CONSTRAINT "crm_email_attachments_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table email_templates
--- ----------------------------
-ALTER TABLE "crm"."email_templates" ADD CONSTRAINT "crm_email_templates_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."email_templates" ADD CONSTRAINT "crm_email_templates_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table emails
 -- ----------------------------
-ALTER TABLE "crm"."emails" ADD CONSTRAINT "crm_emails_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."emails" ADD CONSTRAINT "crm_emails_lead_id_foreign" FOREIGN KEY ("lead_id") REFERENCES "crm"."leads" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."emails" ADD CONSTRAINT "crm_emails_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."emails" ADD CONSTRAINT "crm_emails_person_id_foreign" FOREIGN KEY ("person_id") REFERENCES "crm"."persons" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table groups
--- ----------------------------
-ALTER TABLE "crm"."groups" ADD CONSTRAINT "crm_groups_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."groups" ADD CONSTRAINT "crm_groups_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table lead_activities
@@ -1084,36 +1033,22 @@ ALTER TABLE "crm"."lead_activities" ADD CONSTRAINT "crm_lead_activities_lead_id_
 -- ----------------------------
 -- Foreign Keys structure for table lead_files
 -- ----------------------------
-ALTER TABLE "crm"."lead_files" ADD CONSTRAINT "crm_lead_files_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."lead_files" ADD CONSTRAINT "crm_lead_files_lead_id_foreign" FOREIGN KEY ("lead_id") REFERENCES "crm"."leads" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."lead_files" ADD CONSTRAINT "crm_lead_files_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table lead_notes
 -- ----------------------------
-ALTER TABLE "crm"."lead_notes" ADD CONSTRAINT "crm_lead_notes_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."lead_notes" ADD CONSTRAINT "crm_lead_notes_lead_id_foreign" FOREIGN KEY ("lead_id") REFERENCES "crm"."leads" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."lead_notes" ADD CONSTRAINT "crm_lead_notes_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table lead_pipeline_stage
 -- ----------------------------
-ALTER TABLE "crm"."lead_pipeline_stage" ADD CONSTRAINT "crm_lead_pipeline_stage_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."lead_pipeline_stage" ADD CONSTRAINT "crm_lead_pipeline_stage_lead_pipeline_id_foreign" FOREIGN KEY ("lead_pipeline_id") REFERENCES "crm"."lead_pipelines" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."lead_pipeline_stage" ADD CONSTRAINT "crm_lead_pipeline_stage_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table lead_pipelines
--- ----------------------------
-ALTER TABLE "crm"."lead_pipelines" ADD CONSTRAINT "crm_lead_pipelines_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."lead_pipelines" ADD CONSTRAINT "crm_lead_pipelines_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table lead_products
 -- ----------------------------
-ALTER TABLE "crm"."lead_products" ADD CONSTRAINT "crm_lead_products_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."lead_products" ADD CONSTRAINT "crm_lead_products_lead_id_foreign" FOREIGN KEY ("lead_id") REFERENCES "crm"."leads" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."lead_products" ADD CONSTRAINT "crm_lead_products_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."lead_products" ADD CONSTRAINT "crm_lead_products_product_id_foreign" FOREIGN KEY ("product_id") REFERENCES "crm"."products" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
@@ -1123,109 +1058,41 @@ ALTER TABLE "crm"."lead_quotes" ADD CONSTRAINT "crm_lead_quotes_lead_id_foreign"
 ALTER TABLE "crm"."lead_quotes" ADD CONSTRAINT "crm_lead_quotes_quote_id_foreign" FOREIGN KEY ("quote_id") REFERENCES "crm"."quotes" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
--- Foreign Keys structure for table lead_sources
--- ----------------------------
-ALTER TABLE "crm"."lead_sources" ADD CONSTRAINT "crm_lead_sources_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."lead_sources" ADD CONSTRAINT "crm_lead_sources_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table lead_stages
--- ----------------------------
-ALTER TABLE "crm"."lead_stages" ADD CONSTRAINT "crm_lead_stages_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."lead_stages" ADD CONSTRAINT "crm_lead_stages_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
 -- Foreign Keys structure for table lead_tags
 -- ----------------------------
 ALTER TABLE "crm"."lead_tags" ADD CONSTRAINT "crm_lead_tags_lead_id_foreign" FOREIGN KEY ("lead_id") REFERENCES "crm"."leads" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."lead_tags" ADD CONSTRAINT "crm_lead_tags_tag_id_foreign" FOREIGN KEY ("tag_id") REFERENCES "crm"."tags" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
--- Foreign Keys structure for table lead_types
--- ----------------------------
-ALTER TABLE "crm"."lead_types" ADD CONSTRAINT "crm_lead_types_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."lead_types" ADD CONSTRAINT "crm_lead_types_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
 -- Foreign Keys structure for table leads
 -- ----------------------------
-ALTER TABLE "crm"."leads" ADD CONSTRAINT "crm_leads_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."leads" ADD CONSTRAINT "crm_leads_lead_pipeline_id_foreign" FOREIGN KEY ("lead_pipeline_id") REFERENCES "crm"."lead_pipelines" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."leads" ADD CONSTRAINT "crm_leads_lead_pipeline_stage_id_foreign" FOREIGN KEY ("lead_pipeline_stage_id") REFERENCES "crm"."lead_pipeline_stage" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."leads" ADD CONSTRAINT "crm_leads_lead_source_id_foreign" FOREIGN KEY ("lead_source_id") REFERENCES "crm"."lead_sources" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."leads" ADD CONSTRAINT "crm_leads_lead_type_id_foreign" FOREIGN KEY ("lead_type_id") REFERENCES "crm"."lead_types" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."leads" ADD CONSTRAINT "crm_leads_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."leads" ADD CONSTRAINT "crm_leads_person_id_foreign" FOREIGN KEY ("person_id") REFERENCES "crm"."persons" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."leads" ADD CONSTRAINT "crm_leads_sales_person_id_foreign" FOREIGN KEY ("sales_person_id") REFERENCES "crm"."sales_person" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."leads" ADD CONSTRAINT "crm_leads_user_sales_person_id_foreign" FOREIGN KEY ("user_sales_person_id") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table organizations
--- ----------------------------
-ALTER TABLE "crm"."organizations" ADD CONSTRAINT "crm_organizations_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."organizations" ADD CONSTRAINT "crm_organizations_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table persons
 -- ----------------------------
-ALTER TABLE "crm"."persons" ADD CONSTRAINT "crm_persons_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."persons" ADD CONSTRAINT "crm_persons_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."persons" ADD CONSTRAINT "crm_persons_organization_id_foreign" FOREIGN KEY ("organization_id") REFERENCES "crm"."organizations" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table products
--- ----------------------------
-ALTER TABLE "crm"."products" ADD CONSTRAINT "crm_products_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."products" ADD CONSTRAINT "crm_products_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table quote_items
 -- ----------------------------
-ALTER TABLE "crm"."quote_items" ADD CONSTRAINT "crm_quote_items_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."quote_items" ADD CONSTRAINT "crm_quote_items_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."quote_items" ADD CONSTRAINT "crm_quote_items_product_id_foreign" FOREIGN KEY ("product_id") REFERENCES "crm"."products" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."quote_items" ADD CONSTRAINT "crm_quote_items_quote_id_foreign" FOREIGN KEY ("quote_id") REFERENCES "crm"."quotes" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table quotes
 -- ----------------------------
-ALTER TABLE "crm"."quotes" ADD CONSTRAINT "crm_quotes_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."quotes" ADD CONSTRAINT "crm_quotes_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."quotes" ADD CONSTRAINT "crm_quotes_organization_id_foreign" FOREIGN KEY ("organization_id") REFERENCES "crm"."organizations" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."quotes" ADD CONSTRAINT "crm_quotes_person_id_foreign" FOREIGN KEY ("person_id") REFERENCES "crm"."persons" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."quotes" ADD CONSTRAINT "crm_quotes_sales_person_id_foreign" FOREIGN KEY ("sales_person_id") REFERENCES "crm"."sales_person" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."quotes" ADD CONSTRAINT "crm_quotes_user_sales_person_id_foreign" FOREIGN KEY ("user_sales_person_id") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table sales_person
--- ----------------------------
-ALTER TABLE "crm"."sales_person" ADD CONSTRAINT "crm_sales_person_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."sales_person" ADD CONSTRAINT "crm_sales_person_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."sales_person" ADD CONSTRAINT "crm_sales_person_user_id_foreign" FOREIGN KEY ("user_id") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table tags
--- ----------------------------
-ALTER TABLE "crm"."tags" ADD CONSTRAINT "crm_tags_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."tags" ADD CONSTRAINT "crm_tags_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."tags" ADD CONSTRAINT "crm_tags_user_id_foreign" FOREIGN KEY ("user_id") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table web_form_attribute
 -- ----------------------------
 ALTER TABLE "crm"."web_form_attribute" ADD CONSTRAINT "crm_web_form_attribute_attribute_id_foreign" FOREIGN KEY ("attribute_id") REFERENCES "crm"."attributes" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."web_form_attribute" ADD CONSTRAINT "crm_web_form_attribute_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."web_form_attribute" ADD CONSTRAINT "crm_web_form_attribute_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "crm"."web_form_attribute" ADD CONSTRAINT "crm_web_form_attribute_web_form_id_foreign" FOREIGN KEY ("web_form_id") REFERENCES "crm"."web_forms" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table web_forms
--- ----------------------------
-ALTER TABLE "crm"."web_forms" ADD CONSTRAINT "crm_web_forms_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."web_forms" ADD CONSTRAINT "crm_web_forms_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table workflows
--- ----------------------------
-ALTER TABLE "crm"."workflows" ADD CONSTRAINT "crm_workflows_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "crm"."workflows" ADD CONSTRAINT "crm_workflows_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;

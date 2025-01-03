@@ -1,7 +1,7 @@
 /*
- Navicat Premium Dump SQL
+ Navicat Premium Data Transfer
 
- Source Server         : Dev-203.175.10.178
+ Source Server         : Rembon Development Connection
  Source Server Type    : PostgreSQL
  Source Server Version : 140012 (140012)
  Source Host           : 203.175.10.178:2408
@@ -12,7 +12,7 @@
  Target Server Version : 140012 (140012)
  File Encoding         : 65001
 
- Date: 09/12/2024 18:37:56
+ Date: 03/01/2025 09:43:14
 */
 
 
@@ -1119,175 +1119,91 @@ ALTER TABLE "hrm"."user_settings" ADD CONSTRAINT "user_settings_pkey" PRIMARY KE
 ALTER TABLE "hrm"."workshifts" ADD CONSTRAINT "workshifts_pkey" PRIMARY KEY ("id");
 
 -- ----------------------------
--- Foreign Keys structure for table absent_reasons
--- ----------------------------
-ALTER TABLE "hrm"."absent_reasons" ADD CONSTRAINT "hrm_absent_reasons_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."absent_reasons" ADD CONSTRAINT "hrm_absent_reasons_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
 -- Foreign Keys structure for table attendance
 -- ----------------------------
-ALTER TABLE "hrm"."attendance" ADD CONSTRAINT "hrm_attendance_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."attendance" ADD CONSTRAINT "hrm_attendance_employee_id_foreign" FOREIGN KEY ("employee_id") REFERENCES "hrm"."employee" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."attendance" ADD CONSTRAINT "hrm_attendance_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."attendance" ADD CONSTRAINT "hrm_attendance_reason_id_foreign" FOREIGN KEY ("reason_id") REFERENCES "hrm"."reason" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."attendance" ADD CONSTRAINT "hrm_attendance_shiftment_id_foreign" FOREIGN KEY ("shiftment_id") REFERENCES "hrm"."shiftment" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table attendance_summaries
 -- ----------------------------
-ALTER TABLE "hrm"."attendance_summaries" ADD CONSTRAINT "hrm_attendance_summaries_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."attendance_summaries" ADD CONSTRAINT "hrm_attendance_summaries_employee_id_foreign" FOREIGN KEY ("employee_id") REFERENCES "hrm"."employee" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."attendance_summaries" ADD CONSTRAINT "hrm_attendance_summaries_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table career_history
 -- ----------------------------
 ALTER TABLE "hrm"."career_history" ADD CONSTRAINT "hrm_career_history_company_id_foreign" FOREIGN KEY ("company_id") REFERENCES "hrm"."company" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."career_history" ADD CONSTRAINT "hrm_career_history_contract_id_foreign" FOREIGN KEY ("contract_id") REFERENCES "hrm"."contract" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."career_history" ADD CONSTRAINT "hrm_career_history_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."career_history" ADD CONSTRAINT "hrm_career_history_department_id_foreign" FOREIGN KEY ("department_id") REFERENCES "hrm"."department" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."career_history" ADD CONSTRAINT "hrm_career_history_employee_id_foreign" FOREIGN KEY ("employee_id") REFERENCES "hrm"."employee" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."career_history" ADD CONSTRAINT "hrm_career_history_job_level_id_foreign" FOREIGN KEY ("job_level_id") REFERENCES "hrm"."job_level" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."career_history" ADD CONSTRAINT "hrm_career_history_job_title_id_foreign" FOREIGN KEY ("job_title_id") REFERENCES "hrm"."job_title" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."career_history" ADD CONSTRAINT "hrm_career_history_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table city
 -- ----------------------------
-ALTER TABLE "hrm"."city" ADD CONSTRAINT "hrm_city_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."city" ADD CONSTRAINT "hrm_city_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."city" ADD CONSTRAINT "hrm_city_region_id_foreign" FOREIGN KEY ("region_id") REFERENCES "hrm"."region" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table company
--- ----------------------------
-ALTER TABLE "hrm"."company" ADD CONSTRAINT "hrm_company_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."company" ADD CONSTRAINT "hrm_company_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table company_address
 -- ----------------------------
 ALTER TABLE "hrm"."company_address" ADD CONSTRAINT "hrm_company_address_city_id_foreign" FOREIGN KEY ("city_id") REFERENCES "hrm"."city" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."company_address" ADD CONSTRAINT "hrm_company_address_company_id_foreign" FOREIGN KEY ("company_id") REFERENCES "hrm"."company" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."company_address" ADD CONSTRAINT "hrm_company_address_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."company_address" ADD CONSTRAINT "hrm_company_address_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."company_address" ADD CONSTRAINT "hrm_company_address_region_id_foreign" FOREIGN KEY ("region_id") REFERENCES "hrm"."region" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table company_costs
 -- ----------------------------
-ALTER TABLE "hrm"."company_costs" ADD CONSTRAINT "hrm_company_costs_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."company_costs" ADD CONSTRAINT "hrm_company_costs_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."company_costs" ADD CONSTRAINT "hrm_company_costs_payroll_id_foreign" FOREIGN KEY ("payroll_id") REFERENCES "hrm"."payroll" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table company_payroll_cost
--- ----------------------------
-ALTER TABLE "hrm"."company_payroll_cost" ADD CONSTRAINT "hrm_company_payroll_cost_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."company_payroll_cost" ADD CONSTRAINT "hrm_company_payroll_cost_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table contract
--- ----------------------------
-ALTER TABLE "hrm"."contract" ADD CONSTRAINT "hrm_contract_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."contract" ADD CONSTRAINT "hrm_contract_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table department
--- ----------------------------
-ALTER TABLE "hrm"."department" ADD CONSTRAINT "hrm_department_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."department" ADD CONSTRAINT "hrm_department_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table education_institute
--- ----------------------------
-ALTER TABLE "hrm"."education_institute" ADD CONSTRAINT "hrm_education_institute_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."education_institute" ADD CONSTRAINT "hrm_education_institute_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table education_title
--- ----------------------------
-ALTER TABLE "hrm"."education_title" ADD CONSTRAINT "hrm_education_title_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."education_title" ADD CONSTRAINT "hrm_education_title_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table employee
 -- ----------------------------
 ALTER TABLE "hrm"."employee" ADD CONSTRAINT "hrm_employee_company_id_foreign" FOREIGN KEY ("company_id") REFERENCES "hrm"."company" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."employee" ADD CONSTRAINT "hrm_employee_contract_id_foreign" FOREIGN KEY ("contract_id") REFERENCES "hrm"."contract" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."employee" ADD CONSTRAINT "hrm_employee_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."employee" ADD CONSTRAINT "hrm_employee_department_id_foreign" FOREIGN KEY ("department_id") REFERENCES "hrm"."department" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."employee" ADD CONSTRAINT "hrm_employee_job_level_id_foreign" FOREIGN KEY ("job_level_id") REFERENCES "hrm"."job_level" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."employee" ADD CONSTRAINT "hrm_employee_job_title_id_foreign" FOREIGN KEY ("job_title_id") REFERENCES "hrm"."job_title" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."employee" ADD CONSTRAINT "hrm_employee_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."employee" ADD CONSTRAINT "hrm_employee_user_id_foreign" FOREIGN KEY ("user_id") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table employee_address
 -- ----------------------------
 ALTER TABLE "hrm"."employee_address" ADD CONSTRAINT "hrm_employee_address_city_id_foreign" FOREIGN KEY ("city_id") REFERENCES "hrm"."city" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."employee_address" ADD CONSTRAINT "hrm_employee_address_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."employee_address" ADD CONSTRAINT "hrm_employee_address_employee_id_foreign" FOREIGN KEY ("employee_id") REFERENCES "hrm"."employee" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."employee_address" ADD CONSTRAINT "hrm_employee_address_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."employee_address" ADD CONSTRAINT "hrm_employee_address_region_id_foreign" FOREIGN KEY ("region_id") REFERENCES "hrm"."region" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table holiday
--- ----------------------------
-ALTER TABLE "hrm"."holiday" ADD CONSTRAINT "hrm_holiday_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."holiday" ADD CONSTRAINT "hrm_holiday_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table job_level
--- ----------------------------
-ALTER TABLE "hrm"."job_level" ADD CONSTRAINT "hrm_job_level_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."job_level" ADD CONSTRAINT "hrm_job_level_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table job_title
 -- ----------------------------
-ALTER TABLE "hrm"."job_title" ADD CONSTRAINT "hrm_job_title_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."job_title" ADD CONSTRAINT "hrm_job_title_job_level_id_foreign" FOREIGN KEY ("job_level_id") REFERENCES "hrm"."job_level" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."job_title" ADD CONSTRAINT "hrm_job_title_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table leave
 -- ----------------------------
-ALTER TABLE "hrm"."leave" ADD CONSTRAINT "hrm_leave_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."leave" ADD CONSTRAINT "hrm_leave_employee_id_foreign" FOREIGN KEY ("employee_id") REFERENCES "hrm"."employee" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."leave" ADD CONSTRAINT "hrm_leave_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."leave" ADD CONSTRAINT "hrm_leave_reason_id_foreign" FOREIGN KEY ("reason_id") REFERENCES "hrm"."reason" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table mutation
 -- ----------------------------
 ALTER TABLE "hrm"."mutation" ADD CONSTRAINT "hrm_mutation_contract_id_foreign" FOREIGN KEY ("contract_id") REFERENCES "hrm"."contract" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."mutation" ADD CONSTRAINT "hrm_mutation_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."mutation" ADD CONSTRAINT "hrm_mutation_employee_id_foreign" FOREIGN KEY ("employee_id") REFERENCES "hrm"."employee" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."mutation" ADD CONSTRAINT "hrm_mutation_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table overtime
 -- ----------------------------
-ALTER TABLE "hrm"."overtime" ADD CONSTRAINT "hrm_overtime_approved_by_foreign" FOREIGN KEY ("approved_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."overtime" ADD CONSTRAINT "hrm_overtime_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."overtime" ADD CONSTRAINT "hrm_overtime_employee_id_foreign" FOREIGN KEY ("employee_id") REFERENCES "hrm"."employee" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."overtime" ADD CONSTRAINT "hrm_overtime_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."overtime" ADD CONSTRAINT "hrm_overtime_shiftment_id_foreign" FOREIGN KEY ("shiftment_id") REFERENCES "hrm"."shiftment" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table payroll
 -- ----------------------------
-ALTER TABLE "hrm"."payroll" ADD CONSTRAINT "hrm_payroll_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."payroll" ADD CONSTRAINT "hrm_payroll_employee_id_foreign" FOREIGN KEY ("employee_id") REFERENCES "hrm"."employee" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."payroll" ADD CONSTRAINT "hrm_payroll_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table payroll_detail
 -- ----------------------------
-ALTER TABLE "hrm"."payroll_detail" ADD CONSTRAINT "hrm_payroll_detail_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."payroll_detail" ADD CONSTRAINT "hrm_payroll_detail_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."payroll_detail" ADD CONSTRAINT "hrm_payroll_detail_payroll_id_foreign" FOREIGN KEY ("payroll_id") REFERENCES "hrm"."payroll" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."payroll_detail" ADD CONSTRAINT "hrm_payroll_detail_salary_component_id_foreign" FOREIGN KEY ("salary_component_id") REFERENCES "hrm"."salary_component" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -1295,103 +1211,50 @@ ALTER TABLE "hrm"."payroll_detail" ADD CONSTRAINT "hrm_payroll_detail_salary_com
 -- Foreign Keys structure for table payroll_periode
 -- ----------------------------
 ALTER TABLE "hrm"."payroll_periode" ADD CONSTRAINT "hrm_payroll_periode_company_id_foreign" FOREIGN KEY ("company_id") REFERENCES "hrm"."company" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."payroll_periode" ADD CONSTRAINT "hrm_payroll_periode_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."payroll_periode" ADD CONSTRAINT "hrm_payroll_periode_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table placement
 -- ----------------------------
 ALTER TABLE "hrm"."placement" ADD CONSTRAINT "hrm_placement_company_id_foreign" FOREIGN KEY ("company_id") REFERENCES "hrm"."company" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."placement" ADD CONSTRAINT "hrm_placement_contract_id_foreign" FOREIGN KEY ("contract_id") REFERENCES "hrm"."contract" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."placement" ADD CONSTRAINT "hrm_placement_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."placement" ADD CONSTRAINT "hrm_placement_department_id_foreign" FOREIGN KEY ("department_id") REFERENCES "hrm"."department" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."placement" ADD CONSTRAINT "hrm_placement_employee_id_foreign" FOREIGN KEY ("employee_id") REFERENCES "hrm"."employee" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."placement" ADD CONSTRAINT "hrm_placement_job_level_id_foreign" FOREIGN KEY ("job_level_id") REFERENCES "hrm"."job_level" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."placement" ADD CONSTRAINT "hrm_placement_job_title_id_foreign" FOREIGN KEY ("job_title_id") REFERENCES "hrm"."job_title" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."placement" ADD CONSTRAINT "hrm_placement_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table reason
--- ----------------------------
-ALTER TABLE "hrm"."reason" ADD CONSTRAINT "hrm_reason_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."reason" ADD CONSTRAINT "hrm_reason_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table region
--- ----------------------------
-ALTER TABLE "hrm"."region" ADD CONSTRAINT "hrm_region_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."region" ADD CONSTRAINT "hrm_region_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table salary_allowances
 -- ----------------------------
-ALTER TABLE "hrm"."salary_allowances" ADD CONSTRAINT "hrm_salary_allowances_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."salary_allowances" ADD CONSTRAINT "hrm_salary_allowances_employee_id_foreign" FOREIGN KEY ("employee_id") REFERENCES "hrm"."employee" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."salary_allowances" ADD CONSTRAINT "hrm_salary_allowances_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table salary_benefit_histories
 -- ----------------------------
 ALTER TABLE "hrm"."salary_benefit_histories" ADD CONSTRAINT "hrm_salary_benefit_histories_contract_id_foreign" FOREIGN KEY ("contract_id") REFERENCES "hrm"."contract" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."salary_benefit_histories" ADD CONSTRAINT "hrm_salary_benefit_histories_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."salary_benefit_histories" ADD CONSTRAINT "hrm_salary_benefit_histories_employee_id_foreign" FOREIGN KEY ("employee_id") REFERENCES "hrm"."employee" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."salary_benefit_histories" ADD CONSTRAINT "hrm_salary_benefit_histories_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table salary_benefits
 -- ----------------------------
-ALTER TABLE "hrm"."salary_benefits" ADD CONSTRAINT "hrm_salary_benefits_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."salary_benefits" ADD CONSTRAINT "hrm_salary_benefits_employee_id_foreign" FOREIGN KEY ("employee_id") REFERENCES "hrm"."employee" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."salary_benefits" ADD CONSTRAINT "hrm_salary_benefits_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table salary_component
--- ----------------------------
-ALTER TABLE "hrm"."salary_component" ADD CONSTRAINT "hrm_salary_component_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."salary_component" ADD CONSTRAINT "hrm_salary_component_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table shiftment
--- ----------------------------
-ALTER TABLE "hrm"."shiftment" ADD CONSTRAINT "hrm_shiftment_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."shiftment" ADD CONSTRAINT "hrm_shiftment_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table skill_groups
--- ----------------------------
-ALTER TABLE "hrm"."skill_groups" ADD CONSTRAINT "hrm_skill_groups_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."skill_groups" ADD CONSTRAINT "hrm_skill_groups_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table skills
 -- ----------------------------
-ALTER TABLE "hrm"."skills" ADD CONSTRAINT "hrm_skills_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."skills" ADD CONSTRAINT "hrm_skills_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."skills" ADD CONSTRAINT "hrm_skills_skill_group_id_foreign" FOREIGN KEY ("skill_group_id") REFERENCES "hrm"."skill_groups" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table tax_group_history
 -- ----------------------------
-ALTER TABLE "hrm"."tax_group_history" ADD CONSTRAINT "hrm_tax_group_history_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."tax_group_history" ADD CONSTRAINT "hrm_tax_group_history_employee_id_foreign" FOREIGN KEY ("employee_id") REFERENCES "hrm"."employee" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."tax_group_history" ADD CONSTRAINT "hrm_tax_group_history_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table taxs
 -- ----------------------------
-ALTER TABLE "hrm"."taxs" ADD CONSTRAINT "hrm_taxs_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."taxs" ADD CONSTRAINT "hrm_taxs_employee_id_foreign" FOREIGN KEY ("employee_id") REFERENCES "hrm"."employee" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."taxs" ADD CONSTRAINT "hrm_taxs_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- ----------------------------
--- Foreign Keys structure for table user_settings
--- ----------------------------
-ALTER TABLE "hrm"."user_settings" ADD CONSTRAINT "hrm_user_settings_user_id_foreign" FOREIGN KEY ("user_id") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table workshifts
 -- ----------------------------
-ALTER TABLE "hrm"."workshifts" ADD CONSTRAINT "hrm_workshifts_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."workshifts" ADD CONSTRAINT "hrm_workshifts_employee_id_foreign" FOREIGN KEY ("employee_id") REFERENCES "hrm"."employee" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "hrm"."workshifts" ADD CONSTRAINT "hrm_workshifts_modified_by_foreign" FOREIGN KEY ("modified_by") REFERENCES "usr"."users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "hrm"."workshifts" ADD CONSTRAINT "hrm_workshifts_shiftment_id_foreign" FOREIGN KEY ("shiftment_id") REFERENCES "hrm"."shiftment" ("id") ON DELETE CASCADE ON UPDATE CASCADE;

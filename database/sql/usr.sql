@@ -1,7 +1,7 @@
 /*
- Navicat Premium Dump SQL
+ Navicat Premium Data Transfer
 
- Source Server         : Dev-203.175.10.178
+ Source Server         : Rembon Development Connection
  Source Server Type    : PostgreSQL
  Source Server Version : 140012 (140012)
  Source Host           : 203.175.10.178:2408
@@ -12,7 +12,7 @@
  Target Server Version : 140012 (140012)
  File Encoding         : 65001
 
- Date: 09/12/2024 18:37:03
+ Date: 03/01/2025 09:46:07
 */
 
 
@@ -1213,7 +1213,7 @@ ALTER TABLE "usr"."user_sales_office" ADD CONSTRAINT "user_sales_office_pkey" PR
 -- ----------------------------
 -- Checks structure for table users
 -- ----------------------------
-ALTER TABLE "usr"."users" ADD CONSTRAINT "users_type_check" CHECK (type::text = ANY (ARRAY['erp'::character varying, 'operation'::character varying]::text[]));
+ALTER TABLE "usr"."users" ADD CONSTRAINT "users_type_check" CHECK (type::text = ANY (ARRAY['erp'::character varying::text, 'operation'::character varying::text]));
 
 -- ----------------------------
 -- Primary Key structure for table users

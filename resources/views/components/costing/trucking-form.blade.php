@@ -42,7 +42,7 @@
          console.log(vendorName);
         $('#vendor_name_' + ke).val(vendorName);
         var vendorType = 'truck-'+bl+'-'+vendorCode;
-        setChargeBl(vendorId,vendorName,vendorCode, bl, vendorType,'LAND');
+        setChargeBl(vendorId,vendorName,vendorCode, bl, vendorType,'LAND','truck-'+ke);
  }
 </script>
 @endpush

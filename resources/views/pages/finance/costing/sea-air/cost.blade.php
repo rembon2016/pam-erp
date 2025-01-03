@@ -161,11 +161,11 @@ select,
 
 </script>
 <script>
-function setChargeBl(vendorId,vendorName,vendorCode, bl, vendorType, type) {
+function setChargeBl(vendorId,vendorName,vendorCode, bl, vendorType, type, typeIndex = '') {
       var key = $("#bl_"+bl).val();
-      if(vendorType != 'manual-bl' && vendorType != 'manual-mawb'){
+      if(vendorType != 'manual-bl' && vendorType != 'manual-mawb' && typeIndex != ''){
         console.log("XCA");
-      $(".bl-auto_"+vendorType).each(function () {
+      $(`.${typeIndex}`).each(function () {
             const $row = $(this);
             const hiddenInput = $row.find(`input[name="costing_detail_bl_${key}_id[]"]`);
 
@@ -217,7 +217,7 @@ function setChargeBl(vendorId,vendorName,vendorCode, bl, vendorType, type) {
                             var indx = index + idx;
                            var vendorLine = @json($vendor_line);
                             // Call setCharge function
-                            window[`setCharge${key}`](data, key, bl, indx, 'bl', vendorType, typex, vendorLine);
+                            window[`setCharge${key}`](data, key, bl, indx, 'bl', vendorType, typex, vendorLine, typeIndex);
                         });
                     } else {
                         console.log("No charges available for this BL.");

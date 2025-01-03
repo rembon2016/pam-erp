@@ -118,8 +118,8 @@ function setVendorAirName(key) {
     var vendorCode = $dropdown.find(':selected').data('vendor-code');
     console.log(vendorCode);
     $(`#vendor_air_name_${key}`).val(vendorName);
-    
-    setChargeMawb(vendorId,vendorName,vendorCode, mawb, 'agent');
+    var vendorType = 'agent-'+mawb+'-'+vendorCode;
+    setChargeMawb(vendorId,vendorName,vendorCode, mawb, vendorType,'agent-'+key);
 }
 </script>
 @endpush

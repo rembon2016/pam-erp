@@ -436,6 +436,7 @@ final class CostingService
             $status = $request["status_bl_{$j}"][$k] ?? null;
             $email = auth()->user()->email;
             $transaction_date = $request->transaction_date_import;
+            $type = $request["type_bl_{$j}"][$k] ?? null;
             $data_special_export = [
                 'costing_id'=> $id,
                 'costing_head_id'=>$head_id,
@@ -452,7 +453,8 @@ final class CostingService
                  'local_amount'=>$local_amount,
                  'status'=>$status,
                  'created_by'=>$email,
-                 'transaction_date'=>$transaction_date
+                 'transaction_date'=>$transaction_date,
+                 'type'=>$type
             ];
 
             CostingDetail::create($data_special_export);
@@ -597,7 +599,7 @@ final class CostingService
                     'local_amount'=>$local_amount,
                     'status'=>$status,
                     'transaction_date'=>$transaction_date,
-                    'type'=>'manual'
+                    'type'=>'manual_ctd'
                 ];
                 if($costing_detail_id != null){
                     $data_special_export["updated_by"] = auth()->user()->email;
@@ -631,6 +633,7 @@ final class CostingService
             $local_amount = $request["local_amount_mawb_{$j}"][$k] ?? null;
             $status = $request["status_mawb_{$j}"][$k] ?? null;
             $transaction_date = $request->transaction_date_import;
+            $type = $request["type_bl_{$j}"][$k] ?? null;
             $email = auth()->user()->email;
             $data_special_export = [
                 'costing_id'=> $id,
@@ -648,7 +651,8 @@ final class CostingService
                  'local_amount'=>$local_amount,
                  'status'=>$status,
                  'created_by'=>$email,
-                 'transaction_date'=>$transaction_date
+                 'transaction_date'=>$transaction_date,
+                 'type'=>$type
             ];
 
             CostingDetail::create($data_special_export);

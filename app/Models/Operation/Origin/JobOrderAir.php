@@ -4,6 +4,7 @@ namespace App\Models\Operation\Origin;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Operation\Master\Office;
+use App\Models\Finance\Costing;
 class JobOrderAir extends Model
 {
     protected $table = 'origin.job_order_air';
@@ -61,5 +62,10 @@ class JobOrderAir extends Model
     public function vendor()
     {
         return $this->hasMany(JobOrderVendor::class, 'job_order_id', 'job_order_id');
+    }
+
+    public function costing()
+    {
+        return $this->belongsTo(Costing::class, 'job_order_id', 'job_order_id');
     }
 }

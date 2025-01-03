@@ -12,6 +12,7 @@ use App\Models\Operation\Origin\LoadingReportDetail;
 use App\Models\Operation\Origin\LoadingReportBL;
 use App\Models\Operation\Origin\ShippingInstruction;
 use App\Models\Operation\Dxb\LoadingPlan;
+use App\Models\Operation\Origin\LoadingPlan as LoadingPlanOrigin;
 use App\Models\Operation\Master\Port;
 use App\Models\Operation\Master\Vendor;
 use App\Models\Finance\Charge;
@@ -168,8 +169,14 @@ final class CalculationService
             }
     }
 
-    public function getChargeByMawb($id, $mawb_number, $type){
-        $lp = LoadingPlan::where("mawb_number", $mawb_number)->first();
+    public function getChargeByMawb($id, $mawb_number, $type, $mode){
+        if($mode == "SEAAIR"){
+            $lp = LoadingPlan::where("mawb_number", $mawb_number)->first();
+        }else{
+            $lp = LoadingPlanOrigin::where("mawb_number", $mawb_number)->first();
+        }
+
+
         $contract = AgentContract::where("customer_id",$id)->first();
         if($contract == null){
 
@@ -179,7 +186,11 @@ final class CalculationService
             ];
             return $result;
         }
-        $ship = ShippingInstruction::where("loading_plan_dxb", $lp->plan_id)->first();
+        if($mode == "SEAAIR"){
+            $ship = ShippingInstruction::where("loading_plan_dxb", $lp->plan_id)->first();
+        }else{
+            $ship = ShippingInstruction::where("loading_id", $lp->plan_id)->first();
+        }
 
             $service = AgentContractService::where("agent_contract_id", $contract->id)->whereHas('serviceType', function ($query) use ($ship, $type) {
                 if($type != "All"){
@@ -197,14 +208,14 @@ final class CalculationService
                         $query->where("service_code", 'AIR');
                     }
                 });
-                if($type != "All"){
+                // if($type != "All"){
 
-                    $service = $service->where('carrier_id',$lp->carrier_id);
-                }
+                //    // $service = $service->where('carrier_id',$lp->carrier_id);
+                // }
                 $service = $service->first();
 
-            }
 
+            }
             if($service == null){
                 $result = [
                     "status"=>false,
@@ -216,7 +227,11 @@ final class CalculationService
             $charge = AgentContractCharge::with(['charge','unit'])->where("agent_contract_service_id", $service->id)->get();
             $charge_mawb = [];
             foreach($charge as $row){
-                $shipping = ShippingInstruction::where("loading_plan_dxb", $lp->plan_id)->get();
+                if($mode == "SEAAIR"){
+                    $shipping = ShippingInstruction::where("loading_plan_dxb", $lp->plan_id)->get();
+                }else{
+                    $shipping = ShippingInstruction::where("loading_id", $lp->plan_id)->get();
+                }
                 if($row->unit->unit_name == "KG"){
                     // $chw = 0.0;
                     // foreach($shipping as $r){
@@ -404,17 +419,14 @@ final class CalculationService
             }
     }
 
-    public function getChargeExportByLp($id, $loading_id){
+    public function getChargeExportByLp($id, $loading_id,$mode){
+        if($mode == "SEAAIR"){
         $shipment = ShippingInstruction::where("status", "!=", 3)
         ->where("loading_id", $loading_id)
         ->get();
 
         $loading_plan_dxb = $shipment->pluck('loading_plan_dxb')->toArray();
-
-        $lp = LoadingPlan::with(['shipping' => function($q) use ($shipment) {
-            $jobIds = $shipment->pluck('job_id')->toArray();
-            $q->whereIn('job_id', $jobIds);
-        }])->whereIn('plan_id', $loading_plan_dxb)->get();
+        }
 
         $contract = AgentContract::where("customer_id",$id)->first();
 
@@ -425,8 +437,11 @@ final class CalculationService
             ];
             return $result;
         }
-
+        if($mode == "SEAAIR"){
         $ship = ShippingInstruction::whereIn("loading_plan_dxb", $loading_plan_dxb)->first();
+        }else{
+            $ship = ShippingInstruction::where("loading_id", $loading_id)->first();
+        }
 
             $service = AgentContractService::where("agent_contract_id", $contract->id)->whereHas('serviceType', function ($query) use ($ship) {
 
@@ -450,7 +465,12 @@ final class CalculationService
             $charge = AgentContractCharge::with(['charge','unit'])->where("agent_contract_service_id", $service->id)->get();
             $charge_mawb = [];
             foreach($charge as $row){
-                $shipping = ShippingInstruction::whereIn("loading_plan_dxb", $loading_plan_dxb)->get();
+                if($mode == "SEAAIR"){
+                    $shipping = ShippingInstruction::whereIn("loading_plan_dxb", $loading_plan_dxb)->get();
+                }else{
+                    $shipping = ShippingInstruction::where("loading_id", $loading_id)->get();
+                }
+
                 if($row->unit->unit_name == "KG"){
                     // $chw = 0.0;
                     // foreach($shipping as $r){

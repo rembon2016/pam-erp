@@ -28,6 +28,7 @@ use App\Models\Finance\AgentContractService;
 use App\Models\Finance\AgentContractCharge;
 use App\Models\Finance\AgentContractChargeDetail;
 use App\Service\Finance\Costing\CostingService;
+use App\Service\Finance\Costing\DataService;
 use App\Service\Finance\Costing\Origin\CalculationService;
 
 
@@ -49,7 +50,8 @@ final class SeaAirController extends Controller
 
     public function __construct(
         protected CostingService $costingService,
-        protected CalculationService $calculationService
+        protected CalculationService $calculationService,
+        protected DataService $dataService
 
     ) {}
 
@@ -62,7 +64,7 @@ final class SeaAirController extends Controller
     public function list(Request $request): JsonResponse
     {
         if (request()->ajax()) {
-            $data = $this->costingService->getJobOrders($request);
+            $data = $this->dataService->getJobOrders($request);
             return DataTables::of($data['data'])
                 ->addIndexColumn()
                 ->with([
@@ -129,21 +131,8 @@ final class SeaAirController extends Controller
     }
 
     public function port(Request $request){
-        $query = Port::query();
-
-        // Apply search filter
-        if ($search = $request->input('search')) {
-            $query->where('port_code', 'ilike', '%' . $search . '%');
-            $query->orWhere('port_name', 'ilike', '%' . $search . '%');
-        }
-
-        // Paginate the results
-        $options = $query->orderBy('port_code','ASC')->paginate(1000); // Adjust the pagination size as needed
-
-        return response()->json([
-            'results' => $options->items(),
-            'pagination' => ['more' => $options->hasMorePages()]
-        ]);
+        $result = $this->dataService->getPort($request);
+        return response()->json($result);
     }
 
     public function cost($id){
@@ -152,22 +141,11 @@ final class SeaAirController extends Controller
 
         $loading = LoadingReportDetail::with('bl')->where('status',"!=",3)->where('bl_id', $joborder->loading_plan_id)->get();
 
-        //$port = Port::where('status',"!=",3)->get();
-        $vendor_all = Customer::select('id as vendor_id','customer_name as vendor_name','customer_code as vendor_code')->with("customerTypes")->get();
-
-        $vendor_truck = Customer::select('id as vendor_id','customer_name as vendor_name','customer_code as vendor_code')->with("customerTypes")->whereHas("customerTypes", function ($query) {
-            $query->where("name", "Trucking Company");
-        })->get();
-
-        $vendor_port = Customer::select('id as vendor_id','customer_name as vendor_name','customer_code as vendor_code')->with("customerTypes")->whereHas("customerTypes", function ($query) {
-            $query->where("name", "Dubai Port");
-        })->get();
-        $vendor_air = Customer::select('id as vendor_id','customer_name as vendor_name','customer_code as vendor_code')->with("customerTypes")->whereHas("customerTypes", function ($query) {
-            $query->where("name", "Carrier Agent");
-        })->get();
-        $vendor_line = Customer::select('id as vendor_id','customer_name as vendor_name','customer_code as vendor_code')->with("customerTypes")->whereHas("customerTypes", function ($query) {
-            $query->where("name", "Shipping Line");
-        })->get();
+        $vendor_all = $this->dataService->getCustomer("All");
+        $vendor_truck = $this->dataService->getCustomer("Trucking Company");
+        $vendor_port = $this->dataService->getCustomer("Dubai Port");
+        $vendor_air = $this->dataService->getCustomer("Carrier Agent");
+        $vendor_line = $this->dataService->getCustomer("Shipping Line");
 
         $charge = Charge::whereNull('deleted_at')->get();
         $currency = Currency::whereNull('deleted_at')->get();
@@ -298,7 +276,7 @@ final class SeaAirController extends Controller
     }
 
     public function contractmawb($id, $mawb_number, $type){
-        $result = $this->calculationService->getChargeByMawb($id, $mawb_number, $type);
+        $result = $this->calculationService->getChargeByMawb($id, $mawb_number, $type, 'SEAAIR');
         return response()->json($result);
 
     }
@@ -310,7 +288,7 @@ final class SeaAirController extends Controller
     }
 
     public function contractlpdxb($id, $loading_id){
-        $result = $this->calculationService->getChargeExportByLp($id, $loading_id);
+        $result = $this->calculationService->getChargeExportByLp($id, $loading_id, 'SEAAIR');
         return response()->json($result);
     }
 

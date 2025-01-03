@@ -353,7 +353,7 @@
         function setVendorSpecialImport(vendorId, vendorName, vendorCode, loadingId) {
             var index = rowIndex;
             $.ajax({
-                url: `/finance/costing/sea-air/contractlp/${vendorId}/${loadingId}`, // Replace with your actual route
+                url: `/finance/costing/{{ $type }}/contractlp/${vendorId}/${loadingId}`, // Replace with your actual route
                 method: 'GET', // Or 'POST' if your route uses POST
                 dataType: 'json',
                 success: function(response) {

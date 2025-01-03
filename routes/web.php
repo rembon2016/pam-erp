@@ -388,8 +388,15 @@ Route::group(['middleware' => ['auth']], function () {
                 'prefix' => 'cross-air',
                 'as' => 'cross-air.'
             ], function () {
+
                 Route::get('/', [CrossAirController::class, 'index'])->name('index');
+                Route::get('/port', [CrossAirController::class, 'port'])->name('port');
+            Route::get('/contractmawb/{id}/{bl_number}/{type}', [CrossAirController::class, 'contractmawb'])->name('contractmawb');
+                Route::get('/contractlpdxb/{id}/{loading_id}', [CrossAirController::class, 'contractlpdxb'])->name('contractlpdxb');
                 Route::get('/list', [CrossAirController::class, 'list'])->name('list');
+                Route::post('/store', [CrossAirController::class, 'store'])->name('store');
+                Route::get('/status/{id}/{status}', [CrossAirController::class, 'status'])->name('status');
+                Route::put('/update/{id}', [CrossAirController::class, 'update'])->name('update');
                 Route::get('/show/{id}', [CrossAirController::class, 'show'])->name('show');
                 Route::get('/cost/{id}', [CrossAirController::class, 'cost'])->name('cost');
                 Route::get('/export/csv', [CrossAirController::class, 'exportCsv'])->name('export.csv');

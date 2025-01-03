@@ -63,7 +63,7 @@
                     @foreach ($shippings as $item)
                         <div class="charge-item border px-4 py-2 my-3">
                             <div class="d-flex align-items-center justify-content-between gap-3">
-                                <button type="button" class="btn btn-sm custom-btn custom-btn-primary">CTD: {{ $item->ctd_number }}</button>
+                                <span class="labeled-ctd">CTD: {{ $item->ctd_number }}</span>
                                 <input type="hidden" name="data[{{ $item->ctd_number }}][ctd_number]" value="{{ $item->ctd_number }}">
                                 <input type="hidden" name="data[{{ $item->ctd_number }}][job_id]" value="{{ $item->job_id }}">
                                 <div class="d-flex align-items-center justify-content-end gap-2">

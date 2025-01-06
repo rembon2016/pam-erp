@@ -100,8 +100,12 @@ final class CustomerService
     {
         DB::beginTransaction();
         try {
+            $customer_code_query = DB::select("SELECT finance.customer_code_finance()");
+            $customer_code = count($customer_code_query) > 0 ? $customer_code_query[0]->customer_code_finance : NULL;
+
             $customer = Customer::create([
                 'customer_name' => $dto['customer_name'],
+                'customer_code' => $customer_code,
                 'eori_number' => $dto['eori_number'],
                 'credit_terms' => $dto['credit_terms'],
                 'overseas' => $dto['overseas'],
@@ -139,6 +143,7 @@ final class CustomerService
 
         } catch (\Throwable $th) {
             DB::rollBack();
+            dd($th);
 
             return ObjectResponse::error(
                 message: $th->getMessage(),

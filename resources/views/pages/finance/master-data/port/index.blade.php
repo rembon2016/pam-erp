@@ -17,6 +17,10 @@
             />
         </x:layout.card.header>
         <x:layout.card.body>
+            <div class="filter-result mb-3" style="display: none;">
+                <span class="fw-bold">Filter by </span>
+                <span class="filter-values"></span>
+            </div>
             <x:layout.table.wrapper id="port_table">
                 <thead>
                     <x:layout.table.row>
@@ -90,4 +94,16 @@
     ]
 ])
 @endcomponent
+
+<script src="{{ asset('assets/js/custom/filter-handler.js') }}"></script>
+<script>
+    $(document).ready(function () {
+        new FilterHandler({
+            filters: [
+                { name: 'port_name', label: 'Port Name' },
+                { name: 'port_code', label: 'Port Code' }
+            ]
+        });
+    });
+</script>
 @endpush

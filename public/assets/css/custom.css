@@ -1265,3 +1265,24 @@ table#shipment_table .btn-view-shipment:hover {
     background-color: #18BA43 !important;
     color: #fff !important;
 }
+
+.clear-filter-popup {
+    text-decoration: none;
+    font-size: 12px;
+    color: #ff0000;
+    border: 1px solid;
+    border-radius: 50px;
+    padding: .3rem .9rem;
+    margin: .5rem;
+}
+
+.clear-filter-popup>i {
+    color: #ff0000;
+    margin: .1rem .2rem;
+}
+
+.filter-result {
+    background-color: #f5f5f5;
+    padding: .5rem .9rem;
+    border-radius: 6px;
+}

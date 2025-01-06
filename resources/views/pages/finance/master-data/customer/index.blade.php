@@ -8,6 +8,7 @@
 
     <x:layout.card.wrapper>
         <x:layout.card.header>
+         
             <x:layout.card.toolbar
                 createDataLink="{{ route('finance.master-data.customer.create') }}"
                 exportExcelLink="{{ route('finance.master-data.customer.export.excel') }}"
@@ -17,6 +18,12 @@
             />
         </x:layout.card.header>
         <x:layout.card.body>
+            <div class="filter-result mb-3" style="display: none;">
+                <span class="fw-bold">Filter by </span>
+                <span class="filter-values"></span>
+               
+                {{-- <button class="btn-clear clear-filter">Clear Filter</button> --}}
+            </div>
             <x:layout.table.wrapper id="customer_table">
                 <thead>
                     <x:layout.table.row>
@@ -85,9 +92,9 @@
 ])
 @endcomponent
 
+<script src="{{ asset('assets/js/custom/filter-handler.js') }}"></script>
 <script>
     $(document).ready(function () {
-        let selectedCustomerType = new Set()
         let multipleSelectStyles = [
             'display:flex;',
             'flex-wrap:wrap;',
@@ -96,16 +103,25 @@
         ]
 
         let customerTypeNameElement = $('select[name="customer_type_name[]"]')
+        let customerNameElement = $('select[name="customer_name"]')
+        
+        // Apply styles to select2
         $('ul.select2-selection__rendered').attr('style', multipleSelectStyles.join(' '))
 
-        customerTypeNameElement.on('change', function () {
-            selectedCustomerType.clear()
-            selectedCustomerType.add($(this).val())
+        // Initialize filter handler
+        new FilterHandler({
+            filters: [
+                { name: 'customer_name', label: 'Customer Name' },
+                { name: 'customer_type_name[]', label: 'Customer Type' }
+            ]
+        });
 
-        })
-
-        let customerTypeValue = JSON.stringify(Array.from(selectedCustomerType))
-        customerTypeNameElement.val(customerTypeValue)
+        // Set initial values from URL parameters for select2
+        let initialCustomerTypes = new URLSearchParams(window.location.search).getAll('customer_type_name[]');
+        if (initialCustomerTypes && initialCustomerTypes.length && initialCustomerTypes[0] !== '') {
+            customerTypeNameElement.val(initialCustomerTypes);
+            customerTypeNameElement.trigger('change');
+        }
     })
 </script>
 @endpush

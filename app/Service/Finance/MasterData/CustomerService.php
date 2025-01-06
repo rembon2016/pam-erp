@@ -143,7 +143,6 @@ final class CustomerService
 
         } catch (\Throwable $th) {
             DB::rollBack();
-            dd($th);
 
             return ObjectResponse::error(
                 message: $th->getMessage(),

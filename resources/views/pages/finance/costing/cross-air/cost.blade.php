@@ -195,7 +195,7 @@ select,
                         };
                          var indx = index + idx;
                         console.log(data);
-                         var vendorAir = @json($vendor_air);
+                         var vendorAir = @json($vendor_all);
                     // Call setCharge function
                             window[`setCharge${key}`](data, key, mawb, indx, 'mawb', vendorType, type, vendorAir);
                         });

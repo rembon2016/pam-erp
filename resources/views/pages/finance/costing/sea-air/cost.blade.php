@@ -235,7 +235,7 @@ function setChargeBl(vendorId,vendorName,vendorCode, bl, vendorType, type, typeI
                                 status: charge.status,
                             };
                             var indx = index + idx;
-                           var vendorLine = @json($vendor_line);
+                           var vendorLine = @json($vendor_all);
                             // Call setCharge function
                             window[`setCharge${key}`](data, key, bl, indx, 'bl', vendorType, typex, vendorLine, typeIndex);
                         });
@@ -306,7 +306,7 @@ function setChargeBl(vendorId,vendorName,vendorCode, bl, vendorType, type, typeI
                         };
                          var indx = index + idx;
                         console.log(data);
-                         var vendorAir = @json($vendor_air);
+                         var vendorAir = @json($vendor_all);
                     // Call setCharge function
                             window[`setCharge${key}`](data, key, mawb, indx, 'mawb', vendorType, type, vendorAir);
                         });

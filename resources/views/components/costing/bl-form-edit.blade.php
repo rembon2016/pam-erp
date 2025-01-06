@@ -20,14 +20,14 @@
         </div>
 
         <div class="tab-pane fade" id="ctd-tab-{{ $k }}" role="tabpanel">
-            <div class="d-flex flex-column" style="row-gap: 15px;">
+
                 @foreach($row->shipping as $j => $ctd)
-                    <div class="">
-                        <div class="btn btn-sm custom-btn custom-btn-primary">CTD NO: {{ $ctd->ctd_number }}</div>
+
+                         <span class="labeled-ctd">CTD NO: {{ $ctd->ctd_number }}</span>
                         <x-costing.charges-from :costing="$costing" :detail="$row" value="{{ $ctd->ctd_number  }}" :k="$j" :z="$k" type="ctd" :vendor="$vendorLine" :charge="$charge" :currency="$currency" />
-                    </div>
+
                 @endforeach
-            </div>
+
         </div>
 
 

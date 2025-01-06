@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Response;
 use App\Functions\ObjectResponse;
 use Illuminate\Support\Facades\DB;
@@ -66,6 +67,37 @@ final class ChartOfAccountService
                 message: __('crud.created', ['name' => 'Chart of Account']),
                 statusCode: Response::HTTP_CREATED,
                 data: $coa
+            );
+        } catch (\Throwable $th) {
+            return ObjectResponse::error(
+                message: __('crud.error_create', ['name' => 'Chart of Account']),
+                statusCode: Response::HTTP_INTERNAL_SERVER_ERROR,
+                errors: $th->getTrace(),
+            );
+        }
+    }
+
+    public function createMultipleCoa(array $dto): object
+    {
+        try {
+            $accounts = collect($dto['accounts'])->map(function ($item) use ($dto) {
+                $item['id'] = Str::uuid();
+                $item['account_number'] = str_replace('.', '', str_pad($item['account_number'], 10, '0', STR_PAD_RIGHT));
+                $item['account_group_id'] = $dto['account_group_id'];
+                $item['sub_account_group_id'] = $dto['sub_account_group_id'];
+                $item['is_cashflow'] = $dto['is_cashflow'];
+                $item['cashflow_type'] = !empty($dto['cashflow_type']) ? $dto['cashflow_type'] : null;
+                $item['account_position'] = !empty($dto['account_position']) ? $dto['account_position'] : null;
+                $item['created_at'] = now();
+
+                return $item;
+            });
+
+            ChartOfAccount::insert($accounts->toArray());
+
+            return ObjectResponse::success(
+                message: __('crud.created', ['name' => 'Chart of Account']),
+                statusCode: Response::HTTP_CREATED,
             );
         } catch (\Throwable $th) {
             return ObjectResponse::error(

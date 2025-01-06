@@ -190,6 +190,8 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/list', [ChartOfAccountController::class, 'list'])->name('list');
                 Route::get('/create', [ChartOfAccountController::class, 'create'])->name('create');
                 Route::post('/', [ChartOfAccountController::class, 'store'])->name('store');
+                Route::get('/create/multiple', [ChartOfAccountController::class, 'createMultiple'])->name('create.multiple');
+                Route::post('/multiple', [ChartOfAccountController::class, 'storeMultiple'])->name('store.multiple');
                 Route::get('/{id}/edit', [ChartOfAccountController::class, 'edit'])->name('edit');
                 Route::put('/{id}', [ChartOfAccountController::class, 'update'])->name('update');
                 Route::get('/{id}/delete', [ChartOfAccountController::class, 'destroy'])->name('destroy');

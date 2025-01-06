@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
+use App\Http\Requests\Finance\MasterData\ChartOfAccount\StoreMultipleChartOfAccountRequest;
 use Illuminate\View\View;
 use App\Functions\Utility;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Functions\ResponseJson;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use App\Constants\COA\CashflowType;
-use App\Exports\MasterData\ChartOfAccountExport;
 use App\Http\Controllers\Controller;
 use App\Models\Finance\AccountGroup;
 use Maatwebsite\Excel\Facades\Excel;
@@ -19,6 +20,7 @@ use Illuminate\Http\RedirectResponse;
 use App\Models\Finance\SubAccountGroup;
 use Yajra\DataTables\Facades\DataTables;
 use App\Exports\MasterData\CountryExport;
+use App\Exports\MasterData\ChartOfAccountExport;
 use App\Service\Finance\MasterData\ChartOfAccountService;
 use App\Http\Requests\Finance\MasterData\ChartOfAccount\StoreChartOfAccountRequest;
 use App\Http\Requests\Finance\MasterData\ChartOfAccount\UpdateChartOfAccountRequest;
@@ -55,6 +57,31 @@ final class ChartOfAccountController extends Controller
     {
         $dto = $request->validated();
         $createCoaResponse = $this->coaService->createCoa($dto);
+
+        return $createCoaResponse->success
+            ? to_route('finance.master-data.chart-of-account.index')->with('toastSuccess', $createCoaResponse->message)
+            : back()->with('toastError', $createCoaResponse->message)->withInput();
+    }
+
+    public function createMultiple(): View
+    {
+        $data = [
+            'page' => 'Add Multiple Chart of Account',
+            'action' => route('finance.master-data.chart-of-account.store.multiple'),
+            'method' => 'POST',
+         ];
+
+         $accountGroups = AccountGroup::orderBy('code', 'ASC')->get();
+         $subAccountGroups = SubAccountGroup::orderBy('code', 'ASC')->get();
+         $cashflowTypes = CashflowType::COLLECT;
+
+        return view('pages.finance.master-data.chart-of-account.form-multiple', compact('data',  'accountGroups', 'subAccountGroups', 'cashflowTypes'));
+    }
+
+    public function storeMultiple(StoreMultipleChartOfAccountRequest $request): RedirectResponse
+    {
+        $dto = $request->validated();
+        $createCoaResponse = $this->coaService->createMultipleCoa($dto);
 
         return $createCoaResponse->success
             ? to_route('finance.master-data.chart-of-account.index')->with('toastSuccess', $createCoaResponse->message)

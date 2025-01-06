@@ -10,6 +10,11 @@
     <x:layout.card.wrapper>
         <x:layout.card.header>
             <x:layout.card.toolbar createDataLink="{{ route('finance.master-data.chart-of-account.create') }}"
+                :customLink="[
+                    'link' => route('finance.master-data.chart-of-account.create.multiple'),
+                    'text' => 'Add Multiple COA',
+                    'icon' => 'bx bx-plus'
+                ]"
                 exportExcelLink="{{ route('finance.master-data.chart-of-account.export.excel') }}"
                 exportCsvLink="{{ route('finance.master-data.chart-of-account.export.csv') }}"
                 exportPdfLink="{{ route('finance.master-data.chart-of-account.export.pdf') }}" />

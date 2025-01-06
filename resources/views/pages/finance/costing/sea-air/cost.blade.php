@@ -127,6 +127,7 @@ select,
 
             </div>
         </div>
+        @if($details != null)
         <div class="row">
             <table class="table">
                 <tr>
@@ -145,6 +146,7 @@ select,
                 @endforeach
             </table>
         </div>
+        @endif
          <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px; margin-top: 20px">
             <x:form.cancel-button href="{{ route('finance.costing.sea-air.index') }}" label="Cancel" />
             @if($costing?->status != 2)

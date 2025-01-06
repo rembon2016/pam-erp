@@ -36,11 +36,7 @@
 
     <x:layout.modal.filter-modal>
         <div class="col-12">
-            <x:form.select label="Customer" name="customer" defaultOption="Select Customer" :model="request()">
-                @foreach ($customer_contracts->pluck('customer_id') as $item)
-                    <option value="{{ $item }}" @selected($item == request()->query('customer'))>{{ $item }}</option>
-                @endforeach
-            </x:form.select>
+            <x:form.select label="Customer" name="customer" defaultOption="Select Customer" :model="request()" />
         </div>
     </x:layout.modal.filter-modal>
 @endsection
@@ -84,4 +80,22 @@
     ]
 ])
 @endcomponent
+
+<script>
+    $(document).ready(function () {
+        generateAjaxSelect2(
+            'customer',
+            "{{ route('api.finance.master-data.customer.list') }}",
+            "Select Customer",
+            function (result) {
+                return {
+                    results: result.data.map(item => ({
+                        id: item.id,
+                        text: item.customer_name
+                    })),
+                };
+            }
+        );
+    })
+</script>
 @endpush

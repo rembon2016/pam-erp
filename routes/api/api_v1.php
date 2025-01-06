@@ -24,7 +24,8 @@ Route::group([
             'prefix' => 'customer',
             'as' => 'customer.'
         ], function () {
-            Route::get('/', [ApiCustomerController::class, 'getBillingCustomers'])->name('billing.list');
+            Route::get('/', [ApiCustomerController::class, 'getCustomers'])->name('list');
+            Route::get('/billing-customer', [ApiCustomerController::class, 'getBillingCustomers'])->name('billing.list');
         });
 
         // Port Route

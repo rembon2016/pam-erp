@@ -40,8 +40,8 @@ final class CustomerContractController extends Controller
      */
     public function index(): View
     {
-        $customer_contracts = $this->customerContractService->getCustomerContracts();
-        return view('pages.finance.master-data.customer-contract.index', compact('customer_contracts'));
+        $customers = $this->customerService->getCustomers()->get();
+        return view('pages.finance.master-data.customer-contract.index', compact('customers'));
     }
 
     /**

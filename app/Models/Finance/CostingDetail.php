@@ -23,5 +23,17 @@ final class CostingDetail extends Model
         'deleted_at' => 'datetime',
     ];
 
+    public function vendor()
+    {
+        return $this->hasOne(Customer::class, 'id', 'vendor_id');
+    }
+
+    public function currency()
+    {
+        return $this->hasOne(Currency::class, 'id', 'currency_id');
+    }
+
+
+
 
 }

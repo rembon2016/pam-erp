@@ -31,7 +31,7 @@
             <table class="table table-bordered costing-table">
                 <thead>
                     <tr>
-                        <th style="width: 150px;">Vendor Code</th>
+                        <th style="width: 200px;">Vendor Code</th>
                         <th style="width: 200px;">Vendor Name</th>
                         <th style="width: 200px;">Charge</th>
                         <th style="width: 150px;">Currency</th>
@@ -81,12 +81,12 @@
                                             <div style="display:none;">
                                         @endif
                                         <select class="form-select vendor-select"
-                                            onchange="setVendorName{{ ucfirst($type) }}({{ $k }}, {{ $m }}, '{{ $row->costing_value }}')" " data-control=" select2" id="vendor_{{ $type }}_{{ $k }}_id_{{ $m }}" name="vendor_{{ $type }}_{{ $k }}_id[]" data-key="{{ $m }}" @if ($costing->status != 1) disabled @endif>
+                                            onchange="setVendorName{{ ucfirst($type) }}({{ $k }}, {{ $m }}, '{{ $row->costing_value }}')" " data-control="select2" id="vendor_{{ $type }}_{{ $k }}_id_{{ $m }}" name="vendor_{{ $type }}_{{ $k }}_id[]" data-key="{{ $m }}" @if ($costing->status != 1) disabled @endif>
                                  @foreach ($vendor as $rows)
                                             <option value="{{ $rows->vendor_id }}"
                                                 @if ($row->vendor_id == $rows->vendor_id) selected @endif
                                                 data-vendor-name="{{ $rows->vendor_name }}"
-                                                data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}
+                                                data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }} - {{ $rows->vendor_name }}
                                             </option>
                             @endforeach
                             </select>
@@ -261,7 +261,7 @@
                 <select class="form-select vendor-select" onchange="setVendorName{{ ucfirst($type) }}({{ $k }}, ${rowIndex{{ ucfirst($type) }}{{ $k }}},'{{ $value }}')"
                     data-control="select2" id="vendor_{{ $type }}_{{ $k }}_id_${rowIndex{{ ucfirst($type) }}{{ $k }}}" name="vendor_{{ $type }}_{{ $k }}_id[]" data-key="${rowIndex{{ ucfirst($type) }}{{ $k }}}">
                     @foreach ($vendor as $rows)
-                    <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}</option>
+                    <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }} - {{ $rows->vendor_name }}</option>
                     @endforeach
                 </select>
             </td>
@@ -361,7 +361,7 @@
 
                 const selected = vendor.vendor_id === vendor_id ? 'selected' : '';
                 newRow += `<option value="${vendor.vendor_id}" data-vendor-name="${vendor.vendor_name}" data-vendor-code="${vendor.vendor_code}" ${selected}>
-                        ${vendor.vendor_code}
+                        ${vendor.vendor_code} - ${vendor.vendor_name}
                     </option>`;
             });
             newRow += `</select>

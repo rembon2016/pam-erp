@@ -164,19 +164,24 @@ final class SeaAirController extends Controller
         $cost = Costing::with(['truck','port','agent','special','head','head.detail'])->where("job_order_id",$joborder->job_order_id);
         if($cost->exists()){
             $costing = $cost->first();
-           //return response()->json($costing);
+            $details = CostingDetail::with('currency')->selectRaw('costing_id,vendor_id,vendor_name, SUM(amount) as total_amount,currency_id')
+                ->groupBy('costing_id','vendor_id','vendor_name','currency_id')
+                ->where('costing_id', $costing->id)
+                ->get();
+          // return response()->json($details);
             $data = [
                 'action' => route('finance.costing.sea-air.update', $costing->id),
                 'method' => 'PUT',
              ];
         }else{
             $costing = null;
+            $details = null;
             $data = [
                 'action' => route('finance.costing.sea-air.store'),
                 'method' => 'POST',
              ];
         }
-        return view('pages.finance.costing.sea-air.cost', compact('id','joborder','loading','vendor_truck','vendor_port','vendor_air','vendor_line','charge','currency','bl','loadingplan','costing','data','vendor_all'));
+        return view('pages.finance.costing.sea-air.cost', compact('id','joborder','loading','vendor_truck','vendor_port','vendor_air','vendor_line','charge','currency','bl','loadingplan','costing','data','vendor_all','details'));
     }
 
     public function store(Request $request){

@@ -23,7 +23,7 @@
                 <select class="form-select vendor-select" onchange="setVendorAirName({{ $key }})" data-control="select2" id="vendor_air_id_{{ $key }}" name="vendor_air_id[]" data-key="{{ $key }}" @if($costing?->status != 1 && $costing != null) disabled @endif>
                     <option>Select Vendor</option>
                     @foreach($vendorAir as $rows)
-                    <option value="{{ $rows->vendor_id }}" @if($rows->vendor_id == $row->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}</option>
+                    <option value="{{ $rows->vendor_id }}" @if($rows->vendor_id == $row->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }} - {{ $rows->vendor_name  }}</option>
                     @endforeach
                 </select>
             </div>
@@ -66,7 +66,7 @@ $(document).ready(function () {
                     <select class="form-select vendor-select" onchange="setVendorAirName(${rowId})" id="vendor_air_id_${rowId}" name="vendor_air_id[]" data-control="select2" data-key="${rowId}">
                         <option>Select Vendor</option>
                         @foreach($vendorAir as $rows)
-                            <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}</option>
+                            <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }} - {{ $rows->vendor_name  }}</option>
                         @endforeach
                     </select>
                 </div>

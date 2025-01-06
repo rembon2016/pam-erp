@@ -127,6 +127,24 @@ select,
 
             </div>
         </div>
+        <div class="row">
+            <table class="table">
+                <tr>
+                <th>Vendor Code</th>
+                <th>Vendor Name</th>
+                <th>Currency</th>
+                <th>Amount</th>
+                </tr>
+                @foreach($details as $row)
+                <tr>
+                    <td>{{ $row->vendor->customer_code }}</td>
+                    <td>{{ $row->vendor_name }}</td>
+                    <td>{{ $row->currency->currency_code }}</td>
+                    <td>{{ $row->total_amount }}</td>
+                </tr>
+                @endforeach
+            </table>
+        </div>
          <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px; margin-top: 20px">
             <x:form.cancel-button href="{{ route('finance.costing.sea-air.index') }}" label="Cancel" />
             @if($costing?->status != 2)

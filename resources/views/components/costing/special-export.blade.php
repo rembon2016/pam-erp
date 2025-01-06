@@ -41,7 +41,7 @@
             <table class="table table-bordered costing-table">
                 <thead>
                     <tr>
-                        <th style="width: 150px;">Vendor Code</th>
+                        <th style="width: 200px;">Vendor Code</th>
                         <th style="width: 200px;">Vendor Name</th>
                         <th style="width: 200px;">Charge</th>
                         <th style="width: 150px;">Currency</th>
@@ -80,7 +80,7 @@
                                                 " data-control="select2" id="vendor_special_export_id_{{ $key }}" name="vendor_special_export_id[]" data-key="{{ $key }}" @if($costing->status != 1) disabled @endif>
                                 <option>Select</option>
                                 @foreach($vendorLine as $rows)
-                                <option value="{{ $rows->vendor_id }}" @if($row->vendor_id == $rows->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}</option>
+                                <option value="{{ $rows->vendor_id }}" @if($row->vendor_id == $rows->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }} - {{ $rows->vendor_name }}</option>
                                 @endforeach
                             </select>
                              @if ($isDuplicateVendor)
@@ -137,7 +137,7 @@
                                                 " data-control="select2" id="vendor_special_export_id_0" name="vendor_special_export_id[]" data-key="0">
                                 <option>Select</option>
                                 @foreach($vendorLine as $rows)
-                                <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}</option>
+                                <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }} - {{ $rows->vendor_name }}</option>
                                 @endforeach
                             </select></td>
                         <td><input type="text" class="form-control" id="vendor_special_export_name_0" placeholder="Name" name="vendor_special_export_name[]" readonly></td>
@@ -249,7 +249,7 @@ let isVisibleSpecialExport = true; // Track the visibility state
                         data-control="select2" id="vendor_special_export_id_${rowIndexSpecialExport}" name="vendor_special_export_id[]" data-key="${rowIndexSpecialExport}">
                         <option>Select</option>
                         @foreach($vendorLine as $rows)
-                        <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}</option>
+                        <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }} - {{ $rows->vendor_name }}</option>
                         @endforeach
                     </select>
                 </td>
@@ -374,7 +374,7 @@ function setChargeSpecialExport(data,index, type){
                         data-control="select2" id="vendor_special_export_id_${index}" name="vendor_special_export_id[]" data-key="${index}">
                         <option>Select</option>
                         @foreach($vendorLine as $rows)
-                        <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}" ${'{{ $rows->vendor_id }}' == vendor_id ? 'selected' : ''}>{{ $rows->vendor_code }}</option>
+                        <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}" ${'{{ $rows->vendor_id }}' == vendor_id ? 'selected' : ''}>{{ $rows->vendor_code }} - {{ $rows->vendor_name }}</option>
                         @endforeach
                     </select>
                     </div>

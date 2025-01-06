@@ -22,7 +22,7 @@
             <select class="form-select" onChange="setVendorPortName('0')" name="vendor_port_id" id="vendor_port_id" data-control="select2" data-placeholder="Vendor Code" @if($costing?->status != 1 && $costing != null) disabled @endif>
                 <option></option>
                 @foreach($vendorPort as $rows)
-                <option value="{{ $rows->vendor_id }}" @if($costing?->port != null && $costing?->port?->vendor_id == $rows->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}</option>
+                <option value="{{ $rows->vendor_id }}" @if($costing?->port != null && $costing?->port?->vendor_id == $rows->vendor_id) selected @endif data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }} - {{ $rows->vendor_name  }}</option>
                 @endforeach
 
             </select>

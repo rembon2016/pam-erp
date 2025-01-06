@@ -41,7 +41,7 @@
             <table class="table table-bordered costing-table">
                 <thead>
                     <tr>
-                        <th style="width: 150px;">Vendor Code</th>
+                        <th style="width: 200px;">Vendor Code</th>
                         <th style="width: 200px;">Vendor Name</th>
                         <th style="width: 150px;">Charge</th>
                         <th style="width: 150px;">Currency</th>
@@ -93,7 +93,7 @@
                                                     @if ($row->vendor_id == $rows->vendor_id) selected @endif
                                                     data-vendor-name="{{ $rows->vendor_name }}"
                                                     data-vendor-code="{{ $rows->vendor_code }}">
-                                                    {{ $rows->vendor_code }}</option>
+                                                    {{ $rows->vendor_code }} - {{ $rows->vendor_name }}</option>
                                             @endforeach
                                         </select>
                                         @if ($isDuplicateVendor)
@@ -170,7 +170,7 @@
                 <option>Select</option>
                 @foreach ($vendorLine as $rows)
                     <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}"
-                        data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}</option>
+                        data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }} - {{ $rows->vendor_name }}</option>
                 @endforeach
             </select></td>
         <td><input type="text" class="form-control" id="vendor_special_import_name_0" placeholder="Name"
@@ -288,7 +288,7 @@
                         data-control="select2" id="vendor_special_import_id_${rowIndex}" name="vendor_special_import_id[]" data-key="${rowIndex}">
                         <option>Select</option>
                         @foreach ($vendorLine as $rows)
-                        <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }}</option>
+                        <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}">{{ $rows->vendor_code }} - {{ $rows->vendor_name }}</option>
                         @endforeach
                     </select>
                 </td>
@@ -413,7 +413,7 @@
                         data-control="select2" id="vendor_special_import_id_${index}" name="vendor_special_import_id[]" data-key="${index}">
                         <option>Select</option>
                         @foreach ($vendorLine as $rows)
-                        <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}" ${'{{ $rows->vendor_id }}' == vendor_id ? 'selected' : ''}>{{ $rows->vendor_code }}</option>
+                        <option value="{{ $rows->vendor_id }}" data-vendor-name="{{ $rows->vendor_name }}" data-vendor-code="{{ $rows->vendor_code }}" ${'{{ $rows->vendor_id }}' == vendor_id ? 'selected' : ''}>{{ $rows->vendor_code }} - {{ $rows->vendor_name }}</option>
                         @endforeach
                     </select>
                     </div>

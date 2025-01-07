@@ -100,8 +100,15 @@ final class CustomerService
     {
         DB::beginTransaction();
         try {
-            $customer_code_query = DB::select("SELECT finance.customer_code_finance()");
-            $customer_code = count($customer_code_query) > 0 ? $customer_code_query[0]->customer_code_finance : NULL;
+            $customer_code_query = DB::select(
+                query: "SELECT finance.customer_code_finance(?, ?) as customer_code",
+                bindings: [
+                    $dto['overseas'],
+                    json_encode($dto['customer_type'])
+                ],
+            );
+
+            $customer_code = count($customer_code_query) > 0 ? $customer_code_query[0]->customer_code : NULL;
 
             $customer = Customer::create([
                 'customer_name' => $dto['customer_name'],

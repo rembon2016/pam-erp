@@ -2,16 +2,24 @@
 
 namespace App\Models\Operation\Dxb;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\Filterable;
-class LoadingReport extends Model {
+use Illuminate\Database\Eloquent\Model;
+
+class LoadingReport extends Model
+{
     use Filterable;
+
     protected $table = 'dxb.loading_report';
+
     public $timestamps = false;
+
     protected $primaryKey = 'loading_id';
+
     protected $keyType = 'string';
-    static $rules = [];
-    protected $fillable = [ 'loading_id',
+
+    public static $rules = [];
+
+    protected $fillable = ['loading_id',
         'shipping_line',
         'shipping_line_name',
         'booking_number',
@@ -33,15 +41,16 @@ class LoadingReport extends Model {
         'voyage_number_feeder',
         'fcl_clossing_time',
         'loading_plan_number',
-        'voyage_vessel_origin'
+        'voyage_vessel_origin',
     ];
 
-    function detail(){
+    public function detail()
+    {
         return $this->hasMany(LoadingReportDetail::class, 'bl_id', 'loading_id');
     }
 
-    function shipment(){
+    public function shipment()
+    {
         return $this->hasMany(ShippingInstruction::class, 'loading_id', 'loading_id');
     }
-
 }

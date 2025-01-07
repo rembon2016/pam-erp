@@ -4,23 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\Settings;
 
+use App\Exports\Settings\UserExport;
+use App\Functions\ResponseJson;
+use App\Functions\Utility;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Finance\User\GlobalUserRequest;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\View\View;
-use App\Functions\Convert;
-use App\Functions\Utility;
-use App\Models\Permission;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\Functions\ResponseJson;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
-use App\Exports\Settings\UserExport;
-use App\Http\Requests\Finance\User\GlobalUserRequest;
 
 final class UserController extends Controller
 {
@@ -36,17 +31,16 @@ final class UserController extends Controller
      * Retrieves a list of all roles and returns a JSON response for use in a data table.
      *
      * This method fetches all the roles from the database and returns a JSON response that can be used to populate a data table. The response includes an action column that contains a "View" button for each role.
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
             $users = User::with('roles')->latest()->get();
+
             return DataTables::of($users)
                 ->addIndexColumn()
                 ->editColumn('name', function ($item) {
-                    return $item->first_name . ' ' . $item->last_name;
+                    return $item->first_name.' '.$item->last_name;
                 })
                 ->editColumn('roles', function ($item) {
                     return $item->roles?->pluck('name')->join(', ');
@@ -76,11 +70,11 @@ final class UserController extends Controller
             'page' => 'Add User',
             'action' => route('settings.user.store'),
             'method' => 'POST',
-         ];
-         $user = new User();
+        ];
+        $user = new User;
         $roles = Role::latest()->get();
 
-         return view('public.settings.user.form', compact('data', 'user','roles'));
+        return view('public.settings.user.form', compact('data', 'user', 'roles'));
     }
 
     /**
@@ -101,6 +95,7 @@ final class UserController extends Controller
             return to_route('settings.user.index')->with('toastSuccess', __('crud.created', ['name' => 'User']));
         } catch (\Throwable $th) {
             dd($th);
+
             return back()->with('toastError', __('crud.error_create', ['name' => 'User']));
         }
     }
@@ -114,17 +109,19 @@ final class UserController extends Controller
             'page' => 'Edit User',
             'action' => route('settings.user.update', $id),
             'method' => 'PUT',
-         ];
+        ];
         $user = User::with('roles')->find($id);
 
-        if (is_null($user)) return to_route('settings.user.index')->with(
-            'toastError',
-            __('crud.not_found', ['name' => 'User'])
-        );
+        if (is_null($user)) {
+            return to_route('settings.user.index')->with(
+                'toastError',
+                __('crud.not_found', ['name' => 'User'])
+            );
+        }
 
         $roles = Role::latest()->get();
 
-         return view('public.settings.user.form', compact('data', 'user','roles'));
+        return view('public.settings.user.form', compact('data', 'user', 'roles'));
     }
 
     /**
@@ -134,29 +131,31 @@ final class UserController extends Controller
     {
         $requestDTO = $request->validated();
         $user = User::find($id);
-        if (is_null($user)) return to_route('settings.user.index')->with(
-            'toastError',
-            __('crud.not_found', ['name' => 'User'])
-        );
-
+        if (is_null($user)) {
+            return to_route('settings.user.index')->with(
+                'toastError',
+                __('crud.not_found', ['name' => 'User'])
+            );
+        }
 
         try {
             $data = [
                 'page' => 'User',
                 'action' => route('settings.user.update', $id),
                 'method' => 'PUT',
-             ];
-             if(!empty($requestDTO['password'])){
+            ];
+            if (! empty($requestDTO['password'])) {
                 $requestDTO['password'] = bcrypt($requestDTO['password']);
-             }else{
+            } else {
                 unset($requestDTO['password']);
-             }
+            }
             $role = $requestDTO['role']; // Simpan peran terlebih dahulu
             unset($requestDTO['role']); // Hapus peran dari array $requestDTO
 
             $user->update($requestDTO);
             $user->syncRoles([]);
             $user->assignRole($role);
+
             return to_route('settings.user.index')->with('toastSuccess', __('crud.updated', ['name' => 'User']));
         } catch (\Throwable $th) {
 
@@ -170,24 +169,26 @@ final class UserController extends Controller
     public function destroy(string $id)
     {
         $user = User::find($id);
-        if (is_null($user)) return to_route('settings.user.index')->with(
-            'toastError',
-            __('crud.not_found', ['name' => 'User'])
-        );
+        if (is_null($user)) {
+            return to_route('settings.user.index')->with(
+                'toastError',
+                __('crud.not_found', ['name' => 'User'])
+            );
+        }
 
         try {
             $role->delete();
+
             return to_route('settings.user.index')->with('toastSuccess', __('crud.deleted', ['name' => 'User']));
         } catch (\Throwable $th) {
             return to_route('settings.user.index')->with('toastError', __('crud.error_delete', ['name' => 'User']));
         }
     }
 
-
-
     public function exportCsv()
     {
-        $file_name = 'list_user_' . time() . '.csv';
+        $file_name = 'list_user_'.time().'.csv';
+
         return Excel::download(new UserExport, $file_name);
     }
 }

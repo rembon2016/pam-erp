@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
-use Illuminate\Http\Response;
 use App\Functions\ObjectResponse;
 use App\Models\Finance\PaymentMethod;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Response;
 
 final class PaymentMethodService
 {
     public function getPaymentMethods($filters = []): Collection
     {
-        return PaymentMethod::when(!empty($filters['payment_terms']), function ($query) use ($filters) {
+        return PaymentMethod::when(! empty($filters['payment_terms']), function ($query) use ($filters) {
             return $query->where('payment_terms', $filters['payment_terms']);
         })->orderBy('payment_terms', 'DESC')->get();
     }
@@ -21,7 +21,8 @@ final class PaymentMethodService
     public function getPaymentMethodById(string $id): object
     {
         $data = PaymentMethod::where('id', $id)->first();
-        return !is_null($data)
+
+        return ! is_null($data)
             ? ObjectResponse::success(__('crud.fetched', ['name' => 'Payment Method']), Response::HTTP_OK, $data)
             : ObjectResponse::error(__('crud.not_found', ['name' => 'Payment Method']), Response::HTTP_NOT_FOUND);
     }
@@ -48,7 +49,9 @@ final class PaymentMethodService
     public function updatePaymentMethod(string $id, array $dto): object
     {
         $getPaymentMethodResponse = $this->getPaymentMethodById($id);
-        if (!$getPaymentMethodResponse->success) return $getPaymentMethodResponse;
+        if (! $getPaymentMethodResponse->success) {
+            return $getPaymentMethodResponse;
+        }
 
         try {
             $getPaymentMethodResponse->data->update($dto);
@@ -70,7 +73,9 @@ final class PaymentMethodService
     public function deletePaymentMethod(string $id): object
     {
         $getPaymentMethodResponse = $this->getPaymentMethodById($id);
-        if (!$getPaymentMethodResponse->success) return $getPaymentMethodResponse;
+        if (! $getPaymentMethodResponse->success) {
+            return $getPaymentMethodResponse;
+        }
 
         try {
             $getPaymentMethodResponse->data->delete();

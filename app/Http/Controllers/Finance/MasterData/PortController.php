@@ -4,24 +4,23 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
-use Illuminate\View\View;
-use App\Functions\Utility;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\Functions\ResponseJson;
-use Barryvdh\DomPDF\Facade\Pdf;
-use App\Http\Controllers\Controller;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Models\Operation\Master\Port;
-use Illuminate\Http\RedirectResponse;
-use App\Models\Operation\Master\Region;
-use Yajra\DataTables\Facades\DataTables;
-use App\Exports\MasterData\CurrencyExport;
 use App\Exports\MasterData\PortExport;
-use App\Models\Operation\Master\Countries;
-use App\Service\Finance\MasterData\PortService;
+use App\Functions\ResponseJson;
+use App\Functions\Utility;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Finance\MasterData\Port\StorePortRequest;
 use App\Http\Requests\Finance\MasterData\Port\UpdatePortRequest;
+use App\Models\Operation\Master\Countries;
+use App\Models\Operation\Master\Port;
+use App\Models\Operation\Master\Region;
+use App\Service\Finance\MasterData\PortService;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 final class PortController extends Controller
 {
@@ -35,6 +34,7 @@ final class PortController extends Controller
     public function index(): View
     {
         $ports = $this->portService->getPorts();
+
         return view('pages.finance.master-data.port.index', compact('ports'));
     }
 
@@ -84,7 +84,7 @@ final class PortController extends Controller
             'page' => 'Add Port',
             'action' => route('finance.master-data.port.store'),
             'method' => 'POST',
-         ];
+        ];
 
         $regions = Region::whereNotIn('status', ['2', '3'])->orderBy('region_name', 'asc')->get();
         $transportMode = Port::TRANSPORT_MODE;
@@ -122,7 +122,7 @@ final class PortController extends Controller
             'page' => 'Edit Port',
             'action' => route('finance.master-data.port.update', $id),
             'method' => 'PUT',
-         ];
+        ];
 
         $port = $this->portService->getPortById(id: $id)->data;
         $regions = Region::whereNotIn('status', ['2', '3'])->orderBy('region_name', 'asc')->get();
@@ -140,7 +140,9 @@ final class PortController extends Controller
         $dto = $request->validated();
         $portResponse = $this->portService->updatePort(dto: $dto, id: $id);
 
-        if (!$portResponse->success) return back()->with('toastError', $portResponse->message);
+        if (! $portResponse->success) {
+            return back()->with('toastError', $portResponse->message);
+        }
 
         return to_route('finance.master-data.port.index')
             ->with('toastSuccess', $portResponse->message);
@@ -153,7 +155,9 @@ final class PortController extends Controller
     {
         $portResponse = $this->portService->deletePort(id: $id);
 
-        if (!$portResponse->success) return back()->with('toastError', $portResponse->message);
+        if (! $portResponse->success) {
+            return back()->with('toastError', $portResponse->message);
+        }
 
         return to_route('finance.master-data.port.index')
             ->with('toastSuccess', $portResponse->message);
@@ -169,7 +173,7 @@ final class PortController extends Controller
     {
         $data = $this->portService->getPorts();
         $pdf = Pdf::loadView('exports.pdf.port', compact('data'));
-        $file_name = 'list_port_' . time() . '.pdf';
+        $file_name = 'list_port_'.time().'.pdf';
 
         return $pdf->download($file_name);
     }
@@ -182,7 +186,7 @@ final class PortController extends Controller
      */
     public function exportExcel()
     {
-        $file_name = 'list_port_' . time() . '.xlsx';
+        $file_name = 'list_port_'.time().'.xlsx';
 
         return Excel::download(new PortExport, $file_name);
     }
@@ -195,7 +199,7 @@ final class PortController extends Controller
      */
     public function exportCsv()
     {
-        $file_name = 'list_port_' . time() . '.csv';
+        $file_name = 'list_port_'.time().'.csv';
 
         return Excel::download(new PortExport, $file_name);
     }

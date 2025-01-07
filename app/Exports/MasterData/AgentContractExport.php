@@ -17,8 +17,8 @@ class AgentContractExport implements FromCollection, WithHeadings, WithMapping
     }
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         return $this->agentContractService->getAgentContracts();
@@ -33,7 +33,7 @@ class AgentContractExport implements FromCollection, WithHeadings, WithMapping
             $item->contract_date?->format('d/m/Y'),
             $item->contract_start?->format('d/m/Y'),
             $item->contract_end?->format('d/m/Y'),
-            $item->contract_description
+            $item->contract_description,
         ];
     }
 

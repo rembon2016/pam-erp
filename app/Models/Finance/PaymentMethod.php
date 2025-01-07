@@ -13,6 +13,7 @@ final class PaymentMethod extends Model
     use HasFactory, HasUuids;
 
     protected $table = 'finance.payment_methods';
+
     protected $guarded = ['id'];
 
     protected $casts = [

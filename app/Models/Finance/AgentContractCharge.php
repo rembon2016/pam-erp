@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
-use App\Models\Finance\Charge;
 use App\Models\Operation\Master\Unit;
-use Illuminate\Database\Eloquent\Model;
-use App\Models\Finance\AgentContractService;
-use App\Models\Finance\AgentContractChargeDetail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class AgentContractCharge extends Model
 {
@@ -31,7 +28,6 @@ final class AgentContractCharge extends Model
      */
     protected $guarded = ['id'];
 
-
     /**
      * Belongs to Relation with Charge
      *
@@ -41,7 +37,6 @@ final class AgentContractCharge extends Model
     {
         return $this->belongsTo(AgentContract::class, 'agent_contract_id', 'id');
     }
-
 
     /**
      * Belongs to Relation with Charge

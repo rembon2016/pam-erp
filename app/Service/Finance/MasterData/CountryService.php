@@ -20,9 +20,9 @@ final class CountryService
 
     public function getCountries($filters = []): Collection
     {
-        return Countries::when(!empty($filters['country_code']), function ($query) use ($filters) {
+        return Countries::when(! empty($filters['country_code']), function ($query) use ($filters) {
             return $query->where('country_code', $filters['country_code']);
-        })->when(!empty($filters['country_name']), function ($query) use ($filters) {
+        })->when(! empty($filters['country_name']), function ($query) use ($filters) {
             return $query->where('country_name', $filters['country_name']);
         })->whereNotIn('status', ['2', '3'])->orderBy('country_name', 'asc')->get();
     }
@@ -31,7 +31,7 @@ final class CountryService
     {
         $country = Countries::where('country_id', $id)->first();
 
-        return !empty($country)
+        return ! empty($country)
             ? ObjectResponse::success(message: __('crud.fetched', ['name' => 'Country']), data: $country)
             : ObjectResponse::error(message: __('crud.not_found', ['name' => 'Country']));
     }

@@ -6,7 +6,6 @@ namespace Database\Seeders\Finance\COA;
 
 use App\Models\Finance\ChartOfAccount;
 use App\Models\Finance\SubAccountGroup;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 final class ChartOfAccountSeeder extends Seeder
@@ -29,7 +28,7 @@ final class ChartOfAccountSeeder extends Seeder
                     'subledger_code' => $subledgerCode,
                     'subledger_name' => $account['subledger_name'],
                     'is_cashflow' => $account['is_cashflow'],
-                    'account_position' => $account['account_position']
+                    'account_position' => $account['account_position'],
                 ]);
             });
     }
@@ -72,7 +71,7 @@ final class ChartOfAccountSeeder extends Seeder
                 'name' => 'SUNDRY CREDITORS',
                 'subledger_name' => 'SUNDRY CREDITORS',
                 'is_cashflow' => false,
-                'account_position' => 'credit'
+                'account_position' => 'credit',
             ],
             [
                 'sub_account_code' => '21',
@@ -80,15 +79,15 @@ final class ChartOfAccountSeeder extends Seeder
                 'name' => 'CREDITORS LOCAL',
                 'subledger_name' => 'SUNDRY CREDITORS',
                 'is_cashflow' => false,
-                'account_position' => 'credit'
-            ]
+                'account_position' => 'credit',
+            ],
         ];
     }
 
     /**
      * Finds a SubAccountGroup by its code.
      *
-     * @param string $code The code of the SubAccountGroup to find.
+     * @param  string  $code  The code of the SubAccountGroup to find.
      * @return mixed The SubAccountGroup with the given code, or null if not found.
      */
     private function findSubAccountGroupByCode(string $code): mixed

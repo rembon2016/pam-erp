@@ -79,11 +79,11 @@ return [
             'acc.report_cashflow',
             'acc.report_balance_sheet',
             'acc.report_cashflow_balance_sheet',
-            'acc.report_profit_and_loss'
+            'acc.report_profit_and_loss',
         ],
-        'user'=>[
-            'role'
-        ]
+        'user' => [
+            'role',
+        ],
     ],
 
     'models' => [

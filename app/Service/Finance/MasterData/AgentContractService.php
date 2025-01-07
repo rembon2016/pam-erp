@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
-use App\Traits\HandleUploadedFile;
-use Illuminate\Http\Response;
 use App\Functions\ObjectResponse;
-use Illuminate\Support\Facades\DB;
 use App\Models\Finance\AgentContract;
+use App\Traits\HandleUploadedFile;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 final class AgentContractService
 {
@@ -17,7 +17,7 @@ final class AgentContractService
 
     public function getAgentContracts($filters = []): Collection
     {
-        return AgentContract::when(!empty($filters['contract_no']), function ($query) use ($filters) {
+        return AgentContract::when(! empty($filters['contract_no']), function ($query) use ($filters) {
             return $query->where('contract_no', $filters['contract_no']);
         })->orderBy('contract_no', 'DESC')->get();
     }
@@ -25,7 +25,8 @@ final class AgentContractService
     public function getAgentContractById(string $id): object
     {
         $data = AgentContract::where('id', $id)->first();
-        return !is_null($data)
+
+        return ! is_null($data)
             ? ObjectResponse::success(__('crud.fetched', ['name' => 'Agent Contract']), Response::HTTP_OK, $data)
             : ObjectResponse::error(__('crud.not_found', ['name' => 'Agent Contract']), Response::HTTP_NOT_FOUND);
     }
@@ -37,15 +38,18 @@ final class AgentContractService
             $service_data = $dto['service_data'];
             unset($dto['service_data']);
 
-            if (!empty($dto['contract_file'])) $dto['contract_file'] = $this->uploadFile(
-                file: $dto['contract_file'],
-                folderPrefix: AgentContract::FOLDER_NAME
-            );
+            if (! empty($dto['contract_file'])) {
+                $dto['contract_file'] = $this->uploadFile(
+                    file: $dto['contract_file'],
+                    folderPrefix: AgentContract::FOLDER_NAME
+                );
+            }
 
             $createdAgentContract = AgentContract::create($dto);
             $this->upsertAgentContractService($createdAgentContract, $service_data);
 
             DB::commit();
+
             return ObjectResponse::success(
                 __('crud.created', ['name' => 'Agent Contract']),
                 Response::HTTP_CREATED,
@@ -54,6 +58,7 @@ final class AgentContractService
         } catch (\Throwable $th) {
             DB::rollBack();
             dd($th);
+
             return ObjectResponse::error(
                 __('crud.error_create', ['name' => 'Agent Contract']),
                 Response::HTTP_INTERNAL_SERVER_ERROR,
@@ -65,15 +70,17 @@ final class AgentContractService
     public function updateAgentContract(string $id, array $dto): object
     {
         $getAgentContractResponse = $this->getAgentContractById($id);
-        if (!$getAgentContractResponse->success) return $getAgentContractResponse;
+        if (! $getAgentContractResponse->success) {
+            return $getAgentContractResponse;
+        }
 
         DB::beginTransaction();
         try {
             $service_data = $dto['service_data'];
             unset($dto['service_data']);
 
-            if (!empty($dto['contract_file'])) {
-                if (!is_null($getAgentContractResponse->data->contract_file)) {
+            if (! empty($dto['contract_file'])) {
+                if (! is_null($getAgentContractResponse->data->contract_file)) {
                     $dto['contract_file'] = $this->syncUploadFile(
                         file: $dto['contract_file'],
                         old_file_name: $getAgentContractResponse->data->contract_file,
@@ -93,6 +100,7 @@ final class AgentContractService
             $this->upsertAgentContractService($getAgentContractResponse->data, $service_data);
 
             DB::commit();
+
             return ObjectResponse::success(
                 __('crud.updated', ['name' => 'Agent Contract']),
                 Response::HTTP_OK,
@@ -101,6 +109,7 @@ final class AgentContractService
         } catch (\Throwable $th) {
             DB::rollback();
             dd($th);
+
             return ObjectResponse::error(
                 __('crud.error_update', ['name' => 'Agent Contract']),
                 Response::HTTP_INTERNAL_SERVER_ERROR,
@@ -112,7 +121,9 @@ final class AgentContractService
     public function deleteAgentContract(string $id): object
     {
         $getAgentContractResponse = $this->getAgentContractById($id);
-        if (!$getAgentContractResponse->success) return $getAgentContractResponse;
+        if (! $getAgentContractResponse->success) {
+            return $getAgentContractResponse;
+        }
 
         try {
             $getAgentContractResponse->data->delete();
@@ -130,11 +141,12 @@ final class AgentContractService
         }
     }
 
-
     public function upsertAgentContractService($agentContract, $serviceData): void
     {
         $includedServiceId = collect($serviceData)->pluck('service_id')->filter(fn ($item) => $item != null || $item != '')->values();
-        if ($includedServiceId->count() > 0) $agentContract->serviceContract()->whereNotIn('id', $includedServiceId)->delete();
+        if ($includedServiceId->count() > 0) {
+            $agentContract->serviceContract()->whereNotIn('id', $includedServiceId)->delete();
+        }
 
         foreach ($serviceData as $serviceKey => $service) {
             $serviceContractData = [
@@ -153,7 +165,7 @@ final class AgentContractService
                 'notes' => isset($service['service_note']) ? $service['service_note'] : null,
             ];
 
-            if (!empty($service['service_id'])) {
+            if (! empty($service['service_id'])) {
                 $serviceContract = $agentContract
                     ->serviceContract()
                     ->where('id', $service['service_id'])
@@ -169,16 +181,12 @@ final class AgentContractService
         }
     }
 
-    /**
-     * @param $arrayOfCharges
-     * @param $serviceContract
-     * @param $agentContract
-     * @return void
-     */
     private function syncServiceContractChargeData($arrayOfCharges, $serviceContract, $agentContract): void
     {
         $includedChargeId = collect($arrayOfCharges)->pluck('contract_agent_charge_id')->filter(fn ($item) => $item != null || $item != '')->values();
-        if ($includedChargeId->count() > 0) $serviceContract->contractAgentCharge()->whereNotIn('id', $includedChargeId)->delete();
+        if ($includedChargeId->count() > 0) {
+            $serviceContract->contractAgentCharge()->whereNotIn('id', $includedChargeId)->delete();
+        }
 
         foreach ($arrayOfCharges as $charge) {
             $chargeData = [
@@ -223,7 +231,7 @@ final class AgentContractService
                 'via_port' => isset($charge['via_port']) ? $charge['via_port'] : null,
             ];
 
-            if (!empty($charge['contract_agent_charge_id'])) {
+            if (! empty($charge['contract_agent_charge_id'])) {
                 $serviceCharge = $serviceContract
                     ->contractAgentCharge()
                     ->where('id', $charge['contract_agent_charge_id'])
@@ -241,7 +249,9 @@ final class AgentContractService
     private function syncServiceContractChargeDetailData($arrayOfDetails, $serviceContract, $agentContract, $serviceCharge): void
     {
         $includedDetailId = collect($arrayOfDetails)->pluck('contract_agent_charge_detail_id')->filter(fn ($item) => $item != null || $item != '')->values();
-        if ($includedDetailId->count() > 0) $serviceCharge->chargeDetails()->whereNotIn('id', $includedDetailId)->delete();
+        if ($includedDetailId->count() > 0) {
+            $serviceCharge->chargeDetails()->whereNotIn('id', $includedDetailId)->delete();
+        }
 
         foreach ($arrayOfDetails as $detail) {
             $chargeDetailData = [
@@ -252,7 +262,7 @@ final class AgentContractService
                 'value' => isset($detail['value']) ? $detail['value'] : null,
             ];
 
-            if (!empty($detail['contract_agent_charge_detail_id'])) {
+            if (! empty($detail['contract_agent_charge_detail_id'])) {
                 $serviceCharge
                     ->chargeDetails()
                     ->where('id', $detail['contract_agent_charge_detail_id'])

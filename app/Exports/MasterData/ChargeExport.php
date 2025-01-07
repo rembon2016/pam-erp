@@ -2,10 +2,10 @@
 
 namespace App\Exports\MasterData;
 
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use App\Service\Finance\MasterData\ChargeService;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
 class ChargeExport implements FromCollection, WithHeadings, WithMapping
 {
@@ -13,12 +13,12 @@ class ChargeExport implements FromCollection, WithHeadings, WithMapping
 
     public function __construct()
     {
-        $this->chargeService = new ChargeService();
+        $this->chargeService = new ChargeService;
     }
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         return $this->chargeService->getCharges();
@@ -49,5 +49,4 @@ class ChargeExport implements FromCollection, WithHeadings, WithMapping
             'Cost Account',
         ];
     }
-
 }

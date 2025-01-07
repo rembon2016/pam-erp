@@ -24,14 +24,14 @@ final class GlobalPaymentMethodRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'payment_terms' => 'required|string|max:255'
+            'payment_terms' => 'required|string|max:255',
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'payment_terms' => 'Payment Terms'
+            'payment_terms' => 'Payment Terms',
         ];
     }
 }

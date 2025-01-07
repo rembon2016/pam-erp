@@ -42,7 +42,7 @@ final class GlobalCurrencyRequest extends FormRequest
             'currency_date' => 'Currency Date',
             'buy_rate' => 'Buy Rate',
             'sell_rate' => 'Sell Rate',
-            'notes' => 'Notes'
+            'notes' => 'Notes',
         ];
     }
 }

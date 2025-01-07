@@ -7,7 +7,6 @@ namespace App\Service\Finance\MasterData;
 use App\Functions\ObjectResponse;
 use App\Models\Operation\Master\Port;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 
 final class PortService
 {
@@ -24,11 +23,11 @@ final class PortService
     public function getPorts($filters = []): Collection
     {
         return Port::with('country')
-            ->when(!empty($filters['country_id']), function ($query) use ($filters) {
+            ->when(! empty($filters['country_id']), function ($query) use ($filters) {
                 $query->where('country_id', $filters['country_id']);
-            })->when(!empty($filters['port_code']), function ($query) use ($filters) {
+            })->when(! empty($filters['port_code']), function ($query) use ($filters) {
                 return $query->where('port_code', $filters['port_code']);
-            })->when(!empty($filters['port_name']), function ($query) use ($filters) {
+            })->when(! empty($filters['port_name']), function ($query) use ($filters) {
                 return $query->where('port_name', $filters['port_name']);
             })
             ->whereNotIn('status', ['2', '3'])
@@ -39,14 +38,14 @@ final class PortService
     /**
      * Retrieves a port by its ID.
      *
-     * @param string $id The ID of the port to retrieve.
+     * @param  string  $id  The ID of the port to retrieve.
      * @return object The retrieved port, or an error response if the port is not found.
      */
     public function getPortById(string $id): object
     {
         $port = Port::where('port_id', $id)->first();
 
-        return !is_null($port)
+        return ! is_null($port)
             ? ObjectResponse::success(message: __('crud.fetched', ['name' => 'Port']), data: $port)
             : ObjectResponse::error(message: __('crud.not_found', ['name' => 'Port']), statusCode: 404);
     }
@@ -54,7 +53,7 @@ final class PortService
     /**
      * Creates a new port.
      *
-     * @param array $dto An array of data to create the new port.
+     * @param  array  $dto  An array of data to create the new port.
      * @return object The created port, or an error response if the creation fails.
      */
     public function createPort(array $dto): object
@@ -70,8 +69,8 @@ final class PortService
     /**
      * Updates an existing port.
      *
-     * @param array $dto An array of data to update the port with.
-     * @param string $id The ID of the port to update.
+     * @param  array  $dto  An array of data to update the port with.
+     * @param  string  $id  The ID of the port to update.
      * @return object The updated port, or an error response if the update fails.
      */
     public function updatePort(array $dto, string $id): object
@@ -95,7 +94,7 @@ final class PortService
     /**
      * Deletes a port by its ID.
      *
-     * @param string $id The ID of the port to delete.
+     * @param  string  $id  The ID of the port to delete.
      * @return object The deleted port, or an error response if the deletion fails.
      */
     public function deletePort(string $id): object

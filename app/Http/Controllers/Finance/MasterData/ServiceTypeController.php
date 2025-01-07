@@ -4,27 +4,27 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
-use Illuminate\View\View;
-use App\Functions\Utility;
-use Illuminate\Http\Response;
+use App\Exports\MasterData\ServiceTypeExport;
 use App\Functions\ResponseJson;
+use App\Functions\Utility;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Finance\MasterData\ServiceType\GlobalServiceTypeRequest;
+use App\Models\Finance\ServiceType;
+use App\Service\Finance\MasterData\ServiceTypeService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
-use App\Models\Finance\ServiceType;
-use App\Http\Controllers\Controller;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
-use App\Exports\MasterData\ServiceTypeExport;
-use App\Http\Requests\Finance\MasterData\ServiceType\GlobalServiceTypeRequest;
-use App\Service\Finance\MasterData\ServiceTypeService;
 
 final class ServiceTypeController extends Controller
 {
     /**
      * Constructs a new instance of the ServiceTypeController class, injecting the ServiceTypeService dependency.
      *
-     * @param ServiceTypeService $serviceTypeService The ServiceTypeService instance to be used by this controller.
+     * @param  ServiceTypeService  $serviceTypeService  The ServiceTypeService instance to be used by this controller.
      */
     public function __construct(
         protected ServiceTypeService $serviceTypeService,
@@ -36,6 +36,7 @@ final class ServiceTypeController extends Controller
     public function index(): View
     {
         $service_types = $this->serviceTypeService->getServiceTypes();
+
         return view('pages.finance.master-data.service-type.index', compact('service_types'));
     }
 
@@ -43,8 +44,6 @@ final class ServiceTypeController extends Controller
      * Retrieves a list of all roles and returns a JSON response for use in a data table.
      *
      * This method fetches all the roles from the database and returns a JSON response that can be used to populate a data table. The response includes an action column that contains a "View" button for each role.
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function list(): JsonResponse
     {
@@ -78,11 +77,11 @@ final class ServiceTypeController extends Controller
             'page' => 'Add Service Type',
             'action' => route('finance.master-data.service-type.store'),
             'method' => 'POST',
-         ];
+        ];
 
         $service_type = new ServiceType;
 
-         return view('pages.finance.master-data.service-type.form', compact('data', 'service_type'));
+        return view('pages.finance.master-data.service-type.form', compact('data', 'service_type'));
     }
 
     /**
@@ -106,18 +105,20 @@ final class ServiceTypeController extends Controller
     {
         $service_type = ServiceType::where('id', $id)->first();
 
-        if (is_null($service_type)) return to_route('finance.master-data.service-type.index')->with(
-            'toastError',
-            __('crud.not_found', ['name' => 'Service Type'])
-        );
+        if (is_null($service_type)) {
+            return to_route('finance.master-data.service-type.index')->with(
+                'toastError',
+                __('crud.not_found', ['name' => 'Service Type'])
+            );
+        }
 
         $data = [
             'page' => 'Edit Service Type',
             'action' => route('finance.master-data.service-type.update', $id),
             'method' => 'PUT',
-         ];
+        ];
 
-         return view('pages.finance.master-data.service-type.form', compact('data', 'service_type'));
+        return view('pages.finance.master-data.service-type.form', compact('data', 'service_type'));
     }
 
     /**
@@ -158,7 +159,7 @@ final class ServiceTypeController extends Controller
     {
         $data = ServiceType::orderBy('service_code', 'ASC')->get();
         $pdf = Pdf::loadView('exports.pdf.service-type', compact('data'));
-        $file_name = 'list_service_type_' . time() . '.pdf';
+        $file_name = 'list_service_type_'.time().'.pdf';
 
         return $pdf->download($file_name);
     }
@@ -171,7 +172,8 @@ final class ServiceTypeController extends Controller
      */
     public function exportExcel()
     {
-        $file_name = 'list_service_type_' . time() . '.xlsx';
+        $file_name = 'list_service_type_'.time().'.xlsx';
+
         return Excel::download(new ServiceTypeExport, $file_name);
     }
 
@@ -183,7 +185,8 @@ final class ServiceTypeController extends Controller
      */
     public function exportCsv()
     {
-        $file_name = 'list_service_type_' . time() . '.csv';
+        $file_name = 'list_service_type_'.time().'.csv';
+
         return Excel::download(new ServiceTypeExport, $file_name);
     }
 }

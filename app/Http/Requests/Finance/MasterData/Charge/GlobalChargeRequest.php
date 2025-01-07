@@ -30,7 +30,7 @@ final class GlobalChargeRequest extends FormRequest
             'is_agreed_rate' => 'required|boolean',
             'unit_id' => 'nullable',
             'cost_id' => 'nullable',
-            'revenue_id' => 'nullable'
+            'revenue_id' => 'nullable',
         ];
     }
 

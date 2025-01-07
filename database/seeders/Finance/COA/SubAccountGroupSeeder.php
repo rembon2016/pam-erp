@@ -6,7 +6,6 @@ namespace Database\Seeders\Finance\COA;
 
 use App\Models\Finance\AccountGroup;
 use App\Models\Finance\SubAccountGroup;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 final class SubAccountGroupSeeder extends Seeder
@@ -22,7 +21,7 @@ final class SubAccountGroupSeeder extends Seeder
                 SubAccountGroup::create([
                     'account_group_id' => $this->findAccountGroupByCode(code: $account['account_group_code']),
                     'code' => $account['code'],
-                    'name' => $account['name']
+                    'name' => $account['name'],
                 ]);
 
             });
@@ -170,8 +169,7 @@ final class SubAccountGroupSeeder extends Seeder
     /**
      * Finds an AccountGroup by its code.
      *
-     * @param string $code The code of the AccountGroup to find.
-     * @return string
+     * @param  string  $code  The code of the AccountGroup to find.
      */
     private function findAccountGroupByCode(string $code): string
     {

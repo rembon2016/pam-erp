@@ -3,9 +3,9 @@
 namespace App\Models\Operation\Master;
 
 use App\Models\Finance\Customer;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Finance\CustomerContract;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CustomerBilling extends Model
@@ -42,8 +42,6 @@ class CustomerBilling extends Model
 
     /**
      * Get the country associated with the customer billing record.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function countries(): BelongsTo
     {
@@ -56,31 +54,27 @@ class CustomerBilling extends Model
 
     /**
      * Get the customer group associated with the customer billing record.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-	public function group(): BelongsTo
+    public function group(): BelongsTo
     {
-		return $this->belongsTo(
+        return $this->belongsTo(
             related: CustomerGroup::class,
             foreignKey: 'customer_group_id',
             ownerKey: 'customer_group_id'
         );
-	}
+    }
 
     /**
      * Get the customer type detail associated with the customer billing record.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-	public function customerTypeDetail(): BelongsTo
+    public function customerTypeDetail(): BelongsTo
     {
-		return $this->belongsTo(
+        return $this->belongsTo(
             related: CustomerType::class,
             foreignKey: 'customer_type',
             ownerKey: 'customer_type_id'
         );
-	}
+    }
 
     public function customerContracts()
     {

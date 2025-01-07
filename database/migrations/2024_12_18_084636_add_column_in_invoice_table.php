@@ -14,7 +14,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('finance.invoice', function (Blueprint $table) {
-            if (!Schema::hasColumn('finance.invoice', 'date_revenue_recognizition')) {
+            if (! Schema::hasColumn('finance.invoice', 'date_revenue_recognizition')) {
                 $table->date('date_revenue_recognizition')->nullable();
             }
         });

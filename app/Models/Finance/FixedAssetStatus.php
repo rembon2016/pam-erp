@@ -14,11 +14,12 @@ final class FixedAssetStatus extends Model
         HasUuids;
 
     protected $table = 'finance.fixed_asset_statuses';
+
     protected $guarded = ['id'];
+
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
-
 }

@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
-use App\Models\Finance\Customer;
-use Illuminate\Database\Eloquent\Model;
-use App\Models\Finance\AgentContractService;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class AgentContract extends Model
 {
@@ -29,13 +27,14 @@ final class AgentContract extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
         'contract_date' => 'date',
         'contract_start' => 'date',
-        'contract_end' => 'date'
+        'contract_end' => 'date',
     ];
 
     public $incrementing = false;
@@ -44,7 +43,7 @@ final class AgentContract extends Model
 
     public function getFileURL()
     {
-        return asset('storage/' . self::FOLDER_NAME . '/' . $this->contract_file);
+        return asset('storage/'.self::FOLDER_NAME.'/'.$this->contract_file);
     }
 
     public function customer()
@@ -54,8 +53,6 @@ final class AgentContract extends Model
 
     /**
      * Has Many Relation With Agent Contract Service
-     *
-     * @return HasMany
      */
     public function serviceContract(): HasMany
     {
@@ -64,8 +61,6 @@ final class AgentContract extends Model
 
     /**
      * Has Many Relation With Agent Contract Charge
-     *
-     * @return HasMany
      */
     public function contractAgentCharge(): HasMany
     {

@@ -14,11 +14,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('finance.agent_contract_charge', function (Blueprint $table) {
-            if (!Schema::hasColumn('finance.agent_contract_charge', column: 'manual_input_routed')) {
+            if (! Schema::hasColumn('finance.agent_contract_charge', column: 'manual_input_routed')) {
                 $table->string('manual_input_routed')->nullable();
             }
 
-            if (!Schema::hasColumn('finance.agent_contract_charge', column: 'via_port')) {
+            if (! Schema::hasColumn('finance.agent_contract_charge', column: 'via_port')) {
                 $table->string('via_port')->nullable();
             }
 

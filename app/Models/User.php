@@ -18,11 +18,11 @@ use Spatie\Permission\Traits\HasRoles;
 final class User extends Authenticatable
 {
     use HasFactory,
-        Notifiable,
-        SoftDeletes,
-        // HandleTableTimestamps,
         HasRoles,
-        HasUuids;
+        HasUuids,
+        // HandleTableTimestamps,
+        Notifiable,
+        SoftDeletes;
 
     /**
      * The database table name for the User model.
@@ -97,9 +97,8 @@ final class User extends Authenticatable
      *
      * @var array
      */
-    CONST ROLES = [
+    const ROLES = [
         self::ADMIN_ROLE, self::HR_ROLE, self::ACCOUNTING_ROLE,
-        self::SALES_ROLE, self::FINANCE_ROLE
+        self::SALES_ROLE, self::FINANCE_ROLE,
     ];
-    
 }

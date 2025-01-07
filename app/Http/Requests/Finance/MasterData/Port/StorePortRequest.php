@@ -42,7 +42,7 @@ final class StorePortRequest extends FormRequest
             'country_id' => ['required', 'string', 'exists:pgsql.master.countries,country_id'],
             'city' => ['required', 'string', 'max:100'],
             'note' => ['nullable', 'string'],
-            'status' => ['nullable', 'in:1,2,3']
+            'status' => ['nullable', 'in:1,2,3'],
         ];
     }
 }

@@ -3,15 +3,15 @@
 namespace App\Exports\Settings;
 
 use App\Models\User;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
 class UserExport implements FromCollection, WithHeadings, WithMapping
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         return User::with('roles')->latest()->get();
@@ -22,16 +22,16 @@ class UserExport implements FromCollection, WithHeadings, WithMapping
         return [
             $item->name,
             $item->guard_name,
-            $item->roles->pluck('name')->join(', ')
+            $item->roles->pluck('name')->join(', '),
         ];
     }
 
-    public function headings() : array
+    public function headings(): array
     {
         return [
             'Name',
             'Email',
-            'Role'
+            'Role',
         ];
     }
 }

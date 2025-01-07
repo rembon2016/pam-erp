@@ -2,10 +2,10 @@
 
 namespace App\Exports\Billing;
 
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use App\Service\Finance\Billing\InvoiceService;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
 class InvoiceExport implements FromCollection, WithHeadings, WithMapping
 {
@@ -17,8 +17,8 @@ class InvoiceExport implements FromCollection, WithHeadings, WithMapping
     }
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         return $this->invoiceService->getInvoices();
@@ -48,7 +48,7 @@ class InvoiceExport implements FromCollection, WithHeadings, WithMapping
             'Amount in USD',
             'Amount in AED',
             'Approval',
-            'Status'
+            'Status',
         ];
     }
 }

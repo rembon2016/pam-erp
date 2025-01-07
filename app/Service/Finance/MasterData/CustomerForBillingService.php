@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
-use App\Models\Operation\Master\CustomerBilling;
 use App\Functions\ObjectResponse;
+use App\Models\Operation\Master\CustomerBilling;
 
 final class CustomerForBillingService
 {
     /**
      * Create a new class instance.
      */
-    public function __construct(){}
+    public function __construct() {}
 
     /**
      * Creates a new customer billing record in the database.
      *
-     * @param array $dto An associative array containing the data for the new customer billing.
+     * @param  array  $dto  An associative array containing the data for the new customer billing.
      * @return object An ObjectResponse instance containing the success message and the created customer billing object.
+     *
      * @throws \Throwable If an exception occurs during the creation process.
      */
     public function createCustomer(array $dto): object
@@ -42,8 +43,9 @@ final class CustomerForBillingService
     /**
      * Updates an existing customer billing record in the database.
      *
-     * @param array $dto An associative array containing the updated data for the customer billing.
+     * @param  array  $dto  An associative array containing the updated data for the customer billing.
      * @return object An ObjectResponse instance containing the success message and the updated customer billing object.
+     *
      * @throws \Throwable If an exception occurs during the update process.
      */
     public function updateCustomer(array $dto): object
@@ -68,8 +70,9 @@ final class CustomerForBillingService
     /**
      * Deletes an existing customer billing record from the database.
      *
-     * @param array $dto An associative array containing the ID of the customer billing to be deleted.
+     * @param  array  $dto  An associative array containing the ID of the customer billing to be deleted.
      * @return object An ObjectResponse instance containing the success message and the deleted customer billing object.
+     *
      * @throws \Throwable If an exception occurs during the deletion process.
      */
     public function deleteCustomer(array $dto): object

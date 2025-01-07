@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
-use App\Models\Finance\ServiceType;
-use App\Models\Operation\Master\Port;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Operation\Master\Carrier;
 use App\Models\Operation\Master\Countries;
-use App\Models\Finance\AgentContractCharge;
+use App\Models\Operation\Master\Port;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 final class AgentContractService extends Model
 {

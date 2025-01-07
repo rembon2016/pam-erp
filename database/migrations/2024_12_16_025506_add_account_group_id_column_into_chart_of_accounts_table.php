@@ -14,7 +14,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('finance.chart_of_accounts', function (Blueprint $table) {
-            if (!Schema::hasColumn('finance.chart_of_accounts', 'account_group_id')) {
+            if (! Schema::hasColumn('finance.chart_of_accounts', 'account_group_id')) {
                 $table->foreignUuid('account_group_id')
                     ->nullable()
                     ->references('id')

@@ -11,20 +11,19 @@ final class UpdateCustomerContractRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
+    public function authorize(): bool
+    {
+        return auth()->check();
+    }
 
-     public function authorize(): bool
-     {
-         return auth()->check();
-     }
-
-     /**
-      * Get the validation rules that apply to the request.
-      *
-      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-      */
-     public function rules(): array
-     {
-         return [
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
             'customer_id' => 'required|exists:pgsql.finance.customer,id',
             'contract_from' => 'nullable',
             'contract_to' => 'nullable',
@@ -39,24 +38,24 @@ final class UpdateCustomerContractRequest extends FormRequest
             'charges.*.to' => 'required|numeric|min:0',
             'charges.*.rate' => 'required|numeric|min:0',
             // 'charges.*.unit_id' => 'nullable',
-         ];
-     }
+        ];
+    }
 
-     public function attributes()
-     {
-         return [
-             'customer_id' => 'Customer',
-             'contract_from' => 'Contract From',
-             'contract_to' => 'Contract To',
-             'contract_start' => 'Contract Validity From',
-             'contract_end' => 'Contract Validity To',
-             'charge_id' => 'Charge Name',
-             'currency_id' => 'Currency',
-             'charges.*.rate' => 'Rate',
-             'charges.*.quantity' => 'Quantity',
-             'charges.*.from' => 'From',
-             'charges.*.to' => 'To',
+    public function attributes()
+    {
+        return [
+            'customer_id' => 'Customer',
+            'contract_from' => 'Contract From',
+            'contract_to' => 'Contract To',
+            'contract_start' => 'Contract Validity From',
+            'contract_end' => 'Contract Validity To',
+            'charge_id' => 'Charge Name',
+            'currency_id' => 'Currency',
+            'charges.*.rate' => 'Rate',
+            'charges.*.quantity' => 'Quantity',
+            'charges.*.from' => 'From',
+            'charges.*.to' => 'To',
             //  'charges.*.unit_id' => 'Unit',
-         ];
-     }
+        ];
+    }
 }

@@ -7,10 +7,9 @@ namespace Database\Seeders\Finance;
 use App\Models\Operation\Master\Carrier;
 use App\Models\Operation\Master\CustomerBilling;
 use App\Models\Operation\Master\Vendor;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 final class SyncColumnDataFromCustomer extends Seeder
 {

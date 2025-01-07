@@ -2,10 +2,10 @@
 
 namespace App\Exports\MasterData;
 
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use App\Service\Finance\MasterData\PaymentMethodService;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
 class PaymentMethodExport implements FromCollection, WithHeadings, WithMapping
 {
@@ -13,12 +13,12 @@ class PaymentMethodExport implements FromCollection, WithHeadings, WithMapping
 
     public function __construct()
     {
-        $this->paymentMethodService = new PaymentMethodService();
+        $this->paymentMethodService = new PaymentMethodService;
     }
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         return $this->paymentMethodService->getPaymentMethods();
@@ -28,7 +28,7 @@ class PaymentMethodExport implements FromCollection, WithHeadings, WithMapping
     {
         return [
             $item->payment_terms,
-            $item->created_at?->format('d-m-Y H:i:s')
+            $item->created_at?->format('d-m-Y H:i:s'),
         ];
     }
 
@@ -36,7 +36,7 @@ class PaymentMethodExport implements FromCollection, WithHeadings, WithMapping
     {
         return [
             'Payment Terms',
-            'Date Created'
+            'Date Created',
         ];
     }
 }

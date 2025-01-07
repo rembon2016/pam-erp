@@ -6,8 +6,8 @@ namespace Database\Seeders;
 
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Support\Arr;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 
 final class RoleSeeder extends Seeder
 {
@@ -23,7 +23,7 @@ final class RoleSeeder extends Seeder
                     'name' => $role,
                 ]);
 
-                $configPermission  = $role == User::ADMIN_ROLE
+                $configPermission = $role == User::ADMIN_ROLE
                     ? 'permission.list'
                     : ($role == User::SALES_ROLE ? 'permission.list.crm' : "permission.list.{$role}");
 

@@ -4,25 +4,25 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
-use Illuminate\Support\Str;
-use App\Models\Finance\Customer;
 use App\Functions\ObjectResponse;
-use Illuminate\Support\Facades\DB;
-use App\Models\Finance\CustomerVat;
-use App\Models\Finance\CustomerBank;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Finance\CustomerEmail;
-use App\Models\Finance\CustomerSales;
+use App\Models\Finance\Customer;
 use App\Models\Finance\CustomerAccount;
 use App\Models\Finance\CustomerAddress;
-use App\Models\Operation\Master\Vendor;
-use App\Models\Operation\Master\Carrier;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Builder;
-use App\Models\Operation\Master\CustomerType;
-use App\Models\Operation\Master\CustomerBilling;
+use App\Models\Finance\CustomerBank;
+use App\Models\Finance\CustomerEmail;
+use App\Models\Finance\CustomerSales;
 use App\Models\Finance\CustomerType as FinanceCustomerType;
+use App\Models\Finance\CustomerVat;
+use App\Models\Operation\Master\Carrier;
+use App\Models\Operation\Master\CustomerBilling;
+use App\Models\Operation\Master\CustomerType;
+use App\Models\Operation\Master\Vendor;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 final class CustomerService
 {
@@ -37,17 +37,14 @@ final class CustomerService
     /**
      * Get all customers ordered by customer name in ascending order.
      *
-     * @param array $filters
-     *
+     * @param  array  $filters
      * @return \Illuminate\Database\Eloquent\Builder A collection of all customers.
      */
     public function getCustomers($filters = []): Builder
     {
         $customer = Customer::query()
-            ->when(!empty($filters['customer_name']), fn ($query)
-                => $query->where('customer_name', 'ilike', '%'. $filters['customer_name'] . '%'))
-            ->when(!empty($filters['customer_type_name']), fn ($query)
-                => $query->whereHas('customerTypes', fn ($q) => $q->whereIn('name', $filters['customer_type_name'])))
+            ->when(! empty($filters['customer_name']), fn ($query) => $query->where('customer_name', 'ilike', '%'.$filters['customer_name'].'%'))
+            ->when(! empty($filters['customer_type_name']), fn ($query) => $query->whereHas('customerTypes', fn ($q) => $q->whereIn('name', $filters['customer_type_name'])))
             ->orderBy('customer_name', 'asc');
 
         return $customer;
@@ -56,9 +53,7 @@ final class CustomerService
     /**
      * Get Billing Customers Collections
      *
-     * @param array $columns = []
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @param  array  $columns  = []
      */
     public function getBillingCustomers(array $columns = []): Collection
     {
@@ -67,7 +62,7 @@ final class CustomerService
                 ->when(empty($columns), function ($query) {
                     return $query->select('customer_id', 'customer_code', 'customer_name', 'status');
                 })
-                ->when(!empty($columns), function ($query) use ($columns) {
+                ->when(! empty($columns), function ($query) use ($columns) {
                     return $query->select($columns);
                 })
                 ->where('status', 1)
@@ -78,14 +73,14 @@ final class CustomerService
     /**
      * Get the customer by id.
      *
-     * @param string $id The ID of the customer.
+     * @param  string  $id  The ID of the customer.
      * @return object The customer object.
      */
     public function getCustomerById(string $id): object
     {
         $customer = Customer::where('id', $id)->first();
 
-        return !empty($customer)
+        return ! empty($customer)
             ? ObjectResponse::success(message: __('crud.fetched', ['name' => 'Customer']), data: $customer)
             : ObjectResponse::error(message: __('crud.not_found', ['name' => 'Customer']));
     }
@@ -93,7 +88,7 @@ final class CustomerService
     /**
      * Create a new customer.
      *
-     * @param array $dto An array of customer data.
+     * @param  array  $dto  An array of customer data.
      * @return object The created customer object.
      */
     public function createCustomer(array $dto): object
@@ -101,14 +96,14 @@ final class CustomerService
         DB::beginTransaction();
         try {
             $customer_code_query = DB::select(
-                query: "SELECT finance.customer_code_finance(?, ?) as customer_code",
+                query: 'SELECT finance.customer_code_finance(?, ?) as customer_code',
                 bindings: [
                     $dto['overseas'],
-                    json_encode($dto['customer_type'])
+                    json_encode($dto['customer_type']),
                 ],
             );
 
-            $customer_code = count($customer_code_query) > 0 ? $customer_code_query[0]->customer_code : NULL;
+            $customer_code = count($customer_code_query) > 0 ? $customer_code_query[0]->customer_code : null;
 
             $customer = Customer::create([
                 'customer_name' => $dto['customer_name'],
@@ -125,22 +120,34 @@ final class CustomerService
             $this->storeDataBasedOnCustomerType(customerTypesDto: $dto['customer_type'], customerModel: $customer);
 
             // Customer Address
-            if (!empty($dto['customer_address']['address_type'])) $this->syncCustomerAddress(customerAddress: $customer->customerAddress,customerAddressDto: $dto['customer_address'], customerId: $customer->id);
+            if (! empty($dto['customer_address']['address_type'])) {
+                $this->syncCustomerAddress(customerAddress: $customer->customerAddress, customerAddressDto: $dto['customer_address'], customerId: $customer->id);
+            }
 
             // Customer VAT
-            if (!empty($dto['customer_vat']['vat_number'])) $this->syncCustomerVat(customerVat: $customer->customerVat, customerVatDto: $dto['customer_vat'], customerId: $customer->id);
+            if (! empty($dto['customer_vat']['vat_number'])) {
+                $this->syncCustomerVat(customerVat: $customer->customerVat, customerVatDto: $dto['customer_vat'], customerId: $customer->id);
+            }
 
             // Customer Email
-            if (!empty($dto['customer_email']['email'][0])) $this->syncCustomerEmail(customerEmailDto: $dto['customer_email'], customerId: $customer->id);
+            if (! empty($dto['customer_email']['email'][0])) {
+                $this->syncCustomerEmail(customerEmailDto: $dto['customer_email'], customerId: $customer->id);
+            }
 
             // Customer Sales
-            if (!empty($dto['customer_sales']['salesman'])) $this->syncCustomerSales(customerSales: $customer->customerSales, customerSalesDto: $dto['customer_sales'], customerId: $customer->id);
+            if (! empty($dto['customer_sales']['salesman'])) {
+                $this->syncCustomerSales(customerSales: $customer->customerSales, customerSalesDto: $dto['customer_sales'], customerId: $customer->id);
+            }
 
             // Customer Bank
-            if (!empty($dto['customer_bank']['account_number'])) $this->syncCustomerBank(customerBank: $customer->customerBank, customerBankDto: $dto['customer_bank'], customerId: $customer->id);
+            if (! empty($dto['customer_bank']['account_number'])) {
+                $this->syncCustomerBank(customerBank: $customer->customerBank, customerBankDto: $dto['customer_bank'], customerId: $customer->id);
+            }
 
             // Customer Account
-            if (!empty($dto['customer_account']['chart_of_account_id'][0])) $this->syncCustomerAccount(customerAccountDto: $dto['customer_account'], customerId: $customer->id);
+            if (! empty($dto['customer_account']['chart_of_account_id'][0])) {
+                $this->syncCustomerAccount(customerAccountDto: $dto['customer_account'], customerId: $customer->id);
+            }
 
             DB::commit();
 
@@ -162,8 +169,8 @@ final class CustomerService
     /**
      * Updates an existing customer in the system.
      *
-     * @param array $dto An associative array containing the updated customer data.
-     * @param string $id The ID of the customer to be updated.
+     * @param  array  $dto  An associative array containing the updated customer data.
+     * @param  string  $id  The ID of the customer to be updated.
      * @return object The updated customer object.
      */
     public function updateCustomer(array $dto, string $id): object
@@ -185,22 +192,34 @@ final class CustomerService
             $this->storeDataBasedOnCustomerType(customerTypesDto: $dto['customer_type'], customerModel: $customer);
 
             // Customer Address
-            if (!empty($dto['customer_address']['address_type'])) $this->syncCustomerAddress(customerAddress: $customer->customerAddress,customerAddressDto: $dto['customer_address'], customerId: $customer->id);
+            if (! empty($dto['customer_address']['address_type'])) {
+                $this->syncCustomerAddress(customerAddress: $customer->customerAddress, customerAddressDto: $dto['customer_address'], customerId: $customer->id);
+            }
 
             // Customer VAT
-            if (!empty($dto['customer_vat']['vat_number'])) $this->syncCustomerVat(customerVat: $customer->customerVat, customerVatDto: $dto['customer_vat'], customerId: $customer->id);
+            if (! empty($dto['customer_vat']['vat_number'])) {
+                $this->syncCustomerVat(customerVat: $customer->customerVat, customerVatDto: $dto['customer_vat'], customerId: $customer->id);
+            }
 
             // Customer Email
-            if (!empty($dto['customer_email']['email'][0])) $this->syncCustomerEmail(customerEmailDto: $dto['customer_email'], customerId: $customer->id);
+            if (! empty($dto['customer_email']['email'][0])) {
+                $this->syncCustomerEmail(customerEmailDto: $dto['customer_email'], customerId: $customer->id);
+            }
 
             // Customer Sales
-            if (!empty($dto['customer_sales']['salesman'])) $this->syncCustomerSales(customerSales: $customer->customerSales, customerSalesDto: $dto['customer_sales'], customerId: $customer->id);
+            if (! empty($dto['customer_sales']['salesman'])) {
+                $this->syncCustomerSales(customerSales: $customer->customerSales, customerSalesDto: $dto['customer_sales'], customerId: $customer->id);
+            }
 
             // Customer Bank
-            if (!empty($dto['customer_bank']['account_number'])) $this->syncCustomerBank(customerBank: $customer->customerBank, customerBankDto: $dto['customer_bank'], customerId: $customer->id);
+            if (! empty($dto['customer_bank']['account_number'])) {
+                $this->syncCustomerBank(customerBank: $customer->customerBank, customerBankDto: $dto['customer_bank'], customerId: $customer->id);
+            }
 
             // Customer Account
-            if (!empty($dto['customer_account']['chart_of_account_id'][0])) $this->syncCustomerAccount(customerAccountDto: $dto['customer_account'], customerId: $customer->id);
+            if (! empty($dto['customer_account']['chart_of_account_id'][0])) {
+                $this->syncCustomerAccount(customerAccountDto: $dto['customer_account'], customerId: $customer->id);
+            }
 
             DB::commit();
 
@@ -222,7 +241,7 @@ final class CustomerService
     /**
      * Deletes a customer by the given ID.
      *
-     * @param string $id The ID of the customer to be deleted.
+     * @param  string  $id  The ID of the customer to be deleted.
      * @return object The response object containing the success message and the deleted customer data.
      */
     public function deleteCustomer(string $id): object
@@ -246,20 +265,20 @@ final class CustomerService
     /**
      * Synchronizes the customer address information.
      *
-     * @param ?CustomerAddress $customerAddress The existing customer address model, or null if it doesn't exist.
-     * @param array $customerAddressDto The customer address data to be synchronized.
-     * @param string $customerId The ID of the customer.
+     * @param  ?CustomerAddress  $customerAddress  The existing customer address model, or null if it doesn't exist.
+     * @param  array  $customerAddressDto  The customer address data to be synchronized.
+     * @param  string  $customerId  The ID of the customer.
      * @return void
      */
     private function syncCustomerAddress(?CustomerAddress $customerAddress, array $customerAddressDto, string $customerId)
     {
-        if (!empty($customerAddressDto['contact_informations']['contact_person_name'][0])) {
+        if (! empty($customerAddressDto['contact_informations']['contact_person_name'][0])) {
             $customerAddressDto['contact_informations'] = collect($customerAddressDto['contact_informations']['contact_person_name'])->map(function ($name, $index) use ($customerAddressDto) {
                 return [
                     'contact_person_name' => $name,
                     'contact_person_number' => $customerAddressDto['contact_informations']['contact_person_number'][$index] ?? null,
                     'contact_person_email' => $customerAddressDto['contact_informations']['contact_person_email'][$index] ?? null,
-                    'contact_person_address' => $customerAddressDto['contact_informations']['contact_person_address'][$index] ?? null
+                    'contact_person_address' => $customerAddressDto['contact_informations']['contact_person_address'][$index] ?? null,
                 ];
             });
 
@@ -280,9 +299,9 @@ final class CustomerService
     /**
      * Synchronizes the customer VAT information.
      *
-     * @param ?CustomerVat $customerVat The existing customer VAT model, or null if it doesn't exist.
-     * @param array $customerVatDto The customer VAT data to be synchronized.
-     * @param string $customerId The ID of the customer.
+     * @param  ?CustomerVat  $customerVat  The existing customer VAT model, or null if it doesn't exist.
+     * @param  array  $customerVatDto  The customer VAT data to be synchronized.
+     * @param  string  $customerId  The ID of the customer.
      * @return void
      */
     private function syncCustomerVat(?CustomerVat $customerVat, array $customerVatDto, string $customerId)
@@ -296,8 +315,8 @@ final class CustomerService
     /**
      * Synchronizes the customer email information.
      *
-     * @param array $customerEmailDto The customer email data to be synchronized.
-     * @param string $customerId The ID of the customer.
+     * @param  array  $customerEmailDto  The customer email data to be synchronized.
+     * @param  string  $customerId  The ID of the customer.
      * @return void
      */
     private function syncCustomerEmail(array $customerEmailDto, string $customerId)
@@ -314,9 +333,9 @@ final class CustomerService
     /**
      * Synchronizes the customer sales information.
      *
-     * @param ?CustomerSales $customerSales The existing customer sales model, or null if it doesn't exist.
-     * @param array $customerEmailDto The customer email data to be synchronized.
-     * @param string $customerId The ID of the customer.
+     * @param  ?CustomerSales  $customerSales  The existing customer sales model, or null if it doesn't exist.
+     * @param  array  $customerEmailDto  The customer email data to be synchronized.
+     * @param  string  $customerId  The ID of the customer.
      * @return void
      */
     private function syncCustomerSales(?CustomerSales $customerSales, array $customerSalesDto, string $customerId)
@@ -330,9 +349,9 @@ final class CustomerService
     /**
      * Synchronizes the customer bank information.
      *
-     * @param ?CustomerBank $customerBank The existing customer bank model, or null if it doesn't exist.
-     * @param array $customerEmailDto The customer email data to be synchronized.
-     * @param string $customerId The ID of the customer.
+     * @param  ?CustomerBank  $customerBank  The existing customer bank model, or null if it doesn't exist.
+     * @param  array  $customerEmailDto  The customer email data to be synchronized.
+     * @param  string  $customerId  The ID of the customer.
      * @return void
      */
     private function syncCustomerBank(?CustomerBank $customerBank, array $customerBankDto, string $customerId)
@@ -346,8 +365,8 @@ final class CustomerService
     /**
      * Synchronizes the customer account information.
      *
-     * @param array $customerEmailDto The customer email data to be synchronized.
-     * @param string $customerId The ID of the customer.
+     * @param  array  $customerEmailDto  The customer email data to be synchronized.
+     * @param  string  $customerId  The ID of the customer.
      * @return void
      */
     private function syncCustomerAccount(array $customerAccountDto, string $customerId)
@@ -370,8 +389,8 @@ final class CustomerService
     /**
      * Stores data based on the customer type.
      *
-     * @param array $customerTypesDto The customer types data transfer object.
-     * @param Customer $customerModel The customer model instance.
+     * @param  array  $customerTypesDto  The customer types data transfer object.
+     * @param  Customer  $customerModel  The customer model instance.
      * @return void
      */
     public function storeDataBasedOnCustomerType(array $customerTypesDto, Customer $customerModel)
@@ -392,9 +411,9 @@ final class CustomerService
         FinanceCustomerType::query()->where('customer_id', $customerModel->id)->forceDelete();
         FinanceCustomerType::insert($customerTypes);
 
-        $customerBillingTypeData = array();
-        $carrierAgentTypeData = array();
-        $otherTypeData = array();
+        $customerBillingTypeData = [];
+        $carrierAgentTypeData = [];
+        $otherTypeData = [];
 
         foreach ($customerTypesDto as $key => $customerType) {
             $customerTypeId = $customerTypeModel[$key]->customer_type_id;
@@ -410,7 +429,7 @@ final class CustomerService
                     'created_by' => Auth::user()->email,
                     'status' => 1,
                 ];
-            } else if ($customerType == 'Carrier Agent') {
+            } elseif ($customerType == 'Carrier Agent') {
                 $carrierAgentTypeData[] = [
                     'carrier_id' => Str::uuid(),
                     'carrier_code' => $customerModel->customer_code,
@@ -436,17 +455,17 @@ final class CustomerService
             }
         }
 
-        if (!empty($customerBillingTypeData)) {
+        if (! empty($customerBillingTypeData)) {
             CustomerBilling::where('finance_customer_id', $customerModel->id)->delete();
             CustomerBilling::insert($customerBillingTypeData);
         }
 
-        if (!empty($carrierAgentTypeData)) {
+        if (! empty($carrierAgentTypeData)) {
             Carrier::where('finance_customer_id', $customerModel->id)->delete();
             Carrier::insert($carrierAgentTypeData);
         }
 
-        if (!empty($otherTypeData)) {
+        if (! empty($otherTypeData)) {
             Vendor::where('finance_customer_id', $customerModel->id)->delete();
             Vendor::insert($otherTypeData);
         }

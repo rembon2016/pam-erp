@@ -3,9 +3,9 @@
 namespace App\Exports\MasterData;
 
 use App\Service\Finance\MasterData\DaybookService;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
 class DaybookExport implements FromCollection, WithHeadings, WithMapping
 {
@@ -13,12 +13,12 @@ class DaybookExport implements FromCollection, WithHeadings, WithMapping
 
     public function __construct()
     {
-        $this->daybookService = new DaybookService();
+        $this->daybookService = new DaybookService;
     }
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         return $this->daybookService->getDaybooks();
@@ -30,7 +30,7 @@ class DaybookExport implements FromCollection, WithHeadings, WithMapping
             $item->code,
             $item->name,
             $item->type,
-            $item->description
+            $item->description,
         ];
     }
 

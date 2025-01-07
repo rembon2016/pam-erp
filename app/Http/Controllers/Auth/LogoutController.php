@@ -7,14 +7,13 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Service\Auth\LogoutService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 final class LogoutController extends Controller
 {
     /**
      * Constructs a new instance of the LogoutController class, injecting the LogoutService dependency.
      *
-     * @param LogoutService $logoutService The service responsible for invalidating the user's session.
+     * @param  LogoutService  $logoutService  The service responsible for invalidating the user's session.
      */
     public function __construct(
         protected LogoutService $logoutService,

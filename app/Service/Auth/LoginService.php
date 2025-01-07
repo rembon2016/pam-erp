@@ -21,9 +21,6 @@ final class LoginService
      *
      * @property string $email
      * @property string $password
-     *
-     * @param array $dto
-     * @return object
      */
     public function authenticateUser(array $dto): object
     {
@@ -43,9 +40,6 @@ final class LoginService
 
     /**
      * Authenticate the user without password.
-     *
-     * @param array $dto
-     * @return object
      */
     public function authenticateWithoutPassword(array $dto): object
     {
@@ -55,10 +49,12 @@ final class LoginService
         $account = Account::where('username', $decodedEmail)->first();
         $user = User::where('email', $account->username)->first();
 
-        if (empty($account)) return ObjectResponse::error(
-            message: 'Invalid email or password.',
-            statusCode: 401
-        );
+        if (empty($account)) {
+            return ObjectResponse::error(
+                message: 'Invalid email or password.',
+                statusCode: 401
+            );
+        }
 
         Auth::login($user);
 
@@ -72,17 +68,17 @@ final class LoginService
     /**
      * Registers a new user based on the provided email address.
      *
-     * @param string $email The email address to use for the new user.
+     * @param  string  $email  The email address to use for the new user.
      * @return \App\Models\User|bool The newly created user, or the existing user if one was found.
      */
     private function registeringNewUser($email)
     {
         $account = Account::where('username', $email)->first();
 
-        if (!empty($account)) {
+        if (! empty($account)) {
             $user = User::where('email', $account->username)->first();
 
-            return !empty($user)
+            return ! empty($user)
                 ?: User::create([
                     'email' => $account->username,
                     'password' => $account->password,

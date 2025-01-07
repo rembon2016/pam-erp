@@ -12,8 +12,6 @@ final class UserFactory extends Factory
 {
     /**
      * The current password being used by the factory.
-     *
-     * @var string|null
      */
     protected static ?string $password;
 
@@ -28,15 +26,13 @@ final class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => self::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
     }
 
     /**
      * Indicate that the model's email address should be unverified.
-     *
-     * @return static
      */
     public function unverified(): static
     {

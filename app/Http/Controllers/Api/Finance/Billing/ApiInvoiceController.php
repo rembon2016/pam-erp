@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 use App\Service\Finance\Billing\InvoiceService;
 use App\Service\Operation\Origin\ShippingInstructionService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 final class ApiInvoiceController extends Controller

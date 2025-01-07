@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\Billing;
 
-use Illuminate\Http\Response;
-use App\Models\Finance\Invoice;
 use App\Functions\ObjectResponse;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Collection;
 use App\Functions\Utility;
+use App\Models\Finance\Invoice;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 final class InvoiceService
 {
@@ -21,7 +21,8 @@ final class InvoiceService
     public function getInvoiceById(string $id): object
     {
         $data = Invoice::with(['invoiceShipment'])->where('id', $id)->first();
-        return !is_null($data)
+
+        return ! is_null($data)
             ? ObjectResponse::success(
                 message: __('crud.fetched', ['name' => 'Invoice']),
                 statusCode: Response::HTTP_OK,
@@ -41,9 +42,9 @@ final class InvoiceService
             unset($dto['data']);
             $dto['invoice_no'] = Utility::generateUniqueCode(
                 table: (new Invoice)->getTable(),
-                field: "invoice_no",
+                field: 'invoice_no',
                 length: 10,
-                prefix: "INV"
+                prefix: 'INV'
             );
 
             $createdInvoice = Invoice::create($dto);
@@ -51,7 +52,7 @@ final class InvoiceService
             foreach ($ctd_data as $ctd_number => $item) {
                 $createdInvoiceShipment = $createdInvoice->invoiceShipment()->create([
                     'ctd_number' => $item['ctd_number'],
-                    'job_id' => null
+                    'job_id' => null,
                 ]);
 
                 foreach ($item['charges'] as $charge) {
@@ -61,6 +62,7 @@ final class InvoiceService
             }
 
             DB::commit();
+
             return ObjectResponse::success(
                 message: __('crud.created', ['name' => 'Invoice']),
                 statusCode: Response::HTTP_CREATED,
@@ -69,6 +71,7 @@ final class InvoiceService
         } catch (\Throwable $th) {
             DB::rollBack();
             dd($th);
+
             return ObjectResponse::error(
                 message: __('crud.error_create', ['name' => 'Invoice']),
                 statusCode: Response::HTTP_INTERNAL_SERVER_ERROR,

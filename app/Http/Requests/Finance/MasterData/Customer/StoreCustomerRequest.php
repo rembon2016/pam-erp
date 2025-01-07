@@ -48,7 +48,7 @@ final class StoreCustomerRequest extends FormRequest
             'currency_id' => ['nullable', 'string', 'exists:pgsql.finance.currencies,id'],
             'credit_limit' => ['nullable', 'string'],
             'customer_type' => ['required', 'array'],
-            'customer_type.*' => ['in:'.implode(',', CustomerType::COLLECT)]
+            'customer_type.*' => ['in:'.implode(',', CustomerType::COLLECT)],
         ];
     }
 

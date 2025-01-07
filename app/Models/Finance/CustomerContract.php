@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
-use App\Models\Finance\Charge;
-use App\Models\Finance\Currency;
-use App\Models\Finance\Customer;
-use Illuminate\Database\Eloquent\Model;
-use Haruncpi\LaravelIdGenerator\IdGenerator;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Finance\CustomerContractCharge;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class CustomerContract extends Model
 {
@@ -31,20 +26,22 @@ final class CustomerContract extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
         'contract_start' => 'date',
-        'contract_end' => 'date'
+        'contract_end' => 'date',
     ];
 
     public $incrementing = false;
+
     const FOLDER_NAME = 'customer-contract/file';
 
     public function getFileURL()
     {
-        return asset('storage/' . self::FOLDER_NAME . '/' . $this->contract_file);
+        return asset('storage/'.self::FOLDER_NAME.'/'.$this->contract_file);
     }
 
     public function currency()
@@ -69,7 +66,7 @@ final class CustomerContract extends Model
             ->first();
 
         // Jika tidak ada, cari nilai paling mendekati (di bawah atau di atas rentang)
-        if (!$rate) {
+        if (! $rate) {
             if ($quantity < $this->charges()->min('from')) {
                 // Quantity di bawah rentang, ambil nilai terkecil
                 $rate = $this->charges()->orderBy('from', 'asc')->first();
@@ -98,5 +95,4 @@ final class CustomerContract extends Model
 
         return $contract_number;
     }
-
 }

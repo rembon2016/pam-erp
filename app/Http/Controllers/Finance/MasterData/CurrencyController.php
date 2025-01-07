@@ -4,27 +4,27 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
-use Illuminate\View\View;
-use App\Functions\Utility;
-use Illuminate\Http\Response;
-use App\Functions\ResponseJson;
-use Barryvdh\DomPDF\Facade\Pdf;
-use App\Models\Finance\Currency;
-use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Http\RedirectResponse;
-use Yajra\DataTables\Facades\DataTables;
 use App\Exports\MasterData\CurrencyExport;
-use App\Service\Finance\MasterData\CurrencyService;
+use App\Functions\ResponseJson;
+use App\Functions\Utility;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Finance\MasterData\Currency\GlobalCurrencyRequest;
+use App\Models\Finance\Currency;
+use App\Service\Finance\MasterData\CurrencyService;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 final class CurrencyController extends Controller
 {
     /**
      * Constructs a new instance of the ServiceTypeController class, injecting the ServiceType dependency.
      *
-     * @param CurrencyService $currencyService The ServiceTypeService instance to be used by this controller.
+     * @param  CurrencyService  $currencyService  The ServiceTypeService instance to be used by this controller.
      */
     public function __construct(
         protected CurrencyService $currencyService,
@@ -36,6 +36,7 @@ final class CurrencyController extends Controller
     public function index(): View
     {
         $currencies = $this->currencyService->getCurrencies();
+
         return view('pages.finance.master-data.currency.index', compact('currencies'));
     }
 
@@ -43,8 +44,6 @@ final class CurrencyController extends Controller
      * Retrieves a list of all roles and returns a JSON response for use in a data table.
      *
      * This method fetches all the roles from the database and returns a JSON response that can be used to populate a data table. The response includes an action column that contains a "View" button for each role.
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function list(): JsonResponse
     {
@@ -81,11 +80,11 @@ final class CurrencyController extends Controller
             'page' => 'Add Currency',
             'action' => route('finance.master-data.currency.store'),
             'method' => 'POST',
-         ];
+        ];
 
         $currency = new Currency;
 
-         return view('pages.finance.master-data.currency.form', compact('data', 'currency'));
+        return view('pages.finance.master-data.currency.form', compact('data', 'currency'));
     }
 
     /**
@@ -109,18 +108,20 @@ final class CurrencyController extends Controller
     {
         $currency = Currency::where('id', $id)->first();
 
-        if (is_null($currency)) return to_route('finance.master-data.currency.index')->with(
-            'toastError',
-            __('crud.not_found', ['name' => 'Currency'])
-        );
+        if (is_null($currency)) {
+            return to_route('finance.master-data.currency.index')->with(
+                'toastError',
+                __('crud.not_found', ['name' => 'Currency'])
+            );
+        }
 
         $data = [
             'page' => 'Edit Currency',
             'action' => route('finance.master-data.currency.update', $id),
             'method' => 'PUT',
-         ];
+        ];
 
-         return view('pages.finance.master-data.currency.form', compact('data', 'currency'));
+        return view('pages.finance.master-data.currency.form', compact('data', 'currency'));
     }
 
     /**
@@ -161,7 +162,7 @@ final class CurrencyController extends Controller
     {
         $data = Currency::orderBy('currency_code', 'ASC')->get();
         $pdf = Pdf::loadView('exports.pdf.currency', compact('data'));
-        $file_name = 'list_currency_' . time() . '.pdf';
+        $file_name = 'list_currency_'.time().'.pdf';
 
         return $pdf->download($file_name);
     }
@@ -174,7 +175,8 @@ final class CurrencyController extends Controller
      */
     public function exportExcel()
     {
-        $file_name = 'list_currency_' . time() . '.xlsx';
+        $file_name = 'list_currency_'.time().'.xlsx';
+
         return Excel::download(new CurrencyExport, $file_name);
     }
 
@@ -186,7 +188,8 @@ final class CurrencyController extends Controller
      */
     public function exportCsv()
     {
-        $file_name = 'list_currency_' . time() . '.csv';
+        $file_name = 'list_currency_'.time().'.csv';
+
         return Excel::download(new CurrencyExport, $file_name);
     }
 }

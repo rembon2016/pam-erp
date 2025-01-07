@@ -1,14 +1,21 @@
 <?php
+
 namespace App\Models\Operation\Origin;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\Filterable;
+use Illuminate\Database\Eloquent\Model;
+
 class Billing extends Model
 {
-  use Filterable;
+    use Filterable;
+
     protected $table = 'accounting.customer';
+
     protected $primaryKey = 'customer_id';
+
     protected $keyType = 'string';
-    static $rules = [];
+
+    public static $rules = [];
+
     protected $guarded = [];
 }

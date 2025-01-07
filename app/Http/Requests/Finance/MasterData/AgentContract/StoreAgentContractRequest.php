@@ -45,7 +45,7 @@ final class StoreAgentContractRequest extends FormRequest
             'contract_end' => 'End Contract Date',
             'contract_file' => 'Document (Attachment)',
             'contract_description' => 'Description',
-            'service_data' => 'Agent Contract Services & Charges'
+            'service_data' => 'Agent Contract Services & Charges',
         ];
     }
 }

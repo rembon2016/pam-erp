@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Operation\Dxb\ShippingInstruction as ShippingInstructionDxb;
+use App\Models\Operation\Origin\ShippingInstruction;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Operation\Origin\ShippingInstruction;
-use App\Models\Operation\Dxb\ShippingInstruction as ShippingInstructionDxb;
+
 final class CostingHead extends Model
 {
     use HasFactory,
@@ -17,7 +18,9 @@ final class CostingHead extends Model
         SoftDeletes;
 
     protected $guarded = ['id'];
+
     protected $table = 'finance.costing_head';
+
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -28,23 +31,23 @@ final class CostingHead extends Model
 
     public function detail()
     {
-        return $this->hasMany(CostingDetail::class, 'costing_head_id', 'id')->orderBy('vendor_name','asc');
+        return $this->hasMany(CostingDetail::class, 'costing_head_id', 'id')->orderBy('vendor_name', 'asc');
     }
 
     public function getShippingAttribute()
     {
-        if ($this->costing_type == "bl") {
-            if ($this->shipment_type == "SEAAIR") {
+        if ($this->costing_type == 'bl') {
+            if ($this->shipment_type == 'SEAAIR') {
                 return ShippingInstruction::where('loading_report_bl_id', $this->reference_id)->get();
             } else {
                 return ShippingInstructionDxb::where('loading_report_bl_id', $this->reference_id)->get();
             }
-        }else if($this->costing_type == "mawb"){
-            if ($this->shipment_type == "SEAAIR") {
+        } elseif ($this->costing_type == 'mawb') {
+            if ($this->shipment_type == 'SEAAIR') {
                 return ShippingInstruction::with('order')->where('loading_plan_dxb', $this->reference_id)->get();
-            } else if($this->shipment_type == "AIR"){
+            } elseif ($this->shipment_type == 'AIR') {
                 return ShippingInstruction::with('order')->where('loading_id', $this->reference_id)->get();
-            }else{
+            } else {
                 return ShippingInstructionDxb::with('order')->where('loading_id', $this->reference_id)->get();
             }
         }

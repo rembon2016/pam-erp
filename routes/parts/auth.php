@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\LoginSSOController;
+use App\Http\Controllers\Auth\LogoutController;
+use Illuminate\Support\Facades\Route;
 
 Route::group(['as' => 'auth.', 'middleware' => ['guest']], function () {
 

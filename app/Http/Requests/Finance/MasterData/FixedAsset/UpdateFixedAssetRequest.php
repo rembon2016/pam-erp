@@ -31,7 +31,7 @@ final class UpdateFixedAssetRequest extends FormRequest
             'purchase_price' => 'required|numeric|min:0',
             'useful_life' => 'required|string|max:255',
             'fixed_asset_status_id' => 'required|string|exists:pgsql.finance.fixed_asset_statuses,id',
-            'notes' => 'nullable|string'
+            'notes' => 'nullable|string',
         ];
     }
 
@@ -45,7 +45,7 @@ final class UpdateFixedAssetRequest extends FormRequest
             'purchase_price' => 'Purchase Price',
             'useful_life' => 'Asset Useful Life',
             'fixed_asset_status_id' => 'Status',
-            'notes' => 'Notes'
-         ];
+            'notes' => 'Notes',
+        ];
     }
 }

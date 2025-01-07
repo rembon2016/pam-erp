@@ -8,8 +8,8 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 class ChartOfAccountExport implements FromCollection
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         $chartOfAccounts = ChartOfAccount::orderBy('account_code', 'asc')->get();
@@ -20,8 +20,8 @@ class ChartOfAccountExport implements FromCollection
     public function map($item): array
     {
         return [
-            $item->accountGroup->code . ': ' . $item->accountGroup->name,
-            $item->subAccountGroup->code . ': ' . $item->subAccountGroup->name,
+            $item->accountGroup->code.': '.$item->accountGroup->name,
+            $item->subAccountGroup->code.': '.$item->subAccountGroup->name,
             $item->account_number,
             $item->account_name,
             $item?->subledger_code ?? '-',

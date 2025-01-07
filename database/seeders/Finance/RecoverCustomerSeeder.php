@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace Database\Seeders\Finance;
 
+use App\Constants\Customer\CustomerType as CustomerTypeConstants;
 use App\Models\Finance\Customer as FinanceCustomer;
-use App\Models\Finance\CustomerType as FinanceCustomerType;
 use App\Models\Operation\Master\Carrier;
 use App\Models\Operation\Master\CustomerBilling;
 use App\Models\Operation\Master\Vendor;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Constants\Customer\CustomerType as CustomerTypeConstants;
 
 final class RecoverCustomerSeeder extends Seeder
 {
@@ -56,7 +54,7 @@ final class RecoverCustomerSeeder extends Seeder
                 $billingCustomer->update(['finance_customer_id' => $customer->id]);
                 $billingCustomerTypeName = $billingCustomer->customerTypeDetail?->customer_type_name;
                 $customer->customerTypes()->firstOrCreate([
-                    'name' => $billingCustomerTypeName
+                    'name' => $billingCustomerTypeName,
                 ]);
 
                 DB::commit();
@@ -85,7 +83,7 @@ final class RecoverCustomerSeeder extends Seeder
                 $vendor->update(['finance_customer_id' => $customer->id]);
                 $vendorTypeName = $vendor->customerTypeDetail?->customer_type_name;
                 $customer->customerTypes()->firstOrCreate([
-                    'name' => $vendorTypeName
+                    'name' => $vendorTypeName,
                 ]);
 
                 DB::commit();

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\GeneralWise;
 
-use Illuminate\Http\Response;
 use App\Functions\ObjectResponse;
-use Illuminate\Support\Benchmark;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 
 final class GeneralWiseService
@@ -14,18 +13,21 @@ final class GeneralWiseService
     public function getVessels(): object
     {
         $response = $this->processApiRequest('api/shippinginstruction/vessel');
+
         return $response;
     }
 
     public function getOrigins(): object
     {
         $response = $this->processApiRequest('api/shippinginstruction/origin/name');
+
         return $response;
     }
 
     public function getVoyages(): object
     {
         $response = $this->processApiRequest('api/shippinginstruction/voyage');
+
         return $response;
     }
 
@@ -40,19 +42,20 @@ final class GeneralWiseService
 
         $api_url = "{$base_url}/{$url}";
         $api_response = Http::get($api_url, [
-            'shipment_by' => request()->query('shipment_by') ?? "",
+            'shipment_by' => request()->query('shipment_by') ?? '',
         ]);
 
         if ($api_response->successful()) {
             $response_data = $api_response->json();
+
             return ObjectResponse::success(
-                message: "Successfully Fetch Data from API!",
+                message: 'Successfully Fetch Data from API!',
                 statusCode: Response::HTTP_OK,
                 data: $response_data['data']
             );
-        }else{
+        } else {
             return ObjectResponse::error(
-                message: "Failed to Fetch Data from API!",
+                message: 'Failed to Fetch Data from API!',
                 statusCode: Response::HTTP_INTERNAL_SERVER_ERROR,
             );
         }

@@ -19,7 +19,7 @@ final class ChangePasswordService
     /**
      * Updates the password for the authenticated user's account.
      *
-     * @param array $dto An array containing the new password.
+     * @param  array  $dto  An array containing the new password.
      * @return object An object containing the updated user and account data, or an error message and trace.
      */
     public function updateAccountPassword(array $dto): object
@@ -28,9 +28,11 @@ final class ChangePasswordService
             $user = User::where('id', Auth::id())->first();
             $account = Account::where('username', $user->email)->first();
 
-            if (!empty($account)) $account->update([
-                'password' => bcrypt($dto['password'])
-            ]);
+            if (! empty($account)) {
+                $account->update([
+                    'password' => bcrypt($dto['password']),
+                ]);
+            }
 
             $user->update(['password' => bcrypt($dto['password'])]);
 

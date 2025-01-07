@@ -4,23 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\GeneralWise\Shipment;
 
-use Illuminate\View\View;
-use App\Functions\Utility;
-use Illuminate\Http\Response;
-use App\Functions\ResponseJson;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Http\RedirectResponse;
-use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Http;
+use Illuminate\View\View;
 
 final class ShipmentController extends Controller
 {
-
-
     /**
      * Display a listing of the resource.
      */
@@ -31,40 +23,40 @@ final class ShipmentController extends Controller
         $shipment_by = '';
 
         // Set page and shipment_by based on type
-        switch($type) {
-            case "seaair":
+        switch ($type) {
+            case 'seaair':
                 $page = 'SEA AIR';
                 $shipment_by = 'SEAAIR';
                 break;
-            case "crossair":
+            case 'crossair':
                 $page = 'CROSS AIR';
                 $shipment_by = 'AIR';
                 break;
-            case "seaimport":
+            case 'seaimport':
                 $page = 'SEA IMPORT';
                 $shipment_by = 'SEAIMPORT';
                 break;
-            case "seaexport":
+            case 'seaexport':
                 $page = 'SEA EXPORT';
                 $shipment_by = 'SEAEXPORT';
                 break;
-            case "airimport":
+            case 'airimport':
                 $page = 'AIR IMPORT';
                 $shipment_by = 'AIRIMPORT';
                 break;
-            case "airexport":
+            case 'airexport':
                 $page = 'AIR EXPORT';
                 $shipment_by = 'AIREXPORT';
                 break;
-            case "warehouse":
+            case 'warehouse':
                 $page = 'WAREHOUSE';
                 $shipment_by = 'WAREHOUSE';
                 break;
-            case "trucking":
+            case 'trucking':
                 $page = 'TRUCKING';
                 $shipment_by = 'TRUCKING';
                 break;
-            case "courier":
+            case 'courier':
                 $page = 'COURIER';
                 $shipment_by = 'COURIER';
                 break;
@@ -77,38 +69,37 @@ final class ShipmentController extends Controller
             compact('type', 'page', 'shipment_by'));
     }
 
-
     public function list(Request $request)
     {
         // Determine the base URL based on the request type
-        if ($request->type == "seaair" || $request->type == "crossair") {
+        if ($request->type == 'seaair' || $request->type == 'crossair') {
             $base = env('API_ORIGIN');
         } else {
             $base = env('API_DXB');
         }
 
         $type = $request->type;
-        if($type == "seaair"){
+        if ($type == 'seaair') {
             $shipment_by = 'SEAAIR';
-        }else if($type == "crossair"){
+        } elseif ($type == 'crossair') {
             $shipment_by = 'AIR';
-        }else if($type == "seaimport"){
+        } elseif ($type == 'seaimport') {
             $shipment_by = 'SEAIMPORT';
-        }else if($type == "seaexport"){
+        } elseif ($type == 'seaexport') {
             $shipment_by = 'SEAEXPORT';
-        }else if($type == "airimport"){
+        } elseif ($type == 'airimport') {
             $shipment_by = 'AIRIMPORT';
-        }else if($type == "airexport"){
+        } elseif ($type == 'airexport') {
             $shipment_by = 'AIREXPORT';
-        }else if($type == "warehouse"){
+        } elseif ($type == 'warehouse') {
             $shipment_by = 'WAREHOUSE';
-        }else if($type == "trucking"){
+        } elseif ($type == 'trucking') {
             $shipment_by = 'TRUCKING';
-        }else if($type == "courier"){
+        } elseif ($type == 'courier') {
             $shipment_by = 'COURIER';
         }
 
-        $apiUrl = $base . "/api/shippinginstruction";
+        $apiUrl = $base.'/api/shippinginstruction';
 
         // Correct page calculation
         $page = ($request->input('start') / $request->input('length')) + 1;
@@ -175,19 +166,18 @@ final class ShipmentController extends Controller
             $queryString = http_build_query(array_filter($params));
             $queryString = str_replace('etd=', 'etd[]=', $queryString);
             $queryString = str_replace('%2C', ',', $queryString);
-            $fullUrl = $apiUrl . '?' . $queryString;
+            $fullUrl = $apiUrl.'?'.$queryString;
         }
 
         $queryString = http_build_query(array_filter($params));
         $queryString = str_replace('etd=', 'etd[]=', $queryString);
-        $fullUrl = $apiUrl . '?' . $queryString;
+        $fullUrl = $apiUrl.'?'.$queryString;
 
         \Log::info('Full URL:', ['url' => $fullUrl]);
 
         $response = Http::withHeaders([
             'Accept' => 'application/json',
         ])->get($fullUrl);
-
 
         if ($response->successful()) {
             $apiData = $response->json();
@@ -205,7 +195,7 @@ final class ShipmentController extends Controller
                 'data' => array_map(function ($item, $index) {
                     // Add DT_RowIndex to each item
                     $item['DT_RowIndex'] = $index + 1;
-                    $item['checkbox'] = '<input type="checkbox" class="row-checkbox" value="' . $item['job_id'] . '" />';
+                    $item['checkbox'] = '<input type="checkbox" class="row-checkbox" value="'.$item['job_id'].'" />';
                     $item['action'] = '';
 
                     // Handle nested properties with null coalescing operator
@@ -226,15 +216,15 @@ final class ShipmentController extends Controller
                     }
 
                     // Rest of your transformations
-                    if($item["shipment_by"] == "SEAAIR"){
-                        $ship = "SA";
+                    if ($item['shipment_by'] == 'SEAAIR') {
+                        $ship = 'SA';
                         $destination = $item['port_destination_code'] ?? '-';
                         $item['eta'] = $item['eta'] != null ? Carbon::parse($item['eta'])->format('d M Y') : '-';
-                    }else if($item["shipment_by"] == "AIR"){
-                        $ship = "CA";
+                    } elseif ($item['shipment_by'] == 'AIR') {
+                        $ship = 'CA';
                         $destination = $item['port_destination_code'] ?? '-';
                         $item['eta'] = $item['eta'] != null ? Carbon::parse($item['eta'])->format('d M Y') : '-';
-                    }else{
+                    } else {
                         $ship = $item['shipment_by'] ?? '-';
                         $destination = $item['port_destination_name'] ?? '-';
                         $item['eta'] = $item['eta_new'] != null ? Carbon::parse($item['eta_new'])->format('d M Y') : '-';
@@ -251,13 +241,13 @@ final class ShipmentController extends Controller
                     $voyageNumberMother = $item['voyage_number_mother'] ?? '';
                     $voyageVesselOrigin = $item['voyage_vessel_origin'] ?? '';
 
-                    $item['vessel_voyage'] = $motherVesselName . '-' . $voyageNumberMother .
-                        ($voyageVesselOrigin ? '/' . $voyageVesselOrigin : '');
+                    $item['vessel_voyage'] = $motherVesselName.'-'.$voyageNumberMother.
+                        ($voyageVesselOrigin ? '/'.$voyageVesselOrigin : '');
 
-                    if(isset($item['feeder_vessel_name']) && $item['feeder_vessel_name'] != null){
+                    if (isset($item['feeder_vessel_name']) && $item['feeder_vessel_name'] != null) {
                         $feederVesselName = $item['feeder_vessel_name'];
                         $voyageNumberFeeder = $item['voyage_number_feeder'] ?? '';
-                        $item['vessel_voyage'] .= '<br>' . $feederVesselName . '-' . $voyageNumberFeeder;
+                        $item['vessel_voyage'] .= '<br>'.$feederVesselName.'-'.$voyageNumberFeeder;
                     }
 
                     // Handle departed and arrived dates
@@ -269,8 +259,9 @@ final class ShipmentController extends Controller
 
                     return $item;
                 }, $data, array_keys($data)),
-                'input' => $request->all()
+                'input' => $request->all(),
             ];
+
             return response()->json($result);
 
         }
@@ -279,38 +270,39 @@ final class ShipmentController extends Controller
         return response()->json(['error' => 'Failed to fetch data from API'], 500);
     }
 
-    public function origin(Request $request){
+    public function origin(Request $request)
+    {
         $type = $request->type;
-        if($type == "seaair"){
+        if ($type == 'seaair') {
             $shipment_by = 'SEAAIR';
-        }else if($type == "crossair"){
+        } elseif ($type == 'crossair') {
             $shipment_by = 'AIR';
-        }else if($type == "seaimport"){
+        } elseif ($type == 'seaimport') {
             $shipment_by = 'SEAIMPORT';
-        }else if($type == "seaexport"){
+        } elseif ($type == 'seaexport') {
             $shipment_by = 'SEAEXPORT';
-        }else if($type == "airimport"){
+        } elseif ($type == 'airimport') {
             $shipment_by = 'AIRIMPORT';
-        }else if($type == "airexport"){
+        } elseif ($type == 'airexport') {
             $shipment_by = 'AIREXPORT';
-        }else if($type == "warehouse"){
+        } elseif ($type == 'warehouse') {
             $shipment_by = 'WAREHOUSE';
-        }else if($type == "trucking"){
+        } elseif ($type == 'trucking') {
             $shipment_by = 'TRUCKING';
-        }else if($type == "courier"){
+        } elseif ($type == 'courier') {
             $shipment_by = 'COURIER';
         }
 
-        if ($request->type == "seaair" || $request->type == "crossair") {
+        if ($request->type == 'seaair' || $request->type == 'crossair') {
             $base = env('API_ORIGIN');
         } else {
             $base = env('API_DXB');
         }
 
-        if ($type == "seaair" || $type == "crossair") {
-            $origin_url = $base . "/api/shippinginstruction/origin/name";
+        if ($type == 'seaair' || $type == 'crossair') {
+            $origin_url = $base.'/api/shippinginstruction/origin/name';
         } else {
-            $origin_url = $base . "/api/shippinginstruction/origin?shipment_by=" . $shipment_by;
+            $origin_url = $base.'/api/shippinginstruction/origin?shipment_by='.$shipment_by;
         }
 
         $response_origin = Http::get($origin_url, [
@@ -319,160 +311,163 @@ final class ShipmentController extends Controller
 
         if ($response_origin->successful()) {
             $apiData = $response_origin->json();
+
             return response()->json([
                 'status' => 200,
-                'data' => $apiData['data']
+                'data' => $apiData['data'],
             ]);
         } else {
             return response()->json([
                 'status' => 500,
-                'error' => 'Failed to fetch data from API'
+                'error' => 'Failed to fetch data from API',
             ], 500);
         }
     }
 
-    public function destination(Request $request){
-        if ($request->type == "seaair" || $request->type == "crossair") {
+    public function destination(Request $request)
+    {
+        if ($request->type == 'seaair' || $request->type == 'crossair') {
             $base = env('API_ORIGIN');
         } else {
             $base = env('API_DXB');
         }
 
         $type = $request->type;
-        if ($type == "seaair") {
+        if ($type == 'seaair') {
             $shipment_by = 'SEAAIR';
-        } else if ($type == "crossair") {
+        } elseif ($type == 'crossair') {
             $shipment_by = 'AIR';
-        } else if ($type == "seaimport") {
+        } elseif ($type == 'seaimport') {
             $shipment_by = 'SEAIMPORT';
-        } else if ($type == "seaexport") {
+        } elseif ($type == 'seaexport') {
             $shipment_by = 'SEAEXPORT';
-        } else if ($type == "airimport") {
+        } elseif ($type == 'airimport') {
             $shipment_by = 'AIRIMPORT';
-        } else if ($type == "airexport") {
+        } elseif ($type == 'airexport') {
             $shipment_by = 'AIREXPORT';
-        } else if ($type == "warehouse") {
+        } elseif ($type == 'warehouse') {
             $shipment_by = 'WAREHOUSE';
-        } else if ($type == "trucking") {
+        } elseif ($type == 'trucking') {
             $shipment_by = 'TRUCKING';
-        } else if ($type == "courier") {
+        } elseif ($type == 'courier') {
             $shipment_by = 'COURIER';
         }
 
-        $origin_url = $base . "/api/shippinginstruction/portdestination";
+        $origin_url = $base.'/api/shippinginstruction/portdestination';
         $response_origin = Http::get($origin_url, [
-            'shipment_by' => $shipment_by ?? "",
+            'shipment_by' => $shipment_by ?? '',
         ]);
 
         if ($response_origin->successful()) {
             $apiData = $response_origin->json();
+
             return response()->json(
                 [
-                    'status'=>200,
-                    'data'=>$apiData['data']
+                    'status' => 200,
+                    'data' => $apiData['data'],
                 ]);
-        }else{
-            return response()->json([status=>500,'error' => 'Failed to fetch data from API'], 500);
+        } else {
+            return response()->json([status => 500, 'error' => 'Failed to fetch data from API'], 500);
         }
-
 
     }
 
-    public function vessel(Request $request){
-        if ($request->type == "seaair" || $request->type == "crossair") {
+    public function vessel(Request $request)
+    {
+        if ($request->type == 'seaair' || $request->type == 'crossair') {
             $base = env('API_ORIGIN');
         } else {
             $base = env('API_DXB');
         }
-        $origin_url = $base . "/api/shippinginstruction/vessel";
+        $origin_url = $base.'/api/shippinginstruction/vessel';
         $response_origin = Http::get($origin_url, [
-            'shipment_by'=>$request->shipment_by ?? "",
+            'shipment_by' => $request->shipment_by ?? '',
         ]);
 
         if ($response_origin->successful()) {
             $apiData = $response_origin->json();
+
             return response()->json(
                 [
-                    'status'=>200,
-                    'data'=>$apiData['data']
+                    'status' => 200,
+                    'data' => $apiData['data'],
                 ]);
-        }else{
-            return response()->json([status=>500,'error' => 'Failed to fetch data from API'], 500);
+        } else {
+            return response()->json([status => 500, 'error' => 'Failed to fetch data from API'], 500);
         }
-
 
     }
 
-    public function etamerge(Request $request){
+    public function etamerge(Request $request)
+    {
         $type = $request->type;
-        if ($type == "seaair") {
+        if ($type == 'seaair') {
             $shipment_by = 'SEAAIR';
-        } else if ($type == "crossair") {
+        } elseif ($type == 'crossair') {
             $shipment_by = 'AIR';
-        } else if ($type == "seaimport") {
+        } elseif ($type == 'seaimport') {
             $shipment_by = 'SEAIMPORT';
-        } else if ($type == "seaexport") {
+        } elseif ($type == 'seaexport') {
             $shipment_by = 'SEAEXPORT';
-        } else if ($type == "airimport") {
+        } elseif ($type == 'airimport') {
             $shipment_by = 'AIRIMPORT';
-        } else if ($type == "airexport") {
+        } elseif ($type == 'airexport') {
             $shipment_by = 'AIREXPORT';
-        } else if ($type == "warehouse") {
+        } elseif ($type == 'warehouse') {
             $shipment_by = 'WAREHOUSE';
-        } else if ($type == "trucking") {
+        } elseif ($type == 'trucking') {
             $shipment_by = 'TRUCKING';
-        } else if ($type == "courier") {
+        } elseif ($type == 'courier') {
             $shipment_by = 'COURIER';
         }
 
-        if ($request->type == "seaair" || $request->type == "crossair") {
+        if ($request->type == 'seaair' || $request->type == 'crossair') {
             $base = env('API_ORIGIN');
         } else {
             $base = env('API_DXB');
         }
-        $origin_url = $base . "/api/shippinginstruction/etamerge";
+        $origin_url = $base.'/api/shippinginstruction/etamerge';
         $response_origin = Http::get($origin_url, [
-            'shipment_by'=>$shipment_by ?? "",
+            'shipment_by' => $shipment_by ?? '',
         ]);
-
 
         \Log::info('Response:', ['response' => $response_origin]);
         if ($response_origin->successful()) {
             $apiData = $response_origin->json();
+
             return response()->json(
                 [
-                    'status'=>200,
-                    'data'=>$apiData['data']
+                    'status' => 200,
+                    'data' => $apiData['data'],
                 ]);
-        }else{
-            return response()->json([status=>500,'error' => 'Failed to fetch data from API'], 500);
+        } else {
+            return response()->json([status => 500, 'error' => 'Failed to fetch data from API'], 500);
         }
 
     }
 
     public function detail(string $type, string $uuid): View
     {
-        $base = ($type == "seaair" || $type == "air") ? env('API_ORIGIN') : env('API_DXB');
+        $base = ($type == 'seaair' || $type == 'air') ? env('API_ORIGIN') : env('API_DXB');
 
-        $finalUrl = $base . "/api/shippinginstruction/{$uuid}";
+        $finalUrl = $base."/api/shippinginstruction/{$uuid}";
         $shipmentResponse = Http::get($finalUrl);
 
-
-        if (!$shipmentResponse->successful()) {
+        if (! $shipmentResponse->successful()) {
             abort(404);
         }
 
         $shipment = $shipmentResponse->successful() ? $shipmentResponse->json()['data'] : null;
 
-        $orderDetailResponse = Http::get($base . "/api/orderdetail/{$uuid}");
+        $orderDetailResponse = Http::get($base."/api/orderdetail/{$uuid}");
 
-        if (!$orderDetailResponse->successful()) {
+        if (! $orderDetailResponse->successful()) {
             abort(404);
         }
 
-        $dimensionResponse = Http::get($base . "/api/dimension/{$uuid}");
+        $dimensionResponse = Http::get($base."/api/dimension/{$uuid}");
 
-        if (!$dimensionResponse->successful()) {
+        if (! $dimensionResponse->successful()) {
             abort(404);
         }
 
@@ -480,31 +475,31 @@ final class ShipmentController extends Controller
         if ($type == 'air') {
             $loadingPlanId = $shipment['loading_id'] ?? null;
             $baseEnv = 'API_ORIGIN';
-            $loadingPlanEndpoint = "/api/loadingplan/";
-        } else if ($type == 'seaair') {
+            $loadingPlanEndpoint = '/api/loadingplan/';
+        } elseif ($type == 'seaair') {
             $loadingPlanId = $shipment['loading_plan_dxb'] ?? null;
             $baseEnv = 'API_DXB';
-            $loadingPlanEndpoint = "/api/loadingplan/";
+            $loadingPlanEndpoint = '/api/loadingplan/';
         } else {
             $loadingPlanId = $shipment['loading_id'] ?? null;
             $baseEnv = 'API_DXB';
-            $loadingPlanEndpoint = "/api/loadingplanlocal/";
+            $loadingPlanEndpoint = '/api/loadingplanlocal/';
         }
 
         if ($loadingPlanId) {
-            $url = env($baseEnv) . $loadingPlanEndpoint . $loadingPlanId;
+            $url = env($baseEnv).$loadingPlanEndpoint.$loadingPlanId;
             $loadingPlanResponse = Http::get($url);
 
-            if (!$loadingPlanResponse->successful()) {
+            if (! $loadingPlanResponse->successful()) {
                 abort(404);
             }
             $loadingPlan = $loadingPlanResponse->json()['data'] ?? null;
 
             // Get loading plan detail
-            $loadingPlanDetailUrl = env($baseEnv) . "/api/loadingplandetail/{$loadingPlanId}";
+            $loadingPlanDetailUrl = env($baseEnv)."/api/loadingplandetail/{$loadingPlanId}";
             $loadingPlanDetailResponse = Http::get($loadingPlanDetailUrl);
 
-            if (!$loadingPlanDetailResponse->successful()) {
+            if (! $loadingPlanDetailResponse->successful()) {
                 $loadingPlanDetail = null;
             } else {
                 $loadingPlanDetail = $loadingPlanDetailResponse->json()['data'] ?? null;
@@ -516,15 +511,15 @@ final class ShipmentController extends Controller
 
         $ctdNumber = $shipment['ctd_number'] ?? null;
 
-        if($ctdNumber){
-            $jobtruckdeliveryResponse = Http::get($base . "/api/jobtruckdelivery?ctd_number={$ctdNumber}");
-            if($jobtruckdeliveryResponse->successful()){
+        if ($ctdNumber) {
+            $jobtruckdeliveryResponse = Http::get($base."/api/jobtruckdelivery?ctd_number={$ctdNumber}");
+            if ($jobtruckdeliveryResponse->successful()) {
                 $jobtruckdelivery = $jobtruckdeliveryResponse->json()['data'] ?? null;
             }
         }
 
         // Get destination handling agent data
-        $controlOfficeResponse = Http::get($base . "/api/controloffice/{$uuid}");
+        $controlOfficeResponse = Http::get($base."/api/controloffice/{$uuid}");
         if ($controlOfficeResponse->successful()) {
             $controlOffice = $controlOfficeResponse->json()['data'] ?? null;
         } else {
@@ -532,7 +527,7 @@ final class ShipmentController extends Controller
         }
 
         // Get destination partner data
-        $destinationPartnerResponse = Http::get($base . "/api/patner/{$uuid}");
+        $destinationPartnerResponse = Http::get($base."/api/patner/{$uuid}");
         if ($destinationPartnerResponse->successful()) {
             $destinationPartner = $destinationPartnerResponse->json()['data'] ?? null;
         } else {
@@ -540,7 +535,7 @@ final class ShipmentController extends Controller
         }
 
         // Get sales office data
-        $salesOfficeResponse = Http::get($base . "/api/salesoffice/{$uuid}");
+        $salesOfficeResponse = Http::get($base."/api/salesoffice/{$uuid}");
         if ($salesOfficeResponse->successful()) {
             $salesOffice = $salesOfficeResponse->json()['data'] ?? null;
         } else {
@@ -548,7 +543,7 @@ final class ShipmentController extends Controller
         }
 
         // Get sales person data
-        $salesPersonResponse = Http::get($base . "/api/salesperson/{$uuid}");
+        $salesPersonResponse = Http::get($base."/api/salesperson/{$uuid}");
         if ($salesPersonResponse->successful()) {
             $salesPerson = $salesPersonResponse->json()['data'] ?? null;
         } else {
@@ -556,7 +551,7 @@ final class ShipmentController extends Controller
         }
 
         // Get order document data
-        $orderDocumentResponse = Http::get($base . "/api/orderdocument?job_id={$uuid}");
+        $orderDocumentResponse = Http::get($base."/api/orderdocument?job_id={$uuid}");
         if ($orderDocumentResponse->successful()) {
             $orderDocument = $orderDocumentResponse->json()['data'] ?? null;
         } else {
@@ -564,21 +559,21 @@ final class ShipmentController extends Controller
         }
 
         // Get chat section data
-        $chatOriginResponse = Http::get($base . "/api/notedsection?job_id={$uuid}&chat_section=1");
+        $chatOriginResponse = Http::get($base."/api/notedsection?job_id={$uuid}&chat_section=1");
         if ($chatOriginResponse->successful()) {
             $chatOrigin = $chatOriginResponse->json()['data'] ?? null;
         } else {
             $chatOrigin = null;
         }
 
-        $chatDxbResponse = Http::get($base . "/api/notedsection?job_id={$uuid}&chat_section=2");
+        $chatDxbResponse = Http::get($base."/api/notedsection?job_id={$uuid}&chat_section=2");
         if ($chatDxbResponse->successful()) {
             $chatDxb = $chatDxbResponse->json()['data'] ?? null;
         } else {
             $chatDxb = null;
         }
 
-        $chatAgentResponse = Http::get($base . "/api/notedsection?job_id={$uuid}&chat_section=3");
+        $chatAgentResponse = Http::get($base."/api/notedsection?job_id={$uuid}&chat_section=3");
         if ($chatAgentResponse->successful()) {
             $chatAgent = $chatAgentResponse->json()['data'] ?? null;
         } else {
@@ -586,10 +581,10 @@ final class ShipmentController extends Controller
         }
 
         // Get onboard date (status_id = 7, Vessel Departed)
-        $onboardResponse = Http::get($base . "/api/historijob", [
+        $onboardResponse = Http::get($base.'/api/historijob', [
             'status_id' => '7',
             'job_id' => $uuid,
-            'is_deleted' => 'false'
+            'is_deleted' => 'false',
         ]);
         if ($onboardResponse->successful()) {
             $onboardData = $onboardResponse->json()['data'][0] ?? null;
@@ -597,10 +592,10 @@ final class ShipmentController extends Controller
         }
 
         // Get actual arrival date (status_id = 30, Arrived In Jebel Ali/Arrived in Transit Hub)
-        $actualArrivalResponse = Http::get($base . "/api/historijob", [
+        $actualArrivalResponse = Http::get($base.'/api/historijob', [
             'status_id' => '30',
             'job_id' => $uuid,
-            'is_deleted' => 'false'
+            'is_deleted' => 'false',
         ]);
         if ($actualArrivalResponse->successful()) {
             $actualArrivalData = $actualArrivalResponse->json()['data'][0] ?? null;
@@ -608,7 +603,7 @@ final class ShipmentController extends Controller
         }
 
         // Get local transport data
-        $localTransportResponse = Http::get($base . "/api/localtransport/{$uuid}");
+        $localTransportResponse = Http::get($base."/api/localtransport/{$uuid}");
         if ($localTransportResponse->successful()) {
             $localTransport = $localTransportResponse->json()['data'] ?? null;
         } else {
@@ -644,13 +639,13 @@ final class ShipmentController extends Controller
 
     public function downloadDocuments(Request $request)
     {
-        $base = ($request->type == "seaair" || $request->type == "crossair") ? env('API_ORIGIN') : env('API_DXB');
+        $base = ($request->type == 'seaair' || $request->type == 'crossair') ? env('API_ORIGIN') : env('API_DXB');
 
         $data = $request->validate([
             'job_id' => 'required|array',
             'type_document' => 'required|array',
             'prefix' => 'required|string',
-            'type' => 'required|string'
+            'type' => 'required|string',
         ]);
 
         $data['role_id'] = '18'; // Set the role_id as needed
@@ -672,40 +667,41 @@ final class ShipmentController extends Controller
     public function statusShipment(Request $request)
     {
         $type = $request->type;
-        if ($type == "seaair") {
+        if ($type == 'seaair') {
             $shipment_by = 'SEAAIR';
-        } else if ($type == "crossair") {
+        } elseif ($type == 'crossair') {
             $shipment_by = 'AIR';
-        } else if ($type == "seaimport") {
+        } elseif ($type == 'seaimport') {
             $shipment_by = 'SEAIMPORT';
-        } else if ($type == "seaexport") {
+        } elseif ($type == 'seaexport') {
             $shipment_by = 'SEAEXPORT';
-        } else if ($type == "airimport") {
+        } elseif ($type == 'airimport') {
             $shipment_by = 'AIRIMPORT';
-        } else if ($type == "airexport") {
+        } elseif ($type == 'airexport') {
             $shipment_by = 'AIREXPORT';
-        } else if ($type == "warehouse") {
+        } elseif ($type == 'warehouse') {
             $shipment_by = 'WAREHOUSE';
-        } else if ($type == "trucking") {
+        } elseif ($type == 'trucking') {
             $shipment_by = 'TRUCKING';
-        } else if ($type == "courier") {
+        } elseif ($type == 'courier') {
             $shipment_by = 'COURIER';
         }
 
-        $base = ($request->type == "seaair" || $request->type == "crossair") ? env('API_ORIGIN') : env('API_DXB');
-        $status_url = $base . "/api/status?shipment_type=" . $shipment_by;
+        $base = ($request->type == 'seaair' || $request->type == 'crossair') ? env('API_ORIGIN') : env('API_DXB');
+        $status_url = $base.'/api/status?shipment_type='.$shipment_by;
         $response_status = Http::get($status_url);
 
         if ($response_status->successful()) {
             $apiData = $response_status->json();
+
             return response()->json([
                 'status' => 200,
-                'data' => $apiData['data']
+                'data' => $apiData['data'],
             ]);
         } else {
             return response()->json([
                 'status' => 500,
-                'error' => 'Failed to fetch data from API'
+                'error' => 'Failed to fetch data from API',
             ], 500);
         }
     }
@@ -713,40 +709,41 @@ final class ShipmentController extends Controller
     public function carrier(Request $request)
     {
         $type = $request->type;
-        if ($type == "seaair") {
+        if ($type == 'seaair') {
             $shipment_by = 'SEAAIR';
-        } else if ($type == "crossair") {
+        } elseif ($type == 'crossair') {
             $shipment_by = 'AIR';
-        } else if ($type == "seaimport") {
+        } elseif ($type == 'seaimport') {
             $shipment_by = 'SEAIMPORT';
-        } else if ($type == "seaexport") {
+        } elseif ($type == 'seaexport') {
             $shipment_by = 'SEAEXPORT';
-        } else if ($type == "airimport") {
+        } elseif ($type == 'airimport') {
             $shipment_by = 'AIRIMPORT';
-        } else if ($type == "airexport") {
+        } elseif ($type == 'airexport') {
             $shipment_by = 'AIREXPORT';
-        } else if ($type == "warehouse") {
+        } elseif ($type == 'warehouse') {
             $shipment_by = 'WAREHOUSE';
-        } else if ($type == "trucking") {
+        } elseif ($type == 'trucking') {
             $shipment_by = 'TRUCKING';
-        } else if ($type == "courier") {
+        } elseif ($type == 'courier') {
             $shipment_by = 'COURIER';
         }
 
-        $base = ($request->type == "seaair" || $request->type == "crossair") ? env('API_ORIGIN') : env('API_DXB');
-        $instruction_url = $base . "/api/shippinginstruction/carrier?shipment_by=" . $shipment_by;
+        $base = ($request->type == 'seaair' || $request->type == 'crossair') ? env('API_ORIGIN') : env('API_DXB');
+        $instruction_url = $base.'/api/shippinginstruction/carrier?shipment_by='.$shipment_by;
         $response_instruction = Http::get($instruction_url);
 
         if ($response_instruction->successful()) {
             $apiData = $response_instruction->json();
+
             return response()->json([
                 'status' => 200,
-                'data' => $apiData['data']
+                'data' => $apiData['data'],
             ]);
         } else {
             return response()->json([
                 'status' => 500,
-                'error' => 'Failed to fetch data from API'
+                'error' => 'Failed to fetch data from API',
             ], 500);
         }
     }
@@ -754,40 +751,41 @@ final class ShipmentController extends Controller
     public function shipper(Request $request)
     {
         $type = $request->type;
-        if ($type == "seaair") {
+        if ($type == 'seaair') {
             $shipment_by = 'SEAAIR';
-        } else if ($type == "crossair") {
+        } elseif ($type == 'crossair') {
             $shipment_by = 'AIR';
-        } else if ($type == "seaimport") {
+        } elseif ($type == 'seaimport') {
             $shipment_by = 'SEAIMPORT';
-        } else if ($type == "seaexport") {
+        } elseif ($type == 'seaexport') {
             $shipment_by = 'SEAEXPORT';
-        } else if ($type == "airimport") {
+        } elseif ($type == 'airimport') {
             $shipment_by = 'AIRIMPORT';
-        } else if ($type == "airexport") {
+        } elseif ($type == 'airexport') {
             $shipment_by = 'AIREXPORT';
-        } else if ($type == "warehouse") {
+        } elseif ($type == 'warehouse') {
             $shipment_by = 'WAREHOUSE';
-        } else if ($type == "trucking") {
+        } elseif ($type == 'trucking') {
             $shipment_by = 'TRUCKING';
-        } else if ($type == "courier") {
+        } elseif ($type == 'courier') {
             $shipment_by = 'COURIER';
         }
 
-        $base = ($request->type == "seaair" || $request->type == "crossair") ? env('API_ORIGIN') : env('API_DXB');
-        $instruction_url = $base . "/api/shippinginstruction/shipper?shipment_by=" . $shipment_by;
+        $base = ($request->type == 'seaair' || $request->type == 'crossair') ? env('API_ORIGIN') : env('API_DXB');
+        $instruction_url = $base.'/api/shippinginstruction/shipper?shipment_by='.$shipment_by;
         $response_instruction = Http::get($instruction_url);
 
         if ($response_instruction->successful()) {
             $apiData = $response_instruction->json();
+
             return response()->json([
                 'status' => 200,
-                'data' => $apiData['data']
+                'data' => $apiData['data'],
             ]);
         } else {
             return response()->json([
                 'status' => 500,
-                'error' => 'Failed to fetch data from API'
+                'error' => 'Failed to fetch data from API',
             ], 500);
         }
     }
@@ -795,42 +793,42 @@ final class ShipmentController extends Controller
     public function consignee(Request $request)
     {
         $type = $request->type;
-        if ($type == "seaair") {
+        if ($type == 'seaair') {
             $shipment_by = 'SEAAIR';
-        } else if ($type == "crossair") {
+        } elseif ($type == 'crossair') {
             $shipment_by = 'AIR';
-        } else if ($type == "seaimport") {
+        } elseif ($type == 'seaimport') {
             $shipment_by = 'SEAIMPORT';
-        } else if ($type == "seaexport") {
+        } elseif ($type == 'seaexport') {
             $shipment_by = 'SEAEXPORT';
-        } else if ($type == "airimport") {
+        } elseif ($type == 'airimport') {
             $shipment_by = 'AIRIMPORT';
-        } else if ($type == "airexport") {
+        } elseif ($type == 'airexport') {
             $shipment_by = 'AIREXPORT';
-        } else if ($type == "warehouse") {
+        } elseif ($type == 'warehouse') {
             $shipment_by = 'WAREHOUSE';
-        } else if ($type == "trucking") {
+        } elseif ($type == 'trucking') {
             $shipment_by = 'TRUCKING';
-        } else if ($type == "courier") {
+        } elseif ($type == 'courier') {
             $shipment_by = 'COURIER';
         }
 
-        $base = ($request->type == "seaair" || $request->type == "crossair") ? env('API_ORIGIN') : env('API_DXB');
-        $instruction_url = $base . "/api/shippinginstruction/consignee?shipment_by=" . $shipment_by;
+        $base = ($request->type == 'seaair' || $request->type == 'crossair') ? env('API_ORIGIN') : env('API_DXB');
+        $instruction_url = $base.'/api/shippinginstruction/consignee?shipment_by='.$shipment_by;
         $response_instruction = Http::get($instruction_url);
 
         if ($response_instruction->successful()) {
             $apiData = $response_instruction->json();
+
             return response()->json([
                 'status' => 200,
-                'data' => $apiData['data']
+                'data' => $apiData['data'],
             ]);
         } else {
             return response()->json([
                 'status' => 500,
-                'error' => 'Failed to fetch data from API'
+                'error' => 'Failed to fetch data from API',
             ], 500);
         }
     }
-
 }

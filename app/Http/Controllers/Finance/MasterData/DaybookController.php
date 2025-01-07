@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
-use Illuminate\View\View;
-use App\Functions\Utility;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use App\Exports\MasterData\DaybookExport;
 use App\Functions\ResponseJson;
+use App\Functions\Utility;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Finance\MasterData\Daybook\GlobalDaybookRequest;
 use App\Models\Finance\Daybook;
+use App\Service\Finance\MasterData\DaybookService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
-use App\Exports\MasterData\DaybookExport;
-use App\Service\Finance\MasterData\DaybookService;
-use App\Http\Requests\Finance\MasterData\Daybook\GlobalDaybookRequest;
 
 final class DaybookController extends Controller
 {
@@ -32,6 +31,7 @@ final class DaybookController extends Controller
     public function index(): View
     {
         $daybook_codes = $this->daybookService->getDaybooks()->pluck('code');
+
         return view('pages.finance.master-data.daybook.index', compact('daybook_codes'));
     }
 
@@ -39,8 +39,6 @@ final class DaybookController extends Controller
      * Retrieves a list of all roles and returns a JSON response for use in a data table.
      *
      * This method fetches all the roles from the database and returns a JSON response that can be used to populate a data table. The response includes an action column that contains a "View" button for each role.
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function list(): JsonResponse
     {
@@ -72,11 +70,11 @@ final class DaybookController extends Controller
             'page' => 'Add Daybook',
             'action' => route('finance.master-data.daybook.store'),
             'method' => 'POST',
-         ];
+        ];
 
         $daybook = new Daybook;
 
-         return view('pages.finance.master-data.daybook.form', compact('data', 'daybook'));
+        return view('pages.finance.master-data.daybook.form', compact('data', 'daybook'));
     }
 
     /**
@@ -100,18 +98,20 @@ final class DaybookController extends Controller
     public function edit(string $id): View|RedirectResponse
     {
         $getDaybookResponse = $this->daybookService->getDaybookById($id);
-        if (!$getDaybookResponse->success) return to_route('finance.master-data.daybook.index')->with('toastError', $getDaybookResponse->message);
+        if (! $getDaybookResponse->success) {
+            return to_route('finance.master-data.daybook.index')->with('toastError', $getDaybookResponse->message);
+        }
 
         $data = [
             'page' => 'Edit Daybook',
             'action' => route('finance.master-data.daybook.update', $id),
             'method' => 'PUT',
-         ];
+        ];
 
-         return view('pages.finance.master-data.daybook.form', [
+        return view('pages.finance.master-data.daybook.form', [
             'data' => $data,
             'daybook' => $getDaybookResponse->data,
-         ]);
+        ]);
     }
 
     /**
@@ -149,20 +149,22 @@ final class DaybookController extends Controller
     {
         $data = $this->daybookService->getDaybooks();
         $pdf = Pdf::loadView('exports.pdf.daybook', compact('data'));
-        $file_name = 'list_daybook_' . time() . '.pdf';
+        $file_name = 'list_daybook_'.time().'.pdf';
 
         return $pdf->download($file_name);
     }
 
     public function exportExcel()
     {
-        $file_name = 'list_daybook_' . time() . '.xlsx';
+        $file_name = 'list_daybook_'.time().'.xlsx';
+
         return Excel::download(new DaybookExport, $file_name);
     }
 
     public function exportCsv()
     {
-        $file_name = 'list_daybook_' . time() . '.csv';
+        $file_name = 'list_daybook_'.time().'.csv';
+
         return Excel::download(new DaybookExport, $file_name);
     }
 }

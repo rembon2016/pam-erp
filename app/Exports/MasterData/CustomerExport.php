@@ -8,11 +8,12 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 class CustomerExport implements FromCollection
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         $customerService = new CustomerService;
+
         return $customerService->getCustomers()->get();
     }
 
@@ -25,7 +26,7 @@ class CustomerExport implements FromCollection
             $item->credit_terms,
             $item->credit_limit,
             $item->overseas,
-            $item->currency?->currency_name
+            $item->currency?->currency_name,
         ];
     }
 

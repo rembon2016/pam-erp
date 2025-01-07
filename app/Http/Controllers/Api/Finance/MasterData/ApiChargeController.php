@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Finance\MasterData;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Functions\ResponseJson;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Service\Finance\MasterData\ChargeService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 final class ApiChargeController extends Controller
 {

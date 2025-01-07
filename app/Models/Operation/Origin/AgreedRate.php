@@ -12,5 +12,6 @@ final class AgreedRate extends Model
     use HasFactory;
 
     protected $table = 'origin.agreed_rate';
+
     protected $guarded = ['id'];
 }

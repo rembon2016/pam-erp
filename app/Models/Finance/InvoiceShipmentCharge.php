@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
-use App\Models\Finance\Invoice;
-use App\Models\Finance\Currency;
-use App\Models\Finance\InvoiceShipment;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 final class InvoiceShipmentCharge extends Model
 {
     use HasFactory, HasUuids;
 
     protected $table = 'finance.invoice_shipment_charge';
+
     protected $guarded = ['id'];
+
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

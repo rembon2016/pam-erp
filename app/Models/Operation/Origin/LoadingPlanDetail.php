@@ -3,14 +3,19 @@
 namespace App\Models\Operation\Origin;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\LoadingPlan;
+
 class LoadingPlanDetail extends Model
 {
     protected $table = 'origin.loading_plan_detail';
+
     public $timestamps = false;
+
     protected $primaryKey = 'loading_detail_id';
+
     protected $keyType = 'string';
-    static $rules = [];
+
+    public static $rules = [];
+
     protected $fillable = ['loading_detail_id',
         'loading_plan_id',
         'flight_number',
@@ -21,8 +26,6 @@ class LoadingPlanDetail extends Model
         'port_arival_name',
         'date_arival',
         'port_departure_code',
-        'port_arival_code'
+        'port_arival_code',
     ];
-
-
 }

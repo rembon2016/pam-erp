@@ -14,11 +14,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('finance.costing_special', function (Blueprint $table) {
-            if (!Schema::hasColumn('finance.costing_special', 'costing_type')) {
+            if (! Schema::hasColumn('finance.costing_special', 'costing_type')) {
                 $table->string('costing_type')->nullable();
             }
 
-            if (!Schema::hasColumn('finance.costing_special', 'currency_id')) {
+            if (! Schema::hasColumn('finance.costing_special', 'currency_id')) {
                 $table->uuid('currency_id')->nullable();
             }
         });

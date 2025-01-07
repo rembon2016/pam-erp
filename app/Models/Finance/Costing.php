@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class Costing extends Model
@@ -16,7 +16,9 @@ final class Costing extends Model
         SoftDeletes;
 
     protected $guarded = ['id'];
+
     protected $table = 'finance.costing';
+
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -40,13 +42,11 @@ final class Costing extends Model
 
     public function special()
     {
-        return $this->hasMany(CostingSpecial::class, 'costing_id', 'id')->orderBy('vendor_name','asc');
+        return $this->hasMany(CostingSpecial::class, 'costing_id', 'id')->orderBy('vendor_name', 'asc');
     }
 
     public function head()
     {
         return $this->hasMany(CostingHead::class, 'costing_id', 'id');
     }
-
-
 }

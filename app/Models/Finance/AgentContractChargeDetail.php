@@ -15,6 +15,7 @@ final class AgentContractChargeDetail extends Model
     protected $table = 'finance.agent_contract_charge_detail';
 
     protected $guarded = ['id'];
+
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

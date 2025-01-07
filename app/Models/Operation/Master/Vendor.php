@@ -2,9 +2,9 @@
 
 namespace App\Models\Operation\Master;
 
+use App\Models\Finance\Customer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\Finance\Customer;
 
 class Vendor extends Model
 {
@@ -52,18 +52,14 @@ class Vendor extends Model
 
     /**
      * Accessor method that returns the customer type name for the vendor.
-     *
-     * @return string
      */
     public function getTypeAttribute(): string
     {
-        return $this->customer_type->customer_type_name ?? "";
+        return $this->customer_type->customer_type_name ?? '';
     }
 
     /**
      * Retrieves the customer type detail for the vendor.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function customerTypeDetail(): BelongsTo
     {

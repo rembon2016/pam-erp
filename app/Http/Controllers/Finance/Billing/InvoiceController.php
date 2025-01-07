@@ -4,29 +4,28 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\Billing;
 
-use Illuminate\View\View;
-use App\Functions\Utility;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\Functions\ResponseJson;
-use App\Models\Finance\Invoice;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Http\RedirectResponse;
 use App\Exports\Billing\InvoiceExport;
-use Yajra\DataTables\Facades\DataTables;
+use App\Functions\ResponseJson;
+use App\Functions\Utility;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Finance\Billing\Invoice\StoreInvoiceRequest;
+use App\Http\Requests\Finance\Billing\Invoice\StoreNotLinkedCustomer;
+use App\Models\Finance\Invoice;
 use App\Service\Finance\Billing\InvoiceService;
-use App\Service\Finance\MasterData\UnitService;
 use App\Service\Finance\MasterData\ChargeService;
 use App\Service\Finance\MasterData\CurrencyService;
 use App\Service\Finance\MasterData\CustomerService;
 use App\Service\Finance\MasterData\ServiceTypeService;
+use App\Service\Finance\MasterData\UnitService;
 use App\Service\Operation\Origin\ShippingInstructionService;
-use App\Http\Requests\Finance\Billing\Invoice\StoreInvoiceRequest;
-use App\Http\Requests\Finance\Billing\Invoice\StoreNotLinkedCustomer;
-use Illuminate\Support\Benchmark;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 final class InvoiceController extends Controller
 {
@@ -49,6 +48,7 @@ final class InvoiceController extends Controller
     {
         if (request()->ajax()) {
             $data = $this->invoiceService->getInvoices();
+
             return DataTables::of($data)
                 ->editColumn('invoice_date', function ($item) {
                     return $item->invoice_date?->format('d/m/y');
@@ -61,12 +61,14 @@ final class InvoiceController extends Controller
                 })
                 ->addColumn('is_approved', function ($item) {
                     $approval = "<div class='d-flex align-items-center justify-content-center'>";
-                    $approval .= $item->is_approved == 1 ? "<i class='bx bx-check-square' style='font-size: 2rem; color: #13BA18;'></i>" : "-";
-                    $approval .= "</div>";
+                    $approval .= $item->is_approved == 1 ? "<i class='bx bx-check-square' style='font-size: 2rem; color: #13BA18;'></i>" : '-';
+                    $approval .= '</div>';
+
                     return $approval;
                 })
                 ->addColumn('status', function ($item) {
                     $status = $item->status ?? '-';
+
                     return "<div class='d-flex align-items-center justify-content-center'>$status</div>";
                 })
                 ->addColumn('action', function ($item) {
@@ -122,9 +124,10 @@ final class InvoiceController extends Controller
     public function detail(string $id): View|RedirectResponse
     {
         $getInvoiceResponse = $this->invoiceService->getInvoiceById($id);
+
         return $getInvoiceResponse->success
             ? view('pages.finance.billing.invoice.detail', [
-                'data' => $getInvoiceResponse->data
+                'data' => $getInvoiceResponse->data,
             ])
             : redirect()->route('finance.billing.invoice.index')->with('error', $getInvoiceResponse->message);
     }
@@ -166,10 +169,10 @@ final class InvoiceController extends Controller
 
     public function viewGenerate(Request $request)
     {
-        $list_of_job_orders = explode(',' , (request()->query('selected') ?? ""));
+        $list_of_job_orders = explode(',', (request()->query('selected') ?? ''));
         if (
             count($list_of_job_orders) < 1 ||
-            (count($list_of_job_orders) > 0 && $list_of_job_orders[0] == "")
+            (count($list_of_job_orders) > 0 && $list_of_job_orders[0] == '')
         ) {
             return to_route('finance.billing.invoice.create.linked-billing-customer')->with('toastError', 'Please Select at least 1 CTD!');
         }
@@ -182,7 +185,7 @@ final class InvoiceController extends Controller
 
         $invoice = new Invoice;
         $charges = $this->chargeService->getCharges([
-            'is_agreed_rate' => true
+            'is_agreed_rate' => true,
         ]);
         $currencies = $this->currencyService->getCurrencies();
         $units = $this->unitService->getUnitCollections();
@@ -203,7 +206,7 @@ final class InvoiceController extends Controller
     public function approve(string $id): RedirectResponse
     {
         $updateInvoiceResponse = $this->invoiceService->updateInvoice($id, [
-            'is_approved' => true
+            'is_approved' => true,
         ]);
 
         return $updateInvoiceResponse->success
@@ -214,7 +217,7 @@ final class InvoiceController extends Controller
     public function cancel(string $id): RedirectResponse
     {
         $updateInvoiceResponse = $this->invoiceService->updateInvoice($id, [
-            'status' => "Cancel"
+            'status' => 'Cancel',
         ]);
 
         return $updateInvoiceResponse->success
@@ -226,20 +229,22 @@ final class InvoiceController extends Controller
     {
         $data = $this->invoiceService->getInvoices();
         $pdf = Pdf::loadView('exports.pdf.invoice', compact('data'));
-        $file_name = 'list_invoice_' . time() . '.pdf';
+        $file_name = 'list_invoice_'.time().'.pdf';
 
         return $pdf->download($file_name);
     }
 
     public function exportExcel()
     {
-        $file_name = 'list_invoice_' . time() . '.xlsx';
+        $file_name = 'list_invoice_'.time().'.xlsx';
+
         return Excel::download(new InvoiceExport, $file_name);
     }
 
     public function exportCsv()
     {
-        $file_name = 'list_invoice_' . time() . '.csv';
+        $file_name = 'list_invoice_'.time().'.csv';
+
         return Excel::download(new InvoiceExport, $file_name);
     }
 }

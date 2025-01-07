@@ -37,7 +37,7 @@ final class GlobalDaybookRequest extends FormRequest
             'code' => 'Daybook Code',
             'name' => 'Daybook Name',
             'type' => 'Type',
-            'description' => 'Description'
+            'description' => 'Description',
         ];
     }
 }

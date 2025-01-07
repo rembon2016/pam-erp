@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class CostingVendorAgent extends Model
@@ -16,7 +16,9 @@ final class CostingVendorAgent extends Model
         SoftDeletes;
 
     protected $guarded = ['id'];
+
     protected $table = 'finance.costing_vendor_agent';
+
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

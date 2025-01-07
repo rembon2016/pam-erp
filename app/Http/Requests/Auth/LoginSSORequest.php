@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Requests\Auth;
 
 use App\Traits\HandleJsonValidation;
-use Illuminate\Support\Str;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class LoginSSORequest extends FormRequest
@@ -33,10 +32,10 @@ final class LoginSSORequest extends FormRequest
                 function ($attribute, $value, $fail) {
                     $encodedEmail = base64_decode($value);
 
-                    if (!filter_var($encodedEmail, FILTER_VALIDATE_EMAIL)) {
+                    if (! filter_var($encodedEmail, FILTER_VALIDATE_EMAIL)) {
                         $fail('Invalid email format');
                     }
-                }
+                },
             ],
             'signature' => [
                 'required',
@@ -48,25 +47,24 @@ final class LoginSSORequest extends FormRequest
                     $checkEpochFormat = $this->isValidUnixTimestamp(intval($epochFormat));
                     $checkSalt = strlen($salt) == 25;
 
-                    if (!$checkEpochFormat || !$checkSalt) {
+                    if (! $checkEpochFormat || ! $checkSalt) {
                         $fail('Invalid Signature Format, Please Check your Payload');
                     }
 
-                }
-            ]
+                },
+            ],
         ];
     }
 
     /**
      * Check if the given timestamp is a valid Unix timestamp.
      *
-     * @param string|int $timestamp
      * @return bool
      */
     private function isValidUnixTimestamp(string|int $timestamp)
     {
         // Check if the input is numeric and non-negative
-        if (!is_numeric($timestamp) || $timestamp < 0) {
+        if (! is_numeric($timestamp) || $timestamp < 0) {
             return false;
         }
 
@@ -87,11 +85,11 @@ final class LoginSSORequest extends FormRequest
 
         // Use DateTime for robust validation
         try {
-            (new \DateTime())->setTimestamp(intval($timestampInSeconds));
+            (new \DateTime)->setTimestamp(intval($timestampInSeconds));
+
             return true;
         } catch (\Exception $e) {
             return false; // Invalid timestamp
         }
     }
-
 }

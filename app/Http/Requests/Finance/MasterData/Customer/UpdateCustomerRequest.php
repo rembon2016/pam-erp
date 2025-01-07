@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Finance\MasterData\Customer;
 
-use Illuminate\Support\Facades\Auth;
 use App\Constants\Customer\CustomerType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 final class UpdateCustomerRequest extends FormRequest
 {
@@ -47,7 +47,7 @@ final class UpdateCustomerRequest extends FormRequest
             'currency_id' => ['nullable', 'string', 'exists:pgsql.finance.currencies,id'],
             'credit_limit' => ['nullable', 'string'],
             'customer_type' => ['required', 'array'],
-            'customer_type.*' => ['in:'.implode(',', CustomerType::COLLECT)]
+            'customer_type.*' => ['in:'.implode(',', CustomerType::COLLECT)],
         ];
     }
 

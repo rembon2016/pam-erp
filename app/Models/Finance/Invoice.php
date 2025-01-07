@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
-use App\Models\Finance\InvoiceShipment;
-use Illuminate\Database\Eloquent\Model;
-use App\Models\Finance\InvoiceShipmentCharge;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Operation\Master\CustomerBilling;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class Invoice extends Model
 {
     use HasFactory, HasUuids, SoftDeletes;
 
     protected $table = 'finance.invoice';
+
     protected $guarded = ['id'];
+
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

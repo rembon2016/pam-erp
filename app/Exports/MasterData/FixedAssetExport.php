@@ -3,21 +3,22 @@
 namespace App\Exports\MasterData;
 
 use App\Service\Finance\MasterData\FixedAssetService;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
 class FixedAssetExport implements FromCollection, WithHeadings, WithMapping
 {
     protected $fixedAssetService;
 
-    public function __construct() {
-        $this->fixedAssetService = new FixedAssetService();
+    public function __construct()
+    {
+        $this->fixedAssetService = new FixedAssetService;
     }
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         return $this->fixedAssetService->getFixedAssets();

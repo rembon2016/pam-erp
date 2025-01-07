@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Finance\GeneralWise;
 
-use Illuminate\Http\Request;
 use App\Functions\ResponseJson;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Service\Finance\GeneralWise\GeneralWiseService;
+use Illuminate\Http\JsonResponse;
 
 final class ApiGeneralWiseController extends Controller
 {

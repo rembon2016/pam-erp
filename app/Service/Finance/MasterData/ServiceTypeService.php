@@ -13,13 +13,13 @@ final class ServiceTypeService
     /**
      * Create a new class instance.
      */
-    public function __construct(){}
+    public function __construct() {}
 
     public function getServiceTypes($filters = []): Collection
     {
-        return ServiceType::when(!empty($filters['service_code']), function ($query) use ($filters) {
+        return ServiceType::when(! empty($filters['service_code']), function ($query) use ($filters) {
             return $query->where('service_code', $filters['service_code']);
-        })->when(!empty($filters['service_name']), function ($query) use ($filters) {
+        })->when(! empty($filters['service_name']), function ($query) use ($filters) {
             return $query->where('service_name', $filters['service_name']);
         })->orderBy('service_code', 'ASC')->get();
     }
@@ -27,8 +27,9 @@ final class ServiceTypeService
     /**
      * Creates a new service type record in the database.
      *
-     * @param array $dto An associative array containing the data for the new service type.
+     * @param  array  $dto  An associative array containing the data for the new service type.
      * @return object An ObjectResponse instance containing the success message and the created service type object.
+     *
      * @throws \Throwable If an exception occurs during the creation process.
      */
     public function createServiceType(array $dto): object
@@ -52,8 +53,9 @@ final class ServiceTypeService
     /**
      * Updates an existing service type record in the database.
      *
-     * @param array $dto An associative array containing the updated data for the service type.
+     * @param  array  $dto  An associative array containing the updated data for the service type.
      * @return object An ObjectResponse instance containing the success message and the updated service type object.
+     *
      * @throws \Throwable If an exception occurs during the update process.
      */
     public function updateServiceType(array $dto): object
@@ -78,8 +80,9 @@ final class ServiceTypeService
     /**
      * Deletes an existing service type record from the database.
      *
-     * @param array $dto An associative array containing the ID of the service type to be deleted.
+     * @param  array  $dto  An associative array containing the ID of the service type to be deleted.
      * @return object An ObjectResponse instance containing the success message and the deleted service type object.
+     *
      * @throws \Throwable If an exception occurs during the deletion process.
      */
     public function deleteServiceType(array $dto): object

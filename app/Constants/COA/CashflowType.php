@@ -35,6 +35,6 @@ final class CashflowType
     const COLLECT = [
         self::OPERATING_ACTIVITIES,
         self::FINANCING_ACTIVITIES,
-        self::INVESTING_ACTIVITIES
+        self::INVESTING_ACTIVITIES,
     ];
 }

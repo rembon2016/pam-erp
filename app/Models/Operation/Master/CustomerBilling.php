@@ -89,6 +89,6 @@ class CustomerBilling extends Model
 
     public function financeCustomer()
     {
-        return $this->hasOne(Customer::class, 'id', 'finance_customer_id');
+        return $this->belongsTo(Customer::class, 'finance_customer_id', 'id');
     }
 }

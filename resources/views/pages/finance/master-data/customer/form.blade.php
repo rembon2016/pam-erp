@@ -11,6 +11,10 @@
         background-color: #FFE600!important;
         border-color: #FFE600!important;
     }
+
+    select.select2-hidden-accessible:disabled + .select2-container .select2-selection {
+        background-color: #eaeaea!important;
+    }
 </style>
 
 @endpush
@@ -28,7 +32,7 @@
                 <x:form.input label="Customer Code" name="customer_code" placeholder="Type Customer Code" required="true" :model="@$customer" />
             </div> --}}
             <div class='col-md-6'>
-                <x:form.input label="Customer Name" name="customer_name" placeholder="Type Customer Name" required="true" :model="@$customer" />
+                <x:form.input label="Customer Name" name="customer_name" placeholder="Type Customer Name" required="true" :model="@$customer" disabled="{{ @$customer->data_from == 'operation' }}" />
             </div>
             <div class='col-md-6'>
                 <x:form.input label="EORI Number" name="eori_number" placeholder="Type EORI Number" :model="@$customer" />
@@ -118,7 +122,7 @@
                     <div class="tab-pane fade show active" id="address" role="tabpanel">
                         <div class="row mb-4">
                             <div class="col-md-4">
-                                <x:form.select label="Address Type" name="customer_address[address_type]" defaultOption="Select Address Type">
+                                <x:form.select label="Address Type" name="customer_address[address_type]" defaultOption="Select Address Type" disabled="{{ @$customer->data_from == 'operation' }}">
                                     @foreach ($customerAddressTypes as $addressType)
                                         <option value="{{ $addressType }}" @selected(@$customer->customerAddress->address_type == $addressType)>
                                             {{ $addressType }}
@@ -128,13 +132,14 @@
                             </div>
                             <div class="col-md-4">
                                 <x:form.input label="Bank DLR Code" name="customer_address[bank_dlr_code]"
-                                    placeholder="Type Bank DLR Code" :customModelling="@$customer->customerAddress->bank_dlr_code" />
+                                    placeholder="Type Bank DLR Code" :customModelling="@$customer->customerAddress->bank_dlr_code"
+                                    disabled="{{ @$customer->data_from == 'operation' }}" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Address" name="customer_address[address]" placeholder="Type Address" :customModelling="@$customer->customerAddress->address" />
+                                <x:form.input label="Address" name="customer_address[address]" placeholder="Type Address" :customModelling="@$customer->customerAddress->address" disabled="{{ @$customer->data_from == 'operation' }}" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.select2 label="Country" name="customer_address[country]" placeholder="Select Country">
+                                <x:form.select2 label="Country" name="customer_address[country]" placeholder="Select Country" disabled="{{ @$customer->data_from == 'operation' }}">
                                     @foreach ($countries as $country)
                                         <option value="{{ $country->country_id }}" @selected(@$customer->customerAddress->country == $country->country_id)>
                                             {{ $country->country_name }}
@@ -143,28 +148,28 @@
                                 </x:form.select2>
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="State" name="customer_address[state]" placeholder="Type State" :customModelling="@$customer->customerAddress->state" />
+                                <x:form.input label="State" name="customer_address[state]" placeholder="Type State" :customModelling="@$customer->customerAddress->state" disabled="{{ @$customer->data_from == 'operation' }}" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="City" name="customer_address[city]" placeholder="Type City" :customModelling="@$customer->customerAddress->city" />
+                                <x:form.input label="City" name="customer_address[city]" placeholder="Type City" :customModelling="@$customer->customerAddress->city" disabled="{{ @$customer->data_from == 'operation' }}" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="Zip Code" name="customer_address[zip_code]" placeholder="Type Zip Code" :customModelling="@$customer->customerAddress->zip_code" />
+                                <x:form.input label="Zip Code" name="customer_address[zip_code]" placeholder="Type Zip Code" :customModelling="@$customer->customerAddress->zip_code" disabled="{{ @$customer->data_from == 'operation' }}" />
                             </div>
                             <div class="col-md-4">
-                                <x:form.input label="PO Box" name="customer_address[po_box]" placeholder="Type PO Box" :customModelling="@$customer->customerAddress->po_box" />
+                                <x:form.input label="PO Box" name="customer_address[po_box]" placeholder="Type PO Box" :customModelling="@$customer->customerAddress->po_box" disabled="{{ @$customer->data_from == 'operation' }}" />
                             </div>
                             <div class="col-md-4">
                                 <x:form.input type="tel" label="Phone Number" name="customer_address[phone_number]"
-                                    placeholder="Type Phone Number" :customModelling="@$customer->customerAddress->phone_number" />
+                                    placeholder="Type Phone Number" :customModelling="@$customer->customerAddress->phone_number" disabled="{{ @$customer->data_from == 'operation' }}" />
                             </div>
                             <div class="col-md-4">
                                 <x:form.input type="tel" label="Fax Number" name="customer_address[fax_number]"
-                                    placeholder="Type Fax Number" :customModelling="@$customer->customerAddress->fax_number" />
+                                    placeholder="Type Fax Number" :customModelling="@$customer->customerAddress->fax_number" disabled="{{ @$customer->data_from == 'operation' }}" />
                             </div>
                             <div class="col-md-4">
                                 <x:form.input label="Warehouse Provider" name="customer_address[warehouse_provider]"
-                                    placeholder="Type Warehouse Provider" :customModelling="@$customer->customerAddress->warehouse_provider" />
+                                    placeholder="Type Warehouse Provider" :customModelling="@$customer->customerAddress->warehouse_provider" disabled="{{ @$customer->data_from == 'operation' }}" />
                             </div>
                         </div>
                         <div class="row">
@@ -178,44 +183,48 @@
                                         @foreach ($contactInformation as $contact)
                                             <div class="contact-row form-row row align-items-center">
                                                 <div class="col">
-                                                    <x:form.input label="Contact Person Name" name="customer_address[contact_informations][contact_person_name][]" placeholder="Type Contact Person Name" :customModelling="@$contact['contact_person_name']" />
+                                                    <x:form.input label="Contact Person Name" name="customer_address[contact_informations][contact_person_name][]" placeholder="Type Contact Person Name" :customModelling="@$contact['contact_person_name']" disabled="{{ @$customer->data_from == 'operation' }}" />
                                                 </div>
                                                 <div class="col">
-                                                    <x:form.input label="Contact Person Number" name="customer_address[contact_informations][contact_person_number][]" placeholder="Type Contact Person Number" :customModelling="@$contact['contact_person_number']" />
+                                                    <x:form.input label="Contact Person Number" name="customer_address[contact_informations][contact_person_number][]" placeholder="Type Contact Person Number" :customModelling="@$contact['contact_person_number']" disabled="{{ @$customer->data_from == 'operation' }}" />
                                                 </div>
                                                 <div class="col">
-                                                    <x:form.input label="Contact Person Email" name="customer_address[contact_informations][contact_person_email][]" placeholder="Type Contact Person Email" :customModelling="@$contact['contact_person_email']" />
+                                                    <x:form.input label="Contact Person Email" name="customer_address[contact_informations][contact_person_email][]" placeholder="Type Contact Person Email" :customModelling="@$contact['contact_person_email']" disabled="{{ @$customer->data_from == 'operation' }}" />
                                                 </div>
                                                 <div class="col">
-                                                    <x:form.input label="Contact Person Address" name="customer_address[contact_informations][contact_person_address][]" placeholder="Type Contact Person Address" :customModelling="@$contact['contact_person_address']" />
+                                                    <x:form.input label="Contact Person Address" name="customer_address[contact_informations][contact_person_address][]" placeholder="Type Contact Person Address" :customModelling="@$contact['contact_person_address']" disabled="{{ @$customer->data_from == 'operation' }}" />
                                                 </div>
-                                                <div class="col-auto d-flex">
-                                                    <button type="button" class="btn btn-success me-2" onclick="addRow('.contact-row', '#contact-form')">+</button>
-                                                    <button type="button" class="btn btn-warning" onclick="removeRow('.contact-row')"
-                                                        disabled>-</button>
-                                                </div>
+                                                @if (@$customer->data_from == 'erp')
+                                                    <div class="col-auto d-flex">
+                                                        <button type="button" class="btn btn-success me-2" onclick="addRow('.contact-row', '#contact-form')">+</button>
+                                                        <button type="button" class="btn btn-warning" onclick="removeRow('.contact-row')"
+                                                            disabled>-</button>
+                                                    </div>
+                                                @endif
                                             </div>
                                         @endforeach
                                     @endforeach
                                 @else
                                     <div class="contact-row form-row row align-items-center">
                                         <div class="col">
-                                            <x:form.input label="Contact Person Name" name="customer_address[contact_informations][contact_person_name][]" placeholder="Type Contact Person Name" />
+                                            <x:form.input label="Contact Person Name" name="customer_address[contact_informations][contact_person_name][]" placeholder="Type Contact Person Name" disabled="{{ @$customer->data_from == 'operation' }}" />
                                         </div>
                                         <div class="col">
-                                            <x:form.input label="Contact Person Number" name="customer_address[contact_informations][contact_person_number][]" placeholder="Type Contact Person Number" />
+                                            <x:form.input label="Contact Person Number" name="customer_address[contact_informations][contact_person_number][]" placeholder="Type Contact Person Number" disabled="{{ @$customer->data_from == 'operation' }}" />
                                         </div>
                                         <div class="col">
-                                            <x:form.input label="Contact Person Email" name="customer_address[contact_informations][contact_person_email][]" placeholder="Type Contact Person Email" />
+                                            <x:form.input label="Contact Person Email" name="customer_address[contact_informations][contact_person_email][]" placeholder="Type Contact Person Email" disabled="{{ @$customer->data_from == 'operation' }}" />
                                         </div>
                                         <div class="col">
-                                            <x:form.input label="Contact Person Address" name="customer_address[contact_informations][contact_person_address][]" placeholder="Type Contact Person Address" />
+                                            <x:form.input label="Contact Person Address" name="customer_address[contact_informations][contact_person_address][]" placeholder="Type Contact Person Address" disabled="{{ @$customer->data_from == 'operation' }}" />
                                         </div>
-                                        <div class="col-auto d-flex">
-                                            <button type="button" class="btn btn-success me-2" onclick="addRow('.contact-row', '#contact-form')">+</button>
-                                            <button type="button" class="btn btn-warning" onclick="removeRow('.contact-row')"
-                                                disabled>-</button>
-                                        </div>
+                                        @if (@$customer->data_from == 'erp')
+                                            <div class="col-auto d-flex">
+                                                <button type="button" class="btn btn-success me-2" onclick="addRow('.contact-row', '#contact-form')">+</button>
+                                                <button type="button" class="btn btn-warning" onclick="removeRow('.contact-row')"
+                                                    disabled>-</button>
+                                            </div>
+                                        @endif
                                     </div>
                                 @endif
                             </div>

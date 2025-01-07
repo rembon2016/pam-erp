@@ -4,6 +4,7 @@ namespace App\Models\Operation\Master;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Finance\Customer;
 
 class Vendor extends Model
 {
@@ -71,5 +72,10 @@ class Vendor extends Model
             foreignKey: 'vendor_type_id',
             ownerKey: 'customer_type_id'
         );
+    }
+
+    public function financeCustomer()
+    {
+        return $this->belongsTo(Customer::class, 'finance_customer_id', 'id');
     }
 }

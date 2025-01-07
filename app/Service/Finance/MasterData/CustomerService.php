@@ -118,6 +118,7 @@ final class CustomerService
                 'overseas' => $dto['overseas'],
                 'currency_id' => $dto['currency_id'],
                 'credit_limit' => $dto['credit_limit'],
+                'data_from' => 'erp',
             ]);
 
             // Customer Type

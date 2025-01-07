@@ -6,6 +6,7 @@ namespace App\Models\Operation\Master;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Finance\Customer;
 
 class Carrier extends Model
 {
@@ -62,4 +63,9 @@ class Carrier extends Model
 	{
 		return "Carrier";
 	}
+
+    public function financeCustomer()
+    {
+        return $this->belongsTo(Customer::class, 'finance_customer_id', 'id');
+    }
 }

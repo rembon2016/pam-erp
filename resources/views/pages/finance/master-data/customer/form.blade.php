@@ -34,7 +34,7 @@
                 <x:form.input label="EORI Number" name="eori_number" placeholder="Type EORI Number" :model="@$customer" />
             </div>
             <div class='col-md-6'>
-                <x:form.input label="Credit Terms (Days)" name="credit_terms" placeholder="Type Credit Terms (Days)" :model="@$customer" required="true" />
+                <x:form.input type="number" label="Credit Terms (Days)" name="credit_terms" placeholder="Type Credit Terms (Days)" :model="@$customer" required="true" />
             </div>
             <div class='col-md-6'>
                 <x:form.select label="Local/Overseas" name="overseas" defaultOption="Select Local/Overseas" required="true">
@@ -343,7 +343,7 @@
                                             <div class="col">
                                                 <input type="hidden" name="customer_account[customer_account_id][]" value="{{ $customerAccount->id }}">
                                                 <div class="mb-3">
-                                                    <select name="customer_account[chart_of_account_id][]" style="width: 228px;" class="form-select account-select2" data-control="select2" data-placeholder="Select Account Number" id="customer_account[chart_of_account_id][]">
+                                                    <select name="customer_account[chart_of_account_id][]" style="width: 228px;" class="form-select account-select2" data-control="select2" data-placeholder="Select Account" id="customer_account[chart_of_account_id][]">
                                                         @foreach ($accountGroups as $group)
                                                             <optgroup label="{{ str($group->name)->upper() }}">
                                                                 @foreach ($group->subAccountGroups as $subGroup)
@@ -365,21 +365,6 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <x:form.select label="Currency" name="customer_account[currency_id][]" defaultOption="Select Currency">
-                                                    @foreach ($currencies as $currency)
-                                                        <option value="{{ $currency->id }}" @selected($customerAccount->currency_id == $currency->id)>
-                                                            {{ $currency->currency_name }}
-                                                        </option>
-                                                    @endforeach
-                                                </x:form.select>
-                                            </div>
-                                            <div class="col">
-                                                <x:form.input label="LOV Status" name="customer_account[lov_status][]" placeholder="Type LOV Status" :customModelling="@$customerAccount->lov_status" />
-                                            </div>
-                                            <div class="col">
-                                                <x:form.input label="Notes" name="customer_account[notes][]" placeholder="Type Notes" :customModelling="@$customerAccount->notes" />
-                                            </div>
                                             <div class="col-auto d-flex">
                                                 <button type="button" class="btn btn-success me-2" onclick="addRow('.account-row', '#account-form')">+</button>
                                                 <button type="button" class="btn btn-warning" onclick="removeRow('.account-row')"
@@ -392,7 +377,7 @@
                                         <div class="col">
                                             <input type="hidden" name="customer_account[customer_account_id][]" value="">
                                             <div class="mb-3">
-                                                <label for="#customer_account[chart_of_account_id][]" class='form-label'>Account Number</label>
+                                                <label for="#customer_account[chart_of_account_id][]" class='form-label'>Account</label>
                                                 <select name="customer_account[chart_of_account_id][]" style="width: 228px;" class="form-select account-select2" data-control="select2" data-placeholder="Select Account Number">
                                                     @foreach ($accountGroups as $group)
                                                         <optgroup label="{{ str($group->name)->upper() }}">
@@ -414,21 +399,6 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                        </div>
-                                        <div class="col">
-                                            <x:form.select label="Currency" name="customer_account[currency_id][]" defaultOption="Select Currency">
-                                                @foreach ($currencies as $currency)
-                                                    <option value="{{ $currency->id }}">
-                                                        {{ $currency->currency_name }}
-                                                    </option>
-                                                @endforeach
-                                            </x:form.select>
-                                        </div>
-                                        <div class="col">
-                                            <x:form.input label="LOV Status" name="customer_account[lov_status][]" placeholder="Type LOV Status" />
-                                        </div>
-                                        <div class="col">
-                                            <x:form.input label="Notes" name="customer_account[notes][]" placeholder="Type Notes" />
                                         </div>
                                         <div class="col-auto d-flex">
                                             <button type="button" class="btn btn-success me-2" onclick="addRow('.account-row', '#account-form')">+</button>

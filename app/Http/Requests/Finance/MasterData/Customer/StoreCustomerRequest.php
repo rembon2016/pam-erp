@@ -75,36 +75,6 @@ final class StoreCustomerRequest extends FormRequest
         ];
     }
 
-    // private function getFinanceCustomerGstField(): array
-    // {
-    //     return [
-    //         'customer_gst' => ['nullable', 'array'],
-    //         'customer_gst.address_type' => ['nullable', 'string', 'max:255'],
-    //         'customer_gst.arn_number' => ['nullable', 'numeric'],
-    //         'customer_gst.msme' => ['nullable', 'string', 'max:255'],
-    //         'customer_gst.city' => ['nullable', 'string', 'max:255'],
-    //         'customer_gst.hsn_codes' => ['nullable', 'string', 'max:255'],
-    //         'customer_gst.uam_number' => ['nullable', 'string', 'max:255'],
-    //         'customer_gst.state' => ['nullable', 'string', 'max:255'],
-    //         'customer_gst.nac_codes' => ['nullable', 'string', 'max:255'],
-    //         'customer_gst.type_of_enterprise' => ['nullable', 'string', 'max:255'],
-    //         'customer_gst.address' => ['nullable', 'string'],
-    //         'customer_gst.uin_number' => ['nullable', 'string'],
-    //         'customer_gst.pan_mandatory' => ['nullable', 'string'],
-    //         'customer_gst.composit_regular' => ['nullable', 'string'],
-    //         'customer_gst.sez' => ['nullable', 'string', 'max:255'],
-    //         'customer_gst.pan_number' => ['nullable', 'string', 'max:255'],
-    //         'customer_gst.sez_valid_from_date' => ['nullable', 'date'],
-    //         'customer_gst.sez_valid_to_date' => ['nullable', 'date', 'after:sez_valid_from_date'],
-    //         'customer_gst.gst_registration_status' => ['nullable', 'string', 'max:255'],
-    //         'customer_gst.passport_number' => ['nullable', 'string', 'max:255'],
-    //         'customer_gst.tan_number' => ['nullable', 'string', 'max:255'],
-    //         'customer_gst.gsg_id' => ['nullable', 'string', 'max:255'],
-    //         'customer_gst.gsg_provisional_id' => ['nullable', 'string', 'max:255'],
-    //         'customer_gst.gsd_id' => ['nullable', 'string', 'max:255'],
-    //     ];
-    // }
-
     private function getFinanceCustomerVatField(): array
     {
         return [
@@ -197,12 +167,6 @@ final class StoreCustomerRequest extends FormRequest
             'customer_account.customer_account_id.*' => ['nullable', 'string'],
             'customer_account.chart_of_account_id' => ['nullable', 'array'],
             'customer_account.chart_of_account_id.*' => ['nullable', 'exists:pgsql.finance.chart_of_accounts,id'],
-            'customer_account.currency_id' => ['nullable', 'array'],
-            'customer_account.currency_id.*' => ['nullable', 'exists:pgsql.finance.currencies,id'],
-            'customer_account.lov_status' => ['nullable', 'array'],
-            'customer_account.lov_status.*' => ['nullable', 'string'],
-            'customer_account.notes' => ['nullable', 'array'],
-            'customer_account.notes.*' => ['nullable', 'string'],
         ];
     }
 }

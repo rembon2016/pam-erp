@@ -166,12 +166,6 @@ final class UpdateCustomerRequest extends FormRequest
             'customer_account.customer_account_id.*' => ['nullable', 'string'],
             'customer_account.chart_of_account_id' => ['nullable', 'array'],
             'customer_account.chart_of_account_id.*' => ['nullable', 'exists:pgsql.finance.chart_of_accounts,id'],
-            'customer_account.currency_id' => ['nullable', 'array'],
-            'customer_account.currency_id.*' => ['nullable', 'exists:pgsql.finance.currencies,id'],
-            'customer_account.lov_status' => ['nullable', 'array'],
-            'customer_account.lov_status.*' => ['nullable', 'string'],
-            'customer_account.notes' => ['nullable', 'array'],
-            'customer_account.notes.*' => ['nullable', 'string'],
         ];
     }
 }

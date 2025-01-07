@@ -45,7 +45,7 @@ final class CustomerService
     {
         $customer = Customer::query()
             ->when(!empty($filters['customer_name']), fn ($query)
-                => $query->where('customer_name',$filters['customer_name']))
+                => $query->where('customer_name', 'ilike', '%'. $filters['customer_name'] . '%'))
             ->when(!empty($filters['customer_type_name']), fn ($query)
                 => $query->whereHas('customerTypes', fn ($q) => $q->whereIn('name', $filters['customer_type_name'])))
             ->orderBy('customer_name', 'asc');
@@ -358,16 +358,10 @@ final class CustomerService
                 ? CustomerAccount::create([
                     'customer_id' => $customerId,
                     'chart_of_account_id' => $coaId,
-                    'currency_id' => $customerAccountDto['currency_id'][$key],
-                    'lov_status' => $customerAccountDto['lov_status'][$key],
-                    'notes' => $customerAccountDto['notes'][$key],
                 ])
                 : $customerAccount->update([
                     'customer_id' => $customerId,
                     'chart_of_account_id' => $coaId,
-                    'currency_id' => $customerAccountDto['currency_id'][$key],
-                    'lov_status' => $customerAccountDto['lov_status'][$key],
-                    'notes' => $customerAccountDto['notes'][$key],
                 ]);
         }
     }

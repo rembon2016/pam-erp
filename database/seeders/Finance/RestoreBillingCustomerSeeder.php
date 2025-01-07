@@ -9,6 +9,8 @@ use App\Models\Operation\Master\CustomerBilling;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Finance\Customer as FinanceCustomer;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 final class RestoreBillingCustomerSeeder extends Seeder
 {
@@ -17,6 +19,19 @@ final class RestoreBillingCustomerSeeder extends Seeder
      */
     public function run(): void
     {
+        // When Specific Table Doesnt have a Column
+        Schema::whenTableDoesntHaveColumn(
+            table: 'accounting.customer',
+            column: 'finance_customer_id',
+            callback: function (Blueprint $table) {
+                $table->foreignUuid('finance_customer_id')
+                    ->nullable()
+                    ->references('id')
+                    ->on('finance.customer')
+                    ->nullOnDelete();
+            }
+        );
+
         $customerBilling = CustomerBilling::query()
             ->whereNull('finance_customer_id')
             ->where('status', '1')

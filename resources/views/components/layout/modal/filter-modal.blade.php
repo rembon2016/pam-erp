@@ -15,7 +15,7 @@
 
                     <div class="row mb-3 mt-5" style="row-gap: 10px;">
                         <div class="col-md-6">
-                            <button type="button" class="btn btn-sm custom-btn custom-btn-outline-danger w-100" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-sm custom-btn custom-btn-outline-danger w-100">Reset Filter</button>
                         </div>
                         <div class="col-md-6">
                             <button type="submit" class="btn btn-sm custom-btn custom-btn-primary w-100">Filter</button>

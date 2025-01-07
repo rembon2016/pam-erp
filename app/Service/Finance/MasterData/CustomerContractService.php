@@ -16,11 +16,15 @@ final class CustomerContractService
 {
     use HandleUploadedFile;
 
+    public function __construct(
+        protected CustomerService $customerService
+    ) {}
+
     public function getCustomerContracts($filters = []): Collection
     {
         return CustomerContract::when(!empty($filters['customer']), function ($query) use ($filters) {
             return $query->where('customer_id', $filters['customer']);
-        })->latest()->get();
+        })->orderBy('contract_end', 'desc')->get();
     }
 
     public function getCustomerContractById(string $id): object
@@ -35,12 +39,17 @@ final class CustomerContractService
     {
         DB::beginTransaction();
         try {
-            $dto['contract_no'] = Utility::generateUniqueCode(
-                table: (new CustomerContract)->getTable(),
-                field: "contract_no",
-                length: 6,
-                prefix: "Q"
-            );
+            // $dto['contract_no'] = Utility::generateUniqueCode(
+            //     table: (new CustomerContract)->getTable(),
+            //     field: "contract_no",
+            //     length: 6,
+            //     prefix: "Q"
+            // );
+
+            $getCustomerResponse = $this->customerService->getCustomerById($dto['customer_id']);
+            if (!$getCustomerResponse->success) return $getCustomerResponse;
+
+            $dto['contract_no'] = CustomerContract::generateUniqueCodeByCustomer($getCustomerResponse->data);
 
             $charges = collect($dto['charges']);
             unset($dto['charges']);

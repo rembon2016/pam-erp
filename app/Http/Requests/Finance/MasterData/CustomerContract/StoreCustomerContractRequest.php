@@ -30,7 +30,7 @@ final class StoreCustomerContractRequest extends FormRequest
             'contract_start' => 'required|date',
             'contract_end' => 'required|date',
             'contract_file' => 'nullable|file',
-            'contract_description' => 'required|string',
+            'contract_description' => 'nullable|string',
             'charges' => 'required|array',
             'charge_id' => 'required|exists:pgsql.finance.charges,id',
             'currency_id' => 'required|exists:pgsql.finance.currencies,id',

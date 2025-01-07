@@ -53,15 +53,23 @@ final class CustomerContractController extends Controller
      */
     public function list(): JsonResponse
     {
-        if (request()->ajax()) {
+        // if (request()->ajax()) {
             return DataTables::of($this->customerContractService->getCustomerContracts(request()->query()))
                 ->addIndexColumn()
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([
-                        // 'edit' => route('finance.master-data.customer-contract.edit', $item->id),
-                        // 'delete' => route('finance.master-data.customer-contract.destroy', $item->id),
+                        'detail' => route('finance.master-data.customer-contract.edit', $item->id),
+                        'edit' => route('finance.master-data.customer-contract.edit', $item->id),
                         'download' => '/',
                     ]);
+                })
+                ->editColumn('contract_no', function ($item) {
+                    $is_expired = now()->gt($item->contract_end);
+                    $contract_no = $is_expired
+                        ? "<span class='badge badge-danger badge-lg'>{$item->contract_no}</span>"
+                        : $item->contract_no;
+
+                    return $contract_no;
                 })
                 ->addColumn('customer_code', function ($item) {
                     return $item->customer?->customer_code;
@@ -75,14 +83,14 @@ final class CustomerContractController extends Controller
                 ->editColumn('contract_end', function ($item) {
                     return $item->contract_end?->format("d/m/Y");
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'contract_no'])
                 ->toJson();
-        }
+        // }
 
-        return ResponseJson::error(
-            Response::HTTP_UNAUTHORIZED,
-            'Access Unauthorized',
-        );
+        // return ResponseJson::error(
+        //     Response::HTTP_UNAUTHORIZED,
+        //     'Access Unauthorized',
+        // );
     }
 
     /**

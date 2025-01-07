@@ -27,8 +27,8 @@
                         <x:layout.table.heading widthPixel="100" title="Contract No" />
                         <x:layout.table.heading widthPixel="100" title="Customer Code" />
                         <x:layout.table.heading widthPixel="100" title="Customer Name" />
-                        <x:layout.table.heading widthPixel="100" title="Validity Date From" />
-                        <x:layout.table.heading widthPixel="100" title="Validity Date To" />
+                        <x:layout.table.heading widthPixel="100" title="Valid From" />
+                        <x:layout.table.heading widthPixel="100" title="Valid To" />
                         <x:layout.table.heading widthPixel="100" customClass="text-center" title="Action" />
                     </x:layout.table.row>
                 </thead>

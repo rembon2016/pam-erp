@@ -86,4 +86,17 @@ final class CustomerContract extends Model
     {
         return $this->hasOne(Customer::class, 'id', 'customer_id');
     }
+
+    public static function generateUniqueCodeByCustomer(Customer $customer): string
+    {
+        $customer_code = $customer->customer_code;
+        $countOfContract = self::where('customer_id', $customer->id)->count('id');
+        $lastNumber = $countOfContract + 1;
+
+        $nextNumber = str_pad("$lastNumber", 4, '0', STR_PAD_LEFT);
+        $contract_number = "{$customer_code}/{$nextNumber}";
+
+        return $contract_number;
+    }
+
 }

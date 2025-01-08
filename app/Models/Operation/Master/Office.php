@@ -3,7 +3,9 @@
 namespace App\Models\Operation\Master;
 
 use App\Traits\Filterable;
+use App\Models\Finance\Customer as FinanceCustomer;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Office extends Model
 {
@@ -41,10 +43,19 @@ class Office extends Model
         'modified_by' => 'nullable',
     ];
 
-    protected $fillable = ['office_id', 'office_name', 'office_address', 'office_email', 'office_telp', 'office_fax', 'office_phone', 'office_tax_id', 'office_contact_person', 'country_id', 'office_type', 'created_by', 'modified_by', 'status', 'prefix', 'city', 'date_modified', 'office_alias', 'signature'];
+    protected $fillable = ['office_id', 'office_name', 'office_address', 'office_email', 'office_telp', 'office_fax', 'office_phone', 'office_tax_id', 'office_contact_person', 'country_id', 'office_type', 'created_by', 'modified_by', 'status', 'prefix', 'city', 'date_modified', 'office_alias', 'signature', 'finance_customer_id', 'office_code'];
 
     public function countries()
     {
         return $this->belongsTo(Countries::class, 'country_id', 'country_id');
+    }
+
+    public function financeCustomer(): BelongsTo
+    {
+        return $this->belongsTo(
+            related: FinanceCustomer::class,
+            foreignKey: 'finance_customer_id',
+            ownerKey: 'id'
+        );
     }
 }

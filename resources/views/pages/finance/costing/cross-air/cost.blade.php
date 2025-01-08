@@ -67,9 +67,9 @@ select,
             <div class="tab-content p-5 bg-white border border-top-0">
                 <div class="tab-pane fade show active" id="vendor" role="tabpanel">
                     <ul class="nav nav-tabs costing-tabs default-costing-tabs" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation">
+                        {{-- <li class="nav-item" role="presentation">
                             <button class="nav-link pam-tab active" id="trucking-tab" data-bs-toggle="tab" data-bs-target="#trucking" type="button" role="tab">Trucking</button>
-                        </li>
+                        </li> --}}
                         <li class="nav-item" role="presentation">
                             <button class="nav-link pam-tab" id="agent-tab" data-bs-toggle="tab" data-bs-target="#agent" type="button" role="tab">Agent Airlines</button>
                         </li>

@@ -168,7 +168,7 @@ final class CrossAirController extends Controller
         $shipment_by = 'CROSSAIR';
         $costing = $this->costingService->createCosting($request);
 
-        $this->costingService->createCostingTruck($request, $costing->id);
+        //$this->costingService->createCostingTruck($request, $costing->id);
         $this->costingService->createCostingAgent($request, $costing->id);
         $this->costingService->createCostingSpecialExport($request, $costing->id);
 
@@ -190,7 +190,7 @@ final class CrossAirController extends Controller
         $shipment_by = 'CROSSAIR';
         $costing = $this->costingService->updateCosting($request, $id);
 
-        $this->costingService->updateCostingTruck($request, $id);
+        //$this->costingService->updateCostingTruck($request, $id);
         $this->costingService->updateCostingAgent($request, $id);
         $this->costingService->updateCostingSpecialExport($request, $id);
 

@@ -12,6 +12,7 @@ final class Convert
         return $text;
     }
 
+
     public static function date($date){
         return Carbon::parse($date)->format('d M Y') ?? "";
     }

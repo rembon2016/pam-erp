@@ -29,8 +29,6 @@ final class AccountGroup extends Model
 
     /**
      * Get the sub-account groups associated with this account group.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function subAccountGroups(): HasMany
     {
@@ -42,8 +40,6 @@ final class AccountGroup extends Model
 
     /**
      * Get the chart of accounts associated with this account group.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function chartOfAccounts(): HasMany
     {

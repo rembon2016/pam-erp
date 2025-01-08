@@ -22,7 +22,7 @@ Route::group([
         // Customer Route
         Route::group([
             'prefix' => 'customer',
-            'as' => 'customer.'
+            'as' => 'customer.',
         ], function () {
             Route::get('/', [ApiCustomerController::class, 'getCustomers'])->name('list');
             Route::get('/billing-customer', [ApiCustomerController::class, 'getBillingCustomers'])->name('billing.list');
@@ -62,7 +62,7 @@ Route::group([
 
         Route::group([
             'prefix' => 'invoice',
-            'as' => 'invoice.'
+            'as' => 'invoice.',
         ], function () {
             Route::get('/not-linked-list', [ApiInvoiceController::class, 'notLinkedList'])->name('not_linked_list');
             Route::get('/linked-list', [ApiInvoiceController::class, 'linkedList'])->name('linked_list');

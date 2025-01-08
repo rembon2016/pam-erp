@@ -4,29 +4,27 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\Costing;
 
-use App\Models\Operation\Origin\JobOrderAir;
-use App\Models\Operation\Origin\OperationDocument;
-use App\Models\Operation\Origin\LoadingPlanDocument;
-use App\Models\Operation\Origin\LoadingPlan;
-use App\Models\Finance\Charge;
-use App\Models\Finance\Currency;
-use App\Models\Finance\Costing;
-
-use Illuminate\View\View;
-use App\Functions\Convert;
-use App\Functions\Utility;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\Functions\ResponseJson;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use Maatwebsite\Excel\Facades\Excel;
-use Yajra\DataTables\Facades\DataTables;
 use App\Exports\Costing\CrossAirExport;
+use App\Functions\Convert;
+use App\Functions\ResponseJson;
+use App\Functions\Utility;
+use App\Http\Controllers\Controller;
+use App\Models\Finance\Charge;
+use App\Models\Finance\Costing;
+use App\Models\Finance\Currency;
+use App\Models\Operation\Origin\JobOrderAir;
+use App\Models\Operation\Origin\LoadingPlan;
+use App\Models\Operation\Origin\LoadingPlanDocument;
+use App\Models\Operation\Origin\OperationDocument;
 use App\Service\Finance\Costing\CostingService;
 use App\Service\Finance\Costing\DataService;
 use App\Service\Finance\Costing\Origin\CalculationService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 final class CrossAirController extends Controller
 {
@@ -42,55 +40,54 @@ final class CrossAirController extends Controller
         return view('pages.finance.costing.cross-air.index');
     }
 
-
     public function list(Request $request): JsonResponse
     {
         if (request()->ajax()) {
-            $count_total = JobOrderAir::select('job_order_id')->where('status','!=',3)->count();
+            $count_total = JobOrderAir::select('job_order_id')->where('status', '!=', 3)->count();
             $start = ($request->start) ? $request->start : 0;
             $pageSize = ($request->length) ? $request->length : 10;
             $draw = $request->query('draw');
 
-            $joborder = JobOrderAir::with(['detail', 'loadingplan','lpdetail','lparrival'])->where('status','!=',3);
-            $joborder->when(!empty($request['search']['value']), function ($query) use ($request) {
+            $joborder = JobOrderAir::with(['detail', 'loadingplan', 'lpdetail', 'lparrival'])->where('status', '!=', 3);
+            $joborder->when(! empty($request['search']['value']), function ($query) use ($request) {
                 $search = $request['search']['value'];
 
                 $q->where('job_order_code', 'ilike', "%{$search}%");
 
             });
             $count_filter = $joborder->count();
-            $data = $joborder->skip($start)->take($pageSize)->orderBy('date_order','DESC')->get();
+            $data = $joborder->skip($start)->take($pageSize)->orderBy('date_order', 'DESC')->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->with([
-                    "draw"=>$draw,
-                    "recordsTotal" => $count_total,
-                    "recordsFiltered" => $count_filter,
-                    ])
+                    'draw' => $draw,
+                    'recordsTotal' => $count_total,
+                    'recordsFiltered' => $count_filter,
+                ])
                 ->editColumn('mawb_number', function ($item) {
-                    return $item->loadingplan->mawb_number ?? "";
+                    return $item->loadingplan->mawb_number ?? '';
                 })
                 ->editColumn('carrier', function ($item) {
-                    return $item->loadingplan->carrier_name ?? "";
+                    return $item->loadingplan->carrier_name ?? '';
                 })
                 ->editColumn('etd', function ($item) {
-                    return Convert::date($item->lpdetail->date_departure) ?? "";
+                    return Convert::date($item->lpdetail->date_departure) ?? '';
                 })
                 ->editColumn('eta', function ($item) {
-                    return Convert::date($item->lparrival->date_arival) ?? "";
+                    return Convert::date($item->lparrival->date_arival) ?? '';
                 })
                 ->editColumn('job_order_date', function ($item) {
-                    return Convert::date($item->date_created) ?? "";
+                    return Convert::date($item->date_created) ?? '';
                 })
                 ->editColumn('status', function ($item) {
-                    if(!empty($item->costing)){
-                        if($item->costing->status == 1 || $item->costing->status == 3){
+                    if (! empty($item->costing)) {
+                        if ($item->costing->status == 1 || $item->costing->status == 3) {
                             return 'Open';
-                        }else{
+                        } else {
                             return 'Closed';
                         }
-                    }else{
+                    } else {
                         return '';
                     }
                 })
@@ -113,26 +110,31 @@ final class CrossAirController extends Controller
         );
     }
 
-    public function show($id){
-        $joborder = JobOrderAir::with(['detail', 'loading','doc'])->findOrFail($id);
+    public function show($id)
+    {
+        $joborder = JobOrderAir::with(['detail', 'loading', 'doc'])->findOrFail($id);
         $op = OperationDocument::where('job_order_id', $id)->first();
         $lpdoc = LoadingPlanDocument::where('loading_id', $joborder->loading_plan_id)->get();
-        return view('pages.finance.costing.cross-air.show', compact('id','joborder','op','lpdoc'));
+
+        return view('pages.finance.costing.cross-air.show', compact('id', 'joborder', 'op', 'lpdoc'));
     }
 
-    public function port(Request $request){
+    public function port(Request $request)
+    {
         $result = $this->dataService->getPort($request);
+
         return response()->json($result);
     }
 
-    public function cost($id){
-        $joborder = JobOrderAir::with(['detail', 'loading','doc'])->findOrFail($id);
+    public function cost($id)
+    {
+        $joborder = JobOrderAir::with(['detail', 'loading', 'doc'])->findOrFail($id);
 
-        $vendor_all = $this->dataService->getCustomer("All");
-        $vendor_truck = $this->dataService->getCustomer("Trucking Company");
-        $vendor_port = $this->dataService->getCustomer("Dubai Port");
-        $vendor_air = $this->dataService->getCustomer("Carrier Agent");
-        $vendor_line = $this->dataService->getCustomer("Shipping Line");
+        $vendor_all = $this->dataService->getCustomer('All');
+        $vendor_truck = $this->dataService->getCustomer('Trucking Company');
+        $vendor_port = $this->dataService->getCustomer('Dubai Port');
+        $vendor_air = $this->dataService->getCustomer('Carrier Agent');
+        $vendor_line = $this->dataService->getCustomer('Shipping Line');
 
         $charge = Charge::whereNull('deleted_at')->get();
         $currency = Currency::whereNull('deleted_at')->get();
@@ -140,27 +142,28 @@ final class CrossAirController extends Controller
         $loadingplan = LoadingPlan::where('plan_id', $joborder->loading_plan_id)->get();
         $loading = LoadingPlan::where('plan_id', $joborder->loading_plan_id)->first();
 
-        $cost = Costing::with(['truck','port','agent','special','head','head.detail'])->where("job_order_id",$joborder->job_order_id);
-        if($cost->exists()){
+        $cost = Costing::with(['truck', 'port', 'agent', 'special', 'head', 'head.detail'])->where('job_order_id', $joborder->job_order_id);
+        if ($cost->exists()) {
             $costing = $cost->first();
-           //return response()->json($costing);
+            //return response()->json($costing);
             $data = [
                 'action' => route('finance.costing.cross-air.update', $costing->id),
                 'method' => 'PUT',
-             ];
-        }else{
+            ];
+        } else {
             $costing = null;
             $data = [
                 'action' => route('finance.costing.cross-air.store'),
                 'method' => 'POST',
-             ];
+            ];
         }
 
-        return view('pages.finance.costing.cross-air.cost', compact('joborder','vendor_all','vendor_truck','vendor_port','vendor_air','vendor_line','charge','currency','loadingplan','costing','data','loading'));
+        return view('pages.finance.costing.cross-air.cost', compact('joborder', 'vendor_all', 'vendor_truck', 'vendor_port', 'vendor_air', 'vendor_line', 'charge', 'currency', 'loadingplan', 'costing', 'data', 'loading'));
 
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $loadingplan = LoadingPlan::with('shipping')->where('plan_id', $request->loading_plan_id)->get();
         $shipment_by = 'CROSSAIR';
         $costing = $this->costingService->createCosting($request);
@@ -169,18 +172,19 @@ final class CrossAirController extends Controller
         $this->costingService->createCostingAgent($request, $costing->id);
         $this->costingService->createCostingSpecialExport($request, $costing->id);
 
-        foreach($loadingplan as $j => $rx){
-            if (!empty($request["vendor_mawb_{$j}_id"])) {
-                $costing_head = $this->costingService->createCostingHead($request, $costing->id, $rx->mawb_number, 'mawb','CROSSAIR',$rx->plan_id);
+        foreach ($loadingplan as $j => $rx) {
+            if (! empty($request["vendor_mawb_{$j}_id"])) {
+                $costing_head = $this->costingService->createCostingHead($request, $costing->id, $rx->mawb_number, 'mawb', 'CROSSAIR', $rx->plan_id);
 
-                $this->costingService->createCostingDetailMawb($request, $costing->id, $rx->mawb_number, $shipment_by,$costing_head->id, $j);
+                $this->costingService->createCostingDetailMawb($request, $costing->id, $rx->mawb_number, $shipment_by, $costing_head->id, $j);
             }
         }
 
-        return to_route('finance.costing.cross-air.index')->with('toastSuccess', "Costing Success");
+        return to_route('finance.costing.cross-air.index')->with('toastSuccess', 'Costing Success');
     }
 
-    public function update($id, Request $request){
+    public function update($id, Request $request)
+    {
         $costing = Costing::find($id);
         $loadingplan = LoadingPlan::with('shipping')->where('plan_id', $request->loading_plan_id)->get();
         $shipment_by = 'CROSSAIR';
@@ -190,46 +194,47 @@ final class CrossAirController extends Controller
         $this->costingService->updateCostingAgent($request, $id);
         $this->costingService->updateCostingSpecialExport($request, $id);
 
-        foreach($loadingplan as $j => $rx){
-            if (!empty($request["vendor_mawb_{$j}_id"])) {
+        foreach ($loadingplan as $j => $rx) {
+            if (! empty($request["vendor_mawb_{$j}_id"])) {
 
-                $costing_head = $this->costingService->updateCostingHead($request, $id, $rx->mawb_number, 'mawb','CROSSAIR',$rx->plan_id);
+                $costing_head = $this->costingService->updateCostingHead($request, $id, $rx->mawb_number, 'mawb', 'CROSSAIR', $rx->plan_id);
 
-                $this->costingService->updateCostingDetailMawb($request, $id, $rx->mawb_number, $shipment_by,$costing_head->id, $j);
+                $this->costingService->updateCostingDetailMawb($request, $id, $rx->mawb_number, $shipment_by, $costing_head->id, $j);
 
             }
         }
 
-
-        return to_route('finance.costing.cross-air.index')->with('toastSuccess', "Update Success");
+        return to_route('finance.costing.cross-air.index')->with('toastSuccess', 'Update Success');
     }
 
-    public function contractmawb($id, $mawb_number, $type){
-        $result = $this->calculationService->getChargeByMawb($id, $mawb_number, $type,'CROSSAIR');
+    public function contractmawb($id, $mawb_number, $type)
+    {
+        $result = $this->calculationService->getChargeByMawb($id, $mawb_number, $type, 'CROSSAIR');
+
         return response()->json($result);
 
     }
 
-    public function contractlpdxb($id, $loading_id){
+    public function contractlpdxb($id, $loading_id)
+    {
         $result = $this->calculationService->getChargeExportByLp($id, $loading_id, 'CROSSAIR');
+
         return response()->json($result);
     }
 
-    public function status($id, $status){
+    public function status($id, $status)
+    {
         $costing = Costing::find($id);
         $costing->status = $status;
         $costing->save();
-        return to_route('finance.costing.sea-air.show',$costing->job_order_id)->with('toastSuccess', "Update Success");
+
+        return to_route('finance.costing.sea-air.show', $costing->job_order_id)->with('toastSuccess', 'Update Success');
     }
 
     public function exportCsv()
     {
-        $file_name = 'list_costing_cross_air_' . time() . '.csv';
+        $file_name = 'list_costing_cross_air_'.time().'.csv';
+
         return Excel::download(new CrossAirExport, $file_name);
     }
-
-
-
-
-
 }

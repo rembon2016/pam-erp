@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
-use Illuminate\View\View;
-use App\Functions\Utility;
-use Illuminate\Http\Response;
-use App\Functions\ResponseJson;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\JsonResponse;
-use App\Models\Finance\FixedAsset;
-use App\Http\Controllers\Controller;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Http\RedirectResponse;
-use App\Models\Finance\FixedAssetType;
-use App\Models\Finance\FixedAssetStatus;
-use Yajra\DataTables\Facades\DataTables;
 use App\Exports\MasterData\FixedAssetExport;
-use App\Service\Finance\MasterData\FixedAssetService;
+use App\Functions\ResponseJson;
+use App\Functions\Utility;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Finance\MasterData\FixedAsset\StoreFixedAssetRequest;
 use App\Http\Requests\Finance\MasterData\FixedAsset\UpdateFixedAssetRequest;
+use App\Models\Finance\FixedAsset;
+use App\Models\Finance\FixedAssetStatus;
+use App\Models\Finance\FixedAssetType;
+use App\Service\Finance\MasterData\FixedAssetService;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 final class FixedAssetController extends Controller
 {
@@ -40,8 +40,6 @@ final class FixedAssetController extends Controller
      * Retrieves a list of all roles and returns a JSON response for use in a data table.
      *
      * This method fetches all the roles from the database and returns a JSON response that can be used to populate a data table. The response includes an action column that contains a "View" button for each role.
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function list(): JsonResponse
     {
@@ -82,13 +80,13 @@ final class FixedAssetController extends Controller
             'page' => 'Add Fixed Asset',
             'action' => route('finance.master-data.fixed-asset.store'),
             'method' => 'POST',
-         ];
+        ];
 
         $fixed_asset = new FixedAsset;
         $types = FixedAssetType::orderBy('type_name', 'ASC')->get();
         $statuses = FixedAssetStatus::orderBy('status_name', 'ASC')->get();
 
-         return view('pages.finance.master-data.fixed-asset.form', compact('data', 'fixed_asset', 'types', 'statuses'));
+        return view('pages.finance.master-data.fixed-asset.form', compact('data', 'fixed_asset', 'types', 'statuses'));
     }
 
     /**
@@ -112,23 +110,25 @@ final class FixedAssetController extends Controller
     public function edit(string $id): View|RedirectResponse
     {
         $getFixedAssetResponse = $this->fixedAssetService->getFixedAssetById($id);
-        if (!$getFixedAssetResponse->success) return to_route('finance.master-data.fixed-asset.index')->with('toastError', $getFixedAssetResponse->message);
+        if (! $getFixedAssetResponse->success) {
+            return to_route('finance.master-data.fixed-asset.index')->with('toastError', $getFixedAssetResponse->message);
+        }
 
         $data = [
             'page' => 'Edit Fixed Asset',
             'action' => route('finance.master-data.fixed-asset.update', $id),
             'method' => 'PUT',
-         ];
+        ];
 
         $types = FixedAssetType::orderBy('type_name', 'ASC')->get();
         $statuses = FixedAssetStatus::orderBy('status_name', 'ASC')->get();
 
-         return view('pages.finance.master-data.fixed-asset.form', [
+        return view('pages.finance.master-data.fixed-asset.form', [
             'data' => $data,
             'fixed_asset' => $getFixedAssetResponse->data,
             'types' => $types,
-            'statuses' => $statuses
-         ]);
+            'statuses' => $statuses,
+        ]);
     }
 
     /**
@@ -166,20 +166,22 @@ final class FixedAssetController extends Controller
     {
         $data = $this->fixedAssetService->getFixedAssets();
         $pdf = Pdf::loadView('exports.pdf.fixed-asset', compact('data'));
-        $file_name = 'list_fixed_asset_' . time() . '.pdf';
+        $file_name = 'list_fixed_asset_'.time().'.pdf';
 
         return $pdf->download($file_name);
     }
 
     public function exportExcel()
     {
-        $file_name = 'list_fixed_asset_' . time() . '.xlsx';
+        $file_name = 'list_fixed_asset_'.time().'.xlsx';
+
         return Excel::download(new FixedAssetExport, $file_name);
     }
 
     public function exportCsv()
     {
-        $file_name = 'list_fixed_asset_' . time() . '.csv';
+        $file_name = 'list_fixed_asset_'.time().'.csv';
+
         return Excel::download(new FixedAssetExport, $file_name);
     }
 }

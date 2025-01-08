@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Finance\MasterData;
 
 use App\Exports\MasterData\CountryExport;
-use Illuminate\View\View;
-use App\Functions\Utility;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Functions\ResponseJson;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Functions\Utility;
 use App\Http\Controllers\Controller;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Http\RedirectResponse;
-use App\Models\Operation\Master\Region;
-use Yajra\DataTables\Facades\DataTables;
-use App\Service\Finance\MasterData\CountryService;
 use App\Http\Requests\Finance\MasterData\Country\StoreCountryRequest;
 use App\Http\Requests\Finance\MasterData\Country\UpdateCountryRequest;
+use App\Models\Operation\Master\Region;
+use App\Service\Finance\MasterData\CountryService;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 final class CountryController extends Controller
 {
@@ -32,6 +32,7 @@ final class CountryController extends Controller
     public function index(): View
     {
         $countries = $this->countryService->getCountries();
+
         return view('pages.finance.master-data.country.index', compact('countries'));
     }
 
@@ -80,9 +81,9 @@ final class CountryController extends Controller
             'page' => 'Add Country',
             'action' => route('finance.master-data.country.store'),
             'method' => 'POST',
-         ];
+        ];
 
-         $regions = Region::whereNotIn('status', ['2', '3'])->orderBy('region_name', 'asc')->get();
+        $regions = Region::whereNotIn('status', ['2', '3'])->orderBy('region_name', 'asc')->get();
 
         return view('pages.finance.master-data.country.form', compact('data', 'regions'));
     }
@@ -116,12 +117,12 @@ final class CountryController extends Controller
             'page' => 'Edit Country',
             'action' => route('finance.master-data.country.update', $id),
             'method' => 'PUT',
-         ];
+        ];
 
-         $country = $this->countryService->getCountryById(id: $id)->data;
-         $regions = Region::whereNotIn('status', ['2', '3'])->orderBy('region_name', 'asc')->get();
+        $country = $this->countryService->getCountryById(id: $id)->data;
+        $regions = Region::whereNotIn('status', ['2', '3'])->orderBy('region_name', 'asc')->get();
 
-         return view('pages.finance.master-data.country.form', compact('data', 'country', 'regions'));
+        return view('pages.finance.master-data.country.form', compact('data', 'country', 'regions'));
     }
 
     /**
@@ -132,7 +133,9 @@ final class CountryController extends Controller
         $dto = $request->validated();
         $countryResponse = $this->countryService->updateCountry(dto: $dto, id: $id);
 
-        if (!$countryResponse->success) return back()->with('toastError', $countryResponse->message);
+        if (! $countryResponse->success) {
+            return back()->with('toastError', $countryResponse->message);
+        }
 
         return to_route('finance.master-data.country.index')
             ->with('toastSuccess', $countryResponse->message);
@@ -145,7 +148,9 @@ final class CountryController extends Controller
     {
         $countryResponse = $this->countryService->deleteCountry(id: $id);
 
-        if (!$countryResponse->success) return back()->with('toastError', $countryResponse->message);
+        if (! $countryResponse->success) {
+            return back()->with('toastError', $countryResponse->message);
+        }
 
         return to_route('finance.master-data.country.index')
             ->with('toastSuccess', $countryResponse->message);
@@ -161,7 +166,7 @@ final class CountryController extends Controller
     {
         $data = $this->countryService->getCountries();
         $pdf = Pdf::loadView('exports.pdf.country', compact('data'));
-        $file_name = 'list_country_' . time() . '.pdf';
+        $file_name = 'list_country_'.time().'.pdf';
 
         return $pdf->download($file_name);
     }
@@ -174,7 +179,7 @@ final class CountryController extends Controller
      */
     public function exportExcel()
     {
-        $file_name = 'list_country_' . time() . '.xlsx';
+        $file_name = 'list_country_'.time().'.xlsx';
 
         return Excel::download(new CountryExport, $file_name);
     }
@@ -187,7 +192,7 @@ final class CountryController extends Controller
      */
     public function exportCsv()
     {
-        $file_name = 'list_country_' . time() . '.csv';
+        $file_name = 'list_country_'.time().'.csv';
 
         return Excel::download(new CountryExport, $file_name);
     }

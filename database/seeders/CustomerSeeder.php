@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Finance\Customer;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
 
 final class CustomerSeeder extends Seeder
 {
@@ -16,7 +15,7 @@ final class CustomerSeeder extends Seeder
     public function run(): void
     {
         Customer::create([
-            'customer_code' => "CUS-001",
+            'customer_code' => 'CUS-001',
             'customer_name' => 'Example Customer',
             'eori_number' => '123',
             'credit_terms' => 'test',

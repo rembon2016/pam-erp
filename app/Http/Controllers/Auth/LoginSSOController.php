@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
-use App\Service\Auth\LoginService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginSSORequest;
+use App\Service\Auth\LoginService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
-use App\Http\Requests\Auth\LoginSSORequest;
 
 final class LoginSSOController extends Controller
 {
     /**
      * Constructs the LoginController with the provided LoginService.
      *
-     * @param LoginService $loginService The service responsible for handling login functionality.
+     * @param  LoginService  $loginService  The service responsible for handling login functionality.
      */
     public function __construct(
         protected LoginService $loginService
@@ -46,7 +46,6 @@ final class LoginSSOController extends Controller
     /**
      * Redirects the user to the ERP dashboard after logging in via SSO.
      *
-     * @param \App\Http\Requests\Auth\LoginSSORequest $request
      * @return mixed|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function redirectToErp(LoginSSORequest $request)

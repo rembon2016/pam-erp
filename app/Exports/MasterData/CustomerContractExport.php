@@ -17,8 +17,8 @@ class CustomerContractExport implements FromCollection, WithHeadings, WithMappin
     }
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         return $this->customerContractService->getCustomerContracts();
@@ -32,7 +32,7 @@ class CustomerContractExport implements FromCollection, WithHeadings, WithMappin
             $item->customer?->customer_name,
             $item->contract_start?->format('d/m/Y'),
             $item->contract_end?->format('d/m/Y'),
-            $item->contract_description
+            $item->contract_description,
         ];
     }
 
@@ -44,7 +44,7 @@ class CustomerContractExport implements FromCollection, WithHeadings, WithMappin
             'Customer Name',
             'Contract Validity From',
             'Contract Validity To',
-            'Description'
+            'Description',
         ];
     }
 }

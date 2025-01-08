@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Database\Seeders\Finance\COA;
 
 use App\Models\Finance\AccountGroup;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 final class AccountGroupSeeder extends Seeder
@@ -19,7 +18,7 @@ final class AccountGroupSeeder extends Seeder
             ->each(function ($account) {
                 AccountGroup::create([
                     'code' => $account['code'],
-                    'name' => $account['name']
+                    'name' => $account['name'],
                 ]);
             });
     }
@@ -34,19 +33,19 @@ final class AccountGroupSeeder extends Seeder
         return [
             [
                 'code' => '1',
-                'name' => 'ASSETS'
+                'name' => 'ASSETS',
             ],
             [
                 'code' => '2',
-                'name' => 'LIABILITIES'
+                'name' => 'LIABILITIES',
             ],
             [
                 'code' => '3',
-                'name' => 'INCOME'
+                'name' => 'INCOME',
             ],
             [
                 'code' => '4',
-                'name' => 'EXPENDITURE'
+                'name' => 'EXPENDITURE',
             ],
         ];
     }

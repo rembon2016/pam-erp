@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -31,7 +31,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectUsersTo(redirect: fn (Request $request) => route('dashboard'));
 
         $middleware->validateCsrfTokens(except: [
-            'http://localhost:8000/login-operation-to-erp'
+            'http://localhost:8000/login-operation-to-erp',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

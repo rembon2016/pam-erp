@@ -1,11 +1,10 @@
 <?php
 
-
 namespace App\Models\Operation\Master;
 
+use App\Models\Finance\Customer;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Carrier extends Model
 {
@@ -23,21 +22,21 @@ class Carrier extends Model
      *
      * @var bool
      */
-	public $timestamps = false;
+    public $timestamps = false;
 
     /**
      * The primary key column for the model.
      *
      * @var string
      */
-	protected $primaryKey = 'carrier_id';
+    protected $primaryKey = 'carrier_id';
 
     /**
      * Indicates that this model have a custom updated_at timestamp columns.
      *
      * @var string
      */
-	const UPDATED_AT = 'date_modified';
+    const UPDATED_AT = 'date_modified';
 
     /**
      * Indicates that all fields are guarded from mass assignment except for the 'id' field.
@@ -51,15 +50,20 @@ class Carrier extends Model
      *
      * @var array
      */
-	protected $appends = ['type'];
+    protected $appends = ['type'];
 
     /**
      * Accessor method that returns the customer type name for the carrier.
      *
      * @return string
      */
-	public function getTypeAttribute()
-	{
-		return "Carrier";
-	}
+    public function getTypeAttribute()
+    {
+        return 'Carrier';
+    }
+
+    public function financeCustomer()
+    {
+        return $this->belongsTo(Customer::class, 'finance_customer_id', 'id');
+    }
 }

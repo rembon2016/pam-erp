@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
-use App\Models\Finance\Currency;
 use App\Functions\ObjectResponse;
+use App\Models\Finance\Currency;
 use Illuminate\Database\Eloquent\Collection;
 
 final class CurrencyService
@@ -13,14 +13,13 @@ final class CurrencyService
     /**
      * Create a new class instance.
      */
-    public function __construct(){}
-
+    public function __construct() {}
 
     public function getCurrencies($filters = []): Collection
     {
-        return Currency::when(!empty($filters['currency_code']), function ($query) use ($filters) {
+        return Currency::when(! empty($filters['currency_code']), function ($query) use ($filters) {
             return $query->where('currency_code', $filters['currency_code']);
-        })->when(!empty($filters['currency_name']), function ($query) use ($filters) {
+        })->when(! empty($filters['currency_name']), function ($query) use ($filters) {
             return $query->where('currency_name', $filters['currency_name']);
         })->orderBy('currency_code', 'ASC')->get();
     }
@@ -28,8 +27,9 @@ final class CurrencyService
     /**
      * Creates a new currency record in the database.
      *
-     * @param array $dto An associative array containing the data for the new currency.
+     * @param  array  $dto  An associative array containing the data for the new currency.
      * @return object An ObjectResponse instance containing the success message and the created currency object.
+     *
      * @throws \Throwable If an exception occurs during the creation process.
      */
     public function createCurrency(array $dto): object
@@ -53,8 +53,9 @@ final class CurrencyService
     /**
      * Updates an existing currency record in the database.
      *
-     * @param array $dto An associative array containing the updated data for the currency.
+     * @param  array  $dto  An associative array containing the updated data for the currency.
      * @return object An ObjectResponse instance containing the success message and the updated currency object.
+     *
      * @throws \Throwable If an exception occurs during the update process.
      */
     public function updateCurrency(array $dto): object
@@ -79,8 +80,9 @@ final class CurrencyService
     /**
      * Deletes an existing currency record from the database.
      *
-     * @param array $dto An associative array containing the ID of the currency to be deleted.
+     * @param  array  $dto  An associative array containing the ID of the currency to be deleted.
      * @return object An ObjectResponse instance containing the success message and the deleted currency object.
+     *
      * @throws \Throwable If an exception occurs during the deletion process.
      */
     public function deleteCurrency(array $dto): object

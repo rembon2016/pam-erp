@@ -4,32 +4,31 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
-use Illuminate\View\View;
-use App\Functions\Utility;
-use Illuminate\Http\Response;
-use App\Functions\ResponseJson;
-use App\Models\Operation\Master\CustomerBilling;
-use App\Models\Operation\Master\CustomerGroup;
-use App\Models\Operation\Master\Countries;
-use App\Models\Operation\Master\CustomerType;
-use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Http\RedirectResponse;
-use Yajra\DataTables\Facades\DataTables;
 use App\Exports\MasterData\CustomerForBillingExport;
-use App\Service\Finance\MasterData\CustomerForBillingService;
+use App\Functions\ResponseJson;
+use App\Functions\Utility;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Finance\MasterData\CustomerForBilling\StoreCustomerForBillingRequest;
 use App\Http\Requests\Finance\MasterData\CustomerForBilling\UpdateCustomerForBillingRequest;
+use App\Models\Operation\Master\Countries;
+use App\Models\Operation\Master\CustomerBilling;
+use App\Models\Operation\Master\CustomerGroup;
+use App\Models\Operation\Master\CustomerType;
+use App\Service\Finance\MasterData\CustomerForBillingService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 final class CustomerForBillingController extends Controller
 {
-
-/**
- * Constructs a new instance of the CurrencyController class, injecting the CustomerForBillingService dependency.
- *
- * @param CustomerForBillingService $customerService The service instance to be used by this controller.
- */
+    /**
+     * Constructs a new instance of the CurrencyController class, injecting the CustomerForBillingService dependency.
+     *
+     * @param  CustomerForBillingService  $customerService  The service instance to be used by this controller.
+     */
     public function __construct(
         protected CustomerForBillingService $customerService,
     ) {}
@@ -46,20 +45,19 @@ final class CustomerForBillingController extends Controller
      * Retrieves a list of all roles and returns a JSON response for use in a data table.
      *
      * This method fetches all the roles from the database and returns a JSON response that can be used to populate a data table. The response includes an action column that contains a "View" button for each role.
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
             $customers = CustomerBilling::orderBy('customer_name', 'ASC')->get();
+
             return DataTables::of($customers)
                 ->addIndexColumn()
                 ->editColumn('country', function ($item) {
-                    return $item->countries?->country_name ?? "";
+                    return $item->countries?->country_name ?? '';
                 })
                 ->editColumn('types', function ($item) {
-                    return $item->customerTypeDetail?->customer_type_name ?? "";
+                    return $item->customerTypeDetail?->customer_type_name ?? '';
                 })
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([
@@ -86,14 +84,14 @@ final class CustomerForBillingController extends Controller
             'page' => 'Add Billing Customer',
             'action' => route('finance.master-data.customerforbilling.store'),
             'method' => 'POST',
-         ];
+        ];
 
         $customer = new CustomerBilling;
-        $customergroup = CustomerGroup::where("status","!=",3)->get();
-        $countries = Countries::where("status","!=",3)->get();
-        $customer_type = CustomerType::where("status","!=",3)->get();
+        $customergroup = CustomerGroup::where('status', '!=', 3)->get();
+        $countries = Countries::where('status', '!=', 3)->get();
+        $customer_type = CustomerType::where('status', '!=', 3)->get();
 
-         return view('pages.finance.master-data.customerforbilling.form', compact('data', 'customer','customergroup','countries','customer_type'));
+        return view('pages.finance.master-data.customerforbilling.form', compact('data', 'customer', 'customergroup', 'countries', 'customer_type'));
     }
 
     /**
@@ -116,23 +114,24 @@ final class CustomerForBillingController extends Controller
     public function edit(string $id): View|RedirectResponse
     {
         $customer = CustomerBilling::where('customer_id', $id)->first();
-        $customergroup = CustomerGroup::where("status","!=",3)->get();
-        $countries = Countries::where("status","!=",3)->get();
-        $customer_type = CustomerType::where("status","!=",3)->get();
+        $customergroup = CustomerGroup::where('status', '!=', 3)->get();
+        $countries = Countries::where('status', '!=', 3)->get();
+        $customer_type = CustomerType::where('status', '!=', 3)->get();
 
-
-        if (is_null($customer)) return to_route('finance.master-data.customerforbilling.index')->with(
-            'toastError',
-            __('crud.not_found', ['name' => 'Customer For Billing'])
-        );
+        if (is_null($customer)) {
+            return to_route('finance.master-data.customerforbilling.index')->with(
+                'toastError',
+                __('crud.not_found', ['name' => 'Customer For Billing'])
+            );
+        }
 
         $data = [
             'page' => 'Edit Billing Customer',
             'action' => route('finance.master-data.customerforbilling.update', $id),
             'method' => 'PUT',
-         ];
+        ];
 
-         return view('pages.finance.master-data.currency.form', compact('data', 'customer','customergroup','countries','customer_type'));
+        return view('pages.finance.master-data.currency.form', compact('data', 'customer', 'customergroup', 'countries', 'customer_type'));
     }
 
     /**
@@ -163,7 +162,6 @@ final class CustomerForBillingController extends Controller
                 ->with('toastError', $response->message);
     }
 
-
     /**
      * Export the list of currencies to a CSV file.
      *
@@ -172,7 +170,8 @@ final class CustomerForBillingController extends Controller
      */
     public function exportCsv()
     {
-        $file_name = 'list_customer_for_billing_' . time() . '.csv';
+        $file_name = 'list_customer_for_billing_'.time().'.csv';
+
         return Excel::download(new CustomerForBillingExport, $file_name);
     }
 }

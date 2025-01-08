@@ -2,39 +2,37 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Schema;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ResetPasswordController;
-use App\Http\Controllers\Finance\Settings\UserController;
-use App\Http\Controllers\Finance\Costing\SeaAirController;
 use App\Http\Controllers\Finance\Billing\InvoiceController;
-use App\Http\Controllers\Finance\MasterData\PortController;
-use App\Http\Controllers\Finance\MasterData\UnitController;
 use App\Http\Controllers\Finance\Costing\CrossAirController;
-use App\Http\Controllers\Finance\Costing\DubaiBusiness\SeaImportController;
-use App\Http\Controllers\Finance\Costing\DubaiBusiness\SeaExportController;
-use App\Http\Controllers\Finance\Costing\DubaiBusiness\AirImportController;
 use App\Http\Controllers\Finance\Costing\DubaiBusiness\AirExportController;
-use App\Http\Controllers\Finance\Costing\DubaiBusiness\WarehouseController;
-use App\Http\Controllers\Finance\Costing\DubaiBusiness\TruckingController;
+use App\Http\Controllers\Finance\Costing\DubaiBusiness\AirImportController;
 use App\Http\Controllers\Finance\Costing\DubaiBusiness\CourierController;
-use App\Http\Controllers\Finance\MasterData\ChargeController;
-use App\Http\Controllers\Finance\MasterData\CountryController;
-use App\Http\Controllers\Finance\MasterData\DaybookController;
-use App\Http\Controllers\Finance\MasterData\CurrencyController;
-use App\Http\Controllers\Finance\MasterData\CustomerController;
-use App\Http\Controllers\Finance\MasterData\FixedAssetController;
-use App\Http\Controllers\Finance\MasterData\ServiceTypeController;
-use App\Http\Controllers\Finance\Settings\RolePermissionController;
-use App\Http\Controllers\Finance\MasterData\AgentContractController;
-use App\Http\Controllers\Finance\MasterData\PaymentMethodController;
-use App\Http\Controllers\Finance\MasterData\ChartOfAccountController;
-use App\Http\Controllers\Finance\MasterData\CustomerContractController;
+use App\Http\Controllers\Finance\Costing\DubaiBusiness\SeaExportController;
+use App\Http\Controllers\Finance\Costing\DubaiBusiness\SeaImportController;
+use App\Http\Controllers\Finance\Costing\DubaiBusiness\TruckingController;
+use App\Http\Controllers\Finance\Costing\DubaiBusiness\WarehouseController;
+use App\Http\Controllers\Finance\Costing\SeaAirController;
 use App\Http\Controllers\Finance\GeneralWise\Shipment\ShipmentController;
+use App\Http\Controllers\Finance\MasterData\AgentContractController;
+use App\Http\Controllers\Finance\MasterData\ChargeController;
+use App\Http\Controllers\Finance\MasterData\ChartOfAccountController;
+use App\Http\Controllers\Finance\MasterData\CountryController;
+use App\Http\Controllers\Finance\MasterData\CurrencyController;
+use App\Http\Controllers\Finance\MasterData\CustomerContractController;
+use App\Http\Controllers\Finance\MasterData\CustomerController;
 use App\Http\Controllers\Finance\MasterData\CustomerForBillingController;
-
+use App\Http\Controllers\Finance\MasterData\DaybookController;
+use App\Http\Controllers\Finance\MasterData\FixedAssetController;
+use App\Http\Controllers\Finance\MasterData\PaymentMethodController;
+use App\Http\Controllers\Finance\MasterData\PortController;
+use App\Http\Controllers\Finance\MasterData\ServiceTypeController;
+use App\Http\Controllers\Finance\MasterData\UnitController;
+use App\Http\Controllers\Finance\Settings\RolePermissionController;
+use App\Http\Controllers\Finance\Settings\UserController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ResetPasswordController;
+use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -43,19 +41,18 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/reset-password', [ResetPasswordController::class, 'index'])->name('reset_password.index');
     Route::post('/reset-password', [ResetPasswordController::class, 'update'])->name('reset_password.update');
 
-
     Route::group([
         'prefix' => 'finance',
-        'as' => 'finance.'
+        'as' => 'finance.',
     ], function () {
         Route::group([
             'prefix' => 'master-data',
-            'as' => 'master-data.'
+            'as' => 'master-data.',
         ], function () {
 
             Route::group([
                 'prefix' => 'customer',
-                'as' => 'customer.'
+                'as' => 'customer.',
             ], function () {
                 Route::get('/', [CustomerController::class, 'index'])->name('index');
                 Route::get('/list', [CustomerController::class, 'list'])->name('list');
@@ -73,7 +70,7 @@ Route::group(['middleware' => ['auth']], function () {
 
             Route::group([
                 'prefix' => 'customer-contract',
-                'as' => 'customer-contract.'
+                'as' => 'customer-contract.',
             ], function () {
                 Route::get('/', [CustomerContractController::class, 'index'])->name('index');
                 Route::get('/list', [CustomerContractController::class, 'list'])->name('list');
@@ -91,7 +88,7 @@ Route::group(['middleware' => ['auth']], function () {
 
             Route::group([
                 'prefix' => 'agent-contract',
-                'as' => 'agent-contract.'
+                'as' => 'agent-contract.',
             ], function () {
                 Route::get('/', [AgentContractController::class, 'index'])->name('index');
                 Route::get('/detail/{id}', [AgentContractController::class, 'show'])->name('detail');
@@ -110,7 +107,7 @@ Route::group(['middleware' => ['auth']], function () {
 
             Route::group([
                 'prefix' => 'service-type',
-                'as' => 'service-type.'
+                'as' => 'service-type.',
             ], function () {
                 Route::get('/', [ServiceTypeController::class, 'index'])->name('index');
                 Route::get('/list', [ServiceTypeController::class, 'list'])->name('list');
@@ -128,7 +125,7 @@ Route::group(['middleware' => ['auth']], function () {
 
             Route::group([
                 'prefix' => 'currency',
-                'as' => 'currency.'
+                'as' => 'currency.',
             ], function () {
                 Route::get('/', [CurrencyController::class, 'index'])->name('index');
                 Route::get('/list', [CurrencyController::class, 'list'])->name('list');
@@ -146,7 +143,7 @@ Route::group(['middleware' => ['auth']], function () {
 
             Route::group([
                 'prefix' => 'customer-for-billing',
-                'as' => 'customerforbilling.'
+                'as' => 'customerforbilling.',
             ], function () {
                 Route::get('/export/csv', [CustomerForBillingController::class, 'exportCsv'])->name('export.csv');
 
@@ -166,7 +163,7 @@ Route::group(['middleware' => ['auth']], function () {
 
             Route::group([
                 'prefix' => 'fixed-asset',
-                'as' => 'fixed-asset.'
+                'as' => 'fixed-asset.',
             ], function () {
                 Route::get('/', [FixedAssetController::class, 'index'])->name('index');
                 Route::get('/list', [FixedAssetController::class, 'list'])->name('list');
@@ -184,7 +181,7 @@ Route::group(['middleware' => ['auth']], function () {
 
             Route::group([
                 'prefix' => 'chart-of-account',
-                'as' => 'chart-of-account.'
+                'as' => 'chart-of-account.',
             ], function () {
                 Route::get('/', [ChartOfAccountController::class, 'index'])->name('index');
                 Route::get('/list', [ChartOfAccountController::class, 'list'])->name('list');
@@ -204,7 +201,7 @@ Route::group(['middleware' => ['auth']], function () {
 
             Route::group([
                 'prefix' => 'charge',
-                'as' => 'charge.'
+                'as' => 'charge.',
             ], function () {
                 Route::get('/', [ChargeController::class, 'index'])->name('index');
                 Route::get('/list', [ChargeController::class, 'list'])->name('list');
@@ -222,7 +219,7 @@ Route::group(['middleware' => ['auth']], function () {
 
             Route::group([
                 'prefix' => 'unit',
-                'as' => 'unit.'
+                'as' => 'unit.',
             ], function () {
                 Route::get('/', [UnitController::class, 'index'])->name('index');
                 Route::get('/list', [UnitController::class, 'list'])->name('list');
@@ -240,7 +237,7 @@ Route::group(['middleware' => ['auth']], function () {
 
             Route::group([
                 'prefix' => 'payment-method',
-                'as' => 'payment-method.'
+                'as' => 'payment-method.',
             ], function () {
                 Route::get('/', [PaymentMethodController::class, 'index'])->name('index');
                 Route::get('/list', [PaymentMethodController::class, 'list'])->name('list');
@@ -258,7 +255,7 @@ Route::group(['middleware' => ['auth']], function () {
 
             Route::group([
                 'prefix' => 'country',
-                'as' => 'country.'
+                'as' => 'country.',
             ], function () {
                 Route::get('/', [CountryController::class, 'index'])->name('index');
                 Route::get('/list', [CountryController::class, 'list'])->name('list');
@@ -276,7 +273,7 @@ Route::group(['middleware' => ['auth']], function () {
 
             Route::group([
                 'prefix' => 'port',
-                'as' => 'port.'
+                'as' => 'port.',
             ], function () {
                 Route::get('/', [PortController::class, 'index'])->name('index');
                 Route::get('/list', [PortController::class, 'list'])->name('list');
@@ -294,7 +291,7 @@ Route::group(['middleware' => ['auth']], function () {
 
             Route::group([
                 'prefix' => 'daybook',
-                'as' => 'daybook.'
+                'as' => 'daybook.',
             ], function () {
                 Route::get('/', [DaybookController::class, 'index'])->name('index');
                 Route::get('/list', [DaybookController::class, 'list'])->name('list');
@@ -313,11 +310,11 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::group([
             'prefix' => 'general-wise',
-            'as' => 'general-wise.'
+            'as' => 'general-wise.',
         ], function () {
             Route::group([
                 'prefix' => 'shipment',
-                'as' => 'shipment.'
+                'as' => 'shipment.',
             ], function () {
                 Route::get('/filter/origin', [ShipmentController::class, 'origin'])->name('origin');
                 Route::get('/filter/destination', [ShipmentController::class, 'destination'])->name('destination');
@@ -336,11 +333,11 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::group([
             'prefix' => 'billing',
-            'as' => 'billing.'
+            'as' => 'billing.',
         ], function () {
             Route::group([
                 'prefix' => 'invoice',
-                'as' => 'invoice.'
+                'as' => 'invoice.',
             ], function () {
                 Route::get('/', [InvoiceController::class, 'index'])->name('index');
                 Route::get('/list', [InvoiceController::class, 'list'])->name('list');
@@ -364,16 +361,16 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::group([
             'prefix' => 'costing',
-            'as' => 'costing.'
+            'as' => 'costing.',
         ], function () {
             Route::group([
                 'prefix' => 'sea-air',
-                'as' => 'sea-air.'
+                'as' => 'sea-air.',
             ], function () {
                 Route::get('/', [SeaAirController::class, 'index'])->name('index');
                 Route::get('/port', [SeaAirController::class, 'port'])->name('port');
                 Route::get('/contractbl/{id}/{bl_number}/{type}', [SeaAirController::class, 'contractbl'])->name('contractbl');
-            Route::get('/contractmawb/{id}/{bl_number}/{type}', [SeaAirController::class, 'contractmawb'])->name('contractmawb');
+                Route::get('/contractmawb/{id}/{bl_number}/{type}', [SeaAirController::class, 'contractmawb'])->name('contractmawb');
                 Route::get('/contractlp/{id}/{loading_id}', [SeaAirController::class, 'contractlp'])->name('contractlp');
                 Route::get('/contractlpdxb/{id}/{loading_id}', [SeaAirController::class, 'contractlpdxb'])->name('contractlpdxb');
                 Route::get('/list', [SeaAirController::class, 'list'])->name('list');
@@ -385,15 +382,14 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/export/csv', [SeaAirController::class, 'exportCsv'])->name('export.csv');
             });
 
-
             Route::group([
                 'prefix' => 'cross-air',
-                'as' => 'cross-air.'
+                'as' => 'cross-air.',
             ], function () {
 
                 Route::get('/', [CrossAirController::class, 'index'])->name('index');
                 Route::get('/port', [CrossAirController::class, 'port'])->name('port');
-            Route::get('/contractmawb/{id}/{bl_number}/{type}', [CrossAirController::class, 'contractmawb'])->name('contractmawb');
+                Route::get('/contractmawb/{id}/{bl_number}/{type}', [CrossAirController::class, 'contractmawb'])->name('contractmawb');
                 Route::get('/contractlpdxb/{id}/{loading_id}', [CrossAirController::class, 'contractlpdxb'])->name('contractlpdxb');
                 Route::get('/list', [CrossAirController::class, 'list'])->name('list');
                 Route::post('/store', [CrossAirController::class, 'store'])->name('store');
@@ -406,11 +402,11 @@ Route::group(['middleware' => ['auth']], function () {
 
             Route::group([
                 'prefix' => 'dubai-business',
-                'as' => 'dubai-business.'
+                'as' => 'dubai-business.',
             ], function () {
                 Route::group([
                     'prefix' => 'sea-import',
-                    'as' => 'sea-import.'
+                    'as' => 'sea-import.',
                 ], function () {
                     Route::get('/', [SeaImportController::class, 'index'])->name('index');
                     Route::get('/list', [SeaImportController::class, 'list'])->name('list');
@@ -421,7 +417,7 @@ Route::group(['middleware' => ['auth']], function () {
 
                 Route::group([
                     'prefix' => 'sea-export',
-                    'as' => 'sea-export.'
+                    'as' => 'sea-export.',
                 ], function () {
                     Route::get('/', [SeaExportController::class, 'index'])->name('index');
                     Route::get('/list', [SeaExportController::class, 'list'])->name('list');
@@ -432,7 +428,7 @@ Route::group(['middleware' => ['auth']], function () {
 
                 Route::group([
                     'prefix' => 'air-import',
-                    'as' => 'air-import.'
+                    'as' => 'air-import.',
                 ], function () {
                     Route::get('/', [AirImportController::class, 'index'])->name('index');
                     Route::get('/list', [AirImportController::class, 'list'])->name('list');
@@ -443,7 +439,7 @@ Route::group(['middleware' => ['auth']], function () {
 
                 Route::group([
                     'prefix' => 'air-export',
-                    'as' => 'air-export.'
+                    'as' => 'air-export.',
                 ], function () {
                     Route::get('/', [AirExportController::class, 'index'])->name('index');
                     Route::get('/list', [AirExportController::class, 'list'])->name('list');
@@ -454,7 +450,7 @@ Route::group(['middleware' => ['auth']], function () {
 
                 Route::group([
                     'prefix' => 'warehouse',
-                    'as' => 'warehouse.'
+                    'as' => 'warehouse.',
                 ], function () {
                     Route::get('/', [WarehouseController::class, 'index'])->name('index');
                     Route::get('/list', [WarehouseController::class, 'list'])->name('list');
@@ -465,7 +461,7 @@ Route::group(['middleware' => ['auth']], function () {
 
                 Route::group([
                     'prefix' => 'trucking',
-                    'as' => 'trucking.'
+                    'as' => 'trucking.',
                 ], function () {
                     Route::get('/', [TruckingController::class, 'index'])->name('index');
                     Route::get('/list', [TruckingController::class, 'list'])->name('list');
@@ -476,7 +472,7 @@ Route::group(['middleware' => ['auth']], function () {
 
                 Route::group([
                     'prefix' => 'courier',
-                    'as' => 'courier.'
+                    'as' => 'courier.',
                 ], function () {
                     Route::get('/', [CourierController::class, 'index'])->name('index');
                     Route::get('/list', [CourierController::class, 'list'])->name('list');
@@ -488,14 +484,13 @@ Route::group(['middleware' => ['auth']], function () {
         });
     });
 
-
     Route::group([
         'prefix' => 'settings',
-        'as' => 'settings.'
+        'as' => 'settings.',
     ], function () {
         Route::group([
             'prefix' => 'role-permission',
-            'as' => 'role-permission.'
+            'as' => 'role-permission.',
         ], function () {
             Route::get('/', [RolePermissionController::class, 'index'])->name('index');
             Route::get('/list', [RolePermissionController::class, 'list'])->name('list');
@@ -513,7 +508,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::group([
             'prefix' => 'user',
-            'as' => 'user.'
+            'as' => 'user.',
         ], function () {
             Route::get('/', [UserController::class, 'index'])->name('index');
             Route::get('/list', [UserController::class, 'list'])->name('list');

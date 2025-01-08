@@ -30,8 +30,6 @@ final class SubAccountGroup extends Model
 
     /**
      * Get the account group that this sub-account group belongs to.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function accountGroup(): BelongsTo
     {
@@ -43,8 +41,6 @@ final class SubAccountGroup extends Model
 
     /**
      * Get the chart of accounts that belong to this sub-account group.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function chartOfAccounts(): HasMany
     {

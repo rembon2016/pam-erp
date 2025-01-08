@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Seeders\Finance\FixedAsset;
 
-use Illuminate\Database\Seeder;
 use App\Models\Finance\FixedAssetStatus;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
 
 final class FixedAssetStatusSeeder extends Seeder
 {
@@ -18,15 +17,15 @@ final class FixedAssetStatusSeeder extends Seeder
         $statuses = [
             [
                 'status_name' => 'Owned',
-                'created_at' => now()
+                'created_at' => now(),
             ],
             [
                 'status_name' => 'Rent',
-                'created_at' => now()
+                'created_at' => now(),
             ],
             [
                 'status_name' => 'Lease Purchase',
-                'created_at' => now()
+                'created_at' => now(),
             ],
         ];
 

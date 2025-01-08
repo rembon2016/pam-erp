@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use App\Models\Operation\Master\CustomerBilling;
 use App\Models\Finance\CustomerType as FinanceCustomerType;
-use App\Traits\HandleTableTimestamps;
+use App\Models\Operation\Master\CustomerBilling;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class Customer extends Model
@@ -42,8 +41,6 @@ final class Customer extends Model
 
     /**
      * Retrieves the currency associated with the current customer.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function currency(): BelongsTo
     {
@@ -56,8 +53,6 @@ final class Customer extends Model
 
     /**
      * Retrieves the billing customer associated with the current customer.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function billingCustomer(): HasOne
     {
@@ -70,8 +65,6 @@ final class Customer extends Model
 
     /**
      * Retrieves the customer types associated with the current customer.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function customerTypes(): HasMany
     {
@@ -84,8 +77,6 @@ final class Customer extends Model
 
     /**
      * Retrieves the customer address associated with the current customer.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function customerAddress(): HasOne
     {
@@ -98,8 +89,6 @@ final class Customer extends Model
 
     /**
      * Retrieves the customer VAT (Value Added Tax) information associated with the current customer.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function customerVat(): HasOne
     {
@@ -112,8 +101,6 @@ final class Customer extends Model
 
     /**
      * Retrieves the customer emails associated with the current customer.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function customerEmails(): HasMany
     {
@@ -126,8 +113,6 @@ final class Customer extends Model
 
     /**
      * Retrieves the customer sales associated with the current customer.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function customerSales(): HasOne
     {
@@ -140,8 +125,6 @@ final class Customer extends Model
 
     /**
      * Retrieves the customer bank associated with the current customer.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function customerBank(): HasOne
     {
@@ -154,8 +137,6 @@ final class Customer extends Model
 
     /**
      * Retrieves the customer accounts associated with the current customer.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function customerAccounts(): HasMany
     {

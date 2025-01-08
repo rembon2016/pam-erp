@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 final class ChartOfAccount extends Model
 {
@@ -30,8 +30,6 @@ final class ChartOfAccount extends Model
 
     /**
      * Get the account group that this chart of account belongs to.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function accountGroup(): BelongsTo
     {
@@ -44,8 +42,6 @@ final class ChartOfAccount extends Model
 
     /**
      * Get the sub-account group that this chart of account belongs to.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function subAccountGroup(): BelongsTo
     {
@@ -57,8 +53,6 @@ final class ChartOfAccount extends Model
 
     /**
      * Get the parent account that this chart of account belongs to.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function parentAccount(): BelongsTo
     {
@@ -70,8 +64,6 @@ final class ChartOfAccount extends Model
 
     /**
      * Get the child accounts that belong to this chart of account.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function childAccounts(): HasMany
     {

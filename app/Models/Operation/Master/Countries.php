@@ -19,14 +19,14 @@ class Countries extends Model
      *
      * @var bool
      */
-	public $timestamps = false;
+    public $timestamps = false;
 
     /**
      * The primary key column for the model.
      *
      * @var string
      */
-	protected $primaryKey = 'country_id';
+    protected $primaryKey = 'country_id';
 
     /**
      * Indicates that all fields are guarded from mass assignment except for the 'id' field.
@@ -35,11 +35,9 @@ class Countries extends Model
      */
     protected $guarded = ['id'];
 
-	/**
+    /**
      * Get the region that the country belongs to.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-    */
+     */
     public function region(): BelongsTo
     {
         return $this->belongsTo(

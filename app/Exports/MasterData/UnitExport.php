@@ -2,9 +2,9 @@
 
 namespace App\Exports\MasterData;
 
+use App\Service\Finance\MasterData\UnitService;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use App\Service\Finance\MasterData\UnitService;
 
 class UnitExport implements FromCollection
 {
@@ -12,12 +12,9 @@ class UnitExport implements FromCollection
 
     public function __construct()
     {
-        $this->unitService = new UnitService();
+        $this->unitService = new UnitService;
     }
 
-    /**
-    * @return \Illuminate\Support\Collection
-    */
     public function collection(): Collection
     {
         return $this->unitService->getUnitCollections();
@@ -26,7 +23,7 @@ class UnitExport implements FromCollection
     /**
      * Maps the given item to an array containing the unit code and unit name.
      *
-     * @param mixed $item The item to be mapped.
+     * @param  mixed  $item  The item to be mapped.
      * @return array An array containing the unit code and unit name.
      */
     public function map($item): array

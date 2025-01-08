@@ -26,15 +26,15 @@ final class StoreCustomerForBillingRequest extends FormRequest
         return [
             'customer_name' => 'required|string|max:255',
             'customer_address' => 'required',
-            'customer_code'=>'nullable',
+            'customer_code' => 'nullable',
             'customer_group_id' => 'nullable',
             'customer_type' => 'required',
-            'customer_email'=>'nullable',
-            'customer_phone'=>'nullable',
-            'customer_telp'=>'nullable',
-            'customer_tax_id'=>'nullable',
-            'customer_contact_person'=>'nullable',
-            'country_id'=>'required',
+            'customer_email' => 'nullable',
+            'customer_phone' => 'nullable',
+            'customer_telp' => 'nullable',
+            'customer_tax_id' => 'nullable',
+            'customer_contact_person' => 'nullable',
+            'country_id' => 'required',
         ];
     }
 
@@ -42,6 +42,6 @@ final class StoreCustomerForBillingRequest extends FormRequest
     {
         return [
             'customer_name' => 'Customer Name',
-         ];
+        ];
     }
 }

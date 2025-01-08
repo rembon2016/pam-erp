@@ -7,7 +7,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Public\UpdateProfileRequest;
 use App\Service\Public\ProfileService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -16,7 +15,7 @@ final class ProfileController extends Controller
     /**
      * Constructs a new instance of the ProfileController class, injecting the ProfileService dependency.
      *
-     * @param ProfileService $profileService The ProfileService instance to be used by this controller.
+     * @param  ProfileService  $profileService  The ProfileService instance to be used by this controller.
      */
     public function __construct(
         protected ProfileService $profileService
@@ -24,8 +23,6 @@ final class ProfileController extends Controller
 
     /**
      * Display the user's profile form.
-     *
-     * @return \Illuminate\View\View
      */
     public function index(): View
     {
@@ -36,9 +33,6 @@ final class ProfileController extends Controller
 
     /**
      * Update the user's profile information.
-     *
-     * @param \App\Http\Requests\Public\UpdateProfileRequest $request
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateProfileRequest $request): RedirectResponse
     {

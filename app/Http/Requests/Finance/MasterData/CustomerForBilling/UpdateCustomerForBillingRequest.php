@@ -32,6 +32,6 @@ final class UpdateCustomerForBillingRequest extends FormRequest
     {
         return [
             'customer_name' => 'Customer Name',
-         ];
+        ];
     }
 }

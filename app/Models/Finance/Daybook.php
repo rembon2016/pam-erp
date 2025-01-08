@@ -15,11 +15,13 @@ final class Daybook extends Model
         HasUuids,
         SoftDeletes;
 
-    protected $table = "finance.daybooks";
+    protected $table = 'finance.daybooks';
+
     protected $guarded = ['id'];
+
     protected $castss = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-        'deleted_at' => 'datetime'
+        'deleted_at' => 'datetime',
     ];
 }

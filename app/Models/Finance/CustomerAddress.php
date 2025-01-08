@@ -29,7 +29,7 @@ final class CustomerAddress extends Model
     public function casts(): array
     {
         return [
-            'contact_informations' => 'collection'
+            'contact_informations' => 'collection',
         ];
     }
 }

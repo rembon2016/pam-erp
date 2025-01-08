@@ -16,12 +16,12 @@ final class Port extends Model
 
     protected static function booted()
     {
-        static::creating(function ($model) {
+        self::creating(function ($model) {
             $model->date_created = now();
             $model->created_by = Auth::user()->email;
         });
 
-        static::updating(function ($model) {
+        self::updating(function ($model) {
             $model->date_modified = now();
             $model->modified_by = Auth::user()->email;
         });
@@ -78,8 +78,6 @@ final class Port extends Model
 
     /**
      * Get the country that the port belongs to.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function country(): BelongsTo
     {

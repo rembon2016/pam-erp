@@ -15,7 +15,7 @@ final class ResetPasswordController extends Controller
     /**
      * Constructs a new instance of the ResetPasswordController class.
      *
-     * @param ChangePasswordService $changePasswordService The service responsible for handling password changes.
+     * @param  ChangePasswordService  $changePasswordService  The service responsible for handling password changes.
      */
     public function __construct(
         protected ChangePasswordService $changePasswordService,
@@ -23,8 +23,6 @@ final class ResetPasswordController extends Controller
 
     /**
      * Renders the view for the change password form.
-     *
-     * @return \Illuminate\View\View
      */
     public function index(): View
     {
@@ -34,7 +32,7 @@ final class ResetPasswordController extends Controller
     /**
      * Updates the account password for the authenticated user.
      *
-     * @param \App\Http\Requests\Public\UpdatePasswordRequest $request The request containing the new password.
+     * @param  \App\Http\Requests\Public\UpdatePasswordRequest  $request  The request containing the new password.
      * @return \Illuminate\Http\RedirectResponse A redirect response with a success or error message.
      */
     public function update(UpdatePasswordRequest $request): RedirectResponse

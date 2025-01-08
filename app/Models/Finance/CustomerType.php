@@ -11,9 +11,9 @@ use Illuminate\Database\Eloquent\Model;
 
 final class CustomerType extends Model
 {
-    use HasFactory,
-        HasUuids,
-        HandleTableTimestamps;
+    use HandleTableTimestamps,
+        HasFactory,
+        HasUuids;
 
     /**
      * The database table name for the bank informations.

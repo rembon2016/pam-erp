@@ -62,15 +62,16 @@ final class ResponseJson
     /**
      * Returns a successful JSON response with the provided code, message, and data.
      *
-     * @param int $code The HTTP status code for the response.
-     * @param string $message The message to include in the response.
-     * @param mixed $data The data to include in the response.
+     * @param  int  $code  The HTTP status code for the response.
+     * @param  string  $message  The message to include in the response.
+     * @param  mixed  $data  The data to include in the response.
      * @return \Illuminate\Http\JsonResponse The JSON response.
+     *
      * @throws \InvalidArgumentException If the provided code is not a valid success code.
      */
-    public static function success(int $code = 200, string $message, mixed $data = []): JsonResponse
+    public static function success(int $code, string $message, mixed $data = []): JsonResponse
     {
-        if (!in_array($code, self::ACCEPTED_SUCCESS_CODE)) {
+        if (! in_array($code, self::ACCEPTED_SUCCESS_CODE)) {
             throw new \InvalidArgumentException('The provided code is not a valid success code.');
         }
 
@@ -89,15 +90,16 @@ final class ResponseJson
      * provided code should be a valid HTTP error status code, and the message and
      * data parameters will be included in the response.
      *
-     * @param int $code The HTTP status code for the error response.
-     * @param string $message The message to include in the error response.
-     * @param mixed $errors The error data to include in the error response.
+     * @param  int  $code  The HTTP status code for the error response.
+     * @param  string  $message  The message to include in the error response.
+     * @param  mixed  $errors  The error data to include in the error response.
      * @return \Illuminate\Http\JsonResponse The JSON error response.
+     *
      * @throws \InvalidArgumentException If the provided code is not a valid error code.
      */
-    public static function error(int $code = 400, string $message, mixed $errors = null): JsonResponse
+    public static function error(int $code, string $message, mixed $errors = null): JsonResponse
     {
-        if (!in_array($code, self::ACCEPTED_FAIL_CODE)) {
+        if (! in_array($code, self::ACCEPTED_FAIL_CODE)) {
             throw new \InvalidArgumentException('The provided code is not a valid fail code.');
         }
 

@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
-use Illuminate\Support\Str;
-use Illuminate\Http\Response;
 use App\Functions\ObjectResponse;
-use Illuminate\Support\Facades\DB;
 use App\Models\Finance\AccountGroup;
 use App\Models\Finance\ChartOfAccount;
-use Illuminate\Support\Facades\Pipeline;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Pipeline;
+use Illuminate\Support\Str;
 
 final class ChartOfAccountService
 {
@@ -21,7 +19,7 @@ final class ChartOfAccountService
         $data = ChartOfAccount::select([
             'id',
             'account_number as code',
-            'account_name'
+            'account_name',
         ])->orderBy('account_number', 'asc')->get();
 
         return $data;
@@ -46,7 +44,8 @@ final class ChartOfAccountService
     public function getCoaById(string $id): object
     {
         $coa = ChartOfAccount::where('id', $id)->first();
-        return !is_null($coa)
+
+        return ! is_null($coa)
             ? ObjectResponse::success(
                 message: __('crud.fetched', ['name' => 'Chart of Account']),
                 statusCode: Response::HTTP_OK,
@@ -86,8 +85,8 @@ final class ChartOfAccountService
                 $item['account_group_id'] = $dto['account_group_id'];
                 $item['sub_account_group_id'] = $dto['sub_account_group_id'];
                 $item['is_cashflow'] = $dto['is_cashflow'];
-                $item['cashflow_type'] = !empty($dto['cashflow_type']) ? $dto['cashflow_type'] : null;
-                $item['account_position'] = !empty($dto['account_position']) ? $dto['account_position'] : null;
+                $item['cashflow_type'] = ! empty($dto['cashflow_type']) ? $dto['cashflow_type'] : null;
+                $item['account_position'] = ! empty($dto['account_position']) ? $dto['account_position'] : null;
                 $item['created_at'] = now();
 
                 return $item;
@@ -111,7 +110,9 @@ final class ChartOfAccountService
     public function updateCoa(array $dto, string $id): object
     {
         $getCoaResponse = $this->getCoaById($id);
-        if (!$getCoaResponse->success) return $getCoaResponse;
+        if (! $getCoaResponse->success) {
+            return $getCoaResponse;
+        }
 
         try {
             $getCoaResponse->data->update($dto);
@@ -133,7 +134,9 @@ final class ChartOfAccountService
     public function deleteCoa(string $id): object
     {
         $getCoaResponse = $this->getCoaById($id);
-        if (!$getCoaResponse->success) return $getCoaResponse;
+        if (! $getCoaResponse->success) {
+            return $getCoaResponse;
+        }
 
         try {
             $getCoaResponse->data->delete();

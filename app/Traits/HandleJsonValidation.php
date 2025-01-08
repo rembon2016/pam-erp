@@ -13,12 +13,11 @@ trait HandleJsonValidation
     /**
      * pass if validation failed to public validator instance.
      *
-     * @param \Illuminate\Contracts\Validation\Validator $validator
      * @return void
      */
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
     {
-        if($this->is('api*')){
+        if ($this->is('api*')) {
             throw new ValidationException($validator, ResponseJson::error(
                 code: Response::HTTP_UNPROCESSABLE_ENTITY,
                 message: 'Invalid Request Payload',

@@ -4,30 +4,29 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
-use Illuminate\View\View;
-use App\Functions\Utility;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\Functions\ResponseJson;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Models\Finance\AgentContract;
-use Illuminate\Http\RedirectResponse;
-use Yajra\DataTables\Facades\DataTables;
 use App\Exports\MasterData\AgentContractExport;
-use App\Service\Finance\MasterData\PortService;
-use App\Service\Finance\MasterData\UnitService;
-use App\Service\Finance\MasterData\ChargeService;
+use App\Functions\ResponseJson;
+use App\Functions\Utility;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Finance\MasterData\AgentContract\StoreAgentContractRequest;
+use App\Http\Requests\Finance\MasterData\AgentContract\UpdateAgentContractRequest;
+use App\Models\Finance\AgentContract;
+use App\Service\Finance\MasterData\AgentContractService;
 use App\Service\Finance\MasterData\CarrierService;
+use App\Service\Finance\MasterData\ChargeService;
 use App\Service\Finance\MasterData\CountryService;
 use App\Service\Finance\MasterData\CurrencyService;
 use App\Service\Finance\MasterData\CustomerService;
+use App\Service\Finance\MasterData\PortService;
 use App\Service\Finance\MasterData\ServiceTypeService;
-use App\Service\Finance\MasterData\AgentContractService;
-use App\Http\Requests\Finance\MasterData\AgentContract\StoreAgentContractRequest;
-use App\Http\Requests\Finance\MasterData\AgentContract\UpdateAgentContractRequest;
+use App\Service\Finance\MasterData\UnitService;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 final class AgentContractController extends Controller
 {
@@ -49,6 +48,7 @@ final class AgentContractController extends Controller
     public function index(): View
     {
         $agent_contract_numbers = $this->agentContractService->getAgentContracts()->pluck('contract_no');
+
         return view('pages.finance.master-data.agent-contract.index', compact('agent_contract_numbers'));
     }
 
@@ -56,8 +56,6 @@ final class AgentContractController extends Controller
      * Retrieves a list of all roles and returns a JSON response for use in a data table.
      *
      * This method fetches all the roles from the database and returns a JSON response that can be used to populate a data table. The response includes an action column that contains a "View" button for each role.
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function list(): JsonResponse
     {
@@ -99,7 +97,9 @@ final class AgentContractController extends Controller
     public function show(string $id)
     {
         $getAgentContractResponse = $this->agentContractService->getAgentContractById($id);
-        if (!$getAgentContractResponse->success) return redirect()->to_route('finance.master-data.agent-contract.index')->with('toastError', $getAgentContractResponse->message);
+        if (! $getAgentContractResponse->success) {
+            return redirect()->to_route('finance.master-data.agent-contract.index')->with('toastError', $getAgentContractResponse->message);
+        }
 
         $currencies = $this->currrencyService->getCurrencies();
 
@@ -118,7 +118,7 @@ final class AgentContractController extends Controller
             'page' => 'Add Agent Contract',
             'action' => route('finance.master-data.agent-contract.store'),
             'method' => 'POST',
-         ];
+        ];
 
         $agent_contract = new AgentContract;
         $customers = $this->customerService->getCustomers()->get();
@@ -136,7 +136,7 @@ final class AgentContractController extends Controller
             ['label' => 'None of above (manual input)', 'value' => 'NONE'],
         ];
 
-         return view(
+        return view(
             'pages.finance.master-data.agent-contract.form',
             compact('data', 'agent_contract', 'customers', 'serviceVendors', 'countries', 'routedTransits', 'carriers', 'charges', 'units', 'currencies')
         );
@@ -163,13 +163,15 @@ final class AgentContractController extends Controller
     public function edit(string $id): View|RedirectResponse
     {
         $getAgentContractResponse = $this->agentContractService->getAgentContractById($id);
-        if (!$getAgentContractResponse->success) return to_route('finance.master-data.agent-contract.index')->with('toastError', $getAgentContractResponse->message);
+        if (! $getAgentContractResponse->success) {
+            return to_route('finance.master-data.agent-contract.index')->with('toastError', $getAgentContractResponse->message);
+        }
 
         $data = [
             'page' => 'Edit Agent Contract',
             'action' => route('finance.master-data.agent-contract.update', $id),
             'method' => 'PUT',
-         ];
+        ];
 
         $customers = $this->customerService->getCustomers()->get();
         $serviceVendors = $this->serviceTypeService->getServiceTypes();
@@ -187,7 +189,7 @@ final class AgentContractController extends Controller
             ['label' => 'None of above (manual input)', 'value' => 'NONE'],
         ];
 
-         return view('pages.finance.master-data.agent-contract.form', [
+        return view('pages.finance.master-data.agent-contract.form', [
             'data' => $data,
             'agent_contract' => $getAgentContractResponse->data,
             'customers' => $customers,
@@ -198,8 +200,8 @@ final class AgentContractController extends Controller
             'charges' => $charges,
             'units' => $units,
             'currencies' => $currencies,
-            'ports' => $ports
-         ]);
+            'ports' => $ports,
+        ]);
     }
 
     /**
@@ -237,20 +239,22 @@ final class AgentContractController extends Controller
     {
         $data = $this->agentContractService->getAgentContracts();
         $pdf = Pdf::loadView('exports.pdf.agent-contract', compact('data'));
-        $file_name = 'list_agent_contract_' . time() . '.pdf';
+        $file_name = 'list_agent_contract_'.time().'.pdf';
 
         return $pdf->download($file_name);
     }
 
     public function exportExcel()
     {
-        $file_name = 'list_agent_contract_' . time() . '.xlsx';
+        $file_name = 'list_agent_contract_'.time().'.xlsx';
+
         return Excel::download(new AgentContractExport, $file_name);
     }
 
     public function exportCsv()
     {
-        $file_name = 'list_agent_contract_' . time() . '.csv';
+        $file_name = 'list_agent_contract_'.time().'.csv';
+
         return Excel::download(new AgentContractExport, $file_name);
     }
 }

@@ -25,7 +25,7 @@ final class StoreNotLinkedCustomer extends FormRequest
     {
         return [
             'customer_id' => 'required',
-            'data' => 'required|json'
+            'data' => 'required|json',
         ];
     }
 }

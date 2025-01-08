@@ -28,7 +28,7 @@ final class UpdateCountryRequest extends FormRequest
             'country_name' => ['required', 'string', 'max:150'],
             'country_code' => ['required', 'string', 'max:5'],
             'region_id' => ['required', 'integer', 'exists:pgsql.master.region,region_id'],
-            'status' => ['nullable', 'in:1,2,3']
+            'status' => ['nullable', 'in:1,2,3'],
         ];
     }
 }

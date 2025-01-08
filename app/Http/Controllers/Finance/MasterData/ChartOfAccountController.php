@@ -4,26 +4,19 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
-use App\Http\Requests\Finance\MasterData\ChartOfAccount\StoreMultipleChartOfAccountRequest;
-use Illuminate\View\View;
-use App\Functions\Utility;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\Functions\ResponseJson;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\JsonResponse;
 use App\Constants\COA\CashflowType;
-use App\Http\Controllers\Controller;
-use App\Models\Finance\AccountGroup;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Http\RedirectResponse;
-use App\Models\Finance\SubAccountGroup;
-use Yajra\DataTables\Facades\DataTables;
-use App\Exports\MasterData\CountryExport;
 use App\Exports\MasterData\ChartOfAccountExport;
-use App\Service\Finance\MasterData\ChartOfAccountService;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Finance\MasterData\ChartOfAccount\StoreChartOfAccountRequest;
+use App\Http\Requests\Finance\MasterData\ChartOfAccount\StoreMultipleChartOfAccountRequest;
 use App\Http\Requests\Finance\MasterData\ChartOfAccount\UpdateChartOfAccountRequest;
+use App\Models\Finance\AccountGroup;
+use App\Models\Finance\SubAccountGroup;
+use App\Service\Finance\MasterData\ChartOfAccountService;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
 
 final class ChartOfAccountController extends Controller
 {
@@ -44,13 +37,13 @@ final class ChartOfAccountController extends Controller
             'page' => 'Add Chart of Account',
             'action' => route('finance.master-data.chart-of-account.store'),
             'method' => 'POST',
-         ];
+        ];
 
-         $accountGroups = AccountGroup::orderBy('code', 'ASC')->get();
-         $subAccountGroups = SubAccountGroup::orderBy('code', 'ASC')->get();
-         $cashflowTypes = CashflowType::COLLECT;
+        $accountGroups = AccountGroup::orderBy('code', 'ASC')->get();
+        $subAccountGroups = SubAccountGroup::orderBy('code', 'ASC')->get();
+        $cashflowTypes = CashflowType::COLLECT;
 
-        return view('pages.finance.master-data.chart-of-account.form', compact('data',  'accountGroups', 'subAccountGroups', 'cashflowTypes'));
+        return view('pages.finance.master-data.chart-of-account.form', compact('data', 'accountGroups', 'subAccountGroups', 'cashflowTypes'));
     }
 
     public function store(StoreChartOfAccountRequest $request): RedirectResponse
@@ -69,13 +62,13 @@ final class ChartOfAccountController extends Controller
             'page' => 'Add Multiple Chart of Account',
             'action' => route('finance.master-data.chart-of-account.store.multiple'),
             'method' => 'POST',
-         ];
+        ];
 
-         $accountGroups = AccountGroup::orderBy('code', 'ASC')->get();
-         $subAccountGroups = SubAccountGroup::orderBy('code', 'ASC')->get();
-         $cashflowTypes = CashflowType::COLLECT;
+        $accountGroups = AccountGroup::orderBy('code', 'ASC')->get();
+        $subAccountGroups = SubAccountGroup::orderBy('code', 'ASC')->get();
+        $cashflowTypes = CashflowType::COLLECT;
 
-        return view('pages.finance.master-data.chart-of-account.form-multiple', compact('data',  'accountGroups', 'subAccountGroups', 'cashflowTypes'));
+        return view('pages.finance.master-data.chart-of-account.form-multiple', compact('data', 'accountGroups', 'subAccountGroups', 'cashflowTypes'));
     }
 
     public function storeMultiple(StoreMultipleChartOfAccountRequest $request): RedirectResponse
@@ -94,11 +87,13 @@ final class ChartOfAccountController extends Controller
             'page' => 'Edit Chart of Account',
             'action' => route('finance.master-data.chart-of-account.update', $id),
             'method' => 'PUT',
-         ];
+        ];
 
         $getCoaResponse = $this->coaService->getCoaById($id);
 
-        if (!$getCoaResponse->success) return to_route('finance.master-data.chart-of-account.index')->with('toastError', $getCoaResponse->message);
+        if (! $getCoaResponse->success) {
+            return to_route('finance.master-data.chart-of-account.index')->with('toastError', $getCoaResponse->message);
+        }
 
         $accountGroups = AccountGroup::orderBy('code', 'ASC')->get();
         $subAccountGroups = SubAccountGroup::orderBy('code', 'ASC')->get();
@@ -146,7 +141,7 @@ final class ChartOfAccountController extends Controller
     {
         $accountGroups = $this->coaService->getAccountGroups();
         $pdf = Pdf::loadView('exports.pdf.chart-of-account', compact('accountGroups'));
-        $file_name = 'list_chart_of_accounts_' . time() . '.pdf';
+        $file_name = 'list_chart_of_accounts_'.time().'.pdf';
 
         return $pdf
             ->setPaper('a4', 'landscape')
@@ -161,7 +156,7 @@ final class ChartOfAccountController extends Controller
      */
     public function exportExcel()
     {
-        $file_name = 'list_chart_of_accounts_' . time() . '.xlsx';
+        $file_name = 'list_chart_of_accounts_'.time().'.xlsx';
 
         return Excel::download(new ChartOfAccountExport, $file_name);
     }
@@ -174,9 +169,8 @@ final class ChartOfAccountController extends Controller
      */
     public function exportCsv()
     {
-        $file_name = 'list_chart_of_accounts_' . time() . '.csv';
+        $file_name = 'list_chart_of_accounts_'.time().'.csv';
 
         return Excel::download(new ChartOfAccountExport, $file_name);
     }
-
 }

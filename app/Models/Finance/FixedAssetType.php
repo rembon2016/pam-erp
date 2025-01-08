@@ -14,7 +14,9 @@ final class FixedAssetType extends Model
         HasUuids;
 
     protected $table = 'finance.fixed_asset_types';
+
     protected $guarded = ['id'];
+
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Finance\MasterData\Customer;
 
-use Illuminate\Support\Facades\Auth;
 use App\Constants\Customer\CustomerType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 final class UpdateCustomerRequest extends FormRequest
 {
@@ -47,7 +47,7 @@ final class UpdateCustomerRequest extends FormRequest
             'currency_id' => ['nullable', 'string', 'exists:pgsql.finance.currencies,id'],
             'credit_limit' => ['nullable', 'string'],
             'customer_type' => ['required', 'array'],
-            'customer_type.*' => ['in:'.implode(',', CustomerType::COLLECT)]
+            'customer_type.*' => ['in:'.implode(',', CustomerType::COLLECT)],
         ];
     }
 
@@ -166,12 +166,6 @@ final class UpdateCustomerRequest extends FormRequest
             'customer_account.customer_account_id.*' => ['nullable', 'string'],
             'customer_account.chart_of_account_id' => ['nullable', 'array'],
             'customer_account.chart_of_account_id.*' => ['nullable', 'exists:pgsql.finance.chart_of_accounts,id'],
-            'customer_account.currency_id' => ['nullable', 'array'],
-            'customer_account.currency_id.*' => ['nullable', 'exists:pgsql.finance.currencies,id'],
-            'customer_account.lov_status' => ['nullable', 'array'],
-            'customer_account.lov_status.*' => ['nullable', 'string'],
-            'customer_account.notes' => ['nullable', 'array'],
-            'customer_account.notes.*' => ['nullable', 'string'],
         ];
     }
 }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Finance\MasterData\Port;
 
-use Illuminate\Support\Facades\Auth;
 use App\Models\Operation\Master\Port;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 final class UpdatePortRequest extends FormRequest
 {
@@ -42,7 +42,7 @@ final class UpdatePortRequest extends FormRequest
             'country_id' => ['required', 'string', 'exists:pgsql.master.countries,country_id'],
             'city' => ['required', 'string', 'max:100'],
             'note' => ['nullable', 'string'],
-            'status' => ['nullable', 'in:1,2,3']
+            'status' => ['nullable', 'in:1,2,3'],
         ];
     }
 }

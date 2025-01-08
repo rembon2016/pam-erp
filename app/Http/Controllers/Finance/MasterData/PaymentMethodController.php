@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
-use Illuminate\View\View;
-use App\Functions\Utility;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use App\Exports\MasterData\PaymentMethodExport;
 use App\Functions\ResponseJson;
+use App\Functions\Utility;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Finance\MasterData\PaymentMethod\GlobalPaymentMethodRequest;
+use App\Models\Finance\PaymentMethod;
+use App\Service\Finance\MasterData\PaymentMethodService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Models\Finance\PaymentMethod;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
-use App\Exports\MasterData\PaymentMethodExport;
-use App\Service\Finance\MasterData\PaymentMethodService;
-use App\Http\Requests\Finance\MasterData\PaymentMethod\GlobalPaymentMethodRequest;
 
 final class PaymentMethodController extends Controller
 {
@@ -32,6 +31,7 @@ final class PaymentMethodController extends Controller
     public function index(): View
     {
         $payment_terms = $this->paymentMethodService->getPaymentMethods()->pluck('payment_terms');
+
         return view('pages.finance.master-data.payment-method.index', compact('payment_terms'));
     }
 
@@ -39,8 +39,6 @@ final class PaymentMethodController extends Controller
      * Retrieves a list of all roles and returns a JSON response for use in a data table.
      *
      * This method fetches all the roles from the database and returns a JSON response that can be used to populate a data table. The response includes an action column that contains a "View" button for each role.
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function list(): JsonResponse
     {
@@ -72,11 +70,11 @@ final class PaymentMethodController extends Controller
             'page' => 'Add Payment Method',
             'action' => route('finance.master-data.payment-method.store'),
             'method' => 'POST',
-         ];
+        ];
 
         $payment_method = new PaymentMethod;
 
-         return view('pages.finance.master-data.payment-method.form', compact('data', 'payment_method'));
+        return view('pages.finance.master-data.payment-method.form', compact('data', 'payment_method'));
     }
 
     /**
@@ -100,18 +98,20 @@ final class PaymentMethodController extends Controller
     public function edit(string $id): View|RedirectResponse
     {
         $getPaymentMethodResponse = $this->paymentMethodService->getPaymentMethodById($id);
-        if (!$getPaymentMethodResponse->success) return to_route('finance.master-data.payment-method.index')->with('toastError', $getPaymentMethodResponse->message);
+        if (! $getPaymentMethodResponse->success) {
+            return to_route('finance.master-data.payment-method.index')->with('toastError', $getPaymentMethodResponse->message);
+        }
 
         $data = [
             'page' => 'Edit Payment Method',
             'action' => route('finance.master-data.payment-method.update', $id),
             'method' => 'PUT',
-         ];
+        ];
 
-         return view('pages.finance.master-data.payment-method.form', [
+        return view('pages.finance.master-data.payment-method.form', [
             'data' => $data,
             'payment_method' => $getPaymentMethodResponse->data,
-         ]);
+        ]);
     }
 
     /**
@@ -149,20 +149,22 @@ final class PaymentMethodController extends Controller
     {
         $data = $this->paymentMethodService->getPaymentMethods();
         $pdf = Pdf::loadView('exports.pdf.payment-method', compact('data'));
-        $file_name = 'list_payment_method_' . time() . '.pdf';
+        $file_name = 'list_payment_method_'.time().'.pdf';
 
         return $pdf->download($file_name);
     }
 
     public function exportExcel()
     {
-        $file_name = 'list_payment_method_' . time() . '.xlsx';
+        $file_name = 'list_payment_method_'.time().'.xlsx';
+
         return Excel::download(new PaymentMethodExport, $file_name);
     }
 
     public function exportCsv()
     {
-        $file_name = 'list_payment_method_' . time() . '.csv';
+        $file_name = 'list_payment_method_'.time().'.csv';
+
         return Excel::download(new PaymentMethodExport, $file_name);
     }
 }

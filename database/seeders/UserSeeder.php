@@ -23,7 +23,7 @@ final class UserSeeder extends Seeder
     /**
      * Creates a new user account with the specified role.
      *
-     * @param string $roleName The name of the role to assign to the new user.
+     * @param  string  $roleName  The name of the role to assign to the new user.
      * @return void
      */
     private function createUserAccount(string $roleName)

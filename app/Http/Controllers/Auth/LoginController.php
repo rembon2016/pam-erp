@@ -9,15 +9,15 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Service\Auth\LoginService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\View\View;
 
 final class LoginController extends Controller
 {
     /**
      * Constructs the LoginController with the provided LoginService.
      *
-     * @param LoginService $loginService The service responsible for handling login functionality.
+     * @param  LoginService  $loginService  The service responsible for handling login functionality.
      */
     public function __construct(
         protected LoginService $loginService
@@ -25,8 +25,6 @@ final class LoginController extends Controller
 
     /**
      * Renders the login view.
-     *
-     * @return \Illuminate\View\View
      */
     public function login(): View
     {
@@ -37,7 +35,7 @@ final class LoginController extends Controller
     /**
      * Authenticates the user based on the provided login request.
      *
-     * @param LoginRequest $request The login request containing the user's credentials.
+     * @param  LoginRequest  $request  The login request containing the user's credentials.
      * @return RedirectResponse A redirect response based on the authentication result.
      */
     public function authenticate(LoginRequest $request): RedirectResponse

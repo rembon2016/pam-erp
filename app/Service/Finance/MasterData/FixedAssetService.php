@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
-use Illuminate\Http\Response;
 use App\Functions\ObjectResponse;
 use App\Models\Finance\FixedAsset;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Response;
 
 final class FixedAssetService
 {
@@ -19,7 +19,8 @@ final class FixedAssetService
     public function getFixedAssetById(string $id): object
     {
         $data = FixedAsset::where('id', $id)->first();
-        return !is_null($data)
+
+        return ! is_null($data)
             ? ObjectResponse::success(__('crud.fetched', ['name' => 'Fixed Asset']), Response::HTTP_OK, $data)
             : ObjectResponse::error(__('crud.not_found', ['name' => 'Fixed Asset']), Response::HTTP_NOT_FOUND);
     }
@@ -46,7 +47,9 @@ final class FixedAssetService
     public function updateFixedAsset(string $id, array $dto): object
     {
         $getFixedAssetResponse = $this->getFixedAssetById($id);
-        if (!$getFixedAssetResponse->success) return $getFixedAssetResponse;
+        if (! $getFixedAssetResponse->success) {
+            return $getFixedAssetResponse;
+        }
 
         try {
             $getFixedAssetResponse->data->update($dto);
@@ -68,7 +71,9 @@ final class FixedAssetService
     public function deleteFixedAsset(string $id): object
     {
         $getFixedAssetResponse = $this->getFixedAssetById($id);
-        if (!$getFixedAssetResponse->success) return $getFixedAssetResponse;
+        if (! $getFixedAssetResponse->success) {
+            return $getFixedAssetResponse;
+        }
 
         try {
             $getFixedAssetResponse->data->delete();

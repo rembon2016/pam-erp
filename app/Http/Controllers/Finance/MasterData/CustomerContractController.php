@@ -4,27 +4,26 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
-use App\Service\Finance\MasterData\CustomerService;
-use Illuminate\View\View;
-use App\Functions\Utility;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\Functions\ResponseJson;
-use Barryvdh\DomPDF\Facade\Pdf;
-use App\Models\Finance\Customer;
-use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Models\Operation\Master\Unit;
-use Illuminate\Http\RedirectResponse;
-use App\Models\Finance\CustomerContract;
-use Yajra\DataTables\Facades\DataTables;
-use App\Service\Finance\MasterData\ChargeService;
 use App\Exports\MasterData\CustomerContractExport;
-use App\Service\Finance\MasterData\CurrencyService;
-use App\Service\Finance\MasterData\CustomerContractService;
+use App\Functions\ResponseJson;
+use App\Functions\Utility;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Finance\MasterData\CustomerContract\StoreCustomerContractRequest;
 use App\Http\Requests\Finance\MasterData\CustomerContract\UpdateCustomerContractRequest;
+use App\Models\Finance\CustomerContract;
+use App\Models\Operation\Master\Unit;
+use App\Service\Finance\MasterData\ChargeService;
+use App\Service\Finance\MasterData\CurrencyService;
+use App\Service\Finance\MasterData\CustomerContractService;
+use App\Service\Finance\MasterData\CustomerService;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 final class CustomerContractController extends Controller
 {
@@ -41,6 +40,7 @@ final class CustomerContractController extends Controller
     public function index(): View
     {
         $customers = $this->customerService->getCustomers()->get();
+
         return view('pages.finance.master-data.customer-contract.index', compact('customers'));
     }
 
@@ -48,41 +48,47 @@ final class CustomerContractController extends Controller
      * Retrieves a list of all roles and returns a JSON response for use in a data table.
      *
      * This method fetches all the roles from the database and returns a JSON response that can be used to populate a data table. The response includes an action column that contains a "View" button for each role.
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function list(): JsonResponse
     {
-        if (request()->ajax()) {
-            return DataTables::of($this->customerContractService->getCustomerContracts(request()->query()))
-                ->addIndexColumn()
-                ->addColumn('action', function ($item) {
-                    return Utility::generateTableActions([
-                        // 'edit' => route('finance.master-data.customer-contract.edit', $item->id),
-                        // 'delete' => route('finance.master-data.customer-contract.destroy', $item->id),
-                        'download' => '/',
-                    ]);
-                })
-                ->addColumn('customer_code', function ($item) {
-                    return $item->customer?->customer_code;
-                })
-                ->editColumn('customer_id', function ($item) {
-                    return $item->customer?->customer_name;
-                })
-                ->editColumn('contract_start', function ($item) {
-                    return $item->contract_start?->format("d/m/Y");
-                })
-                ->editColumn('contract_end', function ($item) {
-                    return $item->contract_end?->format("d/m/Y");
-                })
-                ->rawColumns(['action'])
-                ->toJson();
-        }
+        // if (request()->ajax()) {
+        return DataTables::of($this->customerContractService->getCustomerContracts(request()->query()))
+            ->addIndexColumn()
+            ->addColumn('action', function ($item) {
+                return Utility::generateTableActions([
+                    'detail' => route('finance.master-data.customer-contract.edit', $item->id),
+                    'edit' => route('finance.master-data.customer-contract.edit', $item->id),
+                    'download' => '/',
+                ]);
+            })
+            ->editColumn('contract_no', function ($item) {
+                $is_expired = now()->gt($item->contract_end);
+                $contract_no = $is_expired
+                    ? "<span class='badge badge-danger badge-lg'>{$item->contract_no}</span>"
+                    : $item->contract_no;
 
-        return ResponseJson::error(
-            Response::HTTP_UNAUTHORIZED,
-            'Access Unauthorized',
-        );
+                return $contract_no;
+            })
+            ->addColumn('customer_code', function ($item) {
+                return $item->customer?->customer_code;
+            })
+            ->editColumn('customer_id', function ($item) {
+                return $item->customer?->customer_name;
+            })
+            ->editColumn('contract_start', function ($item) {
+                return $item->contract_start?->format('d/m/Y');
+            })
+            ->editColumn('contract_end', function ($item) {
+                return $item->contract_end?->format('d/m/Y');
+            })
+            ->rawColumns(['action', 'contract_no'])
+            ->toJson();
+        // }
+
+        // return ResponseJson::error(
+        //     Response::HTTP_UNAUTHORIZED,
+        //     'Access Unauthorized',
+        // );
     }
 
     /**
@@ -94,17 +100,17 @@ final class CustomerContractController extends Controller
             'page' => 'Add Customer Contract',
             'action' => route('finance.master-data.customer-contract.store'),
             'method' => 'POST',
-         ];
+        ];
 
         $customer_contract = new CustomerContract;
         $customers = $this->customerService->getCustomers()->get();
         $charges = $this->chargeService->getCharges([
-            'is_agreed_rate' => true
+            'is_agreed_rate' => true,
         ]);
         $currencies = $this->currencyService->getCurrencies();
         $units = Unit::orderBy('unit_name', 'asc')->get();
 
-         return view('pages.finance.master-data.customer-contract.form', compact('data', 'customer_contract', 'customers', 'charges', 'currencies', 'units'));
+        return view('pages.finance.master-data.customer-contract.form', compact('data', 'customer_contract', 'customers', 'charges', 'currencies', 'units'));
     }
 
     /**
@@ -129,11 +135,13 @@ final class CustomerContractController extends Controller
     public function edit(string $id): View|RedirectResponse
     {
         $getCustomerContractResponse = $this->customerContractService->getCustomerContractById($id);
-        if (!$getCustomerContractResponse->success) return to_route('finance.master-data.customer-contract.index')->with('toastError', $getCustomerContractResponse->message);
+        if (! $getCustomerContractResponse->success) {
+            return to_route('finance.master-data.customer-contract.index')->with('toastError', $getCustomerContractResponse->message);
+        }
 
         $customers = $this->customerService->getCustomers()->get();
         $charges = $this->chargeService->getCharges([
-            'is_agreed_rate' => true
+            'is_agreed_rate' => true,
         ]);
         $currencies = $this->currencyService->getCurrencies();
         $units = Unit::orderBy('unit_name', 'asc')->get();
@@ -142,16 +150,16 @@ final class CustomerContractController extends Controller
             'page' => 'Edit Customer Contract',
             'action' => route('finance.master-data.customer-contract.update', $id),
             'method' => 'PUT',
-         ];
+        ];
 
-         return view('pages.finance.master-data.customer-contract.form', [
+        return view('pages.finance.master-data.customer-contract.form', [
             'data' => $data,
             'customer_contract' => $getCustomerContractResponse->data,
             'customers' => $customers,
             'charges' => $charges,
             'currencies' => $currencies,
             'units' => $units,
-         ]);
+        ]);
     }
 
     /**
@@ -190,20 +198,22 @@ final class CustomerContractController extends Controller
     {
         $data = $this->customerContractService->getCustomerContracts();
         $pdf = Pdf::loadView('exports.pdf.customer-contract', compact('data'));
-        $file_name = 'list_customer_contract_' . time() . '.pdf';
+        $file_name = 'list_customer_contract_'.time().'.pdf';
 
         return $pdf->download($file_name);
     }
 
     public function exportExcel()
     {
-        $file_name = 'list_customer_contract_' . time() . '.xlsx';
+        $file_name = 'list_customer_contract_'.time().'.xlsx';
+
         return Excel::download(new CustomerContractExport, $file_name);
     }
 
     public function exportCsv()
     {
-        $file_name = 'list_customer_contract_' . time() . '.csv';
+        $file_name = 'list_customer_contract_'.time().'.csv';
+
         return Excel::download(new CustomerContractExport, $file_name);
     }
 }

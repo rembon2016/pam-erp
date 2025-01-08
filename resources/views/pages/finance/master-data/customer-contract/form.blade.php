@@ -109,7 +109,7 @@
                 </table>
             </div>
             <div class="col-12">
-                <x:form.textarea label="Description" name="contract_description" placeholder="Type Description of Contract" required="true" :model="$customer_contract" />
+                <x:form.textarea label="Description" name="contract_description" placeholder="Type Description of Contract" :model="$customer_contract" />
             </div>
         </div>
         <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px">

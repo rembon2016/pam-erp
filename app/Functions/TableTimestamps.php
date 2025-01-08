@@ -11,7 +11,6 @@ final class TableTimestamps
     /**
      * Set the timestamps and soft deletes for the table.
      *
-     * @param \Illuminate\Database\Schema\Blueprint $table
      * @return void
      */
     public static function set(Blueprint $table)

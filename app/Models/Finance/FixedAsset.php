@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
-use App\Models\Finance\FixedAssetType;
-use Illuminate\Database\Eloquent\Model;
-use App\Models\Finance\FixedAssetStatus;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class FixedAsset extends Model
 {
@@ -18,8 +16,10 @@ final class FixedAsset extends Model
         HasUuids,
         SoftDeletes;
 
-    protected $table = "finance.fixed_assets";
+    protected $table = 'finance.fixed_assets';
+
     protected $guarded = ['id'];
+
     protected $casts = [
         'acquisition_date' => 'datetime',
         'created_at' => 'datetime',

@@ -15,14 +15,14 @@ final class Utility
             $tableActions .= self::generateActionButton($type, $url);
         }
 
-        $tableActions .= "</div>";
+        $tableActions .= '</div>';
 
         return $tableActions;
     }
 
     public static function generateActionButton(string $type, string $url)
     {
-        $button = "";
+        $button = '';
         switch ($type) {
             case 'edit':
                 $button = '<a href="'.$url.'" class="action-btn btn-icon"><i class="bx bx-edit text-action-warning"></i></a>';
@@ -73,26 +73,28 @@ final class Utility
             ->first();
 
         // Ambil angka terakhir dari ID sebelumnya
-        $lastNumber = $lastRecord ? (int) str_replace($prefix . '-', '', $lastRecord->$field) : 0;
+        $lastNumber = $lastRecord ? (int) str_replace($prefix.'-', '', $lastRecord->$field) : 0;
 
         // Hitung ID berikutnya
         $nextNumber = $lastNumber + 1;
 
         // Format ID baru dengan padding
-        $newId = $prefix . '-' . str_pad($nextNumber, $length - strlen($prefix) - 1, '0', STR_PAD_LEFT);
+        $newId = $prefix.'-'.str_pad($nextNumber, $length - strlen($prefix) - 1, '0', STR_PAD_LEFT);
 
         return $newId;
     }
 
     public static function getListOfMonths(): array
     {
-        $months = array_map(fn($month) => Carbon::create(null, $month)->format('F'), range(1, 12));
+        $months = array_map(fn ($month) => Carbon::create(null, $month)->format('F'), range(1, 12));
+
         return $months;
     }
 
     public static function getListOfYears($bottom_year = 10, $top_year = 0): array
     {
-        $years = array_map(fn($year) => Carbon::create($year, null)->format('Y'), range(date('Y') - $bottom_year, date('Y') + $top_year));
+        $years = array_map(fn ($year) => Carbon::create($year, null)->format('Y'), range(date('Y') - $bottom_year, date('Y') + $top_year));
+
         return $years;
     }
 }

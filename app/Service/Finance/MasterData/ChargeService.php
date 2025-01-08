@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
-use Illuminate\Http\Response;
-use App\Models\Finance\Charge;
 use App\Functions\ObjectResponse;
+use App\Models\Finance\Charge;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Response;
 
 final class ChargeService
 {
     public function getCharges($filters = []): Collection
     {
-        return Charge::when(!empty($filters['charge_code']), function ($query) use ($filters) {
+        return Charge::when(! empty($filters['charge_code']), function ($query) use ($filters) {
             return $query->where('charge_code', $filters['charge_code']);
-        })->when(!empty($filters['charge_name']), function ($query) use ($filters) {
+        })->when(! empty($filters['charge_name']), function ($query) use ($filters) {
             return $query->where('charge_name', $filters['charge_name']);
-        })->when(!empty($filters['is_agreed_rate']), function ($query) use ($filters) {
+        })->when(! empty($filters['is_agreed_rate']), function ($query) use ($filters) {
             return $query->where('is_agreed_rate', $filters['is_agreed_rate']);
         })->orderBy('charge_code', 'ASC')->get();
     }
@@ -25,7 +25,8 @@ final class ChargeService
     public function getChargeById(string $id): object
     {
         $data = Charge::where('id', $id)->first();
-        return !is_null($data)
+
+        return ! is_null($data)
             ? ObjectResponse::success(__('crud.fetched', ['name' => 'Charge']), Response::HTTP_OK, $data)
             : ObjectResponse::error(__('crud.not_found', ['name' => 'Charge']), Response::HTTP_NOT_FOUND);
     }
@@ -52,7 +53,9 @@ final class ChargeService
     public function updateCharge(string $id, array $dto): object
     {
         $getChargeResponse = $this->getChargeById($id);
-        if (!$getChargeResponse->success) return $getChargeResponse;
+        if (! $getChargeResponse->success) {
+            return $getChargeResponse;
+        }
 
         try {
             $getChargeResponse->data->update($dto);
@@ -74,7 +77,9 @@ final class ChargeService
     public function deleteCharge(string $id): object
     {
         $getChargeResponse = $this->getChargeById($id);
-        if (!$getChargeResponse->success) return $getChargeResponse;
+        if (! $getChargeResponse->success) {
+            return $getChargeResponse;
+        }
 
         try {
             $getChargeResponse->data->delete();

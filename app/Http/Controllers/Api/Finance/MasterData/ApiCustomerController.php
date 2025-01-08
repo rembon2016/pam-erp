@@ -8,7 +8,6 @@ use App\Functions\ResponseJson;
 use App\Http\Controllers\Controller;
 use App\Service\Finance\MasterData\CustomerService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 final class ApiCustomerController extends Controller
 {
@@ -19,6 +18,7 @@ final class ApiCustomerController extends Controller
     public function getCustomers(): JsonResponse
     {
         $customers = $this->customerService->getCustomers()->get();
+
         return ResponseJson::success(code: 200, message: __('crud.fetched', ['name' => 'Customer']), data: $customers);
     }
 

@@ -33,7 +33,7 @@ final class UpdateChartOfAccountRequest extends FormRequest
             'subledger_name' => ['nullable', 'string', 'max:255'],
             'is_cashflow' => ['required', 'boolean'],
             'cashflow_type' => ['nullable', 'string', 'in:'.implode(',', CashflowType::COLLECT)],
-            'account_position' => ['required', 'string', 'in:debit,credit']
+            'account_position' => ['required', 'string', 'in:debit,credit'],
         ];
     }
 }

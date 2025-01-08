@@ -14,7 +14,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('finance.customer_contract', function (Blueprint $table) {
-            if (!Schema::hasColumn('finance.customer_contract', 'contract_no')) $table->string('contract_no')->unique();
+            if (! Schema::hasColumn('finance.customer_contract', 'contract_no')) {
+                $table->string('contract_no')->unique();
+            }
         });
     }
 

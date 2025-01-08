@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
+use App\Exports\MasterData\ChargeExport;
+use App\Functions\ResponseJson;
+use App\Functions\Utility;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Finance\MasterData\Charge\GlobalChargeRequest;
+use App\Models\Finance\Charge;
+use App\Service\Finance\MasterData\ChargeService;
 use App\Service\Finance\MasterData\ChartOfAccountService;
 use App\Service\Finance\MasterData\UnitService;
-use Illuminate\View\View;
-use App\Functions\Utility;
-use Illuminate\Http\Request;
-use App\Models\Finance\Charge;
-use App\Functions\ResponseJson;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
-use App\Exports\MasterData\ChargeExport;
+use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
-use App\Service\Finance\MasterData\ChargeService;
-use App\Http\Requests\Finance\MasterData\Charge\GlobalChargeRequest;
 
 final class ChargeController extends Controller
 {
@@ -35,6 +34,7 @@ final class ChargeController extends Controller
     public function index(): View
     {
         $charges = $this->chargeService->getCharges();
+
         return view('pages.finance.master-data.charge.index', compact('charges'));
     }
 
@@ -42,13 +42,11 @@ final class ChargeController extends Controller
      * Retrieves a list of all roles and returns a JSON response for use in a data table.
      *
      * This method fetches all the roles from the database and returns a JSON response that can be used to populate a data table. The response includes an action column that contains a "View" button for each role.
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            return DataTables::of($this->chargeService->getCharges( request()->query()))
+            return DataTables::of($this->chargeService->getCharges(request()->query()))
                 ->addIndexColumn()
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([
@@ -84,13 +82,13 @@ final class ChargeController extends Controller
             'page' => 'Add Charge',
             'action' => route('finance.master-data.charge.store'),
             'method' => 'POST',
-         ];
+        ];
 
         $charge = new Charge;
         $accounts = $this->coaService->getChartOfAccounts();
         $units = $this->unitService->getUnitCollections();
 
-         return view('pages.finance.master-data.charge.form', compact('data', 'charge', 'accounts', 'units'));
+        return view('pages.finance.master-data.charge.form', compact('data', 'charge', 'accounts', 'units'));
     }
 
     /**
@@ -114,7 +112,9 @@ final class ChargeController extends Controller
     public function edit(string $id): View|RedirectResponse
     {
         $getChargeResponse = $this->chargeService->getChargeById($id);
-        if (!$getChargeResponse->success) return to_route('finance.master-data.charge.index')->with('toastError', $getChargeResponse->message);
+        if (! $getChargeResponse->success) {
+            return to_route('finance.master-data.charge.index')->with('toastError', $getChargeResponse->message);
+        }
 
         $accounts = $this->coaService->getChartOfAccounts();
         $units = $this->unitService->getUnitCollections();
@@ -123,14 +123,14 @@ final class ChargeController extends Controller
             'page' => 'Edit Charge',
             'action' => route('finance.master-data.charge.update', $id),
             'method' => 'PUT',
-         ];
+        ];
 
-         return view('pages.finance.master-data.charge.form', [
+        return view('pages.finance.master-data.charge.form', [
             'data' => $data,
             'charge' => $getChargeResponse->data,
             'accounts' => $accounts,
-            'units' => $units
-         ]);
+            'units' => $units,
+        ]);
     }
 
     /**
@@ -168,20 +168,22 @@ final class ChargeController extends Controller
     {
         $data = $this->chargeService->getCharges();
         $pdf = Pdf::loadView('exports.pdf.charge', compact('data'));
-        $file_name = 'list_charge_' . time() . '.pdf';
+        $file_name = 'list_charge_'.time().'.pdf';
 
         return $pdf->download($file_name);
     }
 
     public function exportExcel()
     {
-        $file_name = 'list_charge_' . time() . '.xlsx';
+        $file_name = 'list_charge_'.time().'.xlsx';
+
         return Excel::download(new ChargeExport, $file_name);
     }
 
     public function exportCsv()
     {
-        $file_name = 'list_charge_' . time() . '.csv';
+        $file_name = 'list_charge_'.time().'.csv';
+
         return Excel::download(new ChargeExport, $file_name);
     }
 }

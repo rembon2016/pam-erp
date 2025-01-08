@@ -32,7 +32,7 @@ final class StoreInvoiceRequest extends FormRequest
             'date_revenue_recognizition' => 'nullable|date',
             'data' => 'nullable|array',
             'total' => 'nullable|numeric|min:0',
-            'description' => 'nullable|string'
+            'description' => 'nullable|string',
         ];
     }
 

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('finance.costing_detail', function (Blueprint $table) {
-            if (!Schema::hasColumn('finance.costing_detail', 'type')) {
+            if (! Schema::hasColumn('finance.costing_detail', 'type')) {
                 $table->string('type')->nullable();
             }
         });

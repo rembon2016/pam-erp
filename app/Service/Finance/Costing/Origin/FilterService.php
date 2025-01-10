@@ -16,6 +16,7 @@ final class FilterService
     {
        $vessel = JobOrder::select('lr.vessel_id','lr.vessel_name')
             ->join('origin.loading_report as lr','lr.loading_id','=','origin.job_order.loading_plan_id')
+            ->join('master.offices as of','of.office_id','=','lr.origin_office_id')
             ->activeOrders('origin.job_order.status')
             ->when(!empty($filters['search']), function ($query) use ($filters) {
                 return $query->where('lr.vessel_name','ilike',"%".$filters['search']."%");
@@ -23,8 +24,8 @@ final class FilterService
             ->when(!empty($filters['voyage_number']), function ($query) use ($filters) {
                 return $query->where('lr.voyage_number','=',$filters['voyage_number']);
             })
-            ->when(!empty($filters['origin_id']), function ($query) use ($filters) {
-                return $query->where('lr.origin_office_id','=',$filters['origin_office_id']);
+            ->when(!empty($filters['city']), function ($query) use ($filters) {
+                return $query->where('of.city','=',$filters['city']);
             })
             ->groupBy(['lr.vessel_id', 'lr.vessel_name'])
             ->get();
@@ -40,6 +41,7 @@ final class FilterService
     {
         $voyages = JobOrder::select('lr.voyage_number')
             ->join('origin.loading_report as lr','lr.loading_id','=','origin.job_order.loading_plan_id')
+            ->join('master.offices as of','of.office_id','=','lr.origin_office_id')
             ->activeOrders('origin.job_order.status')
             ->when(!empty($filters['search']), function ($query) use ($filters) {
                 return $query->where('lr.voyage_number','ilike',"%".$filters['search']."%");
@@ -47,8 +49,8 @@ final class FilterService
             ->when(!empty($filters['vessel_id']), function ($query) use ($filters) {
                 return $query->where('lr.vessel_id','=',$filters['vessel_id']);
             })
-            ->when(!empty($filters['origin_id']), function ($query) use ($filters) {
-                return $query->where('lr.origin_office_id','=',$filters['origin_office_id']);
+            ->when(!empty($filters['city']), function ($query) use ($filters) {
+                return $query->where('lr.city','=',$filters['city']);
             })
             ->groupBy('lr.voyage_number')
             ->get();
@@ -62,7 +64,7 @@ final class FilterService
 
     public function getOrigin(?array $filters = [])
     {
-        $origin = JobOrder::select('lr.origin_office_id','of.city')
+        $origin = JobOrder::select('of.city')
             ->join('origin.loading_report as lr','lr.loading_id','=','origin.job_order.loading_plan_id')
             ->join('master.offices as of','of.office_id','=','lr.origin_office_id')
             ->activeOrders('origin.job_order.status')
@@ -75,7 +77,7 @@ final class FilterService
             ->when(!empty($filters['voyage_number']), function ($query) use ($filters) {
                 return $query->where('lr.voyage_number','=',$filters['voyage_number']);
             })
-            ->groupBy(['lr.origin_office_id', 'of.city'])
+            ->groupBy(['of.city'])
             ->get();
 
         return ObjectResponse::success(

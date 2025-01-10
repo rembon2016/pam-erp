@@ -14,6 +14,7 @@ final class FilterService
     {
        $vessel = JobOrder::select('lr.vessel_id','lr.vessel_name')
             ->join('dxb.loading_report as lr','lr.loading_id','=','dxb.job_order.loading_plan_id')
+            ->join('master.offices as of','of.office_id','=','lr.origin_office_id')
             ->groupBy('lr.vessel_id','lr.vessel_name')
             ->where('dxb.job_order.status','!=',3);
             if(!empty($request->search)){
@@ -22,8 +23,8 @@ final class FilterService
             if(!empty($request->voyage_number)){
                 $vessel->where('lr.voyage_number','=',$request->voyage_number);
             }
-            if(!empty($request->origin_id)){
-                $vessel->where('lr.origin_office_id','=',$request->origin_office_id);
+            if(!empty($request->city)){
+                $vessel->where('of.city','=',$request->city);
             }
             if(!empty($request->job_order_type)){
                 $vessel->where('dxb.job_order.job_order_type','=',$request->job_order_type);
@@ -36,6 +37,7 @@ final class FilterService
     {
         $voyage = JobOrder::select('lr.voyage_number')
             ->join('dxb.loading_report as lr','lr.loading_id','=','dxb.job_order.loading_plan_id')
+            ->join('master.offices as of','of.office_id','=','lr.origin_office_id')
             ->groupBy('lr.voyage_number')
             ->where('dxb.job_order.status','!=',3);
         if(!empty($request->search)){
@@ -44,8 +46,8 @@ final class FilterService
         if(!empty($request->vessel_id)){
             $voyage->where('lr.vessel_id','=',$request->vessel_id);
         }
-        if(!empty($request->origin_id)){
-            $voyage->where('lr.origin_office_id','=',$request->origin_office_id);
+        if(!empty($request->city)){
+            $voyage->where('of.city','=',$request->city);
         }
         if(!empty($request->job_order_type)){
             $vessel->where('dxb.job_order.job_order_type','=',$request->job_order_type);
@@ -56,13 +58,13 @@ final class FilterService
 
     public function getOrigin(Request $request)
     {
-        $origin = JobOrder::select('lr.origin_office_id','of.office_name')
+        $origin = JobOrder::select('of.city')
             ->join('dxb.loading_report as lr','lr.loading_id','=','dxb.job_order.loading_plan_id')
             ->join('master.office of','of.office_id','=','lr.origin_office_id')
-            ->groupBy('lr.origin_office_id')
+            ->groupBy('of.city')
             ->where('dxb.job_order.status','!=',3);
         if(!empty($request->search)){
-            $origin->where('of.office_name','ilike',"%".$request->search."%");
+            $origin->where('of.city','ilike',"%".$request->search."%");
         }
         if(!empty($request->vessel_id)){
             $origin->where('lr.vessel_id','=',$request->vessel_id);

@@ -24,6 +24,43 @@
             <div class="col-md-4">
                 <x:form.input label="Attachment" name="contract_file" placeholder="Choose File" type="file" :model="$customer_contract" file="true" />
             </div>
+            <div class="col-md-12">
+                <x:form.select label="Service" name="service_type" defaultOption="Select Service" :model="$customer_contract" required="true">
+                    @foreach ($services as $key => $name)
+                        <option value="{{ $key }}" @selected(old('service_type', $customer_contract?->service_type) == $key)>{{ $name }}</option>
+                    @endforeach
+                </x:form.select>
+            </div>
+            <div class="col-md-3">
+                <x:form.select2 label="Country Origin" class="country-list" name="origin_country_id" placeholder="Select Country" :model="$customer_contract" required="true" disabled="true">
+                    @foreach($countries as $country)
+                        <option value="{{ $country->country_id }}" @selected(old('origin_country_id', $customer_contract?->origin_country_id) == $country->country_id)>{{ $country->country_name }}</option>
+                    @endforeach
+                </x:form.select2>
+            </div>
+            <div class="col-md-3">
+                <div class="select-port">
+                    <x:form.select label="Port Origin" name="origin_port_id" placeholder="Select Port" :model="$customer_contract" required="true" disabled="true" />
+                </div>
+                <div class="free-text-port" style="display: none;">
+                    <x:form.input label="Port Origin" name="origin_port" placeholder="Port Origin" :model="$customer_contract" required="true" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <x:form.select2 label="Country Destination" class="country-list" name="destination_country_id" placeholder="Select Country" :model="$customer_contract" required="true" disabled="true">
+                    @foreach($countries as $country)
+                        <option value="{{ $country->country_id }}" @selected(old('destination_country_id', $customer_contract?->destination_country_id) == $country->country_id)>{{ $country->country_name }}</option>
+                    @endforeach
+                </x:form.select2>
+            </div>
+            <div class="col-md-3">
+                <div class="select-port">
+                    <x:form.select label="Port Destination" name="destination_port_id" placeholder="Select Port" :model="$customer_contract" required="true" disabled="true" />
+                </div>
+                <div class="free-text-port" style="display: none;">
+                    <x:form.input label="Port Destination" name="destination_port" placeholder="Port Destination" :model="$customer_contract" required="true" />
+                </div>
+            </div>
             <div class="col-md-6">
                 <x:form.select2 label="Charge Name" name="charge_id" placeholder="Select Charge" :model="$customer_contract" required="true">
                     @foreach ($charges as $charge)
@@ -141,6 +178,56 @@
         //     calculateAmount(rowItem);
         // })
 
+        function generatePortSelect2(id, transport_mode, country = '') {
+            generateAjaxSelect2(
+                id,
+                "{{ route('api.finance.master-data.port.list') }}" + `?transport_mode=${transport_mode}&country=${country}`,
+                "Select Port",
+                function (result) {
+                    return {
+                        results: result.data.map(item => ({
+                            id: item.port_id,
+                            text: `${item.port_code} - ${item.port_name}`
+                        })),
+                    };
+                }
+            );
+        }
+
+        function togglePortCountry(service_type) {
+            const is_disabled = service_type === '' || service_type === null || service_type === undefined;
+
+            if (is_disabled) {
+                $("#origin_country_id").val('')
+                $("#origin_port_id").val('')
+                $("#destination_country_id").val('')
+                $("#destination_port_id").val('')
+            } else {
+                $("#origin_country_id").prop('disabled', is_disabled)
+                $("#origin_port_id").prop('disabled', is_disabled)
+                $("#destination_country_id").prop('disabled', is_disabled)
+                $("#destination_port_id").prop('disabled', is_disabled)
+
+                $("#origin_port").prop('disabled', true);
+                $("#destination_port").prop('disabled', true);
+
+                let transport_mode = service_type.split('_')[0].toUpperCase();
+                if (transport_mode === 'AIR' || transport_mode === 'SEA') {
+                    generatePortSelect2('origin_port_id', transport_mode, $("#origin_country_id").val() ?? '');
+                    generatePortSelect2('destination_port_id', transport_mode, $("#destination_country_id").val() ?? '');
+                } else {
+                    $("#origin_port_id").prop('disabled', true)
+                    $("#destination_port_id").prop('disabled', true)
+
+                    $("#origin_port").prop('disabled', is_disabled);
+                    $("#destination_port").prop('disabled', is_disabled);
+
+                    $(".select-port").hide();
+                    $(".free-text-port").show();
+                }
+            }
+        }
+
         $(document).ready(function () {
             // Protect Contract Start and Contract End Date
             $("#contract_start").change(function (event) {
@@ -152,7 +239,27 @@
                 } else {
                     $("#contract_end").removeAttr('min');
                 }
-            })
+            });
+
+            const service_type = $("#service_type").val();
+            togglePortCountry(service_type);
+
+            $("#service_type").change(function (event) {
+                const current_service_type = $(this).val();
+                togglePortCountry(current_service_type);
+            });
+
+            $(".country-list").change(function (event) {
+                const elementId = $(this).attr('id');
+                const country_type = elementId.split('_')[0];
+                const current_service_type = $("#service_type").val();
+
+                const current_transport_mode = current_service_type.split('_')[0].toUpperCase();
+                const country_id = $(this).val();
+                const selectId = `${country_type}_port_id`;
+
+                generatePortSelect2(selectId, current_transport_mode, country_id);
+            });
         });
     </script>
 @endpush

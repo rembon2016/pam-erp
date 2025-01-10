@@ -5,6 +5,7 @@
     'required' => $required ?? false,
     'model' => $model ?? null,
     'multiple' => $multiple ?? false,
+    'class' => $class ?? '',
     'id' => $id ?? $name,
     'allowClear' => $allowClear ?? false,
     'isFilterShipment' => $isFilterShipment ?? false,
@@ -13,7 +14,7 @@
 
 <div class='{{ $isFilterShipment ? "filter-group" : "mb-3" }}'>
     <label for="#{{ $name }}" class='form-label {{ $required ? 'required' : '' }}'>{{ $label }}</label>
-    <select class="@if($errors->has($name)) is-invalid @endif form-select {{ $isFilterShipment ? 'filter-shipment-select' : '' }}"
+    <select class="@if($errors->has($name)) is-invalid @endif form-select {{ $isFilterShipment ? 'filter-shipment-select' : '' }} {{ $class }}"
         name="{{ $name }}"
         {{ $required ? 'required' : '' }}
         id="{{ isset($id) ? $id : $name }}"

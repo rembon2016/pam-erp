@@ -102,4 +102,65 @@
         ]
     ])
     @endcomponent
+
+    <script>
+        $(document).ready(function () {
+            ['vessel_filter', 'voyage_filter', 'origin_filter'].forEach(item => {
+                let columnName = item.replace('_filter', '');
+                let labelName = 'Select ' + columnName.charAt(0).toUpperCase() + columnName.slice(1);
+                let url = "{{ route('api.finance.costing.sea_air.data_filter', ['column' => ':column']) }}";
+                url = url.replace(':column', columnName);
+
+                generateAjaxSelect2(
+                    item,
+                    url,
+                    labelName,
+                    function (result) {
+                        return {
+                            results: getMappingResult(columnName, result),
+                        };
+                    }
+                );
+            })
+
+            $('#vessel_filter').on('change', function () {
+                let value = $(this).val();
+                let url = "{{ route('api.finance.costing.sea_air.voyage', ['vesselId' => ':vesselId']) }}";
+                url = url.replace(':vesselId', value);
+
+                $.ajax({
+                    url: url,
+                    success: function (res) {
+                        $('#voyage_filter').empty();
+                        $('#voyage_filter').select2('destroy');
+                        $('#voyage_filter').append('<option value="">Select Voyage</option>');
+                        res.data.forEach(item => {
+                            $('#voyage_filter').append('<option value="' + item.voyage_number + '">' + item.voyage_number + '</option>');
+                        });
+
+                        $('#voyage_filter').select2();
+                    }
+                })
+            })
+        })
+
+        function getMappingResult(columnName, result) {
+            if (columnName === 'vessel') {
+                return result.data.map(item => ({
+                    id: item.vessel_id,
+                    text: item.vessel_name
+                }));
+            } else if (columnName === 'voyage') {
+                return result.data.map(item => ({
+                    id: item.voyage_number,
+                    text: item.voyage_number
+                }));
+            } else if (columnName === 'origin') {
+                return result.data.map(item => ({
+                    id: item.city,
+                    text: item.city
+                }));
+            }
+        }
+    </script>
 @endpush

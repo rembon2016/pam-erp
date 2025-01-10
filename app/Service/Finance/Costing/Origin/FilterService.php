@@ -81,7 +81,7 @@ final class FilterService
             ->get();
 
         return ObjectResponse::success(
-            message: __('crud.fetched', ['name' => 'Voyage']),
+            message: __('crud.fetched', ['name' => 'Origin']),
             statusCode: Response::HTTP_OK,
             data: $origin,
         );
@@ -115,9 +115,7 @@ final class FilterService
             $carrier->where('lp.mawb_number','=',$request->mawb_number);
         }
         $carrier = $carrier->get();
+
         return $carrier;
     }
-
-
-
 }

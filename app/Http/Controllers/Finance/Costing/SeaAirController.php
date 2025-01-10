@@ -42,15 +42,14 @@ final class SeaAirController extends Controller
 
     public function index(FilterService $filterService): View
     {
-        dd($filterService->getOrigin());
         return view('pages.finance.costing.sea-air.index');
     }
 
     public function list(Request $request): JsonResponse
     {
-        if (request()->ajax()) {
-            $data = $this->dataService->getJobOrders($request);
+        $data = $this->dataService->getJobOrders($request);
 
+        if (request()->ajax()) {
             return DataTables::of($data['data'])
                 ->addIndexColumn()
                 ->with([

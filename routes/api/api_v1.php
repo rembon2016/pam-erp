@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Finance\Billing\ApiInvoiceController;
+use App\Http\Controllers\Api\Finance\Costing\ApiSeaAirController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiPortController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiChargeController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiCountryController;
@@ -88,7 +89,8 @@ Route::group([
             'prefix' => 'sea-air',
             'as' => 'sea_air.'
         ], function () {
-            // Route::get('/')
+            Route::get('/{column}/get', [ApiSeaAirController::class, 'getSeaData'])->name('data_filter');
+            Route::get('/{vesselId}/get-voyage', [ApiSeaAirController::class, 'getVoyageByVessel'])->name('voyage');
         });
 
     });

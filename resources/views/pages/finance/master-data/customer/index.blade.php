@@ -42,13 +42,13 @@
 
     <x:layout.modal.filter-modal>
         <div class="col-12">
-            <x:form.select label="Customer Name" name="customer_name" defaultOption="Select Customer Name" :model="request()">
+            <x:form.select2 label="Customer Name" name="customer_name" placeholder="Select Customer Name" :model="request()">
                 @foreach ($customers->pluck('customer_name') as $item)
                     <option value="{{ $item }}" @selected($item == request()->query('customer_name'))>
                         {{ $item }}
                     </option>
                 @endforeach
-            </x:form.select>
+            </x:form.select2>
             <x:form.select2 label="Customer Type" name="customer_type_name[]" placeholder="Select Customer Type" :model="request()" multiple="true">
                 @foreach ($customerTypes as $type)
                     <option value="{{ $type }}" @selected($type == request()->query('customer_type_name'))>

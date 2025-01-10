@@ -25,6 +25,11 @@ class JobOrder extends Model
 
     protected $fillable = ['job_order_id', 'job_order_code', 'date_order', 'description', 'vessel_id', 'vessel_name_voyage', 'created_by', 'modified_by', 'job_order_type', 'status', 'origin_id', 'origin_name', 'eta_dubai', 'destination_charges', 'loading_plan_id', 'feeder_vessel_name', 'voyage_number_feeder'];
 
+    public function scopeActiveOrders($query, string $column = null)
+    {
+        return $query->where($column ?? 'status', '!=', 3);
+    }
+
     public function costing()
     {
         return $this->belongsTo(Costing::class, 'job_order_id', 'job_order_id');

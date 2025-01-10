@@ -45,56 +45,61 @@
 
     <x:layout.modal.filter-modal>
         <div class="col-12">
-
+            <x:form.select label="Vessel" name="vessel_filter" placeholder="Select Vessel Name" :model="request()">
+            </x:form.select>
+            <x:form.select label="Voyage" name="voyage_filter" placeholder="Select Voyage Name" :model="request()">
+            </x:form.select>
+            <x:form.select label="Origin" name="origin_filter" placeholder="Select Origin Name" :model="request()">
+            </x:form.select>
         </div>
     </x:layout.modal.filter-modal>
 @endsection
 
 @push('js')
-@component('components.layout.table.datatable', [
-    'id' => 'sea-air_table',
-    'url' => route('finance.costing.sea-air.list'), // Sesuaikan route sesuai kebutuhan Anda
-    'dynamicParam' => true,
-    'columns' => [
-        [
-            "data" => "DT_RowIndex",
-            "name" => "DT_RowIndex",
-            "orderable" => false,
-            "searchable" => false
-        ],
-        [
-            "data" => "job_order_code",
-            "name" => "job_order_code",
-        ],
-        [
-            "data" => "vessel",
-            "name" => "vessel",
-        ],
-        [
-            "data" => "voyage",
-            "name" => "voyage",
-        ],
-        [
-            "data" => "eta",
-            "name" => "eta",
-        ],
-        [
-            "data" => "origin",
-            "name" => "origin",
-        ],
-        [
-            "data" => "job_order_date",
-            "name" => "job_order_date",
-        ],
-        [
-            "data" => "status",
-            "name" => "status",
-        ],
-        [
-            "data" => "action",
-            "name" => "action",
-        ],
-    ]
-])
-@endcomponent
+    @component('components.layout.table.datatable', [
+        'id' => 'sea-air_table',
+        'url' => route('finance.costing.sea-air.list'), // Sesuaikan route sesuai kebutuhan Anda
+        'dynamicParam' => true,
+        'columns' => [
+            [
+                "data" => "DT_RowIndex",
+                "name" => "DT_RowIndex",
+                "orderable" => false,
+                "searchable" => false
+            ],
+            [
+                "data" => "job_order_code",
+                "name" => "job_order_code",
+            ],
+            [
+                "data" => "vessel",
+                "name" => "vessel",
+            ],
+            [
+                "data" => "voyage",
+                "name" => "voyage",
+            ],
+            [
+                "data" => "eta",
+                "name" => "eta",
+            ],
+            [
+                "data" => "origin",
+                "name" => "origin",
+            ],
+            [
+                "data" => "job_order_date",
+                "name" => "job_order_date",
+            ],
+            [
+                "data" => "status",
+                "name" => "status",
+            ],
+            [
+                "data" => "action",
+                "name" => "action",
+            ],
+        ]
+    ])
+    @endcomponent
 @endpush

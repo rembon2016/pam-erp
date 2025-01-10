@@ -69,4 +69,18 @@ Route::group([
         });
 
     });
+
+    Route::group([
+        'prefix' => 'costing',
+        'as' => 'costing.'
+    ], function () {
+
+        Route::group([
+            'prefix' => 'sea-air',
+            'as' => 'sea_air.'
+        ], function () {
+            // Route::get('/')
+        });
+
+    });
 });

@@ -4,68 +4,84 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\Costing\Origin;
 
-
-use App\Models\Operation\Origin\JobOrder;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Functions\ObjectResponse;
+use App\Models\Operation\Origin\JobOrder;
 
 final class FilterService
 {
-    public function getVessel(Request $request)
+    public function getVessel(?array $filters = []): object
     {
        $vessel = JobOrder::select('lr.vessel_id','lr.vessel_name')
             ->join('origin.loading_report as lr','lr.loading_id','=','origin.job_order.loading_plan_id')
-            ->groupBy('lr.vessel_id','lr.vessel_name')
-            ->where('origin.job_order.status','!=',3);
-            if(!empty($request->search)){
-                $vessel->where('lr.vessel_name','ilike',"%".$request->search."%");
-            }
-            if(!empty($request->voyage_number)){
-                $vessel->where('lr.voyage_number','=',$request->voyage_number);
-            }
-            if(!empty($request->origin_id)){
-                $vessel->where('lr.origin_office_id','=',$request->origin_office_id);
-            }
-        $vessel = $vessel->get();
-        return $vessel;
+            ->activeOrders('origin.job_order.status')
+            ->when(!empty($filters['search']), function ($query) use ($filters) {
+                return $query->where('lr.vessel_name','ilike',"%".$filters['search']."%");
+            })
+            ->when(!empty($filters['voyage_number']), function ($query) use ($filters) {
+                return $query->where('lr.voyage_number','=',$filters['voyage_number']);
+            })
+            ->when(!empty($filters['origin_id']), function ($query) use ($filters) {
+                return $query->where('lr.origin_office_id','=',$filters['origin_office_id']);
+            })
+            ->groupBy(['lr.vessel_id', 'lr.vessel_name'])
+            ->get();
+
+        return ObjectResponse::success(
+            message: __('crud.fetched', ['name' => 'Vessel']),
+            statusCode: Response::HTTP_OK,
+            data: $vessel,
+        );
     }
 
-    public function getVoyage(Request $request)
+    public function getVoyage(?array $filters = [])
     {
-        $voyage = JobOrder::select('lr.voyage_number')
+        $voyages = JobOrder::select('lr.voyage_number')
             ->join('origin.loading_report as lr','lr.loading_id','=','origin.job_order.loading_plan_id')
+            ->activeOrders('origin.job_order.status')
+            ->when(!empty($filters['search']), function ($query) use ($filters) {
+                return $query->where('lr.voyage_number','ilike',"%".$filters['search']."%");
+            })
+            ->when(!empty($filters['vessel_id']), function ($query) use ($filters) {
+                return $query->where('lr.vessel_id','=',$filters['vessel_id']);
+            })
+            ->when(!empty($filters['origin_id']), function ($query) use ($filters) {
+                return $query->where('lr.origin_office_id','=',$filters['origin_office_id']);
+            })
             ->groupBy('lr.voyage_number')
-            ->where('origin.job_order.status','!=',3);
-        if(!empty($request->search)){
-            $voyage->where('lr.voyage_number','ilike',"%".$request->search."%");
-        }
-        if(!empty($request->vessel_id)){
-            $voyage->where('lr.vessel_id','=',$request->vessel_id);
-        }
-        if(!empty($request->origin_id)){
-            $voyage->where('lr.origin_office_id','=',$request->origin_office_id);
-        }
-        $voyage = $voyage->get();
-        return $voyage;
+            ->get();
+
+        return ObjectResponse::success(
+            message: __('crud.fetched', ['name' => 'Voyage']),
+            statusCode: Response::HTTP_OK,
+            data: $voyages,
+        );
     }
 
-    public function getOrigin(Request $request)
+    public function getOrigin(?array $filters = [])
     {
-        $origin = JobOrder::select('lr.origin_office_id','of.office_name')
+        $origin = JobOrder::select('lr.origin_office_id','of.city')
             ->join('origin.loading_report as lr','lr.loading_id','=','origin.job_order.loading_plan_id')
-            ->join('master.office of','of.office_id','=','lr.origin_office_id')
-            ->groupBy('lr.origin_office_id')
-            ->where('origin.job_order.status','!=',3);
-        if(!empty($request->search)){
-            $origin->where('of.office_name','ilike',"%".$request->search."%");
-        }
-        if(!empty($request->vessel_id)){
-            $origin->where('lr.vessel_id','=',$request->vessel_id);
-        }
-        if(!empty($request->voyage_number)){
-            $origin->where('lr.voyage_number','=',$request->voyage_number);
-        }
-        $origin = $origin->get();
-        return $origin;
+            ->join('master.offices as of','of.office_id','=','lr.origin_office_id')
+            ->activeOrders('origin.job_order.status')
+            ->when(!empty($filters['search']), function ($query) use ($filters) {
+                return $query->where('of.city','ilike',"%".$filters['search']."%");
+            })
+            ->when(!empty($filters['vessel_id']), function ($query) use ($filters) {
+                return $query->where('lr.vessel_id','=',$filters['vessel_id']);
+            })
+            ->when(!empty($filters['voyage_number']), function ($query) use ($filters) {
+                return $query->where('lr.voyage_number','=',$filters['voyage_number']);
+            })
+            ->groupBy(['lr.origin_office_id', 'of.city'])
+            ->get();
+
+        return ObjectResponse::success(
+            message: __('crud.fetched', ['name' => 'Voyage']),
+            statusCode: Response::HTTP_OK,
+            data: $origin,
+        );
     }
 
 

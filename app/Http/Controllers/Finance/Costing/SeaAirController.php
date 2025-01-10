@@ -23,6 +23,7 @@ use App\Models\Operation\Origin\ShippingInstruction;
 use App\Service\Finance\Costing\CostingService;
 use App\Service\Finance\Costing\DataService;
 use App\Service\Finance\Costing\Origin\CalculationService;
+use App\Service\Finance\Costing\Origin\FilterService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -39,8 +40,9 @@ final class SeaAirController extends Controller
 
     ) {}
 
-    public function index(): View
+    public function index(FilterService $filterService): View
     {
+        dd($filterService->getOrigin());
         return view('pages.finance.costing.sea-air.index');
     }
 

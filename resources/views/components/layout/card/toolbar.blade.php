@@ -43,7 +43,7 @@
         @endif
     </div>
 
-    @if (!empty($exportExcelLink) && !empty($exportCsvLink) && !empty($exportPdfLink))
+    @if (!empty($exportExcelLink) || !empty($exportCsvLink) || !empty($exportPdfLink))
     <button type="button" class="btn btn-sm custom-btn custom-btn-outline-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
         <i class="bx bx-export"></i>
         Export
@@ -83,7 +83,7 @@
     @endif
 
     <div class="d-flex align-items-center position-relative my-1">
-        
+
         <span class="svg-icon svg-icon-1 position-absolute ms-4">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                 xmlns="http://www.w3.org/2000/svg">

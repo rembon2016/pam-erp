@@ -8,7 +8,7 @@
 
     <x:layout.card.wrapper>
         <x:layout.card.header>
-         
+
             <x:layout.card.toolbar
                 createDataLink="{{ route('finance.master-data.customer.create') }}"
                 exportExcelLink="{{ route('finance.master-data.customer.export.excel') }}"
@@ -21,7 +21,7 @@
             <div class="filter-result mb-3" style="display: none;">
                 <span class="fw-bold">Filter by </span>
                 <span class="filter-values"></span>
-               
+
                 {{-- <button class="btn-clear clear-filter">Clear Filter</button> --}}
             </div>
             <x:layout.table.wrapper id="customer_table">
@@ -104,7 +104,7 @@
 
         let customerTypeNameElement = $('select[name="customer_type_name[]"]')
         let customerNameElement = $('select[name="customer_name"]')
-        
+
         // Apply styles to select2
         $('ul.select2-selection__rendered').attr('style', multipleSelectStyles.join(' '))
 

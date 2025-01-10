@@ -6,6 +6,7 @@ namespace App\Service\Finance\Costing\Origin;
 
 
 use App\Models\Operation\Origin\JobOrder;
+use App\Models\Operation\Origin\JobOrderAir;
 use Illuminate\Http\Request;
 
 final class FilterService
@@ -67,6 +68,38 @@ final class FilterService
         $origin = $origin->get();
         return $origin;
     }
+
+    public function getMawb(Request $request)
+    {
+        $mawb = JobOrderAir::select('lp.mawb_number')
+                ->join('origin.loading_plan as lp','lp.plan_id','=','origin.job_order_air.loading_plan_id')
+                ->groupBy('mawb_number')
+                ->where('origin.job_order_air.status','!=',3);
+        if(!empty($request->search)){
+            $mawb->where('lp.mawb_number','ilike',"%".$request->search."%");
+        }
+        if(!empty($request->carrier_id)){
+            $mawb->where('lp.carrier_id','=',$request->carrier_id);
+        }
+        $mawb = $mawb->get();
+    }
+
+    public function getCarrier(Request $request)
+    {
+        $carrier = JobOrderAir::select('lp.carrier_id','lp.carrier_name')
+                ->join('origin.loading_plan as lp','lp.plan_id','=','origin.job_order_air.loading_plan_id')
+                ->groupBy('lp.carrier_id','lp.carrier_name')
+                ->where('origin.job_order_air.status','!=',3);
+        if(!empty($request->search)){
+            $carrier->where('lp.carrier_name','ilike',"%".$request->search."%");
+        }
+        if(!empty($request->mawb_number)){
+            $carrier->where('lp.mawb_number','=',$request->mawb_number);
+        }
+        $carrier = $carrier->get();
+        return $carrier;
+    }
+
 
 
 }

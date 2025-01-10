@@ -140,6 +140,13 @@ final class CustomerType
     const DUBAI_PORT = 'Dubai Port';
 
     /**
+     * Represents the 'Dubai Port' constant value.
+     *
+     * @var string
+     */
+    const OFFICE = 'Office';
+
+    /**
      * Represents the 'Customer Types' constant value.
      *
      * @var array

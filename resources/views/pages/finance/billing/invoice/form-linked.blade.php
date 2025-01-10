@@ -80,7 +80,7 @@
                             'text' => 'Generate Invoices',
                             'icon' => 'bx bx-plus'
                         ]"
-                        withFilter="true"
+                        :withFilter="false"
                     />
                 </div>
             </div>

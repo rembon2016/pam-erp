@@ -76,7 +76,7 @@
                         :customLink="[
                             'text' => 'Update Multiple Billing Customer'
                         ]"
-                        withFilter="true"
+                        :withFilter="false"
                     />
                 </div>
             </div>

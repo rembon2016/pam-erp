@@ -22,7 +22,7 @@
                 <x:form.input label="Contract Validity To" name="contract_end" placeholder="Select Date" type="date" :model="$customer_contract" required="true" />
             </div>
             <div class="col-md-4">
-                <x:form.input label="Attachment" name="contract_file" placeholder="Choose File" type="file" :model="$customer_contract" file="true" />
+                <x:form.input label="Attachment" name="contract_file" placeholder="Choose File" type="file" :model="$customer_contract" file="true" multiple="true" />
             </div>
             <div class="col-md-12">
                 <x:form.select label="Service" name="service_type" defaultOption="Select Service" :model="$customer_contract" required="true">
@@ -178,7 +178,24 @@
         //     calculateAmount(rowItem);
         // })
 
-        function generatePortSelect2(id, transport_mode, country = '') {
+        function generatePortSelect2(id, country_type, transport_mode, country = '') {
+            let defaultValue = [];
+            @if ($data['method'] == "PUT")
+                if (country_type == 'origin') {
+                    defaultValue = [
+                        "{{ $customer_contract?->origin_port_id }}",
+                        "{{ $customer_contract?->originPort?->port_code }} - {{ $customer_contract?->originPort?->port_name }}",
+                    ];
+                } else {
+                    defaultValue = [
+                        "{{ $customer_contract?->destination_port_id }}",
+                        "{{ $customer_contract?->destinationPort?->port_code }} - {{ $customer_contract?->destinationPort?->port_name }}",
+                    ];
+                }
+            @endif
+
+            console.log(defaultValue);
+
             generateAjaxSelect2(
                 id,
                 "{{ route('api.finance.master-data.port.list') }}" + `?transport_mode=${transport_mode}&country=${country}`,
@@ -190,7 +207,8 @@
                             text: `${item.port_code} - ${item.port_name}`
                         })),
                     };
-                }
+                },
+                defaultValue
             );
         }
 
@@ -213,8 +231,11 @@
 
                 let transport_mode = service_type.split('_')[0].toUpperCase();
                 if (transport_mode === 'AIR' || transport_mode === 'SEA') {
-                    generatePortSelect2('origin_port_id', transport_mode, $("#origin_country_id").val() ?? '');
-                    generatePortSelect2('destination_port_id', transport_mode, $("#destination_country_id").val() ?? '');
+                    $(".free-text-port").hide();
+                    $(".select-port").show();
+
+                    generatePortSelect2('origin_port_id', 'origin', transport_mode, $("#origin_country_id").val() ?? '');
+                    generatePortSelect2('destination_port_id', 'destination', transport_mode, $("#destination_country_id").val() ?? '');
                 } else {
                     $("#origin_port_id").prop('disabled', true)
                     $("#destination_port_id").prop('disabled', true)
@@ -258,7 +279,7 @@
                 const country_id = $(this).val();
                 const selectId = `${country_type}_port_id`;
 
-                generatePortSelect2(selectId, current_transport_mode, country_id);
+                generatePortSelect2(selectId, country_type, current_transport_mode, country_id);
             });
         });
     </script>

@@ -51,18 +51,13 @@ final class FilterService
                 return $query->where('lr.origin_office_id','=',$filters['origin_office_id']);
             })
             ->groupBy('lr.voyage_number')
-            ->where('origin.job_order.status','!=',3);
-        if(!empty($request->search)){
-            $voyage->where('lr.voyage_number','ilike',"%".$request->search."%");
-        }
-        if(!empty($request->vessel_id)){
-            $voyage->where('lr.vessel_id','=',$request->vessel_id);
-        }
-        if(!empty($request->origin_id)){
-            $voyage->where('lr.origin_office_id','=',$request->origin_office_id);
-        }
-        $voyage = $voyage->get();
-        return $voyage;
+            ->get();
+
+        return ObjectResponse::success(
+            message: __('crud.fetched', ['name' => 'Voyage']),
+            statusCode: Response::HTTP_OK,
+            data: $voyages,
+        );
     }
 
     public function getOrigin(?array $filters = [])
@@ -104,7 +99,7 @@ final class FilterService
         }
         $mawb = $mawb->get();
     }
-    
+
     public function getCarrier(Request $request)
     {
         $carrier = JobOrderAir::select('lp.carrier_id','lp.carrier_name')

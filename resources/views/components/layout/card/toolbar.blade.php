@@ -43,7 +43,7 @@
         @endif
     </div>
 
-    @if (!empty($exportExcelLink) && !empty($exportCsvLink) && !empty($exportPdfLink))
+    @if (!empty($exportExcelLink) || !empty($exportCsvLink) || !empty($exportPdfLink))
     <button type="button" class="btn btn-sm custom-btn custom-btn-outline-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
         <i class="bx bx-export"></i>
         Export

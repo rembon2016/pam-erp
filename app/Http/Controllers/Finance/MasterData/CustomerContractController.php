@@ -4,26 +4,27 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
-use App\Exports\MasterData\CustomerContractExport;
-use App\Functions\ResponseJson;
+use Illuminate\View\View;
 use App\Functions\Utility;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Finance\MasterData\CustomerContract\StoreCustomerContractRequest;
-use App\Http\Requests\Finance\MasterData\CustomerContract\UpdateCustomerContractRequest;
-use App\Models\Finance\CustomerContract;
-use App\Models\Operation\Master\Unit;
-use App\Service\Finance\MasterData\ChargeService;
-use App\Service\Finance\MasterData\CurrencyService;
-use App\Service\Finance\MasterData\CustomerContractService;
-use App\Service\Finance\MasterData\CustomerService;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\View\View;
+use App\Functions\ResponseJson;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Operation\Master\Unit;
+use Illuminate\Http\RedirectResponse;
+use App\Models\Finance\CustomerContract;
 use Yajra\DataTables\Facades\DataTables;
+use App\Service\Finance\MasterData\ChargeService;
+use App\Exports\MasterData\CustomerContractExport;
+use App\Service\Finance\MasterData\CountryService;
+use App\Service\Finance\MasterData\CurrencyService;
+use App\Service\Finance\MasterData\CustomerService;
+use App\Service\Finance\MasterData\CustomerContractService;
+use App\Http\Requests\Finance\MasterData\CustomerContract\StoreCustomerContractRequest;
+use App\Http\Requests\Finance\MasterData\CustomerContract\UpdateCustomerContractRequest;
 
 final class CustomerContractController extends Controller
 {
@@ -31,7 +32,8 @@ final class CustomerContractController extends Controller
         protected CustomerContractService $customerContractService,
         protected ChargeService $chargeService,
         protected CurrencyService $currencyService,
-        protected CustomerService $customerService
+        protected CustomerService $customerService,
+        protected CountryService $countryService
     ) {}
 
     /**
@@ -109,8 +111,10 @@ final class CustomerContractController extends Controller
         ]);
         $currencies = $this->currencyService->getCurrencies();
         $units = Unit::orderBy('unit_name', 'asc')->get();
+        $services = CustomerContract::SERVICES;
+        $countries = $this->countryService->getCountries();
 
-        return view('pages.finance.master-data.customer-contract.form', compact('data', 'customer_contract', 'customers', 'charges', 'currencies', 'units'));
+        return view('pages.finance.master-data.customer-contract.form', compact('data', 'customer_contract', 'customers', 'charges', 'currencies', 'units', 'services', 'countries'));
     }
 
     /**
@@ -145,6 +149,8 @@ final class CustomerContractController extends Controller
         ]);
         $currencies = $this->currencyService->getCurrencies();
         $units = Unit::orderBy('unit_name', 'asc')->get();
+        $services = CustomerContract::SERVICES;
+        $countries = $this->countryService->getCountries();
 
         $data = [
             'page' => 'Edit Customer Contract',
@@ -159,6 +165,8 @@ final class CustomerContractController extends Controller
             'charges' => $charges,
             'currencies' => $currencies,
             'units' => $units,
+            'services' => $services,
+            'countries' => $countries,
         ]);
     }
 

@@ -62,10 +62,10 @@
                                     <label for="" class="form-label required mb-0">Account Name</label>
                                 </th>
                                 <th>
-                                    <label for="" class="form-label required mb-0">Subledger Code</label>
+                                    <label for="" class="form-label mb-0">Subledger Code</label>
                                 </th>
                                 <th>
-                                    <label for="" class="form-label required mb-0">Subledger Name</label>
+                                    <label for="" class="form-label mb-0">Subledger Name</label>
                                 </th>
                                 <th>&nbsp;</th>
                             </tr>
@@ -95,13 +95,13 @@
                                         @enderror
                                     </td>
                                     <td>
-                                        <input type="text" name="accounts[{{ $index }}][subledger_code]" id="" class="form-control @error('accounts.{{ $index }}.subledger_code') is-invalid @enderror" placeholder="Type Subledger Code" value="{{ $item['subledger_code'] }}" required>
+                                        <input type="text" name="accounts[{{ $index }}][subledger_code]" id="" class="form-control @error('accounts.{{ $index }}.subledger_code') is-invalid @enderror" placeholder="Type Subledger Code" value="{{ $item['subledger_code'] }}">
                                         @error('accounts.{{ $index }}.subledger_code')
                                             <div class="invalid-feedback">{{ $messages }}</div>
                                         @enderror
                                     </td>
                                     <td>
-                                        <input type="text" name="accounts[{{ $index }}][subledger_name]" id="" class="form-control @error('accounts.{{ $index }}.subledger_name') is-invalid @enderror" placeholder="Type Subledger Name" value="{{ $item['subledger_name'] }}" required>
+                                        <input type="text" name="accounts[{{ $index }}][subledger_name]" id="" class="form-control @error('accounts.{{ $index }}.subledger_name') is-invalid @enderror" placeholder="Type Subledger Name" value="{{ $item['subledger_name'] }}">
                                         @error('accounts.{{ $index }}.subledger_name')
                                             <div class="invalid-feedback">{{ $messages }}</div>
                                         @enderror

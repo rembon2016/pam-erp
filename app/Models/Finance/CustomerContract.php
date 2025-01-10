@@ -38,6 +38,37 @@ final class CustomerContract extends Model
     public $incrementing = false;
 
     const FOLDER_NAME = 'customer-contract/file';
+    const CROSS_AIR = 'air';
+    const SEA_AIR = 'sea_air';
+    const SEA_IMPORT = 'sea_import';
+    const SEA_EXPORT = 'sea_export';
+    const AIR_IMPORT = 'air_import';
+    const AIR_EXPORT = 'air_export';
+    const WAREHOUSE = 'warehouse';
+    const TRUCKING = 'trucking';
+    const COURIER = 'courier';
+
+    const SERVICES = [
+        self::CROSS_AIR => 'Cross Air',
+        self::SEA_AIR => 'Sea Air',
+        self::SEA_IMPORT => 'Sea Import',
+        self::SEA_EXPORT => 'Sea Export',
+        self::AIR_IMPORT => 'Air Import',
+        self::AIR_EXPORT => 'Air Export',
+        self::WAREHOUSE => 'Warehouse',
+        self::TRUCKING => 'Trucking',
+        self::COURIER => 'Courier',
+    ];
+
+    const DUBAI_BUSINESS_SERVICES = [
+        self::SEA_IMPORT => 'Sea Import',
+        self::SEA_EXPORT => 'Sea Export',
+        self::AIR_IMPORT => 'Air Import',
+        self::AIR_EXPORT => 'Air Export',
+        self::WAREHOUSE => 'Warehouse',
+        self::TRUCKING => 'Trucking',
+        self::COURIER => 'Courier',
+    ];
 
     public function getFileURL()
     {

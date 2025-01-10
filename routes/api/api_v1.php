@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Api\Finance\Billing\ApiInvoiceController;
-use App\Http\Controllers\Api\Finance\GeneralWise\ApiGeneralWiseController;
-use App\Http\Controllers\Api\Finance\MasterData\ApiChargeController;
-use App\Http\Controllers\Api\Finance\MasterData\ApiCustomerController;
-use App\Http\Controllers\Api\Finance\MasterData\ApiPortController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\Finance\Billing\ApiInvoiceController;
+use App\Http\Controllers\Api\Finance\MasterData\ApiPortController;
+use App\Http\Controllers\Api\Finance\MasterData\ApiChargeController;
+use App\Http\Controllers\Api\Finance\MasterData\ApiCountryController;
+use App\Http\Controllers\Api\Finance\MasterData\ApiCustomerController;
+use App\Http\Controllers\Api\Finance\GeneralWise\ApiGeneralWiseController;
 
 Route::get('/', fn () => 'Api @v1')->name('index');
 
@@ -34,6 +35,14 @@ Route::group([
             'as' => 'port.',
         ], function () {
             Route::get('/', [ApiPortController::class, 'list'])->name('list');
+        });
+
+        // Port Route
+        Route::group([
+            'prefix' => 'country',
+            'as' => 'country.',
+        ], function () {
+            Route::get('/', [ApiCountryController::class, 'list'])->name('list');
         });
 
         // Charge Route

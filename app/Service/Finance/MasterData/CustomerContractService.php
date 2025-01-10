@@ -40,13 +40,6 @@ final class CustomerContractService
     {
         DB::beginTransaction();
         try {
-            // $dto['contract_no'] = Utility::generateUniqueCode(
-            //     table: (new CustomerContract)->getTable(),
-            //     field: "contract_no",
-            //     length: 6,
-            //     prefix: "Q"
-            // );
-
             $getCustomerResponse = $this->customerService->getCustomerById($dto['customer_id']);
             if (! $getCustomerResponse->success) {
                 return $getCustomerResponse;

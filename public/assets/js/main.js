@@ -18,7 +18,7 @@ function debounce(func, delay) {
     };
 }
 
-async function generateAjaxSelect2(id, url, placeholder, processFunction) {
+async function generateAjaxSelect2(id, url, placeholder, processFunction, selectedValue = []) {
     const currentUrl = new URL(window.location.href)
     const queryParamValue = currentUrl.searchParams.get(id);
 
@@ -34,9 +34,15 @@ async function generateAjaxSelect2(id, url, placeholder, processFunction) {
     });
 
 
-    if (queryParamValue) {
-        const option = new Option(queryParamValue, queryParamValue, true, true);
+    if (selectedValue.length > 1) {
+        const option = new Option(selectedValue[1], selectedValue[0], true, true);
         $(`#${id}`).append(option).trigger('change');
+    } else {
+        console.log(queryParamValue);
+        if (queryParamValue) {
+            const option = new Option(queryParamValue, queryParamValue, true, true);
+            $(`#${id}`).append(option).trigger('change');
+        }
     }
 }
 

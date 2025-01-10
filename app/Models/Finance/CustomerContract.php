@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
+use App\Models\Operation\Master\Port;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Operation\Master\Countries;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class CustomerContract extends Model
 {
@@ -88,6 +90,26 @@ final class CustomerContract extends Model
     public function charge()
     {
         return $this->hasOne(Charge::class, 'id', 'charge_id');
+    }
+
+    public function originCountry()
+    {
+        return $this->hasOne(Countries::class, 'country_id', 'origin_country_id');
+    }
+
+    public function destinationCountry()
+    {
+        return $this->hasOne(Countries::class, 'country_id', 'destination_country_id');
+    }
+
+    public function originPort()
+    {
+        return $this->hasOne(Port::class, 'port_id', 'origin_port_id');
+    }
+
+    public function destinationPort()
+    {
+        return $this->hasOne(Port::class, 'port_id', 'destination_port_id');
     }
 
     public function getChargeRate($quantity)

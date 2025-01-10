@@ -100,6 +100,8 @@ final class FilterService
             $mawb->where('lp.carrier_id','=',$request->carrier_id);
         }
         $mawb = $mawb->get();
+
+        return $mawb;
     }
 
     public function getCarrier(Request $request)

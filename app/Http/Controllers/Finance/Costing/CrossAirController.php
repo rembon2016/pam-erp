@@ -52,8 +52,18 @@ final class CrossAirController extends Controller
             $joborder->when(! empty($request['search']['value']), function ($query) use ($request) {
                 $search = $request['search']['value'];
 
-                $q->where('job_order_code', 'ilike', "%{$search}%");
+                $query->where('job_order_code', 'ilike', "%{$search}%");
 
+            });
+            $joborder->when(!empty($request['mawb_number_filter']), function ($query) use ($request) {
+                return $query->whereHas('loadingplan', function ($query) use ($request) {
+                    return $query->where('mawb_number', 'ilike', "%{$request['mawb_number_filter']}%");
+                });
+            });
+            $joborder->when(!empty($request['carrier_filter']), function ($query) use ($request) {
+                return $query->whereHas('loadingplan', function ($query) use ($request) {
+                    return $query->where('carrier_id', $request['carrier_filter']);
+                });
             });
             $count_filter = $joborder->count();
             $data = $joborder->skip($start)->take($pageSize)->orderBy('date_order', 'DESC')->get();

@@ -43,6 +43,17 @@ final class SeaImportController extends Controller
                 $query->where('job_order_code', 'ilike', "%{$search}%");
 
             });
+            $joborder->when(!empty(request()->get('vessel_filter')), function ($query) {
+                return $query->where('vessel_id', request()->get('vessel_filter'));
+            });
+            $joborder->when(!empty(request()->get('voyage_filter')), function ($query) {
+                return $query->whereHas('loading', function ($query) {
+                    return $query->where('voyage_number', request()->get('voyage_filter'));
+                });
+            });
+            $joborder->when(!empty(request()->get('origin_filter')), function ($query) {
+                return $query->where('origin_name', 'ilike', "%".request()->get('origin_filter')."%");
+            });
             $count_filter = $joborder->count();
             $data = $joborder->skip($start)->take($pageSize)->orderBy('date_order', 'DESC')->get();
 

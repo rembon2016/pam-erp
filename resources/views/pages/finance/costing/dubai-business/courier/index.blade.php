@@ -43,7 +43,13 @@
 
     <x:layout.modal.filter-modal>
         <div class="col-12">
-
+            <x:form.select label="Status" name="status_filter" defaultOption="Select Status" :model="request()">
+                @foreach (['open', 'closed'] as $status)
+                    <option value="{{ $status }}" @selected($status == request()->query('customer_name'))>
+                        {{ str($status)->title() }}
+                    </option>
+                @endforeach
+            </x:form.select>
         </div>
     </x:layout.modal.filter-modal>
 @endsection

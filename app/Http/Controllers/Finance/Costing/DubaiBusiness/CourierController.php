@@ -43,6 +43,17 @@ final class CourierController extends Controller
                 $query->where('job_order_code', 'ilike', "%{$search}%");
 
             });
+            $joborder->when(!empty(request()->get('status_filter')), function ($query) {
+                return $query->whereHas('costing', function ($query) {
+                    return $query
+                        ->when(request()->get('status_filter') == 'open', function ($query) {
+                            return $query->whereIn('status', [1, 3]);
+                        })
+                        ->when(request()->get('status_filter') == 'closed', function ($query) {
+                            return $query->where('status', 2);
+                        });
+                });
+            });
             $count_filter = $joborder->count();
             $data = $joborder->skip($start)->take($pageSize)->orderBy('date_order', 'DESC')->get();
 

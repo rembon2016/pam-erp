@@ -79,38 +79,40 @@ final class FilterService
         return $origin;
     }
 
-    public function getMawb(Request $request)
+    public function getMawb(?array $filters = [])
     {
         $mawb = JobOrder::select('lp.mawb_number')
                 ->join('dxb.loading_plan as lp','lp.plan_id','=','dxb.job_order_air.loading_plan_id')
                 ->groupBy('mawb_number')
                 ->where('dxb.job_order_air.status','!=',3);
-        if(!empty($request->search)){
-            $mawb->where('lp.mawb_number','ilike',"%".$request->search."%");
+        if(!empty($filters['search'])){
+            $mawb->where('lp.mawb_number','ilike',"%".$filters['search']."%");
         }
-        if(!empty($request->carrier_id)){
-            $mawb->where('lp.carrier_id','=',$request->carrier_id);
+        if(!empty($filters['carrier_id'])){
+            $mawb->where('lp.carrier_id','=',$filters['carrier_id']);
         }
-        if(!empty($request->job_order_type)){
-            $vessel->where('dxb.job_order.job_order_type','=',$request->job_order_type);
+        if(!empty($filters['job_order_type'])){
+            $mawb->where('dxb.job_order.job_order_type','=',$filters['job_order_type']);
         }
         $mawb = $mawb->get();
+
+        return $mawb;
     }
 
-    public function getCarrier(Request $request)
+    public function getCarrier(?array $filters = [])
     {
         $carrier = JobOrder::select('lp.carrier_id','lp.carrier_name')
                 ->join('dxb.loading_plan as lp','lp.plan_id','=','dxb.job_order_air.loading_plan_id')
                 ->groupBy('lp.carrier_id','lp.carrier_name')
                 ->where('dxb.job_order_air.status','!=',3);
-        if(!empty($request->search)){
-            $carrier->where('lp.carrier_name','ilike',"%".$request->search."%");
+        if(!empty($filters['search'])){
+            $carrier->where('lp.carrier_name','ilike',"%".$filters['search']."%");
         }
-        if(!empty($request->mawb_number)){
-            $carrier->where('lp.mawb_number','=',$request->mawb_number);
+        if(!empty($filters['mawb_number'])){
+            $carrier->where('lp.mawb_number','=',$filters['mawb_number']);
         }
-        if(!empty($request->job_order_type)){
-            $vessel->where('dxb.job_order.job_order_type','=',$request->job_order_type);
+        if(!empty($filters['job_order_type'])){
+            $carrier->where('dxb.job_order.job_order_type','=',$filters['job_order_type']);
         }
         $carrier = $carrier->get();
         return $carrier;

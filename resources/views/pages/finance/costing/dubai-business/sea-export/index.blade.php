@@ -45,7 +45,12 @@
 
     <x:layout.modal.filter-modal>
         <div class="col-12">
-
+            <x:form.select label="Vessel" name="vessel_filter" placeholder="Select Vessel Name" :model="request()">
+            </x:form.select>
+            <x:form.select label="Voyage" name="voyage_filter" placeholder="Select Voyage Name" :model="request()">
+            </x:form.select>
+            <x:form.select label="Origin" name="origin_filter" placeholder="Select Origin Name" :model="request()">
+            </x:form.select>
         </div>
     </x:layout.modal.filter-modal>
 @endsection

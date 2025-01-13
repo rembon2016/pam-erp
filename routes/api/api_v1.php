@@ -7,6 +7,10 @@ use App\Http\Controllers\Api\Finance\Costing\ApiSeaAirController;
 use App\Http\Controllers\Api\Finance\Billing\ApiInvoiceController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiPortController;
 use App\Http\Controllers\Api\Finance\Costing\ApiCrossAirController;
+use App\Http\Controllers\Api\Finance\Costing\DubaiBusiness\ApiAirExportController;
+use App\Http\Controllers\Api\Finance\Costing\DubaiBusiness\ApiAirImportController;
+use App\Http\Controllers\Api\Finance\Costing\DubaiBusiness\ApiSeaExportController;
+use App\Http\Controllers\Api\Finance\Costing\DubaiBusiness\ApiSeaImportController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiChargeController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiCountryController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiCustomerController;
@@ -99,6 +103,47 @@ Route::group([
             'as' => 'cross_air.'
         ], function () {
             Route::get('/{column}/get', [ApiCrossAirController::class, 'getAirData'])->name('data_filter');
+        });
+
+        Route::group([
+            'prefix' => 'dubai-business',
+            'as' => 'dubai_business.'
+        ], function () {
+
+            // Sea Import
+            Route::group([
+                'prefix' => 'sea-import',
+                'as' => 'sea_import.'
+            ], function () {
+                Route::get('/{column}/get', [ApiSeaImportController::class, 'getSeaData'])->name('data_filter');
+                Route::get('/{vesselId}/get-voyage', [ApiSeaImportController::class, 'getVoyageByVessel'])->name('voyage');
+            });
+
+            // Sea Export
+            Route::group([
+                'prefix' => 'sea-export',
+                'as' => 'sea_export.'
+            ], function () {
+                Route::get('/{column}/get', [ApiSeaExportController::class, 'getSeaData'])->name('data_filter');
+                Route::get('/{vesselId}/get-voyage', [ApiSeaExportController::class, 'getVoyageByVessel'])->name('voyage');
+            });
+
+            // Air Import
+            Route::group([
+                'prefix' => 'air-import',
+                'as' => 'air_import.'
+            ], function () {
+                Route::get('/{column}/get', [ApiAirImportController::class, 'getAirData'])->name('data_filter');
+            });
+
+            // Air Export
+            Route::group([
+                'prefix' => 'air-export',
+                'as' => 'air_export.'
+            ], function () {
+                Route::get('/{column}/get', [ApiAirExportController::class, 'getAirData'])->name('data_filter');
+            });
+
         });
 
     });

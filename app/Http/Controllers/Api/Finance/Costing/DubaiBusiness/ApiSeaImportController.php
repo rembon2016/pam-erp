@@ -49,7 +49,10 @@ final class ApiSeaImportController extends Controller
 
     public function getVoyageByVessel(string $vesselId): JsonResponse
     {
-        $voyageResponse = $this->dxbFilterService->getVoyage(['vessel_id' => $vesselId]);
+        $voyageResponse = $this->dxbFilterService->getVoyage([
+            'vessel_id' => $vesselId,
+            'job_order_type' => 'SEAIMPORT',
+        ]);
 
         return $voyageResponse->success
             ? ResponseJson::success(

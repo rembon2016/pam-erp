@@ -47,9 +47,9 @@ final class AgentContractController extends Controller
      */
     public function index(): View
     {
-        $agent_contract_numbers = $this->agentContractService->getAgentContracts()->pluck('contract_no');
+        $customers = $this->customerService->getCustomers()->get();
 
-        return view('pages.finance.master-data.agent-contract.index', compact('agent_contract_numbers'));
+        return view('pages.finance.master-data.agent-contract.index', compact('customers'));
     }
 
     /**
@@ -62,6 +62,14 @@ final class AgentContractController extends Controller
         if (request()->ajax()) {
             return DataTables::of($this->agentContractService->getAgentContracts(request()->query()))
                 ->addIndexColumn()
+                ->editColumn('contract_no', function ($item) {
+                    $is_expired = now()->gt($item->contract_end);
+                    $contract_no = $is_expired
+                        ? "<span class='badge badge-danger badge-lg'>{$item->contract_no}</span>"
+                        : $item->contract_no;
+
+                    return $contract_no;
+                })
                 ->addColumn('customer_code', function ($item) {
                     return $item->customer?->customer_code;
                 })
@@ -84,7 +92,7 @@ final class AgentContractController extends Controller
                         // 'delete' => route('finance.master-data.agent-contract.destroy', $item->id),
                     ]);
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'contract_no'])
                 ->toJson();
         }
 

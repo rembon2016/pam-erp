@@ -28,8 +28,8 @@
                         <x:layout.table.heading widthPixel="100" title="Customer Code" />
                         <x:layout.table.heading widthPixel="100" title="Customer Name" />
                         <x:layout.table.heading widthPixel="100" title="Contract Date" />
-                        <x:layout.table.heading widthPixel="100" title="Contract Start Date" />
-                        <x:layout.table.heading widthPixel="100" title="Contract End Date" />
+                        <x:layout.table.heading widthPixel="100" title="Valid From" />
+                        <x:layout.table.heading widthPixel="100" title="Valid To" />
                         <x:layout.table.heading widthPixel="100" customClass="text-center" title="Action" />
                     </x:layout.table.row>
                 </thead>
@@ -41,11 +41,7 @@
 
     <x:layout.modal.filter-modal>
         <div class="col-12">
-            <x:form.select label="Contract No" name="contract_no" defaultOption="Select Contract No" :model="request()">
-                @foreach ($agent_contract_numbers as $item)
-                    <option value="{{ $item }}" @selected($item == request()->query('contract_no'))>{{ $item }}</option>
-                @endforeach
-            </x:form.select>
+            <x:form.select label="Customer" name="customer" defaultOption="Select Contract No" :model="request()" />
         </div>
     </x:layout.modal.filter-modal>
 @endsection
@@ -97,11 +93,27 @@
 <script src="{{ asset('assets/js/custom/filter-handler.js') }}"></script>
 <script>
     $(document).ready(function () {
+        // Initialize filter handler
         new FilterHandler({
             filters: [
-                { name: 'contract_no', label: 'Contract No' }
+                { name: 'customer', label: 'Customer' }
             ]
         });
-    });
+
+        // Existing select2 initialization
+        generateAjaxSelect2(
+            'customer',
+            "{{ route('api.finance.master-data.customer.list') }}",
+            "Select Customer",
+            function (result) {
+                return {
+                    results: result.data.map(item => ({
+                        id: item.id,
+                        text: item.customer_name
+                    })),
+                };
+            }
+        );
+    })
 </script>
 @endpush

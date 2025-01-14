@@ -97,16 +97,16 @@
                 <x:form.input label="Contract Date" name="contract_date" placeholder="Select Date" type="date" required="true" :model="$agent_contract" />
             </div>
             <div class="col-md-4">
-                <x:form.input label="Start Contract Date" name="contract_start" placeholder="Select Date" type="date" required="true" :model="$agent_contract" />
+                <x:form.input label="Contract Validity From" name="contract_start" placeholder="Select Date" type="date" required="true" :model="$agent_contract" />
             </div>
             <div class="col-md-4">
-                <x:form.input label="End Contract Date" name="contract_end" placeholder="Select Date" type="date" required="true" :model="$agent_contract" />
+                <x:form.input label="Contract Validity To" name="contract_end" placeholder="Select Date" type="date" required="true" :model="$agent_contract" />
             </div>
             <div class="col-md-12">
                 <x:form.input label="Document (Attachment)" name="contract_file" placeholder="Choose File" type="file" :model="$agent_contract" file="true" />
             </div>
             <div class="col-12">
-                <x:form.textarea label="Description" name="contract_description" placeholder="Type Description of Contract" required="true" :model="$agent_contract" />
+                <x:form.textarea label="Description" name="contract_description" placeholder="Type Description of Contract" :model="$agent_contract" />
             </div>
             <div class="col-12 mb-10">
                 <div class="d-flex align-items-center justify-content-between mb-5">

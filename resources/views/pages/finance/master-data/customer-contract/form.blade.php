@@ -656,6 +656,13 @@
             const chargeDetailHtml = generateChargeDetailHtml(unit_type, chargeItemIndex, countChargeDetail);
 
             $(chargeItem).find('.charge-detail-wrapper').append(chargeDetailHtml);
+
+            if (unit_type === 'KG') {
+                const countOfChargeDetail = $(chargeItem).find('.charge-detail-item').length;
+                const above_to_value = ~~parseFloat($(chargeItem).find('.charge-detail-item').eq(countOfChargeDetail - 2).find('input[data-type="to"]').val());
+
+                $(chargeItem).find('.charge-detail-item').eq(countOfChargeDetail - 1).find('input[data-type="from"]').val(above_to_value);
+            }
         });
 
         $(document).off('click', 'button[data-type="delete-charge-detail"]').on('click', 'button[data-type="delete-charge-detail"]', function (event) {

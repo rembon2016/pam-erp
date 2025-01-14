@@ -22,6 +22,7 @@ use App\Exports\MasterData\CustomerContractExport;
 use App\Service\Finance\MasterData\CountryService;
 use App\Service\Finance\MasterData\CurrencyService;
 use App\Service\Finance\MasterData\CustomerService;
+use App\Models\Finance\CustomerContractChargeDetail;
 use App\Service\Finance\MasterData\CustomerContractService;
 use App\Http\Requests\Finance\MasterData\CustomerContract\StoreCustomerContractRequest;
 use App\Http\Requests\Finance\MasterData\CustomerContract\UpdateCustomerContractRequest;
@@ -113,8 +114,9 @@ final class CustomerContractController extends Controller
         $units = Unit::orderBy('unit_name', 'asc')->get();
         $services = CustomerContract::SERVICES;
         $countries = $this->countryService->getCountries();
+        $container_types = CustomerContractChargeDetail::CONTAINER_TYPES;
 
-        return view('pages.finance.master-data.customer-contract.form', compact('data', 'customer_contract', 'customers', 'charges', 'currencies', 'units', 'services', 'countries'));
+        return view('pages.finance.master-data.customer-contract.form', compact('data', 'customer_contract', 'customers', 'charges', 'currencies', 'units', 'services', 'countries', 'container_types'));
     }
 
     /**
@@ -151,6 +153,7 @@ final class CustomerContractController extends Controller
         $units = Unit::orderBy('unit_name', 'asc')->get();
         $services = CustomerContract::SERVICES;
         $countries = $this->countryService->getCountries();
+        $container_types = CustomerContractChargeDetail::CONTAINER_TYPES;
 
         $data = [
             'page' => 'Edit Customer Contract',
@@ -167,6 +170,7 @@ final class CustomerContractController extends Controller
             'units' => $units,
             'services' => $services,
             'countries' => $countries,
+            'container_types' => $container_types
         ]);
     }
 
@@ -176,7 +180,6 @@ final class CustomerContractController extends Controller
     public function update(UpdateCustomerContractRequest $request, string $id): RedirectResponse
     {
         $requestDTO = $request->validated();
-        $requestDTO['unit_id'] = Unit::select('unit_id')->where('unit_name', 'KG')->first()?->unit_id;
         $updateCustomerContractResponse = $this->customerContractService->updateCustomerContract(
             id: $id,
             dto: $requestDTO

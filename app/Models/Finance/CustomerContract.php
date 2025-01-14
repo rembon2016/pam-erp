@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Operation\Master\Countries;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use App\Models\Finance\CustomerContractChargeDetail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 final class CustomerContract extends Model
@@ -85,6 +86,11 @@ final class CustomerContract extends Model
     public function charges()
     {
         return $this->hasMany(CustomerContractCharge::class, 'customer_contract_id', 'id');
+    }
+
+    public function rates()
+    {
+        return $this->hasMany(CustomerContractChargeDetail::class, 'customer_contract_id', 'id');
     }
 
     public function charge()

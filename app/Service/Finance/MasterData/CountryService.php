@@ -6,6 +6,7 @@ namespace App\Service\Finance\MasterData;
 
 use App\Functions\ObjectResponse;
 use App\Models\Operation\Master\Countries;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 final class CountryService
@@ -16,6 +17,15 @@ final class CountryService
     public function __construct()
     {
         //
+    }
+
+    public function getCountryQueries(?array $filters = []): Builder
+    {
+        return Countries::when(! empty($filters['country_code']), function ($query) use ($filters) {
+            return $query->where('country_code', $filters['country_code']);
+        })->when(! empty($filters['country_name']), function ($query) use ($filters) {
+            return $query->where('country_name', $filters['country_name']);
+        })->whereNotIn('status', ['2', '3'])->orderBy('country_name', 'asc');
     }
 
     public function getCountries($filters = []): Collection

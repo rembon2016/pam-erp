@@ -48,7 +48,7 @@ final class CountryController extends Controller
     public function list()
     {
         if (request()->ajax()) {
-            return DataTables::of($this->countryService->getCountries(request()->query()))
+            return DataTables::of($this->countryService->getCountryQueries(request()->query()))
                 ->addIndexColumn()
                 ->addColumn('region_name', function ($item) {
                     return $item->region?->region_name ?? '-';

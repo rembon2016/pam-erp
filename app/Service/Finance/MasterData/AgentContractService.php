@@ -17,9 +17,9 @@ final class AgentContractService
 
     public function getAgentContracts($filters = []): Collection
     {
-        return AgentContract::when(! empty($filters['contract_no']), function ($query) use ($filters) {
-            return $query->where('contract_no', $filters['contract_no']);
-        })->orderBy('contract_no', 'DESC')->get();
+        return AgentContract::when(! empty($filters['customer']), function ($query) use ($filters) {
+            return $query->where('customer_id', $filters['customer']);
+        })->orderBy('contract_end', 'DESC')->get();
     }
 
     public function getAgentContractById(string $id): object

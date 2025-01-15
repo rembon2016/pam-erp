@@ -29,7 +29,7 @@ final class CustomerContractService
 
     public function getCustomerContractById(string $id): object
     {
-        $data = CustomerContract::where('id', $id)->first();
+        $data = CustomerContract::with('charges', 'charges.rates')->where('id', $id)->first();
 
         return ! is_null($data)
             ? ObjectResponse::success(__('crud.fetched', ['name' => 'Customer Contract']), Response::HTTP_OK, $data)
@@ -58,7 +58,16 @@ final class CustomerContractService
             }
 
             $createdCustomerContract = CustomerContract::create($dto);
-            $charges->each(fn ($charge) => $createdCustomerContract->charges()->create($charge));
+            $charges->each(function ($charge) use ($createdCustomerContract) {
+                $rates = collect($charge['rates']);
+                unset($charge['rates']);
+
+                $createdCustomerContractCharge = $createdCustomerContract->charges()->create($charge);
+                $rates->each(function ($rate) use ($createdCustomerContract, $createdCustomerContractCharge) {
+                    $rate['customer_contract_id'] = $createdCustomerContract->id;
+                    $createdCustomerContractCharge->rates()->create($rate);
+                });
+            });
 
             DB::commit();
 
@@ -69,6 +78,7 @@ final class CustomerContractService
             );
         } catch (\Throwable $th) {
             DB::rollBack();
+            dd($th);
 
             return ObjectResponse::error(
                 __('crud.error_create', ['name' => 'Customer Contract']),
@@ -113,13 +123,35 @@ final class CustomerContractService
             // Sync Customer Contract Charges
             $getCustomerContractResponse->data->charges()->whereNotIn('id', $existingContractCharge->toArray())->delete();
             $charges->each(function ($charge) use ($getCustomerContractResponse) {
-                if (! empty($charge['customer_contract_charge_id'])) {
+                $rates = collect($charge['rates']);
+                $existingChargeDetail = $rates->filter(fn ($rate) => ! empty($rate['customer_contract_charge_detail_id']))->pluck('customer_contract_charge_detail_id');
+                unset($charge['rates']);
+
+                // Update or Create Customer Contract Charge
+                if (!empty($charge['customer_contract_charge_id'])) {
                     $customer_contract_charge_id = $charge['customer_contract_charge_id'];
                     unset($charge['customer_contract_charge_id']);
+
                     $getCustomerContractResponse->data->charges()->where('id', $customer_contract_charge_id)->update($charge);
                 } else {
-                    $getCustomerContractResponse->data->charges()->create($charge);
+                    $customer_contract_charge_id = $getCustomerContractResponse->data->charges()->create($charge)->id;
                 }
+
+                // Sync Customer Contract Charge Rates/Details
+                $getCustomerContractResponse->data->rates()->where('customer_contract_charge_id', $customer_contract_charge_id)->whereNotIn('id', $existingChargeDetail->toArray())->delete();
+                $rates->each(function ($rate) use ($customer_contract_charge_id, $getCustomerContractResponse) {
+                    $rate['customer_contract_charge_id'] = $customer_contract_charge_id;
+
+                    // Update or Create Customer Contrac Charge Rate/Detail
+                    if (!empty($rate['customer_contract_charge_detail_id'])) {
+                        $customer_contract_charge_detail_id = $rate['customer_contract_charge_detail_id'];
+                        unset($rate['customer_contract_charge_detail_id']);
+
+                        $getCustomerContractResponse->data->rates()->where('id', $customer_contract_charge_detail_id)->update($rate);
+                    } else {
+                        $getCustomerContractResponse->data->rates()->create($rate);
+                    }
+                });
             });
 
             DB::commit();
@@ -131,6 +163,7 @@ final class CustomerContractService
             );
         } catch (\Throwable $th) {
             DB::rollBack();
+            dd($th);
 
             return ObjectResponse::error(
                 __('crud.error_update', ['name' => 'Customer Contract']),

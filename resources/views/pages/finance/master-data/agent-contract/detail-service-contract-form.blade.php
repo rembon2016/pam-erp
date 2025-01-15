@@ -288,52 +288,42 @@
                                                     </div>
                                                     <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                                         <span class="tableChargeForm-heading-text">
-                                                            From (0) - To (44)
-                                                        </span>
-                                                    </div>
-                                                    <div class="tableChargeForm-box text-center" style="min-width: 135px;">
-                                                        <span class="tableChargeForm-heading-text">
-                                                            From (45) - To (99)
-                                                        </span>
-                                                    </div>
-                                                    <div class="tableChargeForm-box text-center" style="min-width: 145px;">
-                                                        <span class="tableChargeForm-heading-text">
-                                                            From (100) - To (299)
-                                                        </span>
-                                                    </div>
-                                                    <div class="tableChargeForm-box text-center" style="min-width: 150px;">
-                                                        <span class="tableChargeForm-heading-text">
-                                                            From (300) - To (499)
-                                                        </span>
-                                                    </div>
-                                                    <div class="tableChargeForm-box text-center" style="min-width: 150px;">
-                                                        <span class="tableChargeForm-heading-text">
-                                                            From (500) - To (999)
-                                                        </span>
-                                                    </div>
-                                                    <div class="tableChargeForm-box text-center" style="min-width: 145px;">
-                                                        <span class="tableChargeForm-heading-text">
-                                                            From (1000) - To (∞)
+                                                            20 FT
                                                         </span>
                                                     </div>
                                                     <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                                         <span class="tableChargeForm-heading-text">
-                                                            20°
+                                                            20 FT GOH
                                                         </span>
                                                     </div>
                                                     <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                                         <span class="tableChargeForm-heading-text">
-                                                            40°
+                                                            40 FT
                                                         </span>
                                                     </div>
                                                     <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                                         <span class="tableChargeForm-heading-text">
-                                                            45° HC
+                                                            40 FT GOH
                                                         </span>
                                                     </div>
                                                     <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                                         <span class="tableChargeForm-heading-text">
-                                                            45°
+                                                            40 FT HC
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            40 FT HC GOH
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            45 FT
+                                                        </span>
+                                                    </div>
+                                                    <div class="tableChargeForm-box text-center" style="min-width: 130px;">
+                                                        <span class="tableChargeForm-heading-text">
+                                                            45 FT GOH
                                                         </span>
                                                     </div>
                                                     <div class="tableChargeForm-box text-center" style="min-width: 130px;">
@@ -499,54 +489,9 @@
                                                                 <div class="tableChargeForm-box" style="min-width: 130px;">
                                                                     <input
                                                                         type="text"
-                                                                        class="form-control unitKilogramField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
-                                                                        name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][from_0_to_44]"
-                                                                        value="{{ $chargeValue->from_0_to_44 == 0 ? '' : $chargeValue->from_0_to_44 }}"
-                                                                        style="width: 100%;"
-                                                                        disabled>
-                                                                </div>
-                                                                <div class="tableChargeForm-box" style="min-width: 135px;">
-                                                                    <input
-                                                                        type="text"
-                                                                        class="form-control unitKilogramField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
-                                                                        name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][from_45_to_99]"
-                                                                        value="{{ $chargeValue->from_45_to_99 == 0 ? '' : $chargeValue->from_45_to_99 }}"
-                                                                        style="width: 100%;"
-                                                                        disabled>
-                                                                </div>
-                                                                <div class="tableChargeForm-box" style="min-width: 145px;">
-                                                                    <input
-                                                                        type="text"
-                                                                        class="form-control unitKilogramField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
-                                                                        name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][from_100_to_299]"
-                                                                        value="{{ $chargeValue->from_100_to_299 == 0 ? '' : $chargeValue->from_100_to_299 }}"
-                                                                        style="width: 100%;"
-                                                                        disabled>
-                                                                </div>
-                                                                <div class="tableChargeForm-box" style="min-width: 150px;">
-                                                                    <input
-                                                                        type="text"
-                                                                        class="form-control unitKilogramField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
-                                                                        name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][from_300_to_499]"
-                                                                        value="{{ $chargeValue->from_300_to_499 == 0 ? '' : $chargeValue->from_300_to_499 }}"
-                                                                        style="width: 100%;"
-                                                                        disabled>
-                                                                </div>
-                                                                <div class="tableChargeForm-box" style="min-width: 150px;">
-                                                                    <input
-                                                                        type="text"
-                                                                        class="form-control unitKilogramField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
-                                                                        name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][from_500_to_999]"
-                                                                        value="{{ $chargeValue->from_500_to_999 == 0 ? '' : $chargeValue->from_500_to_999 }}"
-                                                                        style="width: 100%;"
-                                                                        disabled>
-                                                                </div>
-                                                                <div class="tableChargeForm-box" style="min-width: 145px;">
-                                                                    <input
-                                                                        type="text"
-                                                                        class="form-control unitKilogramField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
-                                                                        name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][from_1000_to_infinity]"
-                                                                        value="{{ $chargeValue->from_1000_to_infinity == 0 ? '' : $chargeValue->from_1000_to_infinity }}"
+                                                                        class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
+                                                                        name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][20_feet]"
+                                                                        value="{{ $chargeValue->twenty_feet == 0 ? '' : $chargeValue->twenty_feet  }}"
                                                                         style="width: 100%;"
                                                                         disabled>
                                                                 </div>
@@ -554,8 +499,8 @@
                                                                     <input
                                                                         type="text"
                                                                         class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
-                                                                        name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][20_feet]"
-                                                                        value="{{ $chargeValue->twenty_feet == 0 ? '' : $chargeValue->twenty_feet  }}"
+                                                                        name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][20_feet_goh]"
+                                                                        value="{{ $chargeValue->twenty_feet_goh == 0 ? '' : $chargeValue->twenty_feet_goh  }}"
                                                                         style="width: 100%;"
                                                                         disabled>
                                                                 </div>
@@ -572,8 +517,26 @@
                                                                     <input
                                                                         type="text"
                                                                         class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
-                                                                        name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][45_feet_hc]"
-                                                                        value="{{ $chargeValue->forty_five_feet_hc == 0 ? '' : $chargeValue->forty_five_feet_hc }}"
+                                                                        name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][40_feet_goh]"
+                                                                        value="{{ $chargeValue->forty_feet_goh == 0 ? '' : $chargeValue->forty_feet_goh }}"
+                                                                        style="width: 100%;"
+                                                                        disabled>
+                                                                </div>
+                                                                <div class="tableChargeForm-box" style="min-width: 130px;">
+                                                                    <input
+                                                                        type="text"
+                                                                        class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
+                                                                        name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][40_feet_hc]"
+                                                                        value="{{ $chargeValue->forty_feet_hc == 0 ? '' : $chargeValue->forty_feet_hc }}"
+                                                                        style="width: 100%;"
+                                                                        disabled>
+                                                                </div>
+                                                                <div class="tableChargeForm-box" style="min-width: 130px;">
+                                                                    <input
+                                                                        type="text"
+                                                                        class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
+                                                                        name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][40_feet_hc_goh]"
+                                                                        value="{{ $chargeValue->forty_feet_hc_goh == 0 ? '' : $chargeValue->forty_feet_hc_goh }}"
                                                                         style="width: 100%;"
                                                                         disabled>
                                                                 </div>
@@ -583,6 +546,15 @@
                                                                         class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                                                         name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][45_feet]"
                                                                         value="{{ $chargeValue->forty_five_feet == 0 ? '' : $chargeValue->forty_five_feet }}"
+                                                                        style="width: 100%;"
+                                                                        disabled>
+                                                                </div>
+                                                                <div class="tableChargeForm-box" style="min-width: 130px;">
+                                                                    <input
+                                                                        type="text"
+                                                                        class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
+                                                                        name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][45_feet_goh]"
+                                                                        value="{{ $chargeValue->forty_five_feet_goh == 0 ? '' : $chargeValue->forty_five_feet_goh }}"
                                                                         style="width: 100%;"
                                                                         disabled>
                                                                 </div>

@@ -30,7 +30,7 @@ final class StoreAgentContractRequest extends FormRequest
             'contract_start' => 'required|date',
             'contract_end' => 'required|date',
             'contract_file' => 'nullable|file',
-            'contract_description' => 'required|string',
+            'contract_description' => 'nullable|string',
             'service_data' => 'required|array',
         ];
     }

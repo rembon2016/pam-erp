@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Finance\CustomerContract;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use App\Models\Finance\CustomerContractChargeDetail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 final class CustomerContractCharge extends Model
 {
@@ -25,4 +27,14 @@ final class CustomerContractCharge extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    public function rates()
+    {
+        return $this->hasMany(CustomerContractChargeDetail::class, 'customer_contract_charge_id', 'id');
+    }
+
+    public function customerContract()
+    {
+        return $this->hasOne(CustomerContract::class, 'id', 'customer_contract_id');
+    }
 }

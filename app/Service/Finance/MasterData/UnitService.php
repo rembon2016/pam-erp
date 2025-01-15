@@ -6,6 +6,7 @@ namespace App\Service\Finance\MasterData;
 
 use App\Functions\ObjectResponse;
 use App\Models\Operation\Master\Unit;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
 
@@ -15,6 +16,20 @@ final class UnitService
      * Create a new class instance.
      */
     public function __construct() {}
+
+    /**
+     * Retrieves all unit records ordered by unit name in ascending order.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder A queries of Unit models.
+     */
+    public function getUnitQueries(?array $filters = []): Builder
+    {
+        return Unit::when(! empty($filters['unit_code']), function ($query) use ($filters) {
+            return $query->where('unit_name', $filters['unit_code']);
+        })->when(! empty($filters['unit_name']), function ($query) use ($filters) {
+            return $query->where('description', $filters['unit_name']);
+        })->orderBy('date_created', 'DESC');
+    }
 
     /**
      * Retrieves all unit records ordered by unit name in ascending order.

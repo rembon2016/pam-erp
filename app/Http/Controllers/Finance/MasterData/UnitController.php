@@ -46,7 +46,7 @@ final class UnitController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            return DataTables::of($this->unitService->getUnitCollections(request()->query()))
+            return DataTables::of($this->unitService->getUnitQueries(request()->query()))
                 ->addIndexColumn()
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([

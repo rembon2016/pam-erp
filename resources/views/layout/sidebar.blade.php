@@ -31,17 +31,17 @@
     </x:layout.sidebar.parent-menu>
 
     {{-- General Wise --}}
-    <x:layout.sidebar.parent-menu name="General Wise" iconClass="bx bxs-file">
-        <x:layout.sidebar.parent-menu name="Shipments" iconClass="bx bxs-file">
-            <x:layout.sidebar.child-menu name="Sea Air" link="{{ route('finance.general-wise.shipment.index','seaair') }}" />
-            <x:layout.sidebar.child-menu name="Cross Air" link="{{ route('finance.general-wise.shipment.index','crossair') }}" />
-            <x:layout.sidebar.child-menu name="Sea Import" link="{{ route('finance.general-wise.shipment.index','seaimport') }}" />
-            <x:layout.sidebar.child-menu name="Sea Export" link="{{ route('finance.general-wise.shipment.index','seaexport') }}" />
-            <x:layout.sidebar.child-menu name="Air Import" link="{{ route('finance.general-wise.shipment.index','airimport') }}" />
-            <x:layout.sidebar.child-menu name="Air Export" link="{{ route('finance.general-wise.shipment.index','airexport') }}" />
-            <x:layout.sidebar.child-menu name="Warehouse" link="{{ route('finance.general-wise.shipment.index','warehouse') }}" />
-            <x:layout.sidebar.child-menu name="Trucking" link="{{ route('finance.general-wise.shipment.index','trucking') }}" />
-            <x:layout.sidebar.child-menu name="Courier" link="{{ route('finance.general-wise.shipment.index','courier') }}" />
+    <x:layout.sidebar.parent-menu name="General Wise" iconClass="bx bxs-file" :showCondition="Route::is('finance.general-wise.*')">
+        <x:layout.sidebar.parent-menu name="Shipments" iconClass="bx bxs-file" :showCondition="Route::is('finance.general-wise.shipment.*')">
+            <x:layout.sidebar.child-menu name="Sea Air" link="{{ route('finance.general-wise.shipment.index','seaair') }}" :activeCondition="last(request()->segments()) == 'seaair'" />
+            <x:layout.sidebar.child-menu name="Cross Air" link="{{ route('finance.general-wise.shipment.index','crossair') }}" :activeCondition="last(request()->segments()) == 'crossair'" />
+            <x:layout.sidebar.child-menu name="Sea Import" link="{{ route('finance.general-wise.shipment.index','seaimport') }}" :activeCondition="last(request()->segments()) == 'seaimport'" />
+            <x:layout.sidebar.child-menu name="Sea Export" link="{{ route('finance.general-wise.shipment.index','seaexport') }}" :activeCondition="last(request()->segments()) == 'seaexport'" />
+            <x:layout.sidebar.child-menu name="Air Import" link="{{ route('finance.general-wise.shipment.index','airimport') }}" :activeCondition="last(request()->segments()) == 'airimport'" />
+            <x:layout.sidebar.child-menu name="Air Export" link="{{ route('finance.general-wise.shipment.index','airexport') }}" :activeCondition="last(request()->segments()) == 'airexport'" />
+            <x:layout.sidebar.child-menu name="Warehouse" link="{{ route('finance.general-wise.shipment.index','warehouse') }}" :activeCondition="last(request()->segments()) == 'warehouse'" />
+            <x:layout.sidebar.child-menu name="Trucking" link="{{ route('finance.general-wise.shipment.index','trucking') }}" :activeCondition="last(request()->segments()) == 'trucking'" />
+            <x:layout.sidebar.child-menu name="Courier" link="{{ route('finance.general-wise.shipment.index','courier') }}" :activeCondition="last(request()->segments()) == 'courier'" />
         </x:layout.sidebar.parent-menu>
         <x:layout.sidebar.parent-menu name="Job Order" link="/" iconClass="bx bxs-file" >
             <x:layout.sidebar.child-menu name="Sea Air" link="/" />
@@ -70,17 +70,17 @@
     </x:layout.sidebar.parent-menu>
 
     {{-- Costing --}}
-    <x:layout.sidebar.parent-menu name="Costing" iconClass="bx bxs-file">
-        <x:layout.sidebar.child-menu name="Sea Air" link="{{ route('finance.costing.sea-air.index') }}" />
-        <x:layout.sidebar.child-menu name="Cross Air" link="{{ route('finance.costing.cross-air.index') }}" />
-        <x:layout.sidebar.parent-menu name="Dubai Business" iconClass="bx bxs-file">
-            <x:layout.sidebar.child-menu name="Sea Import" link="{{ route('finance.costing.dubai-business.sea-import.index') }}" />
-            <x:layout.sidebar.child-menu name="Sea Export" link="{{ route('finance.costing.dubai-business.sea-export.index') }}" />
-            <x:layout.sidebar.child-menu name="Air Import" link="{{ route('finance.costing.dubai-business.air-import.index') }}" />
-            <x:layout.sidebar.child-menu name="Air Export" link="{{ route('finance.costing.dubai-business.air-export.index') }}" />
-            <x:layout.sidebar.child-menu name="Warehouse" link="{{ route('finance.costing.dubai-business.warehouse.index') }}" />
-            <x:layout.sidebar.child-menu name="Trucking" link="{{ route('finance.costing.dubai-business.trucking.index') }}" />
-            <x:layout.sidebar.child-menu name="Courier" link="{{ route('finance.costing.dubai-business.courier.index') }}" />
+    <x:layout.sidebar.parent-menu name="Costing" iconClass="bx bxs-file" :showCondition="Route::is('finance.costing.*')">
+        <x:layout.sidebar.child-menu name="Sea Air" link="{{ route('finance.costing.sea-air.index') }}" :activeCondition="Route::is('finance.costing.sea-air.*')" />
+        <x:layout.sidebar.child-menu name="Cross Air" link="{{ route('finance.costing.cross-air.index') }}" :activeCondition="Route::is('finance.costing.cross-air.*')" />
+        <x:layout.sidebar.parent-menu name="Dubai Business" iconClass="bx bxs-file" :showCondition="Route::is('finance.costing.dubai-business.*')">
+            <x:layout.sidebar.child-menu name="Sea Import" link="{{ route('finance.costing.dubai-business.sea-import.index') }}" :activeCondition="Route::is('finance.costing.dubai-business.sea-import.*')" />
+            <x:layout.sidebar.child-menu name="Sea Export" link="{{ route('finance.costing.dubai-business.sea-export.index') }}" :activeCondition="Route::is('finance.costing.dubai-business.sea-export.*')" />
+            <x:layout.sidebar.child-menu name="Air Import" link="{{ route('finance.costing.dubai-business.air-import.index') }}" :activeCondition="Route::is('finance.costing.dubai-business.air-import.*')" />
+            <x:layout.sidebar.child-menu name="Air Export" link="{{ route('finance.costing.dubai-business.air-export.index') }}" :activeCondition="Route::is('finance.costing.dubai-business.air-export.*')" />
+            <x:layout.sidebar.child-menu name="Warehouse" link="{{ route('finance.costing.dubai-business.warehouse.index') }}" :activeCondition="Route::is('finance.costing.dubai-business.warehouse.*')" />
+            <x:layout.sidebar.child-menu name="Trucking" link="{{ route('finance.costing.dubai-business.trucking.index') }}" :activeCondition="Route::is('finance.costing.dubai-business.trucking.*')" />
+            <x:layout.sidebar.child-menu name="Courier" link="{{ route('finance.costing.dubai-business.courier.index') }}" :activeCondition="Route::is('finance.costing.dubai-business.courier.*')" />
         </x:layout.sidebar.parent-menu>
     </x:layout.sidebar.parent-menu>
 

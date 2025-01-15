@@ -50,7 +50,7 @@
                                     Currency
                                 </span>
                             </div>
-                            <div class="tableChargeForm-box text-center">
+                            <div class="tableChargeForm-box text-center" style="display: none;">
                                 <span class="tableChargeForm-heading-text">
                                     Unit
                                 </span>
@@ -268,7 +268,7 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="tableChargeForm-box">
+                                        <div class="tableChargeForm-box" style="display: none;">
                                             <select
                                                 name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][unit_id]"
                                                 id="unit_id_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"

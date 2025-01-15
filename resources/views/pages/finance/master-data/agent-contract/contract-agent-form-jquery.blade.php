@@ -171,9 +171,7 @@
                         // End Kilogram Row
 
                     } else {
-                        $(`#unit_id_${serviceId}_${chargeId}`).append(`
-                            <option value="" selected hidden>Unit</option>
-                        `)
+                        $(`#unit_id_${serviceId}_${chargeId}`).val(res.data.unit_id);
 
                         chargeOnChange(serviceId, chargeId)
                     }
@@ -183,6 +181,7 @@
                 complete: function() {
                     $(`#currency_id_${serviceId}_${chargeId}`).removeAttr('disabled')
                     $(`#unit_id_${serviceId}_${chargeId}`).removeAttr('disabled')
+                    $(`#unit_id_${serviceId}_${chargeId}`).attr('readonly', 'readonly')
                 }
             })
 
@@ -658,7 +657,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="tableChargeForm-box">
+                        <div class="tableChargeForm-box" style="display: none;">
                             <select
                                 name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][unit_id]"
                                 id="unit_id_${serviceIndex}_${index}"
@@ -1001,8 +1000,7 @@
         }
 
         function chargeOnChange(serviceId, chargeId) {
-            $(`#unit_id_${serviceId}_${chargeId}`).change(function() {
-            let unitName = $(this).find(':selected').data('unit-code')
+            let unitName = $(`#unit_id_${serviceId}_${chargeId}`).children('option:selected').data('unit-code')
             if (unitName == 'KG') {
 
                 // Amount Minimum Via Row
@@ -1086,7 +1084,6 @@
                 })
                 // End Kilogram Row
             }
-        })
         }
 
     </script>

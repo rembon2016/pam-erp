@@ -51,7 +51,7 @@
                                     Currency
                                 </span>
                             </div>
-                            <div class="tableChargeForm-box text-center">
+                            <div class="tableChargeForm-box text-center"  style="display: none;">
                                 <span class="tableChargeForm-heading-text">
                                     Unit
                                 </span>
@@ -267,7 +267,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="tableChargeForm-box">
+                                    <div class="tableChargeForm-box" style="display: none;">
                                         <select
                                             name="service_data[0][charge_data][0][unit_id]"
                                             id="unit_id_1_1"

@@ -6,11 +6,19 @@ namespace App\Service\Finance\MasterData;
 
 use App\Functions\ObjectResponse;
 use App\Models\Finance\PaymentMethod;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
 
 final class PaymentMethodService
 {
+    public function getPaymentMethodQueries(?array $filters = []): Builder
+    {
+        return PaymentMethod::when(! empty($filters['payment_terms']), function ($query) use ($filters) {
+            return $query->where('payment_terms', $filters['payment_terms']);
+        })->orderBy('payment_terms', 'DESC');
+    }
+
     public function getPaymentMethods($filters = []): Collection
     {
         return PaymentMethod::when(! empty($filters['payment_terms']), function ($query) use ($filters) {

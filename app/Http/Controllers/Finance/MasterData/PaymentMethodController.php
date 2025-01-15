@@ -43,7 +43,7 @@ final class PaymentMethodController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            return DataTables::of($this->paymentMethodService->getPaymentMethods(request()->query()))
+            return DataTables::of($this->paymentMethodService->getPaymentMethodQueries(request()->query()))
                 ->addIndexColumn()
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([

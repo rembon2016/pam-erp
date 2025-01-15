@@ -46,7 +46,7 @@ final class ChargeController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            return DataTables::of($this->chargeService->getCharges(request()->query()))
+            return DataTables::of($this->chargeService->getChargeQueries(request()->query()))
                 ->addIndexColumn()
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([

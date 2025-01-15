@@ -6,11 +6,23 @@ namespace App\Service\Finance\MasterData;
 
 use App\Functions\ObjectResponse;
 use App\Models\Finance\Charge;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
 
 final class ChargeService
 {
+    public function getChargeQueries(?array $filters = []): Builder
+    {
+        return Charge::when(! empty($filters['charge_code']), function ($query) use ($filters) {
+            return $query->where('charge_code', $filters['charge_code']);
+        })->when(! empty($filters['charge_name']), function ($query) use ($filters) {
+            return $query->where('charge_name', $filters['charge_name']);
+        })->when(! empty($filters['is_agreed_rate']), function ($query) use ($filters) {
+            return $query->where('is_agreed_rate', $filters['is_agreed_rate']);
+        })->orderBy('charge_code', 'ASC');
+    }
+
     public function getCharges($filters = []): Collection
     {
         return Charge::when(! empty($filters['charge_code']), function ($query) use ($filters) {

@@ -51,7 +51,7 @@ final class PortController extends Controller
     public function list()
     {
         if (request()->ajax()) {
-            return DataTables::of($this->portService->getPorts(request()->query()))
+            return DataTables::of($this->portService->getPortQueries(request()->query()))
                 ->addIndexColumn()
                 ->addColumn('country_name', function ($item) {
                     return $item->country?->country_name;

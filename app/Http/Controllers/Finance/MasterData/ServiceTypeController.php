@@ -48,7 +48,7 @@ final class ServiceTypeController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            $service_types = $this->serviceTypeService->getServiceTypes(request()->query());
+            $service_types = $this->serviceTypeService->getServiceTypeQueries(request()->query());
 
             return DataTables::of($service_types)
                 ->addIndexColumn()

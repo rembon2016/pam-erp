@@ -6,6 +6,7 @@ namespace App\Service\Finance\MasterData;
 
 use App\Functions\ObjectResponse;
 use App\Models\Finance\ServiceType;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 final class ServiceTypeService
@@ -14,6 +15,15 @@ final class ServiceTypeService
      * Create a new class instance.
      */
     public function __construct() {}
+
+    public function getServiceTypeQueries(?array $filters = []): Builder
+    {
+        return ServiceType::when(! empty($filters['service_code']), function ($query) use ($filters) {
+            return $query->where('service_code', $filters['service_code']);
+        })->when(! empty($filters['service_name']), function ($query) use ($filters) {
+            return $query->where('service_name', $filters['service_name']);
+        })->orderBy('service_code', 'ASC');
+    }
 
     public function getServiceTypes($filters = []): Collection
     {

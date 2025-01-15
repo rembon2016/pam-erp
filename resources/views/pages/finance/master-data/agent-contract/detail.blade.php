@@ -114,11 +114,11 @@
                         <td>{{ $agent_contract->contract_date?->format('d/m/Y') }}</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold fs-6 text-gray-800">Start Contract Date</td>
+                        <td class="fw-bold fs-6 text-gray-800">Valid From</td>
                         <td>{{ $agent_contract->contract_start?->format('d/m/Y') }}</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold fs-6 text-gray-800">End Contract Date</td>
+                        <td class="fw-bold fs-6 text-gray-800">Valid To</td>
                         <td>{{ $agent_contract->contract_end?->format('d/m/Y') }}</td>
                     </tr>
                     <tr>

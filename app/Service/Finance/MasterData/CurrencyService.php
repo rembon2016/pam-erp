@@ -6,6 +6,7 @@ namespace App\Service\Finance\MasterData;
 
 use App\Functions\ObjectResponse;
 use App\Models\Finance\Currency;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 final class CurrencyService
@@ -14,6 +15,15 @@ final class CurrencyService
      * Create a new class instance.
      */
     public function __construct() {}
+
+    public function getCurrencyQueries(?array $filters = []): Builder
+    {
+        return Currency::when(! empty($filters['currency_code']), function ($query) use ($filters) {
+            return $query->where('currency_code', $filters['currency_code']);
+        })->when(! empty($filters['currency_name']), function ($query) use ($filters) {
+            return $query->where('currency_name', $filters['currency_name']);
+        })->orderBy('currency_code', 'ASC');
+    }
 
     public function getCurrencies($filters = []): Collection
     {

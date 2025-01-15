@@ -48,7 +48,7 @@ final class CurrencyController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            $currencies = $this->currencyService->getCurrencies(request()->query());
+            $currencies = $this->currencyService->getCurrencyQueries(request()->query());
 
             return DataTables::of($currencies)
                 ->addIndexColumn()

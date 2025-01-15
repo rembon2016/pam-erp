@@ -38,11 +38,7 @@ final class UnitService
      */
     public function getUnitCollections($filters = []): Collection
     {
-        return Unit::when(! empty($filters['unit_code']), function ($query) use ($filters) {
-            return $query->where('unit_name', $filters['unit_code']);
-        })->when(! empty($filters['unit_name']), function ($query) use ($filters) {
-            return $query->where('description', $filters['unit_name']);
-        })->orderBy('date_created', 'DESC')->get();
+        return $this->getUnitQueries($filters)->get();
     }
 
     /**

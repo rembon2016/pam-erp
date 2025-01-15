@@ -27,11 +27,7 @@ final class ServiceTypeService
 
     public function getServiceTypes($filters = []): Collection
     {
-        return ServiceType::when(! empty($filters['service_code']), function ($query) use ($filters) {
-            return $query->where('service_code', $filters['service_code']);
-        })->when(! empty($filters['service_name']), function ($query) use ($filters) {
-            return $query->where('service_name', $filters['service_name']);
-        })->orderBy('service_code', 'ASC')->get();
+        return $this->getServiceTypeQueries($filters)->get();
     }
 
     /**

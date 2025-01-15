@@ -48,21 +48,7 @@ final class PortService
      */
     public function getPorts($filters = []): Collection
     {
-        return Port::with('country')
-            ->when(! empty($filters['country']), function ($query) use ($filters) {
-                $query->where('country_id', $filters['country']);
-            })->when(! empty($filters['port_code']), function ($query) use ($filters) {
-                return $query->where('port_code', $filters['port_code']);
-            })->when(! empty($filters['port_name']), function ($query) use ($filters) {
-                return $query->where('port_name', $filters['port_name']);
-            })->when(! empty($filters['transport_mode']), function ($query) use ($filters) {
-                return $query->where('transport_mode', $filters['transport_mode']);
-            })->when(! empty($filters['q']), function ($query) use ($filters) {
-                return $query->where(DB::raw("CONCAT(COALESCE(port_code, ''), COALESCE(port_name, ''))"), 'ILIKE', "%{$filters['q']}%");
-            })
-            ->whereNotIn('status', ['2', '3'])
-            ->orderBy('port_name', 'asc')
-            ->get();
+        return $this->getPortQueries($filters)->get();
     }
 
     /**

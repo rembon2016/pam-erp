@@ -27,11 +27,7 @@ final class CurrencyService
 
     public function getCurrencies($filters = []): Collection
     {
-        return Currency::when(! empty($filters['currency_code']), function ($query) use ($filters) {
-            return $query->where('currency_code', $filters['currency_code']);
-        })->when(! empty($filters['currency_name']), function ($query) use ($filters) {
-            return $query->where('currency_name', $filters['currency_name']);
-        })->orderBy('currency_code', 'ASC')->get();
+        return $this->getCurrencyQueries($filters)->get();
     }
 
     /**

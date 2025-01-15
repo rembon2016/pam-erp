@@ -21,9 +21,7 @@ final class PaymentMethodService
 
     public function getPaymentMethods($filters = []): Collection
     {
-        return PaymentMethod::when(! empty($filters['payment_terms']), function ($query) use ($filters) {
-            return $query->where('payment_terms', $filters['payment_terms']);
-        })->orderBy('payment_terms', 'DESC')->get();
+        return $this->getPaymentMethodQueries($filters)->get();
     }
 
     public function getPaymentMethodById(string $id): object

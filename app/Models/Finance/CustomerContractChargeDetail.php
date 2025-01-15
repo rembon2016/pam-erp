@@ -21,6 +21,7 @@ final class CustomerContractChargeDetail extends Model
         '20 FT GOH',
         '40 FT',
         '40 FT GOH',
+        '40 FT HC',
         '40 FT HC GOH',
         '45 FT',
         '45 FT GOH',

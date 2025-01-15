@@ -103,42 +103,42 @@
                             </div> --}}
                             <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                 <span class="tableChargeForm-heading-text">
-                                    20°
+                                    20 FT
                                 </span>
                             </div>
                             <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                 <span class="tableChargeForm-heading-text">
-                                    20° GOH
+                                    20 FT GOH
                                 </span>
                             </div>
                             <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                 <span class="tableChargeForm-heading-text">
-                                    40°
+                                    40 FT
                                 </span>
                             </div>
                             <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                 <span class="tableChargeForm-heading-text">
-                                    40° GOH
+                                    40 FT GOH
                                 </span>
                             </div>
                             <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                 <span class="tableChargeForm-heading-text">
-                                    40° HC
+                                    40 FT HC
                                 </span>
                             </div>
                             <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                 <span class="tableChargeForm-heading-text">
-                                    40° HC GOH
+                                    40 FT HC GOH
                                 </span>
                             </div>
                             <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                 <span class="tableChargeForm-heading-text">
-                                    45°
+                                    45 FT
                                 </span>
                             </div>
                             <div class="tableChargeForm-box text-center" style="min-width: 130px;">
                                 <span class="tableChargeForm-heading-text">
-                                    45° GOH
+                                    45 FT GOH
                                 </span>
                             </div>
                             <div class="tableChargeForm-box text-center" style="min-width: 130px;">

@@ -124,13 +124,18 @@
                     <tr>
                         <td class="fw-bold fs-6 text-gray-800">Attachment (Document)</td>
                         <td>
-                            @if (!is_null($agent_contract?->contract_file))
-                                <a href="{{ $agent_contract?->getFileURL() }}" class="btn btn-sm btn-info d-inline-block mt-2" download>
-                                    <i class="bx bx-download me-2"></i> Download File
-                                </a>
-                            @else
-                                -
-                            @endif
+                            <div id="fileList">
+                                @foreach($agent_contract?->documents as $document)
+                                    <div class="file-item">
+                                        <span>{{ $document->contract_file }}</span>
+                                        <div class="d-flex align-items-center justify-content-end gap-2">
+                                            <a href="{{ $document->getFileUrl() }}" class="btn btn-sm px-1 py-3" download>
+                                                <i class="bx bx-download text-info fs-2"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
                         </td>
                     </tr>
                 </table>

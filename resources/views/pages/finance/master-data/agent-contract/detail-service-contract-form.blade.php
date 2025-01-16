@@ -114,7 +114,7 @@
                                 style="min-width: 100%;"
                                 disabled>
                                     <option value="">
-                                        {{ $service->porPort?->port_code.'-'.$service->porPort->port_name }}
+                                        {{ $service->porPort?->port_code.'-'.$service->porPort?->port_name }}
                                     </option>
                             </select>
                         </div>
@@ -140,7 +140,7 @@
                                 style="min-width: 100%;"
                                 disabled>
                                 <option value="" selected hidden>
-                                    {{ $service->fdcPort?->port_code.'-'.$service->fdcPort->port_name }}
+                                    {{ $service->fdcPort?->port_code.'-'.$service->fdcPort?->port_name }}
                                 </option>
                             </select>
                         </div>

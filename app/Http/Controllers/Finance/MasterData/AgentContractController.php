@@ -108,7 +108,7 @@ final class AgentContractController extends Controller
     {
         $getAgentContractResponse = $this->agentContractService->getAgentContractById($id);
         if (! $getAgentContractResponse->success) {
-            return redirect()->to_route('finance.master-data.agent-contract.index')->with('toastError', $getAgentContractResponse->message);
+            return to_route('finance.master-data.agent-contract.index')->with('toastError', $getAgentContractResponse->message);
         }
 
         $currencies = $this->currrencyService->getCurrencies();

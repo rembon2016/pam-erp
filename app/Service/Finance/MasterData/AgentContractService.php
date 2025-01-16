@@ -4,22 +4,29 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
-use App\Functions\ObjectResponse;
-use App\Models\Finance\AgentContract;
-use App\Traits\HandleUploadedFile;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
+use App\Functions\ObjectResponse;
+use App\Traits\HandleUploadedFile;
 use Illuminate\Support\Facades\DB;
+use App\Models\Finance\AgentContract;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 final class AgentContractService
 {
     use HandleUploadedFile;
 
-    public function getAgentContracts($filters = []): Collection
+    public function getAgentContracts($filters = [], bool $get_data = true): Collection|Builder
     {
-        return AgentContract::when(! empty($filters['customer']), function ($query) use ($filters) {
+        $data = AgentContract::when(! empty($filters['customer']), function ($query) use ($filters) {
             return $query->where('customer_id', $filters['customer']);
-        })->orderBy('contract_end', 'DESC')->get();
+        })->orderBy('contract_end', 'DESC');
+
+        if ($get_data) {
+            $data = $data->get();
+        }
+
+        return $data;
     }
 
     public function getAgentContractById(string $id): object

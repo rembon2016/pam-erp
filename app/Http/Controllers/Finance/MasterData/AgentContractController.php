@@ -62,7 +62,10 @@ final class AgentContractController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            return DataTables::of($this->agentContractService->getAgentContracts(request()->query()))
+            return DataTables::of($this->agentContractService->getAgentContracts(
+                    filters: request()->query(),
+                    get_data: false
+                ))
                 ->addIndexColumn()
                 ->editColumn('contract_no', function ($item) {
                     $is_expired = now()->gt($item->contract_end);

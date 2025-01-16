@@ -125,7 +125,7 @@
                         <td class="fw-bold fs-6 text-gray-800">Attachment (Document)</td>
                         <td>
                             <div id="fileList">
-                                @foreach($agent_contract?->documents as $document)
+                                @forelse($agent_contract?->documents as $document)
                                     <div class="file-item">
                                         <span>{{ $document->contract_file }}</span>
                                         <div class="d-flex align-items-center justify-content-end gap-2">
@@ -134,7 +134,9 @@
                                             </a>
                                         </div>
                                     </div>
-                                @endforeach
+                                @empty
+                                -
+                                @endforelse
                             </div>
                         </td>
                     </tr>

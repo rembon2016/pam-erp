@@ -71,9 +71,10 @@
 </style>
 @endpush
 @section('body')
-    <x:layout.breadcrumb.wrapper module="Master Data" pageName="Agent Contract">
+    <x:layout.breadcrumb.wrapper module="Master Data" pageName="Detail Of Agent Contract">
         <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />
         <x:layout.breadcrumb.item pageName="Master Data" />
+        <x:layout.breadcrumb.item pageName="Agent Contract" href="{{ route('finance.master-data.agent-contract.index') }}" />
     </x:layout.breadcrumb.wrapper>
 
     <x:layout.card.wrapper>
@@ -89,6 +90,10 @@
 
             <div class="table-responsive mb-10">
                 <table class="table-detail">
+                    <tr>
+                        <td class="fw-bold fs-6 text-gray-800">Contract No</td>
+                        <td>{{ $agent_contract->contract_no }}</td>
+                    </tr>
                     <tr>
                         <td class="fw-bold fs-6 text-gray-800">Customer Name</td>
                         <td>{{ $agent_contract->customer?->customer_name }}</td>

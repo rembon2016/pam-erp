@@ -36,16 +36,26 @@ final class AgentContractService
         DB::beginTransaction();
         try {
             $service_data = $dto['service_data'];
-            unset($dto['service_data']);
+            $contract_files = !empty($dto['contract_file']) ? $dto['contract_file'] : [];
 
-            if (! empty($dto['contract_file'])) {
-                $dto['contract_file'] = $this->uploadFile(
-                    file: $dto['contract_file'],
-                    folderPrefix: AgentContract::FOLDER_NAME
-                );
-            }
+            unset($dto['service_data'], $dto['contract_file']);
 
             $createdAgentContract = AgentContract::create($dto);
+
+            if (count($contract_files) > 0) {
+                collect($contract_files)->each(function ($file) use ($createdAgentContract) {
+                    $file_name = $this->uploadFile(
+                        file: $file,
+                        folderPrefix: AgentContract::FOLDER_NAME,
+                        is_encrypted: false
+                    );
+
+                    $createdAgentContract->documents()->create([
+                        'contract_file' => $file_name
+                    ]);
+                });
+            }
+
             $this->upsertAgentContractService($createdAgentContract, $service_data);
 
             DB::commit();
@@ -77,26 +87,24 @@ final class AgentContractService
         DB::beginTransaction();
         try {
             $service_data = $dto['service_data'];
-            unset($dto['service_data']);
-
-            if (! empty($dto['contract_file'])) {
-                if (! is_null($getAgentContractResponse->data->contract_file)) {
-                    $dto['contract_file'] = $this->syncUploadFile(
-                        file: $dto['contract_file'],
-                        old_file_name: $getAgentContractResponse->data->contract_file,
-                        folderPrefix: AgentContract::FOLDER_NAME
-                    );
-                } else {
-                    $dto['contract_file'] = $this->uploadFile(
-                        file: $dto['contract_file'],
-                        folderPrefix: AgentContract::FOLDER_NAME
-                    );
-                }
-            } else {
-                $dto['contract_file'] = $getAgentContractResponse->data->contract_file;
-            }
+            $contract_files = !empty($dto['contract_file']) ? $dto['contract_file'] : [];
+            unset($dto['service_data'], $dto['contract_file']);
 
             $getAgentContractResponse->data->update($dto);
+            if (count($contract_files) > 0) {
+                collect($contract_files)->each(function ($file) use ($getAgentContractResponse) {
+                    $file_name = $this->uploadFile(
+                        file: $file,
+                        folderPrefix: AgentContract::FOLDER_NAME,
+                        is_encrypted: false
+                    );
+
+                    $getAgentContractResponse->data->documents()->create([
+                        'contract_file' => $file_name
+                    ]);
+                });
+            }
+
             $this->upsertAgentContractService($getAgentContractResponse->data, $service_data);
 
             DB::commit();

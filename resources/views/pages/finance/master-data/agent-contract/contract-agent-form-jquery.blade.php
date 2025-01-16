@@ -456,7 +456,7 @@
                                                             Currency
                                                         </span>
                                                     </div>
-                                                    <div class="tableChargeForm-box text-center">
+                                                    <div class="tableChargeForm-box text-center" style="display: none;">
                                                         <span class="tableChargeForm-heading-text">
                                                             Unit
                                                         </span>

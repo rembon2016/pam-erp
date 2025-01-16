@@ -4,29 +4,31 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
-use App\Exports\MasterData\AgentContractExport;
-use App\Functions\ResponseJson;
+use Illuminate\View\View;
 use App\Functions\Utility;
+use Illuminate\Http\Response;
+use App\Functions\ResponseJson;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Finance\MasterData\AgentContract\StoreAgentContractRequest;
-use App\Http\Requests\Finance\MasterData\AgentContract\UpdateAgentContractRequest;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Finance\AgentContract;
-use App\Service\Finance\MasterData\AgentContractService;
-use App\Service\Finance\MasterData\CarrierService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\Facades\DataTables;
+use App\Models\Finance\AgentContractDocument;
+use App\Exports\MasterData\AgentContractExport;
+use App\Service\Finance\MasterData\PortService;
+use App\Service\Finance\MasterData\UnitService;
 use App\Service\Finance\MasterData\ChargeService;
+use App\Service\Finance\MasterData\CarrierService;
 use App\Service\Finance\MasterData\CountryService;
 use App\Service\Finance\MasterData\CurrencyService;
 use App\Service\Finance\MasterData\CustomerService;
-use App\Service\Finance\MasterData\PortService;
 use App\Service\Finance\MasterData\ServiceTypeService;
-use App\Service\Finance\MasterData\UnitService;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
-use Illuminate\View\View;
-use Maatwebsite\Excel\Facades\Excel;
-use Yajra\DataTables\Facades\DataTables;
+use App\Service\Finance\MasterData\AgentContractService;
+use App\Http\Requests\Finance\MasterData\AgentContract\StoreAgentContractRequest;
+use App\Http\Requests\Finance\MasterData\AgentContract\UpdateAgentContractRequest;
 
 final class AgentContractController extends Controller
 {
@@ -264,5 +266,30 @@ final class AgentContractController extends Controller
         $file_name = 'list_agent_contract_'.time().'.csv';
 
         return Excel::download(new AgentContractExport, $file_name);
+    }
+
+    public function deleteDocument(string $document_id): JsonResponse
+    {
+        try {
+            $document = AgentContractDocument::findOrFail($document_id);
+            $document->delete();
+
+            $folderPrefix = AgentContract::FOLDER_NAME;
+
+            if (Storage::disk('public')->exists("{$folderPrefix}/".$document->contract_file)) {
+                Storage::disk('public')->delete("{$folderPrefix}/".$document->contract_file);
+            }
+
+            return ResponseJson::success(
+                code: Response::HTTP_OK,
+                message: __('crud.deleted', ['name' => 'Agent Contract Document'])
+            );
+        } catch (\Throwable $th) {
+            return ResponseJson::error(
+                code: Response::HTTP_INTERNAL_SERVER_ERROR,
+                message: __('crud.error_delete', ['name' => 'Agent Contract Document']),
+                errors: $th->getTraceAsString()
+            );
+        }
     }
 }

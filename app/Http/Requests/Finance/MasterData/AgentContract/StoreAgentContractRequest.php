@@ -29,7 +29,8 @@ final class StoreAgentContractRequest extends FormRequest
             'contract_date' => 'required|date',
             'contract_start' => 'required|date',
             'contract_end' => 'required|date',
-            'contract_file' => 'nullable|file',
+            'contract_file' => 'nullable|array',
+            'contract_file.*' => 'required|file',
             'contract_description' => 'nullable|string',
             'service_data' => 'required|array',
         ];
@@ -43,7 +44,8 @@ final class StoreAgentContractRequest extends FormRequest
             'contract_date' => 'Contract Date',
             'contract_start' => 'Start Contract Date',
             'contract_end' => 'End Contract Date',
-            'contract_file' => 'Document (Attachment)',
+            'contract_file' => 'Documents',
+            'contract_file.*' => 'Document',
             'contract_description' => 'Description',
             'service_data' => 'Agent Contract Services & Charges',
         ];

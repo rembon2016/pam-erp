@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Finance\AgentContractDocument;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 final class AgentContract extends Model
 {
@@ -41,12 +43,28 @@ final class AgentContract extends Model
 
     const FOLDER_NAME = 'agent-contract/file';
 
+    /**
+     * Get the URL for the contract file.
+     *
+     * This method returns the URL for the contract file associated with the AgentContract model.
+     * It constructs the URL by combining the 'storage' path, the FOLDER_NAME constant, and the contract_file property.
+     *
+     * @return string The URL for the contract file.
+     */
     public function getFileURL()
     {
         return asset('storage/'.self::FOLDER_NAME.'/'.$this->contract_file);
     }
 
-    public function customer()
+    /**
+     * Has One Relation With Customer
+     *
+     * This method defines a one-to-one relationship between the AgentContract model and the Customer model,
+     * where the AgentContract model belongs to a single Customer model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function customer(): HasOne
     {
         return $this->hasOne(Customer::class, 'id', 'customer_id');
     }
@@ -65,5 +83,13 @@ final class AgentContract extends Model
     public function contractAgentCharge(): HasMany
     {
         return $this->hasMany(AgentContractCharge::class, 'agent_contract_id', 'id');
+    }
+
+    /**
+     * Has Many Relation With Agent Contract Document
+     */
+    public function documents(): HasMany
+    {
+        return $this->hasMany(AgentContractDocument::class, 'agent_contract_id', 'id');
     }
 }

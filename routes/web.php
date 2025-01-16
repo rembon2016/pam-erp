@@ -106,6 +106,9 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/export/pdf', [AgentContractController::class, 'exportPdf'])->name('export.pdf');
                 Route::get('/export/excel', [AgentContractController::class, 'exportExcel'])->name('export.excel');
                 Route::get('/export/csv', [AgentContractController::class, 'exportCsv'])->name('export.csv');
+
+                // Document Route
+                Route::delete('/document/{id}/delete', [AgentContractController::class, 'deleteDocument'])->name('document.delete');
             });
 
             Route::group([

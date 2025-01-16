@@ -28,14 +28,11 @@
                     @endforeach
                 </x:form.select2>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <x:form.input label="Contract Validity From" name="contract_start" placeholder="Select Date" type="date" :model="$customer_contract" required="true" />
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <x:form.input label="Contract Validity To" name="contract_end" placeholder="Select Date" type="date" :model="$customer_contract" required="true" />
-            </div>
-            <div class="col-md-4">
-                <x:form.input label="Attachment" name="contract_file" placeholder="Choose File" type="file" :model="$customer_contract" file="true" multiple="true" />
             </div>
             <div class="col-md-12">
                 <x:form.select label="Service" name="service_type" defaultOption="Select Service" :model="$customer_contract" required="true">
@@ -81,7 +78,25 @@
                     @endforeach
                 </x:form.select2>
             </div> --}}
-            <div class="col-md-12">
+            <div class="col-md-6">
+                <x:form.input label="Attachment (Multiple File Upload)" class="inputFiles" name="contract_file[]" placeholder="Choose File" type="file" :model="$customer_contract" file="true" multiple="true" />
+                <div id="fileList">
+                    @foreach($customer_contract?->documents as $document)
+                        <div class="file-item">
+                            <span>{{ $document->contract_file }}</span>
+                            <div class="d-flex align-items-center justify-content-end gap-2">
+                                <a href="{{ $document->getFileUrl() }}" class="btn btn-sm px-1 py-3" download>
+                                    <i class="bx bx-download text-info fs-2"></i>
+                                </a>
+                                <button type="button" data-action="{{ route('finance.master-data.customer-contract.document.delete', $document->id) }}" data-type="delete-existing-file" class="btn btn-sm px-1 py-3">
+                                    <i class="bx bx-trash text-danger fs-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="col-md-6">
                 <x:form.select2 label="Currency" name="currency_id" placeholder="Select Currency" :model="$customer_contract" required="true">
                     @foreach ($currencies as $currency)
                         <option value="{{ $currency->id }}" @selected(old('currency_id', $customer_contract?->currency_id) == $currency->id)>{{ $currency->currency_name }}</option>
@@ -713,6 +728,97 @@
 
                 generatePortSelect2(selectId, country_type, current_transport_mode, country_id);
             });
+
+            $("button[data-type='delete-existing-file']").off('click').on('click', function (event) {
+                event.preventDefault();
+                const actionUrl = $(this).data('action');
+                const fileItem = $(this).parents('.file-item');
+
+                $.ajax({
+                    url: actionUrl,
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                    },
+                    beforeSend: function () {
+                        $(fileItem).hide();
+                    },
+                    success: function (response) {
+                        if (response.ok) {
+                            iziToast.success({
+                                title: 'Success',
+                                message : response.message,
+                                position: 'topRight',
+                                timeout: 1500,
+                            });
+
+                            $(fileItem).remove();
+                        } else {
+                            iziToast.error({
+                                title: 'Failed',
+                                message : response.message,
+                                position: 'topRight',
+                                timeout: 1500,
+                                displayMode: 2,
+                            });
+
+                            $(fileItem).show();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        iziToast.error({
+                            title: 'Failed',
+                            message : error,
+                            position: 'topRight',
+                            timeout: 1500,
+                            displayMode: 2,
+                        });
+
+                        $(fileItem).show();
+                    },
+                })
+            })
         });
+
+        let filesArray = [];
+
+        // Saat file dipilih
+        $('.inputFiles').on('change', function (e) {
+            filesArray = Array.from(e.target.files); // Simpan file dalam array
+            renderFileList();
+        });
+
+        // Fungsi untuk render daftar file
+        function renderFileList() {
+            $('.uploaded-file').remove(); // Kosongkan daftar
+            filesArray.forEach((file, index) => {
+                $('#fileList').append(
+                    `<div class="file-item uploaded-file">
+                        <span>${file.name}</span>
+                        <button type="button" data-type="delete-file" data-index="${index}" class="btn btn-sm">
+                            <i class="bx bx-trash text-danger fs-2"></i>
+                        </button>
+                    </div>`
+                );
+            });
+
+            updateInputFiles(); // Perbarui file input
+        }
+
+        // Hapus file tertentu dari daftar
+        $(document).on('click', 'button[data-type="delete-file"]', function () {
+            const fileIndex = $(this).data('index');
+            filesArray.splice(fileIndex, 1); // Hapus file dari array
+            renderFileList();
+        });
+
+        // Perbarui input file dengan file yang tersisa di array
+        function updateInputFiles() {
+            const dataTransfer = new DataTransfer(); // Membuat DataTransfer baru
+            filesArray.forEach((file) => {
+                dataTransfer.items.add(file); // Tambahkan file ke DataTransfer
+            });
+            $('.inputFiles')[0].files = dataTransfer.files; // Perbarui input file
+        }
     </script>
 @endpush

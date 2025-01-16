@@ -15,8 +15,10 @@ use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Operation\Master\Unit;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Finance\CustomerContract;
 use Yajra\DataTables\Facades\DataTables;
+use App\Models\Finance\CustomerContractDocument;
 use App\Service\Finance\MasterData\ChargeService;
 use App\Exports\MasterData\CustomerContractExport;
 use App\Service\Finance\MasterData\CountryService;
@@ -226,5 +228,30 @@ final class CustomerContractController extends Controller
         $file_name = 'list_customer_contract_'.time().'.csv';
 
         return Excel::download(new CustomerContractExport, $file_name);
+    }
+
+    public function deleteDocument(string $document_id): JsonResponse
+    {
+        try {
+            $document = CustomerContractDocument::findOrFail($document_id);
+            $document->delete();
+
+            $folderPrefix = CustomerContract::FOLDER_NAME;
+
+            if (Storage::disk('public')->exists("{$folderPrefix}/".$document->contract_file)) {
+                Storage::disk('public')->delete("{$folderPrefix}/".$document->contract_file);
+            }
+
+            return ResponseJson::success(
+                code: Response::HTTP_OK,
+                message: __('crud.deleted', ['name' => 'Customer Contract Document'])
+            );
+        } catch (\Throwable $th) {
+            return ResponseJson::error(
+                code: Response::HTTP_INTERNAL_SERVER_ERROR,
+                message: __('crud.error_delete', ['name' => 'Customer Contract Document']),
+                errors: $th->getTraceAsString()
+            );
+        }
     }
 }

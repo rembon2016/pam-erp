@@ -57,6 +57,7 @@ final class ResponseJson
         Response::HTTP_UNPROCESSABLE_ENTITY,
         Response::HTTP_LOCKED,
         Response::HTTP_FAILED_DEPENDENCY,
+        Response::HTTP_INTERNAL_SERVER_ERROR
     ];
 
     /**

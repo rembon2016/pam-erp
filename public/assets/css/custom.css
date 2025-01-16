@@ -21,6 +21,30 @@ button.action-btn {
     pointer-events: none;
 }
 
+#fileList {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#fileList .file-item {
+    transition: all .3s linear;
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+#fileList .file-item:hover {
+    border-color: #d4d4d4;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+}
+
 .pipeline-breadcrumb{
     display: flex;
     align-items: center;

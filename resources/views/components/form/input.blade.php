@@ -10,6 +10,7 @@
     'customModelling' => $customModelling ?? null,
     'readonly' => $readonly ?? false,
     'multiple' => $multiple ?? false,
+    'class' => $class ?? '',
 ])
 
 <div class='mb-3'>
@@ -21,7 +22,7 @@
     @endphp
 
     <label for="#{{ $name }}" class='form-label {{ $required ? 'required' : '' }}'>{{ $label }}</label>
-    <input id="{{ $name }}" type="{{ $type }}" class="@if($errors->has($name)) is-invalid @endif form-control" placeholder="{{ $placeholder }}" name="{{ $name }}" value="{{ old($name, $valueRecondition) }}" {{ $required ? 'required' : '' }} {{ $disabled ? 'disabled' : '' }} {{ $readonly ? 'readonly' : '' }} {{ $multiple ? 'multiple' : '' }}>
+    <input id="{{ $name }}" type="{{ $type }}" class="@if($errors->has($name)) is-invalid @endif form-control {{ $class }}" placeholder="{{ $placeholder }}" name="{{ $name }}" value="{{ old($name, $valueRecondition) }}" {{ $required ? 'required' : '' }} {{ $disabled ? 'disabled' : '' }} {{ $readonly ? 'readonly' : '' }} {{ $multiple ? 'multiple' : '' }}>
     <div class="invalid-feedback">
         {{ $errors->first($name) }}
     </div>

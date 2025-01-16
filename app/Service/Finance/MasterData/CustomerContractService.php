@@ -48,21 +48,33 @@ final class CustomerContractService
             $dto['contract_no'] = CustomerContract::generateUniqueCodeByCustomer($getCustomerResponse->data);
 
             $charges = collect($dto['charges']);
-            unset($dto['charges']);
-
-            if (! empty($dto['contract_file'])) {
-                $dto['contract_file'] = $this->uploadFile(
-                    file: $dto['contract_file'],
-                    folderPrefix: CustomerContract::FOLDER_NAME
-                );
-            }
+            $contract_files = !empty($dto['contract_file']) ? $dto['contract_file'] : [];
+            unset($dto['charges'], $dto['contract_file']);
 
             $createdCustomerContract = CustomerContract::create($dto);
+
+            if (count($contract_files) > 0) {
+                collect($contract_files)->each(function ($file) use ($createdCustomerContract) {
+                    $file_name = $this->uploadFile(
+                        file: $file,
+                        folderPrefix: CustomerContract::FOLDER_NAME,
+                        is_encrypted: false
+                    );
+
+                    $createdCustomerContract->documents()->create([
+                        'contract_file' => $file_name
+                    ]);
+                });
+            }
+
+            // Create Customer Contract Charges and Rates
             $charges->each(function ($charge) use ($createdCustomerContract) {
                 $rates = collect($charge['rates']);
                 unset($charge['rates']);
 
                 $createdCustomerContractCharge = $createdCustomerContract->charges()->create($charge);
+
+                // Create Customer Contract Charge Rates
                 $rates->each(function ($rate) use ($createdCustomerContract, $createdCustomerContractCharge) {
                     $rate['customer_contract_id'] = $createdCustomerContract->id;
                     $createdCustomerContractCharge->rates()->create($rate);
@@ -98,27 +110,25 @@ final class CustomerContractService
         DB::beginTransaction();
         try {
             $charges = collect($dto['charges']);
+            $contract_files = !empty($dto['contract_file']) ? $dto['contract_file'] : [];
             $existingContractCharge = $charges->filter(fn ($charge) => ! empty($charge['customer_contract_charge_id']))->pluck('customer_contract_charge_id');
-            unset($dto['charges']);
-
-            if (! empty($dto['contract_file'])) {
-                if (! is_null($getCustomerContractResponse->data->contract_file)) {
-                    $dto['contract_file'] = $this->syncUploadFile(
-                        file: $dto['contract_file'],
-                        old_file_name: $getCustomerContractResponse->data->contract_file,
-                        folderPrefix: CustomerContract::FOLDER_NAME
-                    );
-                } else {
-                    $dto['contract_file'] = $this->uploadFile(
-                        file: $dto['contract_file'],
-                        folderPrefix: CustomerContract::FOLDER_NAME
-                    );
-                }
-            } else {
-                $dto['contract_file'] = $getCustomerContractResponse->data->contract_file;
-            }
+            unset($dto['charges'], $dto['contract_file']);
 
             $getCustomerContractResponse->data->update($dto);
+
+            if (count($contract_files) > 0) {
+                collect($contract_files)->each(function ($file) use ($getCustomerContractResponse) {
+                    $file_name = $this->uploadFile(
+                        file: $file,
+                        folderPrefix: CustomerContract::FOLDER_NAME,
+                        is_encrypted: false
+                    );
+
+                    $getCustomerContractResponse->data->documents()->create([
+                        'contract_file' => $file_name
+                    ]);
+                });
+            }
 
             // Sync Customer Contract Charges
             $getCustomerContractResponse->data->charges()->whereNotIn('id', $existingContractCharge->toArray())->delete();

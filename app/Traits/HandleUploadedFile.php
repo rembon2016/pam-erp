@@ -7,15 +7,17 @@ use Illuminate\Support\Facades\Storage;
 
 trait HandleUploadedFile
 {
-    public function uploadFile(UploadedFile $file, string $folderPrefix)
+    public function uploadFile(UploadedFile $file, string $folderPrefix, bool $is_encrypted = true)
     {
         $file_name = $file->getClientOriginalName();
         $file_ext = $file->getClientOriginalExtension();
-        $encoded_file_name = md5(time().$file_name).'.'.$file_ext;
+        if ($is_encrypted) {
+            $file_name = md5(time().$file_name) . $file_ext;
+        }
 
-        $file->storeAs($folderPrefix, $encoded_file_name);
+        $file->storeAs($folderPrefix, $file_name);
 
-        return $encoded_file_name;
+        return $file_name;
     }
 
     public function syncUploadFile(UploadedFile $file, ?string $old_file_name, string $folderPrefix)

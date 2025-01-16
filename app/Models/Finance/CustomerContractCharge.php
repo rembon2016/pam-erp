@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
+use App\Models\Finance\Charge;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Finance\CustomerContract;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -27,6 +28,11 @@ final class CustomerContractCharge extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    public function charge()
+    {
+        return $this->hasOne(Charge::class, 'id', 'charge_id');
+    }
 
     public function rates()
     {

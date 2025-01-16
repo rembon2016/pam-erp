@@ -74,6 +74,12 @@ final class CustomerContract extends Model
         self::COURIER => 'Courier',
     ];
 
+    const NON_SEA_AIR_SERVICES = [
+        self::WAREHOUSE => 'Warehouse',
+        self::TRUCKING => 'Trucking',
+        self::COURIER => 'Courier',
+    ];
+
     public function getFileURL()
     {
         return asset('storage/'.self::FOLDER_NAME.'/'.$this->contract_file);
@@ -159,5 +165,42 @@ final class CustomerContract extends Model
         $contract_number = "{$customer_code}/{$nextNumber}";
 
         return $contract_number;
+    }
+
+    // Additional Functions that Related to Customer Contract
+    public function getServiceType()
+    {
+        return !empty($this->service_type) ? self::SERVICES[$this->service_type] : 'N/A';
+    }
+
+    public function getPortOrigin()
+    {
+        if (!empty($this->service_type)) {
+            if (in_array($this->service_type, self::NON_SEA_AIR_SERVICES)) {
+                return $this->origin_port;
+            } else {
+                return !is_null($this->originPort) ? "{$this->originPort->port_code} - {$this->originPort->port_name}" : 'N/A';
+            }
+        }
+
+        return "N/A";
+    }
+
+    public function getPortDestination()
+    {
+        if (!empty($this->service_type)) {
+            if (in_array($this->service_type, self::NON_SEA_AIR_SERVICES)) {
+                return $this->destination_port;
+            } else {
+                return !is_null($this->destinationPort) ? "{$this->destinationPort->port_code} - {$this->destinationPort->port_name}" : 'N/A';
+            }
+        }
+
+        return "N/A";
+    }
+
+    public function getCurrency()
+    {
+        return !is_null($this->currency) ? "{$this->currency->currency_code} - {$this->currency->currency_name}" : 'N/A';
     }
 }

@@ -73,6 +73,7 @@ Route::group(['middleware' => ['auth']], function () {
                 'as' => 'customer-contract.',
             ], function () {
                 Route::get('/', [CustomerContractController::class, 'index'])->name('index');
+                Route::get('/detail/{id}', [CustomerContractController::class, 'show'])->name('detail');
                 Route::get('/list', [CustomerContractController::class, 'list'])->name('list');
                 Route::get('/create', [CustomerContractController::class, 'create'])->name('create');
                 Route::post('/', [CustomerContractController::class, 'store'])->name('store');

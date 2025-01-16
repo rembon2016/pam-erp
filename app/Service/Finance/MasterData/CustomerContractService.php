@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
-use App\Functions\ObjectResponse;
 use App\Functions\Utility;
-use App\Models\Finance\CustomerContract;
-use App\Traits\HandleUploadedFile;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
+use App\Functions\ObjectResponse;
+use App\Traits\HandleUploadedFile;
 use Illuminate\Support\Facades\DB;
+use App\Models\Finance\CustomerContract;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 final class CustomerContractService
 {
@@ -20,11 +21,15 @@ final class CustomerContractService
         protected CustomerService $customerService
     ) {}
 
-    public function getCustomerContracts($filters = []): Collection
+    public function getCustomerContracts($filters = [], bool $get_data = true): Collection|Builder
     {
-        return CustomerContract::when(! empty($filters['customer']), function ($query) use ($filters) {
+        $data = CustomerContract::when(! empty($filters['customer']), function ($query) use ($filters) {
             return $query->where('customer_id', $filters['customer']);
         })->orderBy('contract_end', 'desc')->get();
+
+        if ($get_data) $data = $data->get();
+
+        return $data;
     }
 
     public function getCustomerContractById(string $id): object

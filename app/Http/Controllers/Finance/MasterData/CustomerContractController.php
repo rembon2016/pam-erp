@@ -56,14 +56,17 @@ final class CustomerContractController extends Controller
      */
     public function list(): JsonResponse
     {
-        // if (request()->ajax()) {
-        return DataTables::of($this->customerContractService->getCustomerContracts(request()->query()))
+        if (request()->ajax()) {
+            return DataTables::of($this->customerContractService->getCustomerContracts(
+                filters: request()->query(),
+                get_data: false
+            ))
             ->addIndexColumn()
             ->addColumn('action', function ($item) {
                 return Utility::generateTableActions([
-                    'detail' => route('finance.master-data.customer-contract.edit', $item->id),
+                    'detail' => route('finance.master-data.customer-contract.detail', $item->id),
                     'edit' => route('finance.master-data.customer-contract.edit', $item->id),
-                    'download' => '/',
+                    'download' => 'javascript:void(0)',
                 ]);
             })
             ->editColumn('contract_no', function ($item) {
@@ -88,12 +91,21 @@ final class CustomerContractController extends Controller
             })
             ->rawColumns(['action', 'contract_no'])
             ->toJson();
-        // }
+        }
 
-        // return ResponseJson::error(
-        //     Response::HTTP_UNAUTHORIZED,
-        //     'Access Unauthorized',
-        // );
+        return ResponseJson::error(
+            Response::HTTP_UNAUTHORIZED,
+            'Access Unauthorized',
+        );
+    }
+
+    public function show(string $id)
+    {
+        $getCustomerContractResponse = $this->customerContractService->getCustomerContractById($id);
+        return $getCustomerContractResponse->success
+            ? view('pages.finance.master-data.customer-contract.detail', [
+                'customer_contract' => $getCustomerContractResponse->data,
+            ]) : to_route('finance.master-data.customer-contract.index')->with('toastError', $getCustomerContractResponse->message);
     }
 
     /**

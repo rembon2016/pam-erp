@@ -45,6 +45,7 @@ final class CustomerService
         $customer = Customer::query()
             ->when(! empty($filters['customer_name']), fn ($query) => $query->where('customer_name', 'ilike', '%'.$filters['customer_name'].'%'))
             ->when(! empty($filters['customer_type_name']), fn ($query) => $query->whereHas('customerTypes', fn ($q) => $q->whereIn('name', $filters['customer_type_name'])))
+            ->when(!empty($filters['is_exists_customer']) && $filters['is_exists_customer'] == 'true', fn ($query) => $query->whereNotNull('customer_code'))
             ->orderBy('customer_name', 'asc');
 
         return $customer;

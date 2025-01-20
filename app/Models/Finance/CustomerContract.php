@@ -42,6 +42,8 @@ final class CustomerContract extends Model
     public $incrementing = false;
 
     const FOLDER_NAME = 'customer-contract/file';
+    const FOLDER_QUOTATION = 'customer-contract/quotations';
+
     const CROSS_AIR = 'air';
     const SEA_AIR = 'sea_air';
     const SEA_IMPORT = 'sea_import';

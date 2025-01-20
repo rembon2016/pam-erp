@@ -66,7 +66,7 @@ final class CustomerContractController extends Controller
                 return Utility::generateTableActions([
                     'detail' => route('finance.master-data.customer-contract.detail', $item->id),
                     'edit' => route('finance.master-data.customer-contract.edit', $item->id),
-                    'download' => 'javascript:void(0)',
+                    'download-link' => route('finance.master-data.customer-contract.download', $item->id),
                 ]);
             })
             ->editColumn('contract_no', function ($item) {
@@ -268,6 +268,16 @@ final class CustomerContractController extends Controller
                 message: __('crud.error_delete', ['name' => 'Customer Contract Document']),
                 errors: $th->getTraceAsString()
             );
+        }
+    }
+
+    public function download(string $id)
+    {
+        try {
+            return $this->customerContractService->download($id);
+        } catch (\Throwable $th) {
+            dd($th);
+            return to_route('finance.master-data.customer-contract.index')->with('toastError', $th->getMessage());
         }
     }
 }

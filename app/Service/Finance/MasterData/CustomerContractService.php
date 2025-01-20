@@ -9,7 +9,9 @@ use Illuminate\Http\Response;
 use App\Functions\ObjectResponse;
 use App\Traits\HandleUploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use App\Models\Finance\CustomerContract;
+use PhpOffice\PhpWord\TemplateProcessor;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 
@@ -209,5 +211,71 @@ final class CustomerContractService
                 $th->getTrace()
             );
         }
+    }
+
+    public function download(string $id)
+    {
+        $getCustomerContractResponse = $this->getCustomerContractById($id);
+        if (! $getCustomerContractResponse->success) {
+            throw new \Exception($getCustomerContractResponse->message);
+        }
+
+        try {
+            // Preparing Data to be replaced in Quotation Template
+            $formatted_contract_no = str_replace("/", "-", $getCustomerContractResponse->data->contract_no);
+            $templateData = [
+                'contract_no' => $getCustomerContractResponse->data->contract_no,
+                'customer_name' => $getCustomerContractResponse->data->customer->customer_name,
+                'contract_date' => $getCustomerContractResponse->data->contract_start?->format('d-M-Y'),
+                'attn_name' => $getCustomerContractResponse->data->customer->customer_name,
+            ];
+
+            // Load Quotation Template
+            $template_file_name = "template-quotation-2.docx";
+            $templatePath = storage_path("templates/{$template_file_name}");
+            $templateProcessor = new TemplateProcessor($templatePath);
+
+            // Replacing Placeholder Text with Template Data
+            foreach ($templateData as $key => $value) {
+                $templateProcessor->setValue($key, $value);
+            }
+
+            $tariff_data = $this->generateTariffPlaceholder($getCustomerContractResponse->data);
+            $templateProcessor->cloneRowAndSetValues('description', $tariff_data);
+
+            // Save Quotation Result
+            $file_name = "Quotation-{$formatted_contract_no}.docx";
+            $output_directory = storage_path("app/public/" . CustomerContract::FOLDER_QUOTATION);
+            if (!File::exists($output_directory)) {
+                File::makeDirectory($output_directory, 0755, true);
+            }
+
+            $output_path =  $output_directory . "/{$file_name}";
+            $templateProcessor->saveAs($output_path);
+
+            return response()->download($output_path);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    private function generateTariffPlaceholder(CustomerContract $customerContract): array
+    {
+        $tariffs = [];
+
+        foreach ($customerContract->charges as $charge) {
+            foreach ($charge->rates as $rate) {
+                $tariffs[] = [
+                    'description' => $charge->charge->charge_name,
+                    'price' => $rate->rate,
+                    'curr' => $customerContract->currency->currency_code,
+                    'calc' => $rate->unit_code,
+                    'qty' => 1,
+                    'min' => $rate->unit_code == "KG" ? $rate->from : 1
+                ];
+            }
+        }
+
+        return $tariffs;
     }
 }

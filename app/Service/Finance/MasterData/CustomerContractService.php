@@ -231,7 +231,7 @@ final class CustomerContractService
             ];
 
             // Load Quotation Template
-            $template_file_name = "template-quotation-2.docx";
+            $template_file_name = "template-quotation.docx";
             $templatePath = storage_path("templates/{$template_file_name}");
             $templateProcessor = new TemplateProcessor($templatePath);
 
@@ -244,16 +244,16 @@ final class CustomerContractService
             $templateProcessor->cloneRowAndSetValues('description', $tariff_data);
 
             // Save Quotation Result
-            $file_name = "Quotation-{$formatted_contract_no}.docx";
+            $word_file_name = "Quotation-{$formatted_contract_no}.docx";
             $output_directory = storage_path("app/public/" . CustomerContract::FOLDER_QUOTATION);
             if (!File::exists($output_directory)) {
                 File::makeDirectory($output_directory, 0755, true);
             }
 
-            $output_path =  $output_directory . "/{$file_name}";
-            $templateProcessor->saveAs($output_path);
+            $word_final_path =  $output_directory . "/{$word_file_name}";
+            $templateProcessor->saveAs($word_final_path);
 
-            return response()->download($output_path);
+            return response()->download($word_final_path);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -265,13 +265,19 @@ final class CustomerContractService
 
         foreach ($customerContract->charges as $charge) {
             foreach ($charge->rates as $rate) {
+                $qty = 1;
+                if ($rate->unit_code == 'KG') {
+                    $qty = "{$rate->from}-{$rate->to}";
+                } elseif ($rate->unit_code == 'CONTAINER') {
+                    $qty = $rate->container_type;
+                }
+
                 $tariffs[] = [
                     'description' => $charge->charge->charge_name,
                     'price' => $rate->rate,
                     'curr' => $customerContract->currency->currency_code,
                     'calc' => $rate->unit_code,
-                    'qty' => 1,
-                    'min' => $rate->unit_code == "KG" ? $rate->from : 1
+                    'qty' => $qty,
                 ];
             }
         }

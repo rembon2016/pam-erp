@@ -141,16 +141,6 @@
                                     45 FT GOH
                                 </span>
                             </div>
-                            <div class="tableChargeForm-box text-center" style="min-width: 130px;">
-                                <span class="tableChargeForm-heading-text">
-                                    POR
-                                </span>
-                            </div>
-                            <div class="tableChargeForm-box text-center" style="min-width: 130px;">
-                                <span class="tableChargeForm-heading-text">
-                                    FDC
-                                </span>
-                            </div>
                             <div class="tableChargeForm-box text-center" style="min-width: 110px;">
                                 <span class="tableChargeForm-heading-text">
                                     PP/CC
@@ -409,22 +399,6 @@
                                             type="text"
                                             class="form-control unitContainerField_1_1"
                                             name="service_data[0][charge_data][0][45_feet_goh]"
-                                            value=""
-                                            style="width: 100%;">
-                                    </div>
-                                    <div class="tableChargeForm-box" style="min-width: 130px;">
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            name="service_data[0][charge_data][0][por]"
-                                            value=""
-                                            style="width: 100%;">
-                                    </div>
-                                    <div class="tableChargeForm-box" style="min-width: 130px;">
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            name="service_data[0][charge_data][0][fdc]"
                                             value=""
                                             style="width: 100%;">
                                     </div>

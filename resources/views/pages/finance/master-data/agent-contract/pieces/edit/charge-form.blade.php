@@ -140,16 +140,6 @@
                                     45 FT GOH
                                 </span>
                             </div>
-                            <div class="tableChargeForm-box text-center" style="min-width: 130px;">
-                                <span class="tableChargeForm-heading-text">
-                                    POR
-                                </span>
-                            </div>
-                            <div class="tableChargeForm-box text-center" style="min-width: 130px;">
-                                <span class="tableChargeForm-heading-text">
-                                    FDC
-                                </span>
-                            </div>
                             <div class="tableChargeForm-box text-center" style="min-width: 110px;">
                                 <span class="tableChargeForm-heading-text">
                                     PP/CC
@@ -468,22 +458,6 @@
                                                 @if($chargeValue?->unit?->unit_name != 'CONTAINER')
                                                     disabled
                                                 @endif>
-                                        </div>
-                                        <div class="tableChargeForm-box" style="min-width: 130px;">
-                                            <input
-                                                type="text"
-                                                class="form-control"
-                                                name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][por]"
-                                                value="{{ $chargeValue->por }}"
-                                                style="width: 100%;">
-                                        </div>
-                                        <div class="tableChargeForm-box" style="min-width: 130px;">
-                                            <input
-                                                type="text"
-                                                class="form-control"
-                                                name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][fdc]"
-                                                value="{{ $chargeValue->fdc }}"
-                                                style="width: 100%;">
                                         </div>
                                         <div class="tableChargeForm-box" style="min-width: 110px;">
                                             <select

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
+use App\Traits\Eloquent\Historable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class CustomerContractChargeDetail extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, Historable;
 
     protected $table = 'finance.customer_contract_charge_detail';
     protected $guarded = ['id'];

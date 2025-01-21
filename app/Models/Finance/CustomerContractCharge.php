@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Finance\CustomerContract;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use App\Models\Finance\CustomerContractChargeDetail;
+use App\Traits\Eloquent\Historable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 final class CustomerContractCharge extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, Historable;
 
     /**
      * The database table name for the bank informations.

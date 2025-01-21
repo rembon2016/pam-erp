@@ -11,11 +11,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Finance\CustomerContractDocument;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use App\Models\Finance\CustomerContractChargeDetail;
+use App\Traits\Eloquent\Historable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 final class CustomerContract extends Model
 {
-    use HasFactory, HasUuids, SoftDeletes;
+    use HasFactory, HasUuids, SoftDeletes, Historable;
 
     /**
      * The database table name for the bank informations.

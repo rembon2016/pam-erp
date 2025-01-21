@@ -6,12 +6,13 @@ namespace App\Models\Finance;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Finance\CustomerContract;
+use App\Traits\Eloquent\Historable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 final class CustomerContractDocument extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, Historable;
 
     protected $table = 'finance.customer_contract_document';
     protected $guarded = ['id'];

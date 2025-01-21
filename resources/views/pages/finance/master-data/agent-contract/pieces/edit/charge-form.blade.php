@@ -180,16 +180,6 @@
                                     Commodity
                                 </span>
                             </div>
-                            <div class="tableChargeForm-box text-center" style="min-width: 150px;">
-                                <span class="tableChargeForm-heading-text">
-                                    Valid from Date
-                                </span>
-                            </div>
-                            <div class="tableChargeForm-box text-center" style="min-width: 150px;">
-                                <span class="tableChargeForm-heading-text">
-                                    Valid to Date
-                                </span>
-                            </div>
                         </div>
                         <div class="tableChargeForm-body">
                             @foreach($service->contractAgentCharge as $chargeIndex => $chargeValue)
@@ -586,22 +576,6 @@
                                                 class="form-control"
                                                 name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][commodity]"
                                                 value="{{ $chargeValue->commodity }}"
-                                                style="width: 100%;">
-                                        </div>
-                                        <div class="tableChargeForm-box" style="min-width: 150px;">
-                                            <input
-                                                type="date"
-                                                class="form-control"
-                                                name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][valid_from_date]"
-                                                value="{{ $chargeValue->valid_from_date }}"
-                                                style="width: 100%;">
-                                        </div>
-                                        <div class="tableChargeForm-box" style="min-width: 150px;">
-                                            <input
-                                                type="date"
-                                                class="form-control"
-                                                name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][valid_to_date]"
-                                                value="{{ $chargeValue->valid_to_date }}"
                                                 style="width: 100%;">
                                         </div>
                                     </div>

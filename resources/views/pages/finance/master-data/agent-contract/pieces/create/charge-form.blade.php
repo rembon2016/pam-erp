@@ -181,16 +181,6 @@
                                     Commodity
                                 </span>
                             </div>
-                            <div class="tableChargeForm-box text-center" style="min-width: 150px;">
-                                <span class="tableChargeForm-heading-text">
-                                    Valid from Date
-                                </span>
-                            </div>
-                            <div class="tableChargeForm-box text-center" style="min-width: 150px;">
-                                <span class="tableChargeForm-heading-text">
-                                    Valid to Date
-                                </span>
-                            </div>
                         </div>
                         <div class="tableChargeForm-body">
                             <div class="chargeTableItemRow_1 tableChargeForm-body-row flex-column">
@@ -527,22 +517,6 @@
                                             type="text"
                                             class="form-control"
                                             name="service_data[0][charge_data][0][commodity]"
-                                            value=""
-                                            style="width: 100%;">
-                                    </div>
-                                    <div class="tableChargeForm-box" style="min-width: 150px;">
-                                        <input
-                                            type="date"
-                                            class="form-control"
-                                            name="service_data[0][charge_data][0][valid_from_date]"
-                                            value=""
-                                            style="width: 100%;">
-                                    </div>
-                                    <div class="tableChargeForm-box" style="min-width: 150px;">
-                                        <input
-                                            type="date"
-                                            class="form-control"
-                                            name="service_data[0][charge_data][0][valid_to_date]"
                                             value=""
                                             style="width: 100%;">
                                     </div>

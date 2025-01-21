@@ -19,7 +19,7 @@ trait Historable
     {
         // Pastikan property historableActions ada
         if (!property_exists(static::class, 'historableActions')) {
-            throw new \Exception("historableActions property must be declared inside the model " . static::class);
+            throw new \Exception('$'."historableActions property must be declared inside the model " . static::class);
         }
 
         if (in_array('create', static::$historableActions)) {

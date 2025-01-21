@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class CustomerContractChargeDetail extends Model
 {
-    use HasFactory, HasUuids, Historable;
+    use HasFactory, HasUuids;
 
     protected $table = 'finance.customer_contract_charge_detail';
     protected $guarded = ['id'];

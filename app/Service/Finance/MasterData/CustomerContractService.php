@@ -149,6 +149,12 @@ final class CustomerContractService
                     $customer_contract_charge_id = $charge['customer_contract_charge_id'];
                     unset($charge['customer_contract_charge_id']);
 
+                    $contractCharge = $getCustomerContractResponse->data->charges()->where('id', $customer_contract_charge_id)->first();
+
+                    if ($contractCharge) {
+                        $contractCharge->fill($charge)->save();
+                    }
+
                     $getCustomerContractResponse->data->charges()->where('id', $customer_contract_charge_id)->update($charge);
                 } else {
                     $customer_contract_charge_id = $getCustomerContractResponse->data->charges()->create($charge)->id;

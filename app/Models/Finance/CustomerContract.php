@@ -42,6 +42,8 @@ final class CustomerContract extends Model
 
     public $incrementing = false;
 
+    protected static ?array $historableActions = ['update'];
+
     const FOLDER_NAME = 'customer-contract/file';
     const FOLDER_QUOTATION = 'customer-contract/quotations';
 

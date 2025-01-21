@@ -30,6 +30,8 @@ final class CustomerContractCharge extends Model
      */
     protected $guarded = ['id'];
 
+    protected static ?array $historableActions = ['create', 'update'];
+
     public function charge()
     {
         return $this->hasOne(Charge::class, 'id', 'charge_id');

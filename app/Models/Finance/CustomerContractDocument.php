@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 final class CustomerContractDocument extends Model
 {
-    use HasFactory, HasUuids, Historable;
+    use HasFactory, HasUuids;
 
     protected $table = 'finance.customer_contract_document';
     protected $guarded = ['id'];

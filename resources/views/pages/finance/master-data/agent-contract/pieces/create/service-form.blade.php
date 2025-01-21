@@ -64,11 +64,6 @@
             </div>
             <div class="text-center tableServiceForm-box">
                 <span class="tableServiceForm-heading-text">
-                    Party
-                </span>
-            </div>
-            <div class="text-center tableServiceForm-box">
-                <span class="tableServiceForm-heading-text">
                     Service Notes
                 </span>
             </div>
@@ -229,14 +224,6 @@
                             id="carrier_name_1"
                             style="min-width: 100%;"
                             readonly>
-                    </div>
-                    <div class="tableServiceForm-box">
-                        <input
-                            type="text"
-                            name="service_data[0][party]"
-                            class="form-control"
-                            value=""
-                            style="min-width: 100%;">
                     </div>
                     <div class="tableServiceForm-box">
                         <input

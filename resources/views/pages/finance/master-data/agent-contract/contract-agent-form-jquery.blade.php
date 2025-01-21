@@ -391,14 +391,6 @@
                         <div class="tableServiceForm-box">
                             <input
                                 type="text"
-                                name="service_data[${index - 1}][party]"
-                                class="form-control"
-                                value=""
-                                style="min-width: 100%;">
-                        </div>
-                        <div class="tableServiceForm-box">
-                            <input
-                                type="text"
                                 name="service_data[${index - 1}][service_note]"
                                 class="form-control"
                                 value=""

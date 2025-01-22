@@ -4,20 +4,26 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
+use App\Models\History;
 use Illuminate\View\View;
 use App\Functions\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Functions\ResponseJson;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Finance\Currency;
+use App\Models\Finance\Customer;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Operation\Master\Port;
 use App\Models\Operation\Master\Unit;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Finance\CustomerContract;
 use Yajra\DataTables\Facades\DataTables;
+use App\Models\Operation\Master\Countries;
+use App\Models\Finance\CustomerContractCharge;
 use App\Models\Finance\CustomerContractDocument;
 use App\Service\Finance\MasterData\ChargeService;
 use App\Exports\MasterData\CustomerContractExport;
@@ -57,7 +63,58 @@ final class CustomerContractController extends Controller
      */
     public function history(string $id): View
     {
+        // dd($this->customerContractService->getCustomerContractHistories($id));
         return view('pages.finance.master-data.customer-contract.history', compact('id'));
+    }
+
+    /**
+     * Display a listing of the resource detail history.
+     *
+     * @param string $id
+     * @return View
+     */
+    public function detailHistory(string $id, string $historyId): View
+    {
+        $history = History::where('modelable_id', $id)->where('id', $historyId)->first();
+        $customer = Customer::where('id', $history->payload['customer_id'])->first();
+        $service_type = !empty($history->payload['service_type']) ? CustomerContract::SERVICES[$history->payload['service_type']] : 'N/A';
+        $documents = CustomerContractDocument::where('customer_contract_id', $history->payload['id'])->get();
+        $charges = CustomerContractCharge::where('customer_contract_id', $history->payload['id'])->get();
+
+        $get_currency_func = function (string $currency_id) {
+            $currency = Currency::where('id', $currency_id)->first();
+
+            return !empty($currency) ? "{$currency->currency_code} - {$currency->currency_name}" : 'N/A';
+        };
+
+        $get_country_func = fn (int $id) => Countries::where('country_id', $id)->first();
+        $get_port_func = function (?array $customer_contract, string $type = 'origin') {
+
+            $port_id = $type == 'origin' ? 'origin_port_id' : 'destination_port_id';
+            $type = $type == 'origin' ? 'origin_port' : 'destination_port';
+
+            $port = Port::where('port_id', $customer_contract[$port_id])->first();
+
+            if (!empty($customer_contract['service_type'])) {
+                if (in_array($customer_contract['service_type'], CustomerContract::NON_SEA_AIR_SERVICES)) {
+                    return $customer_contract[$type];
+                } else {
+                    return !empty($port) ? "{$port->port_code} - {$port->port_name}" : 'N/A';
+                }
+            }
+
+            return "N/A";
+        };
+
+        $origin_country = $get_country_func($history->payload['origin_country_id']);
+        $destination_country = $get_country_func($history->payload['destination_country_id']);
+
+        $origin_port = $get_port_func($history->payload, 'origin');
+        $destination_port = $get_port_func($history->payload, 'destination');
+
+        $currency = $get_currency_func($history->payload['currency_id']);
+
+        return view('pages.finance.master-data.customer-contract.detail-history', compact('history', 'customer', 'service_type', 'origin_country', 'destination_country', 'origin_port', 'destination_port', 'currency', 'documents', 'charges'));
     }
 
     /**
@@ -124,7 +181,7 @@ final class CustomerContractController extends Controller
             ->addIndexColumn()
             ->addColumn('action', function ($item) use ($id) {
                 return Utility::generateTableActions([
-                    'detail' => route('finance.master-data.customer-contract.history-detail', ['id' => $id, 'history' => $item['id']])
+                    'detail' => route('finance.master-data.customer-contract.history-detail', ['id' => $id, 'history' => $item['history_id']])
                 ]);
             })
             ->editColumn('contract_no', function ($item) {

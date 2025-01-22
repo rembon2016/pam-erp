@@ -7,6 +7,7 @@ namespace App\Service\Finance\MasterData;
 use App\Functions\Utility;
 use Illuminate\Http\Response;
 use App\Functions\ObjectResponse;
+use App\Models\Finance\Charge;
 use App\Models\Finance\Customer;
 use App\Traits\HandleUploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,7 @@ use App\Models\History;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection as SupportCollection;
 
@@ -39,9 +41,9 @@ final class CustomerContractService
         return $data;
     }
 
-    public function getCustomerContractById(string $id): object
+    public function getCustomerContractById(string $id, ?array $select = ['*']): object
     {
-        $data = CustomerContract::with('charges', 'charges.rates', 'histories')->where('id', $id)->first();
+        $data = CustomerContract::select($select)->with('charges', 'charges.rates', 'histories')->where('id', $id)->first();
 
         return ! is_null($data)
             ? ObjectResponse::success(__('crud.fetched', ['name' => 'Customer Contract']), Response::HTTP_OK, $data)
@@ -51,23 +53,43 @@ final class CustomerContractService
     public function getCustomerContractHistories(string $id): SupportCollection
     {
         $customerContract = $this->getCustomerContractById(id: $id);
-        $payload = $customerContract->data->histories->pluck('payload');
+        $histories = $customerContract->data->histories;
 
-        return collect(Arr::sortDesc($payload, fn ($payload) => $payload['updated_at']))
-            ->map(function ($history) use ($id) {
-                $customer = Customer::where('id', $history['customer_id'])->first();
-                $customerContractCharge = History::where('modelable_type', CustomerContractCharge::class)
-                    ->get()
-                    ->pluck('payload')
-                    ->filter(function ($item) use ($id) {
-                        return $item['customer_contract_id'] == $id;
-                    });
-
+        return collect(Arr::sortDesc($histories->pluck('payload'), fn ($payload) => $payload['updated_at']))
+            ->map(function ($history, $key) use ($id, $histories) {
                 return array_merge($history, [
-                    'customer' => $customer,
-                    'customer_contract_charge' => $customerContractCharge
+                    'history_id' => $histories[$key]->id,
+                    'customer' => Customer::where('id', $history['customer_id'])->first(),
+                    'customer_contract_charge' => $this->getRelatableHistoryData(
+                        model_props: [
+                            'class' => CustomerContractCharge::class,
+                            'primary_value' => $id,
+                            'relation_key' => 'customer_contract_id'
+                        ],
+                        with_mapping: function ($payload) {
+                            return array_merge($payload, [
+                                'charge' => Charge::where('id', $payload['charge_id'])->first(),
+                            ]);
+                        }
+                    ),
                 ]);
             });
+    }
+
+    private function getRelatableHistoryData(?array $model_props = [], mixed $with_mapping = null)
+    {
+        $histories = History::where('modelable_type', $model_props['class'])
+            ->get()
+            ->pluck('payload')
+            ->filter(function ($item) use ($model_props) {
+                return $item[$model_props['relation_key']] == $model_props['primary_value'];
+            });
+
+        if (!empty($with_mapping)) {
+            $histories = $histories->map($with_mapping);
+        }
+
+        return $histories;
     }
 
     public function createCustomerContract(array $dto): object

@@ -17,6 +17,7 @@ use App\Models\History;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection as SupportCollection;
 
 final class CustomerContractService
@@ -50,8 +51,9 @@ final class CustomerContractService
     public function getCustomerContractHistories(string $id): SupportCollection
     {
         $customerContract = $this->getCustomerContractById(id: $id);
+        $payload = $customerContract->data->histories->pluck('payload');
 
-        return collect($customerContract->data->histories->pluck('payload'))
+        return collect(Arr::sortDesc($payload, fn ($payload) => $payload['updated_at']))
             ->map(function ($history) use ($id) {
                 $customer = Customer::where('id', $history['customer_id'])->first();
                 $customerContractCharge = History::where('modelable_type', CustomerContractCharge::class)

@@ -89,6 +89,11 @@ Route::group(['middleware' => ['auth']], function () {
 
                 // Document Route
                 Route::delete('/document/{id}/delete', [CustomerContractController::class, 'deleteDocument'])->name('document.delete');
+
+                // History Route
+                Route::get('/{id}/history', [CustomerContractController::class, 'history'])->name('history');
+                Route::get('/{id}/history-list', [CustomerContractController::class, 'listHistory'])->name('history-list');
+                Route::get('/{id}/history/{history}', [CustomerContractController::class, 'detailHistory'])->name('history-detail');
             });
 
             Route::group([

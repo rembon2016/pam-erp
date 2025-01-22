@@ -7,13 +7,17 @@ namespace App\Service\Finance\MasterData;
 use App\Functions\Utility;
 use Illuminate\Http\Response;
 use App\Functions\ObjectResponse;
+use App\Models\Finance\Customer;
 use App\Traits\HandleUploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use App\Models\Finance\CustomerContract;
+use App\Models\Finance\CustomerContractCharge;
+use App\Models\History;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Support\Collection as SupportCollection;
 
 final class CustomerContractService
 {
@@ -25,7 +29,7 @@ final class CustomerContractService
 
     public function getCustomerContracts($filters = [], bool $get_data = true): Collection|Builder
     {
-        $data = CustomerContract::when(! empty($filters['customer']), function ($query) use ($filters) {
+        $data = CustomerContract::with('histories')->when(! empty($filters['customer']), function ($query) use ($filters) {
             return $query->where('customer_id', $filters['customer']);
         })->orderBy('contract_end', 'desc')->get();
 
@@ -36,11 +40,32 @@ final class CustomerContractService
 
     public function getCustomerContractById(string $id): object
     {
-        $data = CustomerContract::with('charges', 'charges.rates')->where('id', $id)->first();
+        $data = CustomerContract::with('charges', 'charges.rates', 'histories')->where('id', $id)->first();
 
         return ! is_null($data)
             ? ObjectResponse::success(__('crud.fetched', ['name' => 'Customer Contract']), Response::HTTP_OK, $data)
             : ObjectResponse::error(__('crud.not_found', ['name' => 'Customer Contract']), Response::HTTP_NOT_FOUND);
+    }
+
+    public function getCustomerContractHistories(string $id): SupportCollection
+    {
+        $customerContract = $this->getCustomerContractById(id: $id);
+
+        return collect($customerContract->data->histories->pluck('payload'))
+            ->map(function ($history) use ($id) {
+                $customer = Customer::where('id', $history['customer_id'])->first();
+                $customerContractCharge = History::where('modelable_type', CustomerContractCharge::class)
+                    ->get()
+                    ->pluck('payload')
+                    ->filter(function ($item) use ($id) {
+                        return $item['customer_contract_id'] == $id;
+                    });
+
+                return array_merge($history, [
+                    'customer' => $customer,
+                    'customer_contract_charge' => $customerContractCharge
+                ]);
+            });
     }
 
     public function createCustomerContract(array $dto): object

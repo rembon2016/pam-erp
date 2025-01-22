@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Finance\CustomerContract;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class History extends Model
 {
@@ -21,5 +23,10 @@ final class History extends Model
         return [
             'payload' => 'array',
         ];
+    }
+
+    public function customerContract(): BelongsTo
+    {
+        return $this->belongsTo(CustomerContract::class, 'modelable_id', 'id');
     }
 }

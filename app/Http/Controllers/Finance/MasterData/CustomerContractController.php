@@ -50,6 +50,17 @@ final class CustomerContractController extends Controller
     }
 
     /**
+     * Display a listing of the resource history.
+     *
+     * @param string $id
+     * @return View
+     */
+    public function history(string $id): View
+    {
+        return view('pages.finance.master-data.customer-contract.history', compact('id'));
+    }
+
+    /**
      * Retrieves a list of all roles and returns a JSON response for use in a data table.
      *
      * This method fetches all the roles from the database and returns a JSON response that can be used to populate a data table. The response includes an action column that contains a "View" button for each role.
@@ -67,6 +78,7 @@ final class CustomerContractController extends Controller
                     'detail' => route('finance.master-data.customer-contract.detail', $item->id),
                     'edit' => route('finance.master-data.customer-contract.edit', $item->id),
                     'download-link' => route('finance.master-data.customer-contract.download', $item->id),
+                    'history' => route('finance.master-data.customer-contract.history', $item->id),
                 ]);
             })
             ->editColumn('contract_no', function ($item) {
@@ -88,6 +100,55 @@ final class CustomerContractController extends Controller
             })
             ->editColumn('contract_end', function ($item) {
                 return $item->contract_end?->format('d/m/Y');
+            })
+            ->rawColumns(['action', 'contract_no'])
+            ->toJson();
+        }
+
+        return ResponseJson::error(
+            Response::HTTP_UNAUTHORIZED,
+            'Access Unauthorized',
+        );
+    }
+
+    /**
+     * Retrieves a list of all customer contract history and returns a JSON response for use in a data table.
+     *
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function listHistory(string $id): JsonResponse
+    {
+        if (request()->ajax()) {
+            return DataTables::of($this->customerContractService->getCustomerContractHistories($id))
+            ->addIndexColumn()
+            ->addColumn('action', function ($item) use ($id) {
+                return Utility::generateTableActions([
+                    'detail' => route('finance.master-data.customer-contract.history-detail', ['id' => $id, 'history' => $item['id']])
+                ]);
+            })
+            ->editColumn('contract_no', function ($item) {
+                $is_expired = now()->gt($item['contract_end']);
+                $contract_no = $is_expired
+                    ? "<span class='badge badge-danger badge-lg'>{$item['contract_no']}</span>"
+                    : $item['contract_no'];
+
+                return $contract_no;
+            })
+            ->addColumn('customer_code', function ($item) {
+                return $item['customer']['customer_code'];
+            })
+            ->editColumn('customer_id', function ($item) {
+                return $item['customer']['customer_name'];
+            })
+            ->editColumn('contract_start', function ($item) {
+                return \Carbon\Carbon::parse($item['contract_start'])->format('d/m/Y');
+            })
+            ->editColumn('contract_end', function ($item) {
+                return \Carbon\Carbon::parse($item['contract_end'])->format('d/m/Y');
+            })
+            ->addColumn('updated_date', function ($item) {
+                return \Carbon\Carbon::parse($item['updated_at'])->format('d/m/Y H:i:s');
             })
             ->rawColumns(['action', 'contract_no'])
             ->toJson();

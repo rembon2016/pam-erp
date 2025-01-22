@@ -34,6 +34,31 @@
             <div class="col-md-6">
                 <x:form.input label="Contract Validity To" name="contract_end" placeholder="Select Date" type="date" :model="$customer_contract" required="true" />
             </div>
+            <div class="col-md-6">
+                <x:form.input label="Attachment (Multiple File Upload)" class="inputFiles" name="contract_file[]" placeholder="Choose File" type="file" :model="$customer_contract" file="true" multiple="true" />
+                <div id="fileList">
+                    @foreach($customer_contract?->documents as $document)
+                        <div class="file-item">
+                            <span>{{ $document->contract_file }}</span>
+                            <div class="d-flex align-items-center justify-content-end gap-2">
+                                <a href="{{ $document->getFileUrl() }}" class="btn btn-sm px-1 py-3" download>
+                                    <i class="bx bx-download text-info fs-2"></i>
+                                </a>
+                                <button type="button" data-action="{{ route('finance.master-data.customer-contract.document.delete', $document->id) }}" data-type="delete-existing-file" class="btn btn-sm px-1 py-3">
+                                    <i class="bx bx-trash text-danger fs-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="col-md-6">
+                <x:form.select2 label="Currency" name="currency_id" placeholder="Select Currency" :model="$customer_contract" required="true">
+                    @foreach ($currencies as $currency)
+                        <option value="{{ $currency->id }}" @selected(old('currency_id', $customer_contract?->currency_id) == $currency->id)>{{ $currency->currency_name }}</option>
+                    @endforeach
+                </x:form.select2>
+            </div>
             <div class="col-md-12">
                 <x:form.select label="Service" name="service_type" defaultOption="Select Service" :model="$customer_contract" required="true">
                     @foreach ($services as $key => $name)
@@ -70,38 +95,6 @@
                 <div class="free-text-port" style="display: none;">
                     <x:form.input label="Port Destination" name="destination_port" placeholder="Port Destination" :model="$customer_contract" required="true" />
                 </div>
-            </div>
-            {{-- <div class="col-md-6">
-                <x:form.select2 label="Charge Name" name="charge_id" placeholder="Select Charge" :model="$customer_contract" required="true">
-                    @foreach ($charges as $charge)
-                        <option value="{{ $charge->id }}" @selected(old('charge_id', $customer_contract?->charge_id) == $charge->id)>{{ $charge->charge_name }}</option>
-                    @endforeach
-                </x:form.select2>
-            </div> --}}
-            <div class="col-md-6">
-                <x:form.input label="Attachment (Multiple File Upload)" class="inputFiles" name="contract_file[]" placeholder="Choose File" type="file" :model="$customer_contract" file="true" multiple="true" />
-                <div id="fileList">
-                    @foreach($customer_contract?->documents as $document)
-                        <div class="file-item">
-                            <span>{{ $document->contract_file }}</span>
-                            <div class="d-flex align-items-center justify-content-end gap-2">
-                                <a href="{{ $document->getFileUrl() }}" class="btn btn-sm px-1 py-3" download>
-                                    <i class="bx bx-download text-info fs-2"></i>
-                                </a>
-                                <button type="button" data-action="{{ route('finance.master-data.customer-contract.document.delete', $document->id) }}" data-type="delete-existing-file" class="btn btn-sm px-1 py-3">
-                                    <i class="bx bx-trash text-danger fs-2"></i>
-                                </button>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-            <div class="col-md-6">
-                <x:form.select2 label="Currency" name="currency_id" placeholder="Select Currency" :model="$customer_contract" required="true">
-                    @foreach ($currencies as $currency)
-                        <option value="{{ $currency->id }}" @selected(old('currency_id', $customer_contract?->currency_id) == $currency->id)>{{ $currency->currency_name }}</option>
-                    @endforeach
-                </x:form.select2>
             </div>
 
             <div class="d-flex align-items-center justify-content-between gap-2 mb-3 p-3">

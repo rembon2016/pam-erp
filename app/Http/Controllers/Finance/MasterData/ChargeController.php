@@ -13,6 +13,7 @@ use App\Models\Finance\Charge;
 use App\Service\Finance\MasterData\ChargeService;
 use App\Service\Finance\MasterData\ChartOfAccountService;
 use App\Service\Finance\MasterData\UnitService;
+use App\Service\Finance\MasterData\ServiceTypeService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -25,7 +26,8 @@ final class ChargeController extends Controller
     public function __construct(
         protected ChargeService $chargeService,
         protected UnitService $unitService,
-        protected ChartOfAccountService $coaService
+        protected ChartOfAccountService $coaService,
+        protected ServiceTypeService $serviceType
     ) {}
 
     /**
@@ -60,6 +62,9 @@ final class ChargeController extends Controller
                 ->editColumn('revenue_id', function ($item) {
                     return $item?->revenue?->account_name ?? '-';
                 })
+                ->editColumn('transport_type', function ($item) {
+                    return $item?->service?->service_code ?? '-';
+                })
                 ->editColumn('cost_id', function ($item) {
                     return $item?->cost?->account_name ?? '-';
                 })
@@ -87,8 +92,9 @@ final class ChargeController extends Controller
         $charge = new Charge;
         $accounts = $this->coaService->getChartOfAccounts();
         $units = $this->unitService->getUnitCollections();
+        $service = $this->serviceType->getServiceTypes();
 
-        return view('pages.finance.master-data.charge.form', compact('data', 'charge', 'accounts', 'units'));
+        return view('pages.finance.master-data.charge.form', compact('data', 'charge', 'accounts', 'units','service'));
     }
 
     /**
@@ -118,6 +124,7 @@ final class ChargeController extends Controller
 
         $accounts = $this->coaService->getChartOfAccounts();
         $units = $this->unitService->getUnitCollections();
+        $service = $this->serviceType->getServiceTypes();
 
         $data = [
             'page' => 'Edit Charge',
@@ -130,6 +137,7 @@ final class ChargeController extends Controller
             'charge' => $getChargeResponse->data,
             'accounts' => $accounts,
             'units' => $units,
+            'service'=>$service,
         ]);
     }
 

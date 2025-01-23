@@ -15,7 +15,11 @@
                 <x:form.input label="Charge Name" name="charge_name" placeholder="Type Name of Charge" :model="$charge" required="true" />
             </div>
             <div class='col-md-4'>
-                <x:form.input label="Transport Type" name="transport_type" placeholder="Type of Transport" :model="$charge" required="true" />
+                 <x:form.select2 label="Transport Type" name="transport_type_id" placeholder="Select Transport Type" required="true" :model="$charge">
+                    @foreach ($service as $row)
+                        <option value="{{ $row->id }}" @selected(old('transport_type_id', $charge->transport_type_id) == $row->id)>{{ $row->service_code }}</option>
+                    @endforeach
+                </x:form.select2>
             </div>
             <div class='col-md-4'>
                 <x:form.select2 label="Unit" name="unit_id" placeholder="Select Unit" required="true" :model="$charge">

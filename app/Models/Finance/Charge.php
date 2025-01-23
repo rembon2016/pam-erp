@@ -31,6 +31,11 @@ final class Charge extends Model
         return $this->hasOne(Unit::class, 'unit_id', 'unit_id');
     }
 
+    public function service()
+    {
+        return $this->hasOne(ServiceType::class, 'id', 'transport_type_id');
+    }
+
     public function cost()
     {
         return $this->hasOne(ChartOfAccount::class, 'id', 'cost_id');

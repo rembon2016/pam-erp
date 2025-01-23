@@ -26,7 +26,7 @@ final class GlobalChargeRequest extends FormRequest
         return [
             'charge_code' => 'required|string|max:255',
             'charge_name' => 'required|string|max:255',
-            'transport_type' => 'required|string|max:255',
+            'transport_type_id' => 'required',
             'is_agreed_rate' => 'required|boolean',
             'unit_id' => 'nullable',
             'cost_id' => 'nullable',
@@ -39,7 +39,7 @@ final class GlobalChargeRequest extends FormRequest
         return [
             'charge_code' => 'Charge Code',
             'charge_name' => 'Charge Name',
-            'transport_type' => 'Transport Type',
+            'transport_type_id' => 'Transport Type',
             'unit_id' => 'Unit',
             'revenue_id' => 'Revenue Account',
             'cost_id' => 'Cost Account',

@@ -6,6 +6,7 @@ namespace App\Service\Finance\MasterData;
 
 use App\Functions\ObjectResponse;
 use App\Models\Finance\Charge;
+use App\Models\Finance\ServiceType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
@@ -40,6 +41,8 @@ final class ChargeService
     public function createCharge(array $dto): object
     {
         try {
+            $service = ServiceType::findOrFail($dto["transport_type_id"]);
+            $dto["transport_type"] = $service->service_code;
             $createdCharge = Charge::create($dto);
 
             return ObjectResponse::success(
@@ -64,6 +67,8 @@ final class ChargeService
         }
 
         try {
+            $service = ServiceType::findOrFail($dto["transport_type_id"]);
+            $dto["transport_type"] = $service->service_code;
             $getChargeResponse->data->update($dto);
 
             return ObjectResponse::success(

@@ -2,11 +2,11 @@
 
 @push('css')
 <style>
-    .charge-heading.active .dropdown-marker {
+    .charge-heading.active .dropdown-marker, .service-heading.active .dropdown-marker {
         transform: rotate(-180deg);
     }
 
-    .charge-heading .dropdown-marker {
+    .charge-heading .dropdown-marker, .service-heading .dropdown-marker {
         transition: all .3s linear
     }
 </style>
@@ -59,72 +59,49 @@
                     @endforeach
                 </x:form.select2>
             </div>
-            <div class="col-md-12">
-                <x:form.select label="Service" name="service_type" defaultOption="Select Service" :model="$customer_contract" required="true">
-                    @foreach ($services as $key => $name)
-                        <option value="{{ $key }}" @selected(old('service_type', $customer_contract?->service_type) == $key)>{{ $name }}</option>
-                    @endforeach
-                </x:form.select>
-            </div>
-            <div class="col-md-3">
-                <x:form.select2 label="Country Origin" class="country-list" name="origin_country_id" placeholder="Select Country" :model="$customer_contract" required="true" disabled="true">
-                    @foreach($countries as $country)
-                        <option value="{{ $country->country_id }}" @selected(old('origin_country_id', $customer_contract?->origin_country_id) == $country->country_id)>{{ $country->country_name }}</option>
-                    @endforeach
-                </x:form.select2>
-            </div>
-            <div class="col-md-3">
-                <div class="select-port">
-                    <x:form.select label="Port Origin" name="origin_port_id" placeholder="Select Port" :model="$customer_contract" required="true" disabled="true" />
-                </div>
-                <div class="free-text-port" style="display: none;">
-                    <x:form.input label="Port Origin" name="origin_port" placeholder="Port Origin" :model="$customer_contract" required="true" />
-                </div>
-            </div>
-            <div class="col-md-3">
-                <x:form.select2 label="Country Destination" class="country-list" name="destination_country_id" placeholder="Select Country" :model="$customer_contract" required="true" disabled="true">
-                    @foreach($countries as $country)
-                        <option value="{{ $country->country_id }}" @selected(old('destination_country_id', $customer_contract?->destination_country_id) == $country->country_id)>{{ $country->country_name }}</option>
-                    @endforeach
-                </x:form.select2>
-            </div>
-            <div class="col-md-3">
-                <div class="select-port">
-                    <x:form.select label="Port Destination" name="destination_port_id" placeholder="Select Port" :model="$customer_contract" required="true" disabled="true" />
-                </div>
-                <div class="free-text-port" style="display: none;">
-                    <x:form.input label="Port Destination" name="destination_port" placeholder="Port Destination" :model="$customer_contract" required="true" />
-                </div>
-            </div>
-
             <div class="d-flex align-items-center justify-content-between gap-2 mb-3 p-3">
-                <h5 class="mb-0">Charges</h5>
+                <h5 class="mb-0">Services</h5>
                 <div class="d-flex align-item-center gap-3">
-                    <button type="button" class="btn btn-success btn-icon btn-sm" data-type="add-charge">
+                    <button type="button" class="btn btn-success btn-icon btn-sm" data-type="add-service">
                         <i class="bx bx-plus"></i>
                     </button>
                 </div>
             </div>
 
-            <div class="row px-0 ps-6 charge-item-wrapper">
+            <div class="row px-0 ps-6 service-item-wrapper">
+
                 @php
-                    $contractCharges = old('charges', $customer_contract?->charges->toArray());
-                    if (count($contractCharges) == 0) $contractCharges = [
+                    $contractServices = old('charges', $customer_contract?->services->toArray());
+                    if (count($contractServices) == 0) $contractServices = [
                         [
                             "id" => null,
-                            'charge_id' => null,
-                            'rates' => []
+                            'service_type' => null,
+                            'origin_country_id' => null,
+                            'origin_port_id' => null,
+                            'origin_port' => null,
+                            'destination_country_id' => null,
+                            'destination_port_id' => null,
+                            'destination_port' => null,
+                            'port_origin' => null,
+                            'port_destination' => null,
+                            'charges' => [
+                                [
+                                    'id' => null,
+                                    'charge_id' => null,
+                                    'rates' => []
+                                ]
+                            ]
                         ],
                     ]
                 @endphp
 
-                @foreach ($contractCharges as $chargeIndex => $chargeItem)
-                    <div class="col-12 border p-0 mb-3 charge-item">
+                @foreach ($contractServices as $serviceIndex => $serviceItem)
+                    <div class="col-12 border p-0 mb-3 service-item">
                         <div class="d-flex flex-column">
-                            <div class="d-flex align-items-center justify-content-between gap-2 p-3 border charge-heading" style="cursor: pointer;">
-                                <h5 class="mb-0 charge-title">Charge #{{ $loop->iteration }}</h5>
+                            <div class="d-flex align-items-center justify-content-between gap-2 p-3 border service-heading" style="cursor: pointer;">
+                                <h5 class="mb-0 service-title">Service #{{ $loop->iteration }}</h5>
                                 <div class="d-flex align-item-center gap-3">
-                                    <button type="button" class="btn btn-icon btn-danger" data-type="delete-charge">
+                                    <button type="button" class="btn btn-icon btn-danger" data-type="delete-service">
                                         <i class="bx bx-trash-alt"></i>
                                     </button>
                                     <span class="d-flex align-items-center justify-content-center dropdown-marker">
@@ -133,150 +110,263 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex-column charge-body mt-3" style="display: none;">
-                            <div class="d-flex px-3 charge-input">
-                                <div class="col-12 d-flex align-items-end mb-3">
-                                    <input type="hidden" name="charges[{{ $chargeIndex }}][customer_contract_charge_id]" value="{{ !empty($chargeItem['id']) ? $chargeItem['id'] : '' }}">
-                                    <div class="col-12">
-                                        <label for="" class="form-label required">Charge Name</label>
-                                        <select name="charges[{{ $chargeIndex }}][charge_id]" id="charge_id" class="form-select chargeSelect2" data-placeholder="Select Charge" required>
-                                            <option value="" selected disabled>Select Charge</option>
-                                            @foreach ($charges as $charge)
-                                                <option value="{{ $charge->id }}" @selected(old('charge_id', $chargeItem['charge_id']) == $charge->id)>{{ $charge->charge_name }} - {{ $charge->unit->unit_name }}</option>
+                        <div class="flex-column service-body mt-3" style="display: none;">
+                            <div class="d-flex px-3 service-input">
+                                <div class="col-12 row mb-3">
+                                    <input type="hidden" name="services[{{ $serviceIndex }}][customer_contract_service_id]" value="{{ !empty($serviceItem['id']) ? $serviceItem['id'] : '' }}">
+                                    <div class="col-12 mb-3">
+                                        <label for="" class="form-label required">Service</label>
+                                        <select name="services[{{ $serviceIndex }}][service_type]" id="charge_id" class="form-select serviceSelect2" data-placeholder="Select Service" required>
+                                            <option value="" @selected(!in_array($serviceItem['service_type'], array_keys($services))) disabled>Select Service</option>
+                                            @foreach ($services as $key => $name)
+                                                <option value="{{ $key }}" @selected($serviceItem['service_type'] == $key)>{{ $name }}</option>
                                             @endforeach
                                         </select>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="" class="form-label required">Country Origin</label>
+                                        <select class="form-select country-list" name="services[{{ $serviceIndex }}][origin_country_id]" data-type="origin" required="true" disabled="true">
+                                            <option value="" @selected(!in_array($serviceItem['origin_country_id'], $countries->pluck('country_id')->toArray()))  disabled>Select Country</option>
+                                            @foreach($countries as $country)
+                                                <option value="{{ $country->country_id }}" @selected($serviceItem['origin_country_id'] == $country->country_id)>{{ $country->country_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <div class="select-port">
+                                            <label for="" class="form-label required">Port Origin</label>
+                                            <select name="services[{{ $serviceIndex }}][origin_port_id]" class="form-select port-list" data-type="origin" required="true" disabled="true">
+                                                <option value="" disabled>Select Port</option>
+                                            </select>
+
+                                            @if (!is_null($serviceItem['port_origin']))
+                                                @php
+                                                    $selectedPort = json_encode([
+                                                        "id" => $serviceItem['origin_port_id'],
+                                                        "text" => $serviceItem['port_origin']['port_code'] . " - " . $serviceItem['port_origin']['port_name']
+                                                    ]);
+
+                                                @endphp
+
+                                                <input type="hidden" class="selected-port" data-port-type="origin" value="{{ $selectedPort }}">
+                                            @endif
+                                        </div>
+                                        <div class="free-text-port" style="display: none;">
+                                            <label for="" class="form-label required">Port Origin</label>
+                                            <input class="form-control" name="services[{{ $serviceIndex }}][origin_port]" placeholder="Port Origin" value="{{ $serviceItem['origin_port'] }}" required="true" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="" class="form-label required">Country Destination</label>
+                                        <select class="form-select country-list" name="services[{{ $serviceIndex }}][destination_country_id]" data-type="destination" required="true" disabled="true">
+                                            <option value="" @selected(!in_array($serviceItem['destination_country_id'], $countries->pluck('country_id')->toArray())) disabled>Select Country</option>
+                                            @foreach($countries as $country)
+                                                <option value="{{ $country->country_id }}" @selected($serviceItem['destination_country_id'] == $country->country_id)>{{ $country->country_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <div class="select-port">
+                                            <label for="" class="form-label required">Port Destination</label>
+                                            <select name="services[{{ $serviceIndex }}][destination_port_id]" class="form-select port-list" data-type="destination" required="true" disabled="true">
+                                                <option value="" disabled>Select Port</option>
+                                            </select>
+
+                                            @if (!is_null($serviceItem['port_destination']))
+                                                @php
+                                                    $selectedPort = json_encode([
+                                                        "id" => $serviceItem['destination_port_id'],
+                                                        "text" => $serviceItem['port_destination']['port_code'] . " - " . $serviceItem['port_destination']['port_name']
+                                                    ]);
+
+                                                @endphp
+
+                                                <input type="hidden" class="selected-port" data-port-type="destination" value="{{ $selectedPort }}">
+                                            @endif
+                                        </div>
+                                        <div class="free-text-port" style="display: none;">
+                                            <label for="" class="form-label required">Port Destination</label>
+                                            <input class="form-control" name="services[{{ $serviceIndex }}][destination_port]" value="{{ $serviceItem['destination_port'] }}" placeholder="Port Destination" required="true" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            @if (count($chargeItem['rates']) > 0)
-                                @if ($chargeItem['rates'][0]['unit_code'] == "KG")
-                                    {{-- Kilogram --}}
-                                    <div class="flex-column mx-3 border mb-3 charge-rates" data-unit-type="{{ $chargeItem['rates'][0]['unit_code'] }}">
-                                        <div class="d-flex align-items-center justify-content-between gap-2 mb-3 px-3 py-2">
-                                            <h5 class="mb-0">Charge Rates by Kilogram</h5>
-                                            <button type="button" class="btn btn-info btn-icon btn-sm" data-type="add-charge-detail">
-                                                <i class="bx bx-plus"></i>
-                                            </button>
-                                        </div>
-
-                                        <div class="table-responsive px-3">
-                                            <table class="table table-bordered table-striped table-sm">
-                                                <thead>
-                                                    <tr>
-                                                        <th>
-                                                            <label for="" class="form-label required mb-0">From</label>
-                                                        </th>
-                                                        <th>
-                                                            <label for="" class="form-label required mb-0">To</label>
-                                                        </th>
-                                                        <th>
-                                                            <label for="" class="form-label required mb-0">Value</label>
-                                                        </th>
-                                                        <th>&nbsp;</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="charge-detail-wrapper">
-                                                    @foreach ($chargeItem['rates'] as $rateIndex => $rate)
-                                                        <tr class="charge-detail-item">
-                                                            <input type="hidden" name="charges[{{ $chargeIndex }}][rates][{{ $rateIndex }}][customer_contract_charge_detail_id]" value="{{ !empty($rate['id']) ? $rate['id'] : '' }}">
-                                                            <input type="hidden" name="charges[{{ $chargeIndex }}][rates][{{ $rateIndex }}][unit_code]" value="{{ $rate['unit_code'] }}" data-type="unit-code">
-                                                            <td>
-                                                                <input type="number" name="charges[{{ $chargeIndex }}][rates][{{ $rateIndex }}][from]" data-type="from" id="from" class="form-control" value="{{ $rate['from'] }}" min="0" placeholder="0" required>
-                                                            </td>
-                                                            <td>
-                                                                <input type="number" name="charges[{{ $chargeIndex }}][rates][{{ $rateIndex }}][to]" data-type="to" id="to" class="form-control" value="{{ $rate['from'] }}" min="0" placeholder="0" required>
-                                                            </td>
-                                                            <td>
-                                                                <input type="number" name="charges[{{ $chargeIndex }}][rates][{{ $rateIndex }}][rate]" data-type="rate" id="rate" class="form-control" value="{{ $rate['to'] }}" min="0" placeholder="0" required>
-                                                            </td>
-                                                            <td>
-                                                                <div class="d-flex justify-content-end">
-                                                                    <button type="button" class="btn btn-icon btn-danger" data-type="delete-charge-detail">
-                                                                        <i class="bx bx-trash-alt"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
+                            <div class="charges-container">
+                                <div class="d-flex align-items-center justify-content-between gap-2 mb-3 p-3">
+                                    <h5 class="mb-0">Charges</h5>
+                                    <div class="d-flex align-item-center gap-3">
+                                        <button type="button" class="btn btn-success btn-icon btn-sm" data-type="add-charge">
+                                            <i class="bx bx-plus"></i>
+                                        </button>
                                     </div>
-                                @elseif ($chargeItem['rates'][0]['unit_code'] == "SHIPMENT")
-                                    {{-- Shipment --}}
-                                    <div class="flex-column mx-3 border mb-3 charge-rates" data-unit-type="{{ $chargeItem['rates'][0]['unit_code'] }}">
-                                        <div class="d-flex align-items-center justify-content-between gap-2 mb-3 px-3 py-2">
-                                            <h5 class="mb-0">Charge Rates by Shipment</h5>
-                                        </div>
+                                </div>
 
-                                        <div class="table-responsive px-3">
-                                            <table class="table table-bordered table-striped table-sm">
-                                                <thead>
-                                                    <tr>
-                                                        <th>
-                                                            <label for="" class="form-label required mb-0">Rate</label>
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="charge-detail-wrapper">
-                                                    @foreach ($chargeItem['rates'] as $rateIndex => $rate)
+                                <div class="row mx-3 charge-item-wrapper">
+                                    @foreach ($serviceItem['charges'] as $chargeIndex => $chargeItem)
+                                        <div class="col-12 border p-0 mb-3 charge-item">
+                                            <div class="d-flex flex-column">
+                                                <div class="d-flex align-items-center justify-content-between gap-2 p-3 border charge-heading" style="cursor: pointer;">
+                                                    <h5 class="mb-0 charge-title">Charge #{{ $loop->iteration }}</h5>
+                                                    <div class="d-flex align-item-center gap-3">
+                                                        <button type="button" class="btn btn-icon btn-danger" data-type="delete-charge">
+                                                            <i class="bx bx-trash-alt"></i>
+                                                        </button>
+                                                        <span class="d-flex align-items-center justify-content-center dropdown-marker">
+                                                            <i class="bx bx-chevron-down" style="font-size: 2rem"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex-column charge-body mt-3" style="display: none;">
+                                                <div class="d-flex px-3 charge-input">
+                                                    <div class="col-12 d-flex align-items-end mb-3">
+                                                        <input type="hidden" name="services[0][charges][{{ $chargeIndex }}][customer_contract_charge_id]" value="{{ !empty($chargeItem['id']) ? $chargeItem['id'] : '' }}">
+                                                        <div class="col-12">
+                                                            <label for="" class="form-label required">Charge Name</label>
+                                                            <select name="services[0][charges][{{ $chargeIndex }}][charge_id]" id="charge_id" class="form-select chargeSelect2" data-placeholder="Select Charge" required>
+                                                                <option value="" selected disabled>Select Charge</option>
+                                                                @foreach ($charges as $charge)
+                                                                    <option value="{{ $charge->id }}" @selected(old('charge_id', $chargeItem['charge_id']) == $charge->id)>{{ $charge->charge_name }} - {{ $charge->unit->unit_name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                                    @endforeach
-                                                    <tr class="charge-detail-item">
-                                                        <input type="hidden" name="charges[{{ $chargeIndex }}][rates][{{ $rateIndex }}][customer_contract_charge_detail_id]" value="{{ !empty($rate['id']) ? $rate['id'] : '' }}">
-                                                        <input type="hidden" name="charges[{{ $chargeIndex }}][rates][{{ $rateIndex }}][unit_code]" value="{{ $rate['unit_code'] }}" data-type="unit-code">
-                                                        <td>
-                                                            <input type="number" name="charges[{{ $chargeIndex }}][rates][{{ $rateIndex }}][rate]" data-type="rate" id="rate" class="form-control" value="{{ $rate['rate'] }}" min="0" placeholder="0" required>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                @elseif ($chargeItem['rates'][0]['unit_code'] == "CONTAINER")
-                                    {{-- Container --}}
-                                    <div class="flex-column mx-3 border mb-3 charge-rates" data-unit-type="{{ $chargeItem['rates'][0]['unit_code'] }}">
-                                        <div class="d-flex align-items-center justify-content-between gap-2 mb-3 px-3 py-2">
-                                            <h5 class="mb-0">Charge Rates by Container</h5>
-                                        </div>
+                                                @if (count($chargeItem['rates']) > 0)
+                                                    @if ($chargeItem['rates'][0]['unit_code'] == "KG")
+                                                        {{-- Kilogram --}}
+                                                        <div class="flex-column mx-3 border mb-3 charge-rates" data-unit-type="{{ $chargeItem['rates'][0]['unit_code'] }}">
+                                                            <div class="d-flex align-items-center justify-content-between gap-2 mb-3 px-3 py-2">
+                                                                <h5 class="mb-0">Charge Rates by Kilogram</h5>
+                                                                <button type="button" class="btn btn-info btn-icon btn-sm" data-type="add-charge-detail">
+                                                                    <i class="bx bx-plus"></i>
+                                                                </button>
+                                                            </div>
 
-                                        <div class="table-responsive px-3">
-                                            <table class="table table-bordered table-striped table-sm">
-                                                <thead>
-                                                    <tr>
-                                                        <th>
-                                                            <label for="" class="form-label required mb-0">Container Type</label>
-                                                        </th>
-                                                        <th>
-                                                            <label for="" class="form-label required mb-0">Rate</label>
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="charge-detail-wrapper">
-                                                    @foreach ($container_types as $container_type)
-                                                        @foreach ($chargeItem['rates'] as $rateIndex => $rate)
-                                                            @if ($rate['container_type'] == $container_type)
-                                                                <tr class="charge-detail-item">
-                                                                    <input type="hidden" name="charges[{{ $chargeIndex }}][rates][{{ $rateIndex }}][customer_contract_charge_detail_id]" value="{{ !empty($rate['id']) ? $rate['id'] : '' }}">
-                                                                    <input type="hidden" name="charges[{{ $chargeIndex }}][rates][{{ $rateIndex }}][unit_code]" value="{{ $rate['unit_code'] }}" data-type="unit-code">
-                                                                    <td>
-                                                                        <input type="text" name="charges[{{ $chargeIndex }}][rates][{{ $rateIndex }}][container_type]" data-type="container-type" id="container-type" class="form-control" value="{{ $container_type }}" placeholder="Container Type" readonly required>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="number" name="charges[{{ $chargeIndex }}][rates][{{ $rateIndex }}][rate]" data-type="rate" id="rate" class="form-control" value="{{ $rate['rate'] }}" min="0" placeholder="0" required>
-                                                                    </td>
-                                                                </tr>
-                                                            @endif
-                                                        @endforeach
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                @endif
-                            @endif
+                                                            <div class="table-responsive px-3">
+                                                                <table class="table table-bordered table-striped table-sm">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>
+                                                                                <label for="" class="form-label required mb-0">From</label>
+                                                                            </th>
+                                                                            <th>
+                                                                                <label for="" class="form-label required mb-0">To</label>
+                                                                            </th>
+                                                                            <th>
+                                                                                <label for="" class="form-label required mb-0">Value</label>
+                                                                            </th>
+                                                                            <th>&nbsp;</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody class="charge-detail-wrapper">
+                                                                        @foreach ($chargeItem['rates'] as $rateIndex => $rate)
+                                                                            <tr class="charge-detail-item">
+                                                                                <input type="hidden" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][customer_contract_charge_detail_id]" value="{{ !empty($rate['id']) ? $rate['id'] : '' }}">
+                                                                                <input type="hidden" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][unit_code]" value="{{ $rate['unit_code'] }}" data-type="unit-code">
+                                                                                <td>
+                                                                                    <input type="number" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][from]" data-type="from" id="from" class="form-control" value="{{ $rate['from'] }}" min="0" placeholder="0" required>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <input type="number" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][to]" data-type="to" id="to" class="form-control" value="{{ $rate['from'] }}" min="0" placeholder="0" required>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <input type="number" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][rate]" data-type="rate" id="rate" class="form-control" value="{{ $rate['to'] }}" min="0" placeholder="0" required>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div class="d-flex justify-content-end">
+                                                                                        <button type="button" class="btn btn-icon btn-danger" data-type="delete-charge-detail">
+                                                                                            <i class="bx bx-trash-alt"></i>
+                                                                                        </button>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        @endforeach
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    @elseif ($chargeItem['rates'][0]['unit_code'] == "SHIPMENT")
+                                                        {{-- Shipment --}}
+                                                        <div class="flex-column mx-3 border mb-3 charge-rates" data-unit-type="{{ $chargeItem['rates'][0]['unit_code'] }}">
+                                                            <div class="d-flex align-items-center justify-content-between gap-2 mb-3 px-3 py-2">
+                                                                <h5 class="mb-0">Charge Rates by Shipment</h5>
+                                                            </div>
 
+                                                            <div class="table-responsive px-3">
+                                                                <table class="table table-bordered table-striped table-sm">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>
+                                                                                <label for="" class="form-label required mb-0">Rate</label>
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody class="charge-detail-wrapper">
+                                                                        @foreach ($chargeItem['rates'] as $rateIndex => $rate)
+
+                                                                        @endforeach
+                                                                        <tr class="charge-detail-item">
+                                                                            <input type="hidden" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][customer_contract_charge_detail_id]" value="{{ !empty($rate['id']) ? $rate['id'] : '' }}">
+                                                                            <input type="hidden" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][unit_code]" value="{{ $rate['unit_code'] }}" data-type="unit-code">
+                                                                            <td>
+                                                                                <input type="number" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][rate]" data-type="rate" id="rate" class="form-control" value="{{ $rate['rate'] }}" min="0" placeholder="0" required>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    @elseif ($chargeItem['rates'][0]['unit_code'] == "CONTAINER")
+                                                        {{-- Container --}}
+                                                        <div class="flex-column mx-3 border mb-3 charge-rates" data-unit-type="{{ $chargeItem['rates'][0]['unit_code'] }}">
+                                                            <div class="d-flex align-items-center justify-content-between gap-2 mb-3 px-3 py-2">
+                                                                <h5 class="mb-0">Charge Rates by Container</h5>
+                                                            </div>
+
+                                                            <div class="table-responsive px-3">
+                                                                <table class="table table-bordered table-striped table-sm">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>
+                                                                                <label for="" class="form-label required mb-0">Container Type</label>
+                                                                            </th>
+                                                                            <th>
+                                                                                <label for="" class="form-label required mb-0">Rate</label>
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody class="charge-detail-wrapper">
+                                                                        @foreach ($container_types as $container_type)
+                                                                            @foreach ($chargeItem['rates'] as $rateIndex => $rate)
+                                                                                @if ($rate['container_type'] == $container_type)
+                                                                                    <tr class="charge-detail-item">
+                                                                                        <input type="hidden" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][customer_contract_charge_detail_id]" value="{{ !empty($rate['id']) ? $rate['id'] : '' }}">
+                                                                                        <input type="hidden" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][unit_code]" value="{{ $rate['unit_code'] }}" data-type="unit-code">
+                                                                                        <td>
+                                                                                            <input type="text" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][container_type]" data-type="container-type" id="container-type" class="form-control" value="{{ $container_type }}" placeholder="Container Type" readonly required>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="number" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][rate]" data-type="rate" id="rate" class="form-control" value="{{ $rate['rate'] }}" min="0" placeholder="0" required>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                @endif
+                                                                            @endforeach
+                                                                        @endforeach
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                @endif
+
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
                     </div>
                 @endforeach
@@ -310,24 +400,30 @@
             $(rowItem).find('select#unit_id').val(unitId);
         });
 
-        function generatePortSelect2(id, country_type, transport_mode, country = '') {
-            let defaultValue = [];
-            @if ($data['method'] == "PUT")
-                if (country_type == 'origin') {
-                    defaultValue = [
-                        "{{ $customer_contract?->origin_port_id }}",
-                        "{{ $customer_contract?->originPort?->port_code }} - {{ $customer_contract?->originPort?->port_name }}",
-                    ];
-                } else {
-                    defaultValue = [
-                        "{{ $customer_contract?->destination_port_id }}",
-                        "{{ $customer_contract?->destinationPort?->port_code }} - {{ $customer_contract?->destinationPort?->port_name }}",
-                    ];
-                }
-            @endif
+        async function generateCustomAjaxSelect2(selector, url, placeholder, processFunction, selectedValue = []) {
+            const currentUrl = new URL(window.location.href)
 
-            generateAjaxSelect2(
-                id,
+            $(selector).select2({
+                ajax: {
+                    url,
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: processFunction,
+                    cache: true
+                },
+                placeholder: placeholder,
+            });
+
+
+            if (selectedValue.length > 1) {
+                const option = new Option(selectedValue[1], selectedValue[0], true, true);
+                $(selector).append(option).trigger('change');
+            }
+        }
+
+        function generatePortSelect2(selector, country_type, transport_mode, country = '', defaultValue = []) {
+            generateCustomAjaxSelect2(
+                selector,
                 "{{ route('api.finance.master-data.port.list') }}" + `?transport_mode=${transport_mode}&country=${country}`,
                 "Select Port",
                 function (result) {
@@ -342,39 +438,49 @@
             );
         }
 
-        function togglePortCountry(service_type) {
+        function togglePortCountry(serviceItem, service_type) {
             const is_disabled = service_type === '' || service_type === null || service_type === undefined;
 
             if (is_disabled) {
-                $("#origin_country_id").val('')
-                $("#origin_port_id").val('')
-                $("#destination_country_id").val('')
-                $("#destination_port_id").val('')
+                $(serviceItem).find('[data-type="origin"]').val('');
+                $(serviceItem).find('[data-type="destination"]').val('');
+                $(serviceItem).find('.free-text-port input').val('');
             } else {
-                $("#origin_country_id").prop('disabled', is_disabled)
-                $("#origin_port_id").prop('disabled', is_disabled)
-                $("#destination_country_id").prop('disabled', is_disabled)
-                $("#destination_port_id").prop('disabled', is_disabled)
-
-                $("#origin_port").prop('disabled', true);
-                $("#destination_port").prop('disabled', true);
+                $(serviceItem).find('[data-type="origin"]').prop('disabled', is_disabled);
+                $(serviceItem).find('[data-type="destination"]').prop('disabled', is_disabled);
+                $(serviceItem).find('.free-text-port input').prop('disabled', true);
 
                 let transport_mode = service_type.split('_')[0].toUpperCase();
                 if (transport_mode === 'AIR' || transport_mode === 'SEA') {
-                    $(".free-text-port").hide();
-                    $(".select-port").show();
+                    $(serviceItem).find(".free-text-port").hide();
+                    $(serviceItem).find(".select-port").show();
 
-                    generatePortSelect2('origin_port_id', 'origin', transport_mode, $("#origin_country_id").val() ?? '');
-                    generatePortSelect2('destination_port_id', 'destination', transport_mode, $("#destination_country_id").val() ?? '');
+                    $(serviceItem).find('.port-list').each(function () {
+                        const name_attr = $(this).attr('name');
+                        const type_attr = $(this).data('type');
+                        const select_selector = `select[name="${name_attr}"]`;
+                        const selector_country_id = $(serviceItem).find(`.country-list[data-type="${type_attr}"]`).val();
+                        let defaultValue = [];
+
+                        @if($data['method'] == "PUT")
+                            const selectedPortElem = $(this).parents('.select-port').find('.selected-port');
+                            if (selectedPortElem.length > 0) {
+                                const selectedPortValue = JSON.parse(selectedPortElem.val());
+                                defaultValue = [
+                                    selectedPortValue?.id,
+                                    selectedPortValue?.text,
+                                ]
+                            }
+                        @endif
+
+                        generatePortSelect2(select_selector, type_attr, transport_mode, (selector_country_id ?? ''), defaultValue);
+                    });
                 } else {
-                    $("#origin_port_id").prop('disabled', true)
-                    $("#destination_port_id").prop('disabled', true)
+                    $(serviceItem).find(".port-list").prop('disabled', true)
+                    $(serviceItem).find('.free-text-port input').prop('disabled', is_disabled);
 
-                    $("#origin_port").prop('disabled', is_disabled);
-                    $("#destination_port").prop('disabled', is_disabled);
-
-                    $(".select-port").hide();
-                    $(".free-text-port").show();
+                    $(serviceItem).find(".select-port").hide();
+                    $(serviceItem).find(".free-text-port").show();
                 }
             }
         }
@@ -384,7 +490,136 @@
             $(chargeItem).find('.charge-heading').toggleClass('active');
         }
 
-        function generateChargeItemHtml(chargeIndex) {
+        function slideServiceItemItem(serviceItem) {
+            $(serviceItem).find('.service-body').slideToggle();
+            $(serviceItem).find('.service-heading').toggleClass('active');
+        }
+
+        function generateServiceItemHtml(serviceIndex) {
+            return `
+
+                <div class="col-12 border p-0 mb-3 service-item">
+                    <div class="d-flex flex-column">
+                        <div class="d-flex align-items-center justify-content-between gap-2 p-3 border service-heading" style="cursor: pointer;">
+                            <h5 class="mb-0 service-title">Service #${serviceIndex + 1}</h5>
+                            <div class="d-flex align-item-center gap-3">
+                                <button type="button" class="btn btn-icon btn-danger" data-type="delete-service">
+                                    <i class="bx bx-trash-alt"></i>
+                                </button>
+                                <span class="d-flex align-items-center justify-content-center dropdown-marker">
+                                    <i class="bx bx-chevron-down" style="font-size: 2rem"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-column service-body mt-3" style="display: none;">
+                        <div class="d-flex px-3 service-input">
+                            <div class="col-12 row mb-3">
+                                <input type="hidden" name="services[${serviceIndex}][customer_contract_service_id]" value="">
+                                <div class="col-12 mb-3">
+                                    <label for="" class="form-label required">Service</label>
+                                    <select name="services[${serviceIndex}][service_type]" id="charge_id" class="form-select serviceSelect2" data-placeholder="Select Service" required>
+                                        <option value="" selected disabled>Select Service</option>
+                                        @foreach ($services as $key => $name)
+                                            <option value="{{ $key }}" @selected(old('service_type') == $key)>{{ $name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="" class="form-label required">Country Origin</label>
+                                    <select class="form-select country-list" name="services[${serviceIndex}][origin_country_id]" data-type="origin" required="true" disabled="true">
+                                        <option value="" selected disabled>Select Country</option>
+                                        @foreach($countries as $country)
+                                            <option value="{{ $country->country_id }}">{{ $country->country_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="select-port">
+                                        <label for="" class="form-label required">Port Origin</label>
+                                        <select name="services[${serviceIndex}][origin_port_id]" class="form-select port-list" data-type="origin" required="true" disabled="true">
+                                            <option value="" selected disabled>Select Port</option>
+                                        </select>
+                                    </div>
+                                    <div class="free-text-port" style="display: none;">
+                                        <label for="" class="form-label required">Port Origin</label>
+                                        <input class="form-control" name="services[${serviceIndex}][origin_port]" placeholder="Port Origin" required="true" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="" class="form-label required">Country Destination</label>
+                                    <select class="form-select country-list" name="services[${serviceIndex}][destination_country_id]" data-type="destination" required="true" disabled="true">
+                                        <option value="" selected disabled>Select Country</option>
+                                        @foreach($countries as $country)
+                                            <option value="{{ $country->country_id }}">{{ $country->country_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="select-port">
+                                        <label for="" class="form-label required">Port Destination</label>
+                                        <select name="services[${serviceIndex}][destination_port_id]" class="form-select port-list" data-type="destination" required="true" disabled="true">
+                                            <option value="" selected disabled>Select Port</option>
+                                        </select>
+                                    </div>
+                                    <div class="free-text-port" style="display: none;">
+                                        <label for="" class="form-label required">Port Destination</label>
+                                        <input class="form-control" name="services[${serviceIndex}][destination_port]" placeholder="Port Destination" required="true" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="charges-container">
+                            <div class="d-flex align-items-center justify-content-between gap-2 mb-3 p-3">
+                                <h5 class="mb-0">Charges</h5>
+                                <div class="d-flex align-item-center gap-3">
+                                    <button type="button" class="btn btn-success btn-icon btn-sm" data-type="add-charge">
+                                        <i class="bx bx-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="row mx-3 charge-item-wrapper">
+                                <div class="col-12 border p-0 mb-3 charge-item">
+                                    <div class="d-flex flex-column">
+                                        <div class="d-flex align-items-center justify-content-between gap-2 p-3 border charge-heading" style="cursor: pointer;">
+                                            <h5 class="mb-0 charge-title">Charge #1</h5>
+                                            <div class="d-flex align-item-center gap-3">
+                                                <button type="button" class="btn btn-icon btn-danger" data-type="delete-charge">
+                                                    <i class="bx bx-trash-alt"></i>
+                                                </button>
+                                                <span class="d-flex align-items-center justify-content-center dropdown-marker">
+                                                    <i class="bx bx-chevron-down" style="font-size: 2rem"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-column charge-body mt-3" style="display: none;">
+                                        <div class="d-flex px-3 charge-input">
+                                            <div class="col-12 d-flex align-items-end mb-3">
+                                                <input type="hidden" name="services[${serviceIndex}][charges][0][customer_contract_charge_id]" value="">
+                                                <div class="col-12">
+                                                    <label for="" class="form-label required">Charge Name</label>
+                                                    <select name="services[${serviceIndex}][charges][0][charge_id]" id="charge_id" class="form-select chargeSelect2" data-placeholder="Select Charge" required>
+                                                        <option value="" selected disabled>Select Charge</option>
+                                                        @foreach ($charges as $charge)
+                                                            <option value="{{ $charge->id }}">{{ $charge->charge_name }} - {{ $charge->unit->unit_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateChargeItemHtml(serviceIndex, chargeIndex) {
             return `
                 <div class="col-12 border p-0 mb-3 charge-item">
                     <div class="d-flex flex-column">
@@ -403,10 +638,10 @@
                     <div class="flex-column charge-body mt-3" style="display: none">
                         <div class="d-flex px-3 charge-input">
                             <div class="col-12 d-flex align-items-end mb-3">
-                                <input type="hidden" name="charges[${chargeIndex}][customer_contract_charge_id]" value="">
+                                <input type="hidden" name="services[${serviceIndex}][charges][${chargeIndex}][customer_contract_charge_id]" value="">
                                 <div class="col-12">
                                     <label for="" class="form-label required">Charge Name</label>
-                                    <select name="charges[${chargeIndex}][charge_id]" id="charge_id" class="form-select chargeSelect2" data-placeholder="Select Charge" required>
+                                    <select name="services[${serviceIndex}][charges][${chargeIndex}][charge_id]" id="charge_id" class="form-select chargeSelect2" data-placeholder="Select Charge" required>
                                         <option value="" selected disabled>Select Charge</option>
                                         @foreach ($charges as $charge)
                                             <option value="{{ $charge->id }}">{{ $charge->charge_name }} - {{ $charge->unit->unit_name }}</option>
@@ -420,7 +655,7 @@
             `;
         }
 
-        function generateChargeRatesHtml(unit_type, chargeIndex) {
+        function generateChargeRatesHtml(unit_type, serviceIndex, chargeIndex) {
             if (unit_type === 'KG') {
                 return `
                     <div class="flex-column mx-3 border mb-3 charge-rates" data-unit-type="KG">
@@ -448,7 +683,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="charge-detail-wrapper">
-                                    ${generateChargeDetailHtml(unit_type, chargeIndex)}
+                                    ${generateChargeDetailHtml(unit_type, serviceIndex, chargeIndex)}
                                 </tbody>
                             </table>
                         </div>
@@ -471,7 +706,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="charge-detail-wrapper">
-                                    ${generateChargeDetailHtml(unit_type, chargeIndex)}
+                                    ${generateChargeDetailHtml(unit_type, serviceIndex, chargeIndex)}
                                 </tbody>
                             </table>
                         </div>
@@ -497,7 +732,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="charge-detail-wrapper">
-                                    ${generateChargeDetailHtml(unit_type, chargeIndex)}
+                                    ${generateChargeDetailHtml(unit_type, serviceIndex, chargeIndex)}
                                 </tbody>
                             </table>
                         </div>
@@ -509,20 +744,20 @@
             }
         }
 
-        function generateChargeDetailHtml(unit_type, chargeIndex, chargeDetailIndex = 0) {
+        function generateChargeDetailHtml(unit_type, serviceIndex, chargeIndex, chargeDetailIndex = 0) {
             if (unit_type === 'KG') {
                 return `
                     <tr class="charge-detail-item">
-                        <input type="hidden" name="charges[${chargeIndex}][rates][${chargeDetailIndex}][customer_contract_charge_detail_id]" value="">
-                        <input type="hidden" name="charges[${chargeIndex}][rates][${chargeDetailIndex}][unit_code]" data-type="unit-code" value="${unit_type}">
+                        <input type="hidden" name="services[${serviceIndex}][charges][${chargeIndex}][rates][${chargeDetailIndex}][customer_contract_charge_detail_id]" value="">
+                        <input type="hidden" name="services[${serviceIndex}][charges][${chargeIndex}][rates][${chargeDetailIndex}][unit_code]" data-type="unit-code" value="${unit_type}">
                         <td>
-                            <input type="number" name="charges[${chargeIndex}][rates][${chargeDetailIndex}][from]" data-type="from" id="from" class="form-control" value="" min="0" placeholder="0" required>
+                            <input type="number" name="services[${serviceIndex}][charges][${chargeIndex}][rates][${chargeDetailIndex}][from]" data-type="from" id="from" class="form-control" value="" min="0" placeholder="0" required>
                         </td>
                         <td>
-                            <input type="number" name="charges[${chargeIndex}][rates][${chargeDetailIndex}][to]" data-type="to" id="to" class="form-control" value="" min="0" placeholder="0" required>
+                            <input type="number" name="services[${serviceIndex}][charges][${chargeIndex}][rates][${chargeDetailIndex}][to]" data-type="to" id="to" class="form-control" value="" min="0" placeholder="0" required>
                         </td>
                         <td>
-                            <input type="number" name="charges[${chargeIndex}][rates][${chargeDetailIndex}][rate]" data-type="rate" id="rate" class="form-control" value="" min="0" placeholder="0" required>
+                            <input type="number" name="services[${serviceIndex}][charges][${chargeIndex}][rates][${chargeDetailIndex}][rate]" data-type="rate" id="rate" class="form-control" value="" min="0" placeholder="0" required>
                         </td>
                         <td>
                             <div class="d-flex justify-content-end">
@@ -536,10 +771,10 @@
             } else if (unit_type === 'SHIPMENT') {
                 return `
                     <tr class="charge-detail-item">
-                        <input type="hidden" name="charges[${chargeIndex}][rates][0][customer_contract_charge_detail_id]" value="">
-                        <input type="hidden" name="charges[${chargeIndex}][rates][${chargeDetailIndex}][unit_code]" data-type="unit-code" value="${unit_type}">
+                        <input type="hidden" name="services[${serviceIndex}][charges][${chargeIndex}][rates][0][customer_contract_charge_detail_id]" value="">
+                        <input type="hidden" name="services[${serviceIndex}][charges][${chargeIndex}][rates][${chargeDetailIndex}][unit_code]" data-type="unit-code" value="${unit_type}">
                         <td>
-                            <input type="number" name="charges[${chargeIndex}][rates][0][rate]" data-type="rate" id="rate" class="form-control" value="" min="0" placeholder="0" required>
+                            <input type="number" name="services[${serviceIndex}][charges][${chargeIndex}][rates][0][rate]" data-type="rate" id="rate" class="form-control" value="" min="0" placeholder="0" required>
                         </td>
                     </tr>
                 `;
@@ -547,13 +782,13 @@
                 return `
                     @foreach($container_types as $container_index => $container_type)
                         <tr class="charge-detail-item">
-                            <input type="hidden" name="charges[${chargeIndex}][rates][{{ $container_index }}][customer_contract_charge_detail_id]" value="">
-                            <input type="hidden" name="charges[${chargeIndex}][rates][{{ $container_index }}][unit_code]" data-type="unit-code" value="${unit_type}">
+                            <input type="hidden" name="services[${serviceIndex}][charges][${chargeIndex}][rates][{{ $container_index }}][customer_contract_charge_detail_id]" value="">
+                            <input type="hidden" name="services[${serviceIndex}][charges][${chargeIndex}][rates][{{ $container_index }}][unit_code]" data-type="unit-code" value="${unit_type}">
                             <td>
-                                <input type="text" name="charges[${chargeIndex}][rates][{{ $container_index }}][container_type]" data-type="container-type" id="container-type" class="form-control" value="{{ $container_type }}" placeholder="Container Type" readonly required>
+                                <input type="text" name="services[${serviceIndex}][charges][${chargeIndex}][rates][{{ $container_index }}][container_type]" data-type="container-type" id="container-type" class="form-control" value="{{ $container_type }}" placeholder="Container Type" readonly required>
                             </td>
                             <td>
-                                <input type="number" name="charges[${chargeIndex}][rates][{{ $container_index }}][rate]" data-type="rate" id="rate" class="form-control" value="" min="0" placeholder="0" required>
+                                <input type="number" name="services[${serviceIndex}][charges][${chargeIndex}][rates][{{ $container_index }}][rate]" data-type="rate" id="rate" class="form-control" value="" min="0" placeholder="0" required>
                             </td>
                         </tr>
                     @endforeach
@@ -564,16 +799,24 @@
             }
         }
 
-        function setNewElementNameAttribute(element, chargesIndex, ratesIndex = null) {
+        function setNewElementNameAttribute(element, serviceIndex, chargesIndex = null, ratesIndex = null) {
             const nameAttr = $(element).attr('name');
             if (!nameAttr) return;
 
-            let updatedName = nameAttr.replace(/charges\[\d+\]/, `charges[${chargesIndex}]`);
-            if (ratesIndex !== null) {
-                if (/\[rates\]\[\d+\]/.test(updatedName)) {
-                    updatedName = updatedName.replace(/\[rates\]\[\d+\]/, `[rates][${ratesIndex}]`);
+            let updatedName = nameAttr.replace(/services\[\d+\]/, `services[${serviceIndex}]`);
+
+            if (chargesIndex !== null) {
+                if (/\[charges\]\[\d+\]/.test(updatedName)) {
+                    updatedName = updatedName.replace(/\[charges\]\[\d+\]/, `[charges][${chargesIndex}]`);
+                    if (ratesIndex !== null) {
+                        if (/\[rates\]\[\d+\]/.test(updatedName)) {
+                            updatedName = updatedName.replace(/\[rates\]\[\d+\]/, `[rates][${ratesIndex}]`);
+                        } else {
+                            console.warn(`No '[rates]' index found in name: ${nameAttr} with index ${ratesIndex}`);
+                        }
+                    }
                 } else {
-                    console.warn(`No '[rates]' index found in name: ${nameAttr} with index ${ratesIndex}`);
+                    console.warn(`No '[charges]' index found in name: ${nameAttr} with index ${chargesIndex}`);
                 }
             }
 
@@ -581,17 +824,25 @@
         }
 
         function renameElementAttribute() {
-            $(".charge-item-wrapper").children('.charge-item').each(function (chargeItemIndex) {
-                const chargeInput = $(this).find('.charge-input');
-                $(this).find('.charge-title').text(`Charge #${chargeItemIndex + 1}`);
-
-                $(chargeInput).find('select, input').each(function (i) {
-                    setNewElementNameAttribute($(this), chargeItemIndex);
+            $('.service-item-wrapper').children('.service-item').each(function (serviceItemIndex) {
+                const serviceInput = $(this).find('.service-input');
+                $(this).find('.service-title').text(`Service #${serviceItemIndex + 1}`);
+                $(serviceInput).find('select, input').each(function () {
+                    setNewElementNameAttribute($(this), serviceItemIndex);
                 })
 
-                $(this).find('.charge-detail-item').each(function (chargeDetailIndex) {
-                    $(this).find('select, input').each(function (i) {
-                        setNewElementNameAttribute($(this), chargeItemIndex, chargeDetailIndex);
+                $(this).find(".charge-item-wrapper").children('.charge-item').each(function (chargeItemIndex) {
+                    const chargeInput = $(this).find('.charge-input');
+                    $(this).find('.charge-title').text(`Charge #${chargeItemIndex + 1}`);
+
+                    $(chargeInput).find('select, input').each(function (i) {
+                        setNewElementNameAttribute($(this), serviceItemIndex, chargeItemIndex);
+                    })
+
+                    $(this).find('.charge-detail-item').each(function (chargeDetailIndex) {
+                        $(this).find('select, input').each(function (i) {
+                            setNewElementNameAttribute($(this), serviceItemIndex, chargeItemIndex, chargeDetailIndex);
+                        })
                     })
                 })
             })
@@ -601,6 +852,12 @@
             event.preventDefault();
             const chargeItem = $(this).parents('.charge-item');
             slideChargeItem(chargeItem);
+        })
+
+        $(document).off('click', '.service-heading').on('click', '.service-heading', function (event) {
+            event.preventDefault();
+            const serviceItem = $(this).parents('.service-item');
+            slideServiceItemItem(serviceItem);
         })
 
         $(document).on('change', '.chargeSelect2', function (event) {
@@ -613,8 +870,9 @@
             const chargeItem = $(this).parents('.charge-item');
             const chargeIndex = $(chargeItem).index();
             const chargeRates = $(chargeItem).find('.charge-rates');
+            const serviceIndex = $(chargeItem).parents('.service-item').index();
 
-            const chargeRatesHtml = generateChargeRatesHtml(unit_type, chargeIndex);
+            const chargeRatesHtml = generateChargeRatesHtml(unit_type, serviceIndex, chargeIndex);
             if (chargeRates.length > 0) {
                 $(chargeRates).each(function () {
                     const chargeRatesType = $(this).data('unit-type');
@@ -629,12 +887,46 @@
             }
         })
 
+
+        // Add & Delete Charge Item
+        $(document).off('click', 'button[data-type="add-service"]').on('click', 'button[data-type="add-service"]', function (event) {
+            event.preventDefault();
+            const serviceItemWrapper = $('.service-item-wrapper');
+            const countOfService = $(serviceItemWrapper).children('.service-item').length;
+            const serviceItemHtml = generateServiceItemHtml(countOfService);
+
+            $(serviceItemWrapper).append(serviceItemHtml);
+        })
+
+        $(document).off('click', 'button[data-type="delete-service"]').on('click', 'button[data-type="delete-service"]', function (event) {
+            event.stopPropagation();
+
+            const serviceWrapper = $(this).parents('.service-item-wrapper');
+            const countOfService = $(serviceWrapper).children('.service-item').length;
+
+            if (countOfService > 1) {
+                $(this).parents('.service-item').remove();
+                renameElementAttribute();
+            } else {
+                $(this).parents('.service-item').find('input, select').val('');
+                $(this).parents('.service-item').find('.charge-item').each(function (index) {
+                    if (index == 0) {
+                        $(this).find('input, select').val('');
+                        $(this).find('.charge-rates').remove();
+                    } else {
+                        $(this).remove();
+                    }
+                });
+            }
+        });
+
         // Add & Delete Charge Item
         $(document).off('click', 'button[data-type="add-charge"]').on('click', 'button[data-type="add-charge"]', function (event) {
             event.preventDefault();
-            const chargeItemWrapper = $(".charge-item-wrapper")
+            const chargeItemWrapper = $(this).parents(".charges-container").find('.charge-item-wrapper');
+            const serviceIndex = $(chargeItemWrapper).parents('.service-item').index();
             const countOfCharge = $(chargeItemWrapper).children('.charge-item').length;
-            const chargeItemHtml = generateChargeItemHtml(countOfCharge);
+            const chargeItemHtml = generateChargeItemHtml(serviceIndex, countOfCharge);
 
             $(chargeItemWrapper).append(chargeItemHtml);
         })
@@ -660,8 +952,9 @@
             const chargeItem = $(this).parents('.charge-item');
             const countChargeDetail = $(chargeItem).find('.charge-detail-item').length;
             const chargeItemIndex = $(chargeItem).index();
+            const serviceIndex = $(chargeItem).parents('.service-item').index();
             const unit_type = $(this).parents('.charge-rates').data('unit-type');
-            const chargeDetailHtml = generateChargeDetailHtml(unit_type, chargeItemIndex, countChargeDetail);
+            const chargeDetailHtml = generateChargeDetailHtml(unit_type, serviceIndex, chargeItemIndex, countChargeDetail);
 
             $(chargeItem).find('.charge-detail-wrapper').append(chargeDetailHtml);
 
@@ -687,8 +980,22 @@
             }
         });
 
+        $(document).on('change', '.serviceSelect2', function (evennt) {
+            event.preventDefault();
+
+            const serviceItem = $(this).parents('.service-item');
+            const current_service_type = $(this).val();
+
+            $(serviceItem).find('.country-list').each(function () {
+                $(this).select2();
+            });
+
+            togglePortCountry(serviceItem, current_service_type);
+        })
+
+
         $(document).ready(function () {
-            slideChargeItem($(".charge-item").eq(0));
+            slideServiceItemItem($(".service-item").eq(0));
 
             // Protect Contract Start and Contract End Date
             $("#contract_start").change(function (event) {
@@ -702,24 +1009,27 @@
                 }
             });
 
-            const service_type = $("#service_type").val();
-            togglePortCountry(service_type);
+            $('.service-item-wrapper').children('.service-item').each(function () {
+                const service_type = $(this).find('.serviceSelect2').val();
 
-            $("#service_type").change(function (event) {
-                const current_service_type = $(this).val();
-                togglePortCountry(current_service_type);
-            });
+                $(this).find('.country-list').each(function () {
+                    $(this).select2();
+                });
+
+                togglePortCountry($(this), service_type);
+            })
 
             $(".country-list").change(function (event) {
-                const elementId = $(this).attr('id');
-                const country_type = elementId.split('_')[0];
-                const current_service_type = $("#service_type").val();
+                const serviceItem = $(this).parents('.service-item');
+                const country_type = $(this).data('type');
+                const current_service_type = $(serviceItem).find('.serviceSelect2').val();
 
                 const current_transport_mode = current_service_type.split('_')[0].toUpperCase();
                 const country_id = $(this).val();
-                const selectId = `${country_type}_port_id`;
+                const name_attr = $(serviceItem).find(`.port-list[data-type='${country_type}']`).attr('name');
+                const selectSelector = `select[name="${name_attr}"]`;
 
-                generatePortSelect2(selectId, country_type, current_transport_mode, country_id);
+                generatePortSelect2(selectSelector, country_type, current_transport_mode, country_id);
             });
 
             $("button[data-type='delete-existing-file']").off('click').on('click', function (event) {

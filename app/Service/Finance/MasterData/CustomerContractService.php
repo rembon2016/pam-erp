@@ -34,7 +34,7 @@ final class CustomerContractService
     {
         $data = CustomerContract::with('histories')->when(! empty($filters['customer']), function ($query) use ($filters) {
             return $query->where('customer_id', $filters['customer']);
-        })->orderBy('contract_end', 'desc')->get();
+        })->orderBy('contract_end', 'desc');
 
         if ($get_data) $data = $data->get();
 
@@ -43,7 +43,7 @@ final class CustomerContractService
 
     public function getCustomerContractById(string $id, ?array $select = ['*']): object
     {
-        $data = CustomerContract::select($select)->with('charges', 'charges.rates', 'histories')->where('id', $id)->first();
+        $data = CustomerContract::select($select)->with('services', 'services.portOrigin', 'services.portDestination', 'services.charges', 'services.charges.rates', 'histories')->where('id', $id)->first();
 
         return ! is_null($data)
             ? ObjectResponse::success(__('crud.fetched', ['name' => 'Customer Contract']), Response::HTTP_OK, $data)
@@ -103,9 +103,9 @@ final class CustomerContractService
 
             $dto['contract_no'] = CustomerContract::generateUniqueCodeByCustomer($getCustomerResponse->data);
 
-            $charges = collect($dto['charges']);
+            $services = collect($dto['services']);
             $contract_files = !empty($dto['contract_file']) ? $dto['contract_file'] : [];
-            unset($dto['charges'], $dto['contract_file']);
+            unset($dto['services'], $dto['contract_file']);
 
             $createdCustomerContract = CustomerContract::create($dto);
 
@@ -123,17 +123,26 @@ final class CustomerContractService
                 });
             }
 
-            // Create Customer Contract Charges and Rates
-            $charges->each(function ($charge) use ($createdCustomerContract) {
-                $rates = collect($charge['rates']);
-                unset($charge['rates']);
+            // Create Customer Contract Services, Charges and Rates
+            $services->each(function ($service) use ($createdCustomerContract) {
+                $charges = collect($service['charges']);
+                unset($service['charges']);
 
-                $createdCustomerContractCharge = $createdCustomerContract->charges()->create($charge);
+                $createdCustomerContractService = $createdCustomerContract->services()->create($service);
 
-                // Create Customer Contract Charge Rates
-                $rates->each(function ($rate) use ($createdCustomerContract, $createdCustomerContractCharge) {
-                    $rate['customer_contract_id'] = $createdCustomerContract->id;
-                    $createdCustomerContractCharge->rates()->create($rate);
+                // Create Customer Contract Charges and Rates
+                $charges->each(function ($charge) use ($createdCustomerContract, $createdCustomerContractService) {
+                    $rates = collect($charge['rates']);
+                    $charge['customer_contract_id'] = $createdCustomerContract->id;
+                    unset($charge['rates']);
+
+                    $createdCustomerContractCharge = $createdCustomerContractService->charges()->create($charge);
+
+                    // Create Customer Contract Charge Rates
+                    $rates->each(function ($rate) use ($createdCustomerContract, $createdCustomerContractCharge) {
+                        $rate['customer_contract_id'] = $createdCustomerContract->id;
+                        $createdCustomerContractCharge->rates()->create($rate);
+                    });
                 });
             });
 
@@ -165,10 +174,10 @@ final class CustomerContractService
 
         DB::beginTransaction();
         try {
-            $charges = collect($dto['charges']);
+            $services = collect($dto['services']);
             $contract_files = !empty($dto['contract_file']) ? $dto['contract_file'] : [];
-            $existingContractCharge = $charges->filter(fn ($charge) => ! empty($charge['customer_contract_charge_id']))->pluck('customer_contract_charge_id');
-            unset($dto['charges'], $dto['contract_file']);
+            $existingContractService = $services->filter(fn ($charge) => ! empty($charge['customer_contract_service_id']))->pluck('customer_contract_service_id');
+            unset($dto['services'], $dto['contract_file']);
 
             $getCustomerContractResponse->data->update($dto);
 
@@ -186,43 +195,67 @@ final class CustomerContractService
                 });
             }
 
-            // Sync Customer Contract Charges
-            $getCustomerContractResponse->data->charges()->whereNotIn('id', $existingContractCharge->toArray())->delete();
-            $charges->each(function ($charge) use ($getCustomerContractResponse) {
-                $rates = collect($charge['rates']);
-                $existingChargeDetail = $rates->filter(fn ($rate) => ! empty($rate['customer_contract_charge_detail_id']))->pluck('customer_contract_charge_detail_id');
-                unset($charge['rates']);
+            // Sync Customer Contract Services, Charges and Rates
+            $getCustomerContractResponse->data->services()->whereNotIn('id', $existingContractService->toArray())->delete();
+            $services->each(function ($service) use ($getCustomerContractResponse) {
+                $charges = collect($service['charges']);
+                $existingContractCharge = $charges->filter(fn ($charge) => ! empty($charge['customer_contract_charge_id']))->pluck('customer_contract_charge_id');
+                unset($service['charges']);
 
-                // Update or Create Customer Contract Charge
-                if (!empty($charge['customer_contract_charge_id'])) {
-                    $customer_contract_charge_id = $charge['customer_contract_charge_id'];
-                    unset($charge['customer_contract_charge_id']);
+                // Update or Create Customer Contract Service
+                if (!empty($service['customer_contract_service_id'])) {
+                    $customer_contract_service_id = $service['customer_contract_service_id'];
+                    unset($service['customer_contract_service_id']);
 
-                    $contractCharge = $getCustomerContractResponse->data->charges()->where('id', $customer_contract_charge_id)->first();
+                    $contractService = $getCustomerContractResponse->data->services()->where('id', $customer_contract_service_id)->first();
 
-                    if ($contractCharge) {
-                        $contractCharge->fill($charge)->save();
+                    if ($contractService) {
+                        $contractService->fill($service)->save();
                     }
-
-                    $getCustomerContractResponse->data->charges()->where('id', $customer_contract_charge_id)->update($charge);
                 } else {
-                    $customer_contract_charge_id = $getCustomerContractResponse->data->charges()->create($charge)->id;
+                    $contractService = $getCustomerContractResponse->data->services()->create($service);
+                    $customer_contract_service_id = $contractService->id;
                 }
 
-                // Sync Customer Contract Charge Rates/Details
-                $getCustomerContractResponse->data->rates()->where('customer_contract_charge_id', $customer_contract_charge_id)->whereNotIn('id', $existingChargeDetail->toArray())->delete();
-                $rates->each(function ($rate) use ($customer_contract_charge_id, $getCustomerContractResponse) {
-                    $rate['customer_contract_charge_id'] = $customer_contract_charge_id;
+                // Sync Customer Contract Charges and Rates
+                $contractService->charges()->whereNotIn('id', $existingContractCharge->toArray())->delete();
+                $charges->each(function ($charge) use ($getCustomerContractResponse, $contractService) {
+                    $charge['customer_contract_id'] = $getCustomerContractResponse->data->id;
+                    $rates = collect($charge['rates']);
+                    $existingChargeDetail = $rates->filter(fn ($rate) => ! empty($rate['customer_contract_charge_detail_id']))->pluck('customer_contract_charge_detail_id');
+                    unset($charge['rates']);
 
-                    // Update or Create Customer Contrac Charge Rate/Detail
-                    if (!empty($rate['customer_contract_charge_detail_id'])) {
-                        $customer_contract_charge_detail_id = $rate['customer_contract_charge_detail_id'];
-                        unset($rate['customer_contract_charge_detail_id']);
+                    // Update or Create Customer Contract Charge
+                    if (!empty($charge['customer_contract_charge_id'])) {
+                        $customer_contract_charge_id = $charge['customer_contract_charge_id'];
+                        unset($charge['customer_contract_charge_id']);
 
-                        $getCustomerContractResponse->data->rates()->where('id', $customer_contract_charge_detail_id)->update($rate);
+                        $contractCharge = CustomerContractCharge::where('id', $customer_contract_charge_id)->first();
+
+                        if ($contractCharge) {
+                            $contractCharge->fill($charge)->save();
+                        }
                     } else {
-                        $getCustomerContractResponse->data->rates()->create($rate);
+                        $contractCharge = $contractService->charges()->create($charge);
+                        $customer_contract_charge_id = $contractCharge->id;
                     }
+
+
+                    // Sync Customer Contract Charge Rates/Details
+                    $contractCharge->rates()->where('customer_contract_charge_id', $customer_contract_charge_id)->whereNotIn('id', $existingChargeDetail->toArray())->delete();
+                    $rates->each(function ($rate) use ($contractCharge, $getCustomerContractResponse) {
+                        $rate['customer_contract_id'] = $getCustomerContractResponse->data->id;
+
+                        // Update or Create Customer Contrac Charge Rate/Detail
+                        if (!empty($rate['customer_contract_charge_detail_id'])) {
+                            $customer_contract_charge_detail_id = $rate['customer_contract_charge_detail_id'];
+                            unset($rate['customer_contract_charge_detail_id']);
+
+                            $contractCharge->rates()->where('id', $customer_contract_charge_detail_id)->update($rate);
+                        } else {
+                            $contractCharge->rates()->create($rate);
+                        }
+                    });
                 });
             });
 

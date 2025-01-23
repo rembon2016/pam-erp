@@ -75,7 +75,7 @@
                         <td class="fw-bold fs-6 text-gray-800">Valid To</td>
                         <td>{{ $customer_contract->contract_end?->format('d/m/Y') }}</td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <td class="fw-bold fs-6 text-gray-800">Service</td>
                         <td>{{ $customer_contract->getServiceType()  }}</td>
                     </tr>
@@ -94,7 +94,7 @@
                     <tr>
                         <td class="fw-bold fs-6 text-gray-800">Port Destination</td>
                         <td>{{ $customer_contract->getPortDestination() }}</td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <td class="fw-bold fs-6 text-gray-800">Currency</td>
                         <td>{{ $customer_contract->getCurrency() }}</td>

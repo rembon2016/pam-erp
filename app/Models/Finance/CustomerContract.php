@@ -13,7 +13,6 @@ use App\Models\Finance\CustomerContractService;
 use App\Models\Finance\CustomerContractDocument;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use App\Models\Finance\CustomerContractChargeDetail;
-use App\Traits\Eloquent\Historable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 final class CustomerContract extends Model

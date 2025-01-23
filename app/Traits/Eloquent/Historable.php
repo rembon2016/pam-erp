@@ -4,15 +4,27 @@ declare(strict_types=1);
 
 namespace App\Traits\Eloquent;
 
+use App\Models\Finance\CustomerContract;
 use App\Models\History;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait Historable
 {
+    /**
+     * @var array
+     */
+    protected static array $authorizedParentClass = [
+        'App\Models\Finance\CustomerContract'
+    ];
+
+    /**
+     * @var bool
+     */
+    protected static bool $updateTriggered = false;
+
     /**
      * @return void
      */
@@ -30,13 +42,17 @@ trait Historable
         }
 
         if (in_array('update', static::$historableActions)) {
+            static::updating(function (Model $model) {
+                static::$updateTriggered = true;
+            });
+
             static::updated(function (Model $model) {
                 self::recordHistory($model);
             });
         }
 
         if (in_array('delete', static::$historableActions)) {
-            static::deleted(function (Model $model) {
+            static::deleting(function (Model $model) {
                 self::recordHistory($model);
             });
         }
@@ -51,17 +67,67 @@ trait Historable
     }
 
     /**
-     * @return bool
+     * @return void
      */
-    protected static function recordHistory(Model $model)
+    public function forceRecordHistory(): void
     {
-        DB::insert("INSERT INTO finance.histories(id, modelable_type, modelable_id, payload, created_at, updated_at) VALUES(?, ?, ?, ?, ?, ?)", [
-            Str::uuid(),
-            self::class,
-            $model->getKey(),
-            json_encode($model->getOriginal()),
-            now(),
-            now()
+        if (!static::$updateTriggered) {
+            self::recordHistory($this);
+            static::$updateTriggered = false;
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    protected static function recordHistory(Model $model, ?string $parentId = null)
+    {
+        $historyId = Str::uuid();
+
+        if (in_array(self::class, static::$authorizedParentClass)) {
+
+            $exists = DB::table('finance.histories')
+                ->where([
+                    'modelable_type' => self::class,
+                    'modelable_id' => $model->getKey(),
+                    'parent_id' => null
+                ])
+                ->exists();
+
+            if (!$exists) {
+                DB::table('finance.histories')->insert([
+                    'id' => $historyId,
+                    'modelable_type' => self::class,
+                    'modelable_id' => $model->getKey(),
+                    'payload' => json_encode($model->getOriginal()),
+                    'parent_id' => null,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                return $historyId;
+            }
+        }
+
+        $parentHistory = DB::table('finance.histories')
+            ->where([
+                'modelable_type' => CustomerContract::class,
+                'modelable_id' => $model->customer_contract_id ?? $model->getKey(),
+                'parent_id' => null
+            ])
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        DB::table('finance.histories')->insert([
+            'id' => $historyId,
+            'modelable_type' => self::class,
+            'modelable_id' => $model->getKey(),
+            'payload' => json_encode($model->getOriginal()),
+            'parent_id' => $parentHistory?->id,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
+
+        return $historyId;
     }
 }

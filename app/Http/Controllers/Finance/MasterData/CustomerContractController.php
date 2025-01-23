@@ -75,46 +75,23 @@ final class CustomerContractController extends Controller
      */
     public function detailHistory(string $id, string $historyId): View
     {
-        $history = History::where('modelable_id', $id)->where('id', $historyId)->first();
-        $customer = Customer::where('id', $history->payload['customer_id'])->first();
-        $service_type = !empty($history->payload['service_type']) ? CustomerContract::SERVICES[$history->payload['service_type']] : 'N/A';
-        $documents = CustomerContractDocument::where('customer_contract_id', $history->payload['id'])->get();
-        $charges = CustomerContractCharge::where('customer_contract_id', $history->payload['id'])->get();
+        $historyModel = new History;
+        $history = $historyModel->where('modelable_id', $id)->where('id', $historyId)->firstOrFail();
+        // dd($historyModel->getHistoricalDocuments($id));
 
-        $get_currency_func = function (string $currency_id) {
-            $currency = Currency::where('id', $currency_id)->first();
-
-            return !empty($currency) ? "{$currency->currency_code} - {$currency->currency_name}" : 'N/A';
-        };
-
-        $get_country_func = fn (int $id) => Countries::where('country_id', $id)->first();
-        $get_port_func = function (?array $customer_contract, string $type = 'origin') {
-
-            $port_id = $type == 'origin' ? 'origin_port_id' : 'destination_port_id';
-            $type = $type == 'origin' ? 'origin_port' : 'destination_port';
-
-            $port = Port::where('port_id', $customer_contract[$port_id])->first();
-
-            if (!empty($customer_contract['service_type'])) {
-                if (in_array($customer_contract['service_type'], CustomerContract::NON_SEA_AIR_SERVICES)) {
-                    return $customer_contract[$type];
-                } else {
-                    return !empty($port) ? "{$port->port_code} - {$port->port_name}" : 'N/A';
-                }
-            }
-
-            return "N/A";
-        };
-
-        $origin_country = $get_country_func($history->payload['origin_country_id']);
-        $destination_country = $get_country_func($history->payload['destination_country_id']);
-
-        $origin_port = $get_port_func($history->payload, 'origin');
-        $destination_port = $get_port_func($history->payload, 'destination');
-
-        $currency = $get_currency_func($history->payload['currency_id']);
-
-        return view('pages.finance.master-data.customer-contract.detail-history', compact('history', 'customer', 'service_type', 'origin_country', 'destination_country', 'origin_port', 'destination_port', 'currency', 'documents', 'charges'));
+        return view('pages.finance.master-data.customer-contract.detail-history', [
+            'history' => $history,
+            'customer' => $historyModel->getCustomer($history->payload['customer_id']),
+            'service_type' => $historyModel->getServiceType($history->payload['service_type'] ?? null),
+            'origin_country' => $historyModel->getCountry((int) $history->payload['origin_country_id']),
+            'destination_country' => $historyModel->getCountry((int) $history->payload['destination_country_id']),
+            'origin_port' => $historyModel->getPort($history->payload, 'origin'),
+            'destination_port' => $historyModel->getPort($history->payload, 'destination'),
+            'currency' => $historyModel->getCurrency($history->payload['currency_id']),
+            'documents' => $historyModel->getHistoricalDocuments($id),
+            'charges' => $historyModel->getHistoricalCharges($id)
+        ]);
+        // return view('pages.finance.master-data.customer-contract.detail-history', compact('history', 'customer', 'service_type', 'origin_country', 'destination_country', 'origin_port', 'destination_port', 'currency', 'documents', 'charges'));
     }
 
     /**

@@ -4,22 +4,23 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
+use App\Models\History;
 use App\Functions\Utility;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Response;
-use App\Functions\ObjectResponse;
 use App\Models\Finance\Charge;
 use App\Models\Finance\Customer;
+use App\Functions\ObjectResponse;
 use App\Traits\HandleUploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Database\Eloquent\Model;
 use App\Models\Finance\CustomerContract;
-use App\Models\Finance\CustomerContractCharge;
-use App\Models\History;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Illuminate\Database\Eloquent\Collection;
+use App\Models\Finance\CustomerContractCharge;
+use App\Models\Finance\CustomerContractDocument;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection as SupportCollection;
 
 final class CustomerContractService
@@ -32,7 +33,7 @@ final class CustomerContractService
 
     public function getCustomerContracts($filters = [], bool $get_data = true): Collection|Builder
     {
-        $data = CustomerContract::with('histories')->when(! empty($filters['customer']), function ($query) use ($filters) {
+        $data = CustomerContract::when(! empty($filters['customer']), function ($query) use ($filters) {
             return $query->where('customer_id', $filters['customer']);
         })->orderBy('contract_end', 'desc')->get();
 
@@ -171,6 +172,7 @@ final class CustomerContractService
             unset($dto['charges'], $dto['contract_file']);
 
             $getCustomerContractResponse->data->update($dto);
+            $getCustomerContractResponse->data->forceRecordHistory();
 
             if (count($contract_files) > 0) {
                 collect($contract_files)->each(function ($file) use ($getCustomerContractResponse) {
@@ -180,9 +182,11 @@ final class CustomerContractService
                         is_encrypted: false
                     );
 
-                    $getCustomerContractResponse->data->documents()->create([
+                    $document = new CustomerContractDocument([
                         'contract_file' => $file_name
                     ]);
+
+                    $getCustomerContractResponse->data->documents()->save($document);
                 });
             }
 
@@ -202,9 +206,9 @@ final class CustomerContractService
 
                     if ($contractCharge) {
                         $contractCharge->fill($charge)->save();
+                        $contractCharge->forceRecordHistory();
                     }
 
-                    $getCustomerContractResponse->data->charges()->where('id', $customer_contract_charge_id)->update($charge);
                 } else {
                     $customer_contract_charge_id = $getCustomerContractResponse->data->charges()->create($charge)->id;
                 }
@@ -219,7 +223,16 @@ final class CustomerContractService
                         $customer_contract_charge_detail_id = $rate['customer_contract_charge_detail_id'];
                         unset($rate['customer_contract_charge_detail_id']);
 
-                        $getCustomerContractResponse->data->rates()->where('id', $customer_contract_charge_detail_id)->update($rate);
+                        $chargeDetail = $getCustomerContractResponse
+                            ->data
+                            ->rates()
+                            ->where('id', $customer_contract_charge_detail_id)
+                            ->first();
+
+                        if ($chargeDetail) {
+                            $chargeDetail->fill($rate)->save();
+                        }
+
                     } else {
                         $getCustomerContractResponse->data->rates()->create($rate);
                     }

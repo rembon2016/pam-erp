@@ -12,10 +12,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class CustomerContractChargeDetail extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, Historable;
 
     protected $table = 'finance.customer_contract_charge_detail';
     protected $guarded = ['id'];
+
+    protected static ?array $historableActions = ['create', 'update', 'delete'];
 
     const CONTAINER_TYPES = [
         '20 FT',

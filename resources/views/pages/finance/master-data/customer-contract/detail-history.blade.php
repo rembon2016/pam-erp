@@ -99,7 +99,7 @@
                         <td class="fw-bold fs-6 text-gray-800">Currency</td>
                         <td>{{ $currency }}</td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <td class="fw-bold fs-6 text-gray-800">Attachment (Document)</td>
                         <td>
                             <div id="fileList">
@@ -117,12 +117,85 @@
                                 @endforelse
                             </div>
                         </td>
-                    </tr>
+                    </tr> --}}
                 </table>
             </div>
 
             <!--begin::Accordion-->
             <div class="accordion mb-5" id="kt_accordion_1">
+                @foreach ($charges as $charge)
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="kt_accordion_{{ $loop->iteration }}_header">
+                            <button class="accordion-button fs-4 fw-semibold @if($loop->iteration != 1) collapsed @endif" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_{{ $loop->iteration }}_body" aria-expanded="true" aria-controls="kt_accordion_{{ $loop->iteration }}_body">
+                                {{ $charge['charges']['charge_code'] }} - {{ $charge['charges']['charge_name'] }}
+                            </button>
+                        </h2>
+                        <div id="kt_accordion_{{ $loop->iteration }}_body" class="accordion-collapse collapse @if($loop->iteration == 1) show @endif" aria-labelledby="kt_accordion_{{ $loop->iteration }}_header" data-bs-parent="#kt_accordion_1">
+                            <div class="accordion-body">
+                                @if ($charge['details']->count() > 0)
+                                    @if ($charge['details'][0]['unit_code'] == "KG")
+                                    <strong class="d-block mb-3">Charge Rates by Kilogram:</strong>
+                                        <table class="table-charge">
+                                            <thead>
+                                                <tr>
+                                                    <th>From</th>
+                                                    <th>To</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($charge['details'] as $rate)
+                                                    <tr>
+                                                        <td>{{ $rate['from'] }}</td>
+                                                        <td>{{ $rate['to'] }}</td>
+                                                        <td>{{ $rate['rate'] }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @elseif ($charge['details'][0]['unit_code'] == "SHIPMENT")
+                                    <strong class="d-block mb-3">Charge Rates by Shipment:</strong>
+                                        <table class="table-charge">
+                                            <thead>
+                                                <tr>
+                                                    <th>Rate</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($charge['details'] as $rate)
+                                                    <tr>
+                                                        <td>{{ $rate['rate'] }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @elseif ($charge['details'][0]['unit_code'] == "CONTAINER")
+                                        <strong class="d-block mb-3">Charge Rates by Container:</strong>
+                                        <table class="table-charge">
+                                            <thead>
+                                                <tr>
+                                                    <th>Container Type</th>
+                                                    <th class="text-center">Rate</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($charge['details'] as $rate)
+                                                    <tr>
+                                                        <td>{{ $rate['container_type'] }}</td>
+                                                        <td class="text-center">{{ $rate['rate'] }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @endif
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+
+            </div>
+            {{-- <div class="accordion mb-5" id="kt_accordion_1">
                 @foreach ($charges as $charge)
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="kt_accordion_{{ $loop->iteration }}_header">
@@ -194,7 +267,7 @@
                     </div>
                 @endforeach
 
-            </div>
+            </div> --}}
             <!--end::Accordion-->
 
             <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px">

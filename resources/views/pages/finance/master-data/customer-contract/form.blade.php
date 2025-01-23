@@ -221,10 +221,10 @@
                                             <div class="flex-column charge-body mt-3" style="display: none;">
                                                 <div class="d-flex px-3 charge-input">
                                                     <div class="col-12 d-flex align-items-end mb-3">
-                                                        <input type="hidden" name="services[0][charges][{{ $chargeIndex }}][customer_contract_charge_id]" value="{{ !empty($chargeItem['id']) ? $chargeItem['id'] : '' }}">
+                                                        <input type="hidden" name="services[{{ $serviceIndex }}][charges][{{ $chargeIndex }}][customer_contract_charge_id]" value="{{ !empty($chargeItem['id']) ? $chargeItem['id'] : '' }}">
                                                         <div class="col-12">
                                                             <label for="" class="form-label required">Charge Name</label>
-                                                            <select name="services[0][charges][{{ $chargeIndex }}][charge_id]" id="charge_id" class="form-select chargeSelect2" data-placeholder="Select Charge" required>
+                                                            <select name="services[{{ $serviceIndex }}][charges][{{ $chargeIndex }}][charge_id]" id="charge_id" class="form-select chargeSelect2" data-placeholder="Select Charge" required>
                                                                 <option value="" selected disabled>Select Charge</option>
                                                                 @foreach ($charges as $charge)
                                                                     <option value="{{ $charge->id }}" @selected(old('charge_id', $chargeItem['charge_id']) == $charge->id)>{{ $charge->charge_name }} - {{ $charge->unit->unit_name }}</option>
@@ -264,16 +264,16 @@
                                                                     <tbody class="charge-detail-wrapper">
                                                                         @foreach ($chargeItem['rates'] as $rateIndex => $rate)
                                                                             <tr class="charge-detail-item">
-                                                                                <input type="hidden" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][customer_contract_charge_detail_id]" value="{{ !empty($rate['id']) ? $rate['id'] : '' }}">
-                                                                                <input type="hidden" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][unit_code]" value="{{ $rate['unit_code'] }}" data-type="unit-code">
+                                                                                <input type="hidden" name="services[{{ $serviceIndex }}][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][customer_contract_charge_detail_id]" value="{{ !empty($rate['id']) ? $rate['id'] : '' }}">
+                                                                                <input type="hidden" name="services[{{ $serviceIndex }}][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][unit_code]" value="{{ $rate['unit_code'] }}" data-type="unit-code">
                                                                                 <td>
-                                                                                    <input type="number" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][from]" data-type="from" id="from" class="form-control" value="{{ $rate['from'] }}" min="0" placeholder="0" required>
+                                                                                    <input type="number" name="services[{{ $serviceIndex }}][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][from]" data-type="from" id="from" class="form-control" value="{{ $rate['from'] }}" min="0" placeholder="0" required>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <input type="number" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][to]" data-type="to" id="to" class="form-control" value="{{ $rate['from'] }}" min="0" placeholder="0" required>
+                                                                                    <input type="number" name="services[{{ $serviceIndex }}][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][to]" data-type="to" id="to" class="form-control" value="{{ $rate['to'] }}" min="0" placeholder="0" required>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <input type="number" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][rate]" data-type="rate" id="rate" class="form-control" value="{{ $rate['to'] }}" min="0" placeholder="0" required>
+                                                                                    <input type="number" name="services[{{ $serviceIndex }}][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][rate]" data-type="rate" id="rate" class="form-control" value="{{ $rate['rate'] }}" min="0" placeholder="0" required>
                                                                                 </td>
                                                                                 <td>
                                                                                     <div class="d-flex justify-content-end">
@@ -309,10 +309,10 @@
 
                                                                         @endforeach
                                                                         <tr class="charge-detail-item">
-                                                                            <input type="hidden" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][customer_contract_charge_detail_id]" value="{{ !empty($rate['id']) ? $rate['id'] : '' }}">
-                                                                            <input type="hidden" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][unit_code]" value="{{ $rate['unit_code'] }}" data-type="unit-code">
+                                                                            <input type="hidden" name="services[{{ $serviceIndex }}][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][customer_contract_charge_detail_id]" value="{{ !empty($rate['id']) ? $rate['id'] : '' }}">
+                                                                            <input type="hidden" name="services[{{ $serviceIndex }}][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][unit_code]" value="{{ $rate['unit_code'] }}" data-type="unit-code">
                                                                             <td>
-                                                                                <input type="number" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][rate]" data-type="rate" id="rate" class="form-control" value="{{ $rate['rate'] }}" min="0" placeholder="0" required>
+                                                                                <input type="number" name="services[{{ $serviceIndex }}][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][rate]" data-type="rate" id="rate" class="form-control" value="{{ $rate['rate'] }}" min="0" placeholder="0" required>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
@@ -343,13 +343,13 @@
                                                                             @foreach ($chargeItem['rates'] as $rateIndex => $rate)
                                                                                 @if ($rate['container_type'] == $container_type)
                                                                                     <tr class="charge-detail-item">
-                                                                                        <input type="hidden" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][customer_contract_charge_detail_id]" value="{{ !empty($rate['id']) ? $rate['id'] : '' }}">
-                                                                                        <input type="hidden" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][unit_code]" value="{{ $rate['unit_code'] }}" data-type="unit-code">
+                                                                                        <input type="hidden" name="services[{{ $serviceIndex }}][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][customer_contract_charge_detail_id]" value="{{ !empty($rate['id']) ? $rate['id'] : '' }}">
+                                                                                        <input type="hidden" name="services[{{ $serviceIndex }}][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][unit_code]" value="{{ $rate['unit_code'] }}" data-type="unit-code">
                                                                                         <td>
-                                                                                            <input type="text" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][container_type]" data-type="container-type" id="container-type" class="form-control" value="{{ $container_type }}" placeholder="Container Type" readonly required>
+                                                                                            <input type="text" name="services[{{ $serviceIndex }}][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][container_type]" data-type="container-type" id="container-type" class="form-control" value="{{ $container_type }}" placeholder="Container Type" readonly required>
                                                                                         </td>
                                                                                         <td>
-                                                                                            <input type="number" name="services[0][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][rate]" data-type="rate" id="rate" class="form-control" value="{{ $rate['rate'] }}" min="0" placeholder="0" required>
+                                                                                            <input type="number" name="services[{{ $serviceIndex }}][charges][{{ $chargeIndex }}][rates][{{ $rateIndex }}][rate]" data-type="rate" id="rate" class="form-control" value="{{ $rate['rate'] }}" min="0" placeholder="0" required>
                                                                                         </td>
                                                                                     </tr>
                                                                                 @endif

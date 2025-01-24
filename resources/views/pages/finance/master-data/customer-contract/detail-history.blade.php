@@ -76,26 +76,6 @@
                         <td>{{ \Carbon\Carbon::parse($history->payload['contract_end'])->format('d/m/Y') }}</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold fs-6 text-gray-800">Service</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold fs-6 text-gray-800">Country Origin</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold fs-6 text-gray-800">Port Origin</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold fs-6 text-gray-800">Country Destination</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold fs-6 text-gray-800">Port Destination</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
                         <td class="fw-bold fs-6 text-gray-800">Currency</td>
                         <td>{{ $currency }}</td>
                     </tr>
@@ -122,78 +102,117 @@
             </div>
 
             <!--begin::Accordion-->
-            <div class="accordion mb-5" id="kt_accordion_1">
-                @foreach ($charges as $charge)
+            <div class="accordion mb-4" id="kt_accordion_service">
+                @foreach ($services as $service_index => $service)
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="kt_accordion_{{ $loop->iteration }}_header">
-                            <button class="accordion-button fs-4 fw-semibold @if($loop->iteration != 1) collapsed @endif" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_{{ $loop->iteration }}_body" aria-expanded="true" aria-controls="kt_accordion_{{ $loop->iteration }}_body">
-                                {{ $charge['charges']['charge_code'] }} - {{ $charge['charges']['charge_name'] }}
+                        <h2 class="accordion-header" id="kt_accordion_{{ $service_index + 1 }}_header">
+                            <button class="accordion-button fs-4 fw-semibold @if($service_index != 0) collapsed @endif" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_{{ $service_index + 1 }}_body" aria-expanded="true" aria-controls="kt_accordion_{{ $service_index + 1 }}_body">
+                                {{ \App\Functions\Eloquent\CustomerContractHelper::getServiceType($service['service_type']) }} #{{ $service_index + 1 }}
                             </button>
                         </h2>
-                        <div id="kt_accordion_{{ $loop->iteration }}_body" class="accordion-collapse collapse @if($loop->iteration == 1) show @endif" aria-labelledby="kt_accordion_{{ $loop->iteration }}_header" data-bs-parent="#kt_accordion_1">
+                        <div id="kt_accordion_{{ $service_index + 1 }}_body" class="accordion-collapse collapse @if($service_index == 0) show @endif" aria-labelledby="kt_accordion_{{ $service_index + 1 }}_header" data-bs-parent="#kt_accordion_service">
                             <div class="accordion-body">
-                                @if ($charge['details']->count() > 0)
-                                    @if ($charge['details'][0]['unit_code'] == "KG")
-                                    <strong class="d-block mb-3">Charge Rates by Kilogram:</strong>
-                                        <table class="table-charge">
-                                            <thead>
-                                                <tr>
-                                                    <th>From</th>
-                                                    <th>To</th>
-                                                    <th>Value</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($charge['details'] as $rate)
-                                                    <tr>
-                                                        <td>{{ $rate['from'] }}</td>
-                                                        <td>{{ $rate['to'] }}</td>
-                                                        <td>{{ $rate['rate'] }}</td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    @elseif ($charge['details'][0]['unit_code'] == "SHIPMENT")
-                                    <strong class="d-block mb-3">Charge Rates by Shipment:</strong>
-                                        <table class="table-charge">
-                                            <thead>
-                                                <tr>
-                                                    <th>Rate</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($charge['details'] as $rate)
-                                                    <tr>
-                                                        <td>{{ $rate['rate'] }}</td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    @elseif ($charge['details'][0]['unit_code'] == "CONTAINER")
-                                        <strong class="d-block mb-3">Charge Rates by Container:</strong>
-                                        <table class="table-charge">
-                                            <thead>
-                                                <tr>
-                                                    <th>Container Type</th>
-                                                    <th class="text-center">Rate</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($charge['details'] as $rate)
-                                                    <tr>
-                                                        <td>{{ $rate['container_type'] }}</td>
-                                                        <td class="text-center">{{ $rate['rate'] }}</td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    @endif
-                                @endif
+                                <div class="row mb-4">
+                                    <div class="col-12 mb-3">
+                                        <label for="" class="form-label">Service</label>
+                                        <input type="text" class="form-control" value="{{ \App\Functions\Eloquent\CustomerContractHelper::getServiceType($service['service_type']) }}" disabled>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="" class="form-label">Country Origin</label>
+                                        <input type="text" class="form-control" value="{{ \App\Functions\Eloquent\CustomerContractHelper::getCountry((int)$service['origin_country_id'], 'country_name') }}" disabled>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="" class="form-label">Port Origin</label>
+                                        <input type="text" class="form-control" value="{{ \App\Functions\Eloquent\CustomerContractHelper::getPort($service, 'origin') }}" disabled>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="" class="form-label">Country Destination</label>
+                                        <input type="text" class="form-control" value="{{ \App\Functions\Eloquent\CustomerContractHelper::getCountry((int)$service['destination_country_id'], 'country_name') }}" disabled>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="" class="form-label">Port Destination</label>
+                                        <input type="text" class="form-control" value="{{ \App\Functions\Eloquent\CustomerContractHelper::getPort($service, 'destination') }}" disabled>
+                                    </div>
+                                </div>
+
+                                <h5 class="mb-5">List of Charges</h5>
+
+                                <div class="accordion" id="kt_accordion_{{ $service_index + 1 }}">
+                                    @foreach ($service['charges'] as $charge_index => $charge)
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="kt_accordion_{{ $service_index + 1 }}_{{ $charge_index + 1 }}_header">
+                                                <button class="accordion-button fs-4 fw-semibold @if($charge_index != 0) collapsed @endif" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_{{ $service_index + 1 }}_{{ $charge_index + 1 }}_body" aria-expanded="true" aria-controls="kt_accordion_{{ $service_index + 1 }}_{{ $charge_index + 1 }}_body">
+                                                    {{ $charge['charges']['charge_code'] }} - {{ $charge['charges']['charge_name'] }}
+                                                </button>
+                                            </h2>
+                                            <div id="kt_accordion_{{ $service_index + 1 }}_{{ $charge_index + 1 }}_body" class="accordion-collapse collapse @if($charge_index == 0) show @endif" aria-labelledby="kt_accordion_{{ $service_index + 1 }}_{{ $charge_index + 1 }}_header" data-bs-parent="#kt_accordion_{{ $service_index + 1 }}">
+                                                <div class="accordion-body">
+                                                    @if (count($charge['details']) > 0)
+                                                        @if ($charge['details'][0]['unit_code'] == "KG")
+                                                        <strong class="d-block mb-3">Charge Rates by Kilogram:</strong>
+                                                            <table class="table-charge">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>From</th>
+                                                                        <th>To</th>
+                                                                        <th>Value</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ($charge['details'] as $rate)
+                                                                        <tr>
+                                                                            <td>{{ $rate['from'] }}</td>
+                                                                            <td>{{ $rate['to'] }}</td>
+                                                                            <td>{{ $rate['rate'] }}</td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        @elseif ($charge['details'][0]['unit_code'] == "SHIPMENT")
+                                                        <strong class="d-block mb-3">Charge Rates by Shipment:</strong>
+                                                            <table class="table-charge">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Rate</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ($charge['details'] as $rate)
+                                                                        <tr>
+                                                                            <td>{{ $rate['rate'] }}</td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        @elseif ($charge['details'][0]['unit_code'] == "CONTAINER")
+                                                            <strong class="d-block mb-3">Charge Rates by Container:</strong>
+                                                            <table class="table-charge">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Container Type</th>
+                                                                        <th class="text-center">Rate</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ($charge->rates as $rate)
+                                                                        <tr>
+                                                                            <td>{{ $rate['container_type'] }}</td>
+                                                                            <td class="text-center">{{ $rate['rate'] }}</td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        @endif
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
                     </div>
                 @endforeach
-
             </div>
             <!--end::Accordion-->
 

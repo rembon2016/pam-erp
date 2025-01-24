@@ -17,6 +17,7 @@ use App\Models\Operation\Master\Countries;
 use App\Models\Finance\CustomerContractCharge;
 use App\Models\Finance\CustomerContractDocument;
 use App\Models\Finance\CustomerContractChargeDetail;
+use App\Models\Finance\CustomerContractService;
 
 trait Historable
 {
@@ -34,6 +35,23 @@ trait Historable
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+    }
+
+    public function getContractService(string $historyId): Collection
+    {
+        $contractServices = History::where([
+            'modelable_type' => CustomerContractService::class,
+            'parent_id' => $historyId
+        ])
+        ->orderByRaw("(payload->>'created_at')::timestamp DESC")
+        ->get()
+        ->pluck('payload');
+
+        return $contractServices->map(function ($service) use ($historyId) {
+            return array_merge($service, [
+                'charges' => $this->getHistoricalCharges($historyId, $service['id'])
+            ]);
+        });
     }
 
     /**
@@ -55,12 +73,14 @@ trait Historable
     /**
      * Get historical charges from history table
      */
-    public function getHistoricalCharges(string $historyId): Collection
+    public function getHistoricalCharges(string $historyId, string $contractServiceId): Collection
     {
         $charges = History::where([
             'modelable_type' => CustomerContractCharge::class,
-            'parent_id' => $historyId
-        ])->get();
+            'parent_id' => $historyId,
+        ])
+        ->whereRaw("payload->>'customer_contract_service_id' = ?", [$contractServiceId])
+        ->get();
 
         return $charges->map(function($chargeHistory) {
             $charge = $chargeHistory->payload;
@@ -88,63 +108,5 @@ trait Historable
     public function getCustomer(?string $customerId): ?Customer
     {
         return $customerId ? Customer::find($customerId) : null;
-    }
-
-    /**
-     * Get service type label
-     */
-    public function getServiceType(?string $type): string
-    {
-        return !empty($type) ? CustomerContract::SERVICES[$type] : 'N/A';
-    }
-
-    /**
-     * Get country data
-     */
-    public function getCountry(?int $countryId): ?Countries
-    {
-        return $countryId ? Countries::where('country_id', $countryId)->first() : 'N/A';
-    }
-
-    /**
-     * Get currency formatted string
-     */
-    public function getCurrency(?string $currencyId): string
-    {
-        if (!$currencyId) {
-            return 'N/A';
-        }
-
-        $currency = Currency::find($currencyId);
-        return $currency ? "{$currency->currency_code} - {$currency->currency_name}" : 'N/A';
-    }
-
-    /**
-     * Get port information based on type
-     */
-    public function getPort(?array $customerContract, string $type = 'origin'): string
-    {
-        if (empty($customerContract)) {
-            return 'N/A';
-        }
-
-        $portId = "{$type}_port_id";
-        $portField = "{$type}_port";
-        $serviceType = $customerContract['service_type'] ?? null;
-
-        // Return direct port name for non-sea/air services
-        if ($serviceType && in_array($serviceType, CustomerContract::NON_SEA_AIR_SERVICES)) {
-            return $customerContract[$portField] ?? 'N/A';
-        }
-
-        // Get port from database
-        if (isset($customerContract[$portId])) {
-            $port = Port::where('port_id', $customerContract[$portId])->first();
-            if ($port) {
-                return "{$port->port_code} - {$port->port_name}";
-            }
-        }
-
-        return 'N/A';
     }
 }

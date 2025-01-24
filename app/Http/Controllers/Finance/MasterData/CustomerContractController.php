@@ -23,6 +23,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Finance\CustomerContractDocument;
 use App\Service\Finance\MasterData\ChargeService;
 use App\Exports\MasterData\CustomerContractExport;
+use App\Functions\Eloquent\CustomerContractHelper;
 use App\Service\Finance\MasterData\CountryService;
 use App\Service\Finance\MasterData\CurrencyService;
 use App\Service\Finance\MasterData\CustomerService;
@@ -76,17 +77,21 @@ final class CustomerContractController extends Controller
     {
         $history = History::with('childs')->where('modelable_id', $id)->where('id', $historyId)->firstOrFail();
 
+        // dd($this->getContractService($historyId));
+
+
+        // 'service_type' => $this->getServiceType($history->payload['service_type'] ?? null),
+        // 'origin_country' => $this->getCountry((int) $history->payload['origin_country_id']),
+        // 'destination_country' => $this->getCountry((int) $history->payload['destination_country_id']),
+        // 'origin_port' => $this->getPort($history->payload, 'origin'),
+        // 'destination_port' => $this->getPort($history->payload, 'destination'),
+
         return view('pages.finance.master-data.customer-contract.detail-history', [
             'history' => $history,
             'customer' => $this->getCustomer($history->payload['customer_id']),
-            // 'service_type' => $this->getServiceType($history->payload['service_type'] ?? null),
-            // 'origin_country' => $this->getCountry((int) $history->payload['origin_country_id']),
-            // 'destination_country' => $this->getCountry((int) $history->payload['destination_country_id']),
-            // 'origin_port' => $this->getPort($history->payload, 'origin'),
-            // 'destination_port' => $this->getPort($history->payload, 'destination'),
-            'currency' => $this->getCurrency($history->payload['currency_id']),
             'documents' => $this->getHistoricalDocuments($historyId),
-            'charges' => $this->getHistoricalCharges($historyId)
+            'services' => $this->getContractService($historyId),
+            'currency' => CustomerContractHelper::getCurrency($history->payload['currency_id']),
         ]);
         // return view('pages.finance.master-data.customer-contract.detail-history', compact('history', 'customer', 'service_type', 'origin_country', 'destination_country', 'origin_port', 'destination_port', 'currency', 'documents', 'charges'));
     }

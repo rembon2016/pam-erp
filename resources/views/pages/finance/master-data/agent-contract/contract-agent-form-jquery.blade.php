@@ -1087,7 +1087,7 @@
                                 class="form-control"
                                 value=""
                                 id="value_${serviceIndex}_${chargeIndex}_{{ $loop->iteration }}"
-                                style="width: 100%;" required>
+                                style="width: 100%;">
                         </div>
                     </div>
                 @endforeach

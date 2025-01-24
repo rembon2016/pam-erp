@@ -193,7 +193,7 @@
                                                     class="form-control"
                                                     value="{{ $detailValue->value }}"
                                                     id="value_{{ $index + 1 }}_{{ $chargeIndex + 1 }}_{{ $detailIndex + 1 }}"
-                                                    style="width: 100%;" required>
+                                                    style="width: 100%;">
                                             </div>
                                         </div>
                                     @endif

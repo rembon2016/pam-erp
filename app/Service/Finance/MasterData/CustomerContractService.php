@@ -14,17 +14,21 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use App\Models\Finance\CustomerContract;
 use App\Models\Finance\CustomerContractCharge;
+use App\Models\Finance\CustomerContractChargeDetail;
+use App\Models\Finance\CustomerContractDocument;
 use App\Models\History;
+use App\Traits\Eloquent\Historable;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection as SupportCollection;
+use App\Models\Finance\CustomerContractService as EloquentCustomerContractService;
 
 final class CustomerContractService
 {
-    use HandleUploadedFile;
+    use HandleUploadedFile, Historable;
 
     public function __construct(
         protected CustomerService $customerService
@@ -181,23 +185,47 @@ final class CustomerContractService
 
             $getCustomerContractResponse->data->update($dto);
 
+            $parentHistoryId = $this->recordHistory([
+                'modelable_type' => $getCustomerContractResponse->data::class,
+                'modelable_id' => $getCustomerContractResponse->data->id,
+                'payload' => $getCustomerContractResponse->data->getOriginal(),
+            ]);
+
             if (count($contract_files) > 0) {
-                collect($contract_files)->each(function ($file) use ($getCustomerContractResponse) {
+                collect($contract_files)->each(function ($file) use ($getCustomerContractResponse, $parentHistoryId) {
                     $file_name = $this->uploadFile(
                         file: $file,
                         folderPrefix: CustomerContract::FOLDER_NAME,
                         is_encrypted: false
                     );
 
-                    $getCustomerContractResponse->data->documents()->create([
+                    $customerContractDocument = $getCustomerContractResponse->data->documents()->create([
                         'contract_file' => $file_name
                     ]);
+
+                    $this->recordHistory([
+                        'modelable_type' => CustomerContractDocument::class,
+                        'modelable_id' => $customerContractDocument->id,
+                        'payload' => $customerContractDocument->getOriginal(),
+                        'parent_id' => $parentHistoryId
+                    ]);
                 });
+            } else {
+                if ($getCustomerContractResponse->data->documents->count() > 0) {
+                    foreach ($getCustomerContractResponse->data->documents as $document) {
+                        $this->recordHistory([
+                            'modelable_type' => CustomerContractDocument::class,
+                            'modelable_id' => $document->id,
+                            'payload' => $document->getOriginal(),
+                            'parent_id' => $parentHistoryId
+                        ]);
+                    }
+                }
             }
 
             // Sync Customer Contract Services, Charges and Rates
             $getCustomerContractResponse->data->services()->whereNotIn('id', $existingContractService->toArray())->delete();
-            $services->each(function ($service) use ($getCustomerContractResponse) {
+            $services->each(function ($service) use ($getCustomerContractResponse, $parentHistoryId) {
                 $charges = collect($service['charges']);
                 $existingContractCharge = $charges->filter(fn ($charge) => ! empty($charge['customer_contract_charge_id']))->pluck('customer_contract_charge_id');
                 unset($service['charges']);
@@ -211,15 +239,28 @@ final class CustomerContractService
 
                     if ($contractService) {
                         $contractService->fill($service)->save();
+
+                        $this->recordHistory([
+                            'modelable_type' => EloquentCustomerContractService::class,
+                            'modelable_id' => $contractService->id,
+                            'payload' => $contractService->getOriginal(),
+                            'parent_id' => $parentHistoryId
+                        ]);
                     }
                 } else {
                     $contractService = $getCustomerContractResponse->data->services()->create($service);
                     $customer_contract_service_id = $contractService->id;
+                    $this->recordHistory([
+                        'modelable_type' => EloquentCustomerContractService::class,
+                        'modelable_id' => $customer_contract_service_id,
+                        'payload' => $contractService,
+                        'parent_id' => $parentHistoryId
+                    ]);
                 }
 
                 // Sync Customer Contract Charges and Rates
                 $contractService->charges()->whereNotIn('id', $existingContractCharge->toArray())->delete();
-                $charges->each(function ($charge) use ($getCustomerContractResponse, $contractService) {
+                $charges->each(function ($charge) use ($getCustomerContractResponse, $contractService, $parentHistoryId) {
                     $charge['customer_contract_id'] = $getCustomerContractResponse->data->id;
                     $rates = collect($charge['rates']);
                     $existingChargeDetail = $rates->filter(fn ($rate) => ! empty($rate['customer_contract_charge_detail_id']))->pluck('customer_contract_charge_detail_id');
@@ -234,16 +275,28 @@ final class CustomerContractService
 
                         if ($contractCharge) {
                             $contractCharge->fill($charge)->save();
+                            $this->recordHistory([
+                                'modelable_type' => CustomerContractCharge::class,
+                                'modelable_id' => $contractCharge->id,
+                                'payload' => $contractCharge->getOriginal(),
+                                'parent_id' => $parentHistoryId
+                            ]);
                         }
                     } else {
                         $contractCharge = $contractService->charges()->create($charge);
                         $customer_contract_charge_id = $contractCharge->id;
+                        $this->recordHistory([
+                            'modelable_type' => CustomerContractCharge::class,
+                            'modelable_id' => $customer_contract_charge_id,
+                            'payload' => $contractCharge,
+                            'parent_id' => $parentHistoryId
+                        ]);
                     }
 
 
                     // Sync Customer Contract Charge Rates/Details
                     $contractCharge->rates()->where('customer_contract_charge_id', $customer_contract_charge_id)->whereNotIn('id', $existingChargeDetail->toArray())->delete();
-                    $rates->each(function ($rate) use ($contractCharge, $getCustomerContractResponse) {
+                    $rates->each(function ($rate) use ($contractCharge, $getCustomerContractResponse, $parentHistoryId) {
                         $rate['customer_contract_id'] = $getCustomerContractResponse->data->id;
 
                         // Update or Create Customer Contrac Charge Rate/Detail
@@ -251,9 +304,27 @@ final class CustomerContractService
                             $customer_contract_charge_detail_id = $rate['customer_contract_charge_detail_id'];
                             unset($rate['customer_contract_charge_detail_id']);
 
-                            $contractCharge->rates()->where('id', $customer_contract_charge_detail_id)->update($rate);
+                            $customer_contract_charge_detail = $contractCharge
+                                ->rates()->where('id', $customer_contract_charge_detail_id)->first();
+
+                            if ($customer_contract_charge_detail) {
+                                $customer_contract_charge_detail->fill($rate)->save();
+                                $this->recordHistory([
+                                    'modelable_type' => $customer_contract_charge_detail::class,
+                                    'modelable_id' => $customer_contract_charge_detail->id,
+                                    'payload' => $customer_contract_charge_detail->getOriginal(),
+                                    'parent_id' => $parentHistoryId
+                                ]);
+                            }
+
                         } else {
-                            $contractCharge->rates()->create($rate);
+                            $contract_charge_detail = $contractCharge->rates()->create($rate);
+                            $this->recordHistory([
+                                'modelable_type' => CustomerContractChargeDetail::class,
+                                'modelable_id' => $contract_charge_detail->id,
+                                'payload' => $contract_charge_detail,
+                                'parent_id' => $parentHistoryId
+                            ]);
                         }
                     });
                 });

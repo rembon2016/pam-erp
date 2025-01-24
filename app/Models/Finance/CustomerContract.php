@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
-use App\Traits\Eloquent\Historable;
 use App\Models\Operation\Master\Port;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Operation\Master\Countries;
@@ -13,11 +12,12 @@ use App\Models\Finance\CustomerContractService;
 use App\Models\Finance\CustomerContractDocument;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use App\Models\Finance\CustomerContractChargeDetail;
+use App\Models\History;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 final class CustomerContract extends Model
 {
-    use HasFactory, HasUuids, SoftDeletes, Historable;
+    use HasFactory, HasUuids, SoftDeletes;
 
     /**
      * The database table name for the bank informations.
@@ -42,8 +42,6 @@ final class CustomerContract extends Model
     ];
 
     public $incrementing = false;
-
-    protected static ?array $historableActions = ['update'];
 
     const FOLDER_NAME = 'customer-contract/file';
     const FOLDER_QUOTATION = 'customer-contract/quotations';
@@ -89,6 +87,11 @@ final class CustomerContract extends Model
     public function getFileURL()
     {
         return asset('storage/'.self::FOLDER_NAME.'/'.$this->contract_file);
+    }
+
+    public function histories()
+    {
+        return $this->hasMany(History::class, 'modelable_id', 'id');
     }
 
     public function currency()

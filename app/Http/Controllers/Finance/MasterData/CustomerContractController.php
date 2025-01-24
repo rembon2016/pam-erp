@@ -11,8 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Functions\ResponseJson;
 use Barryvdh\DomPDF\Facade\Pdf;
-use App\Models\Finance\Currency;
-use App\Models\Finance\Customer;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
@@ -22,8 +20,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Finance\CustomerContract;
 use Yajra\DataTables\Facades\DataTables;
-use App\Models\Operation\Master\Countries;
-use App\Models\Finance\CustomerContractCharge;
 use App\Models\Finance\CustomerContractDocument;
 use App\Service\Finance\MasterData\ChargeService;
 use App\Exports\MasterData\CustomerContractExport;
@@ -34,9 +30,12 @@ use App\Models\Finance\CustomerContractChargeDetail;
 use App\Service\Finance\MasterData\CustomerContractService;
 use App\Http\Requests\Finance\MasterData\CustomerContract\StoreCustomerContractRequest;
 use App\Http\Requests\Finance\MasterData\CustomerContract\UpdateCustomerContractRequest;
+use App\Traits\Eloquent\Historable;
 
 final class CustomerContractController extends Controller
 {
+    use Historable;
+
     public function __construct(
         protected CustomerContractService $customerContractService,
         protected ChargeService $chargeService,
@@ -75,21 +74,19 @@ final class CustomerContractController extends Controller
      */
     public function detailHistory(string $id, string $historyId): View
     {
-        $historyModel = new History;
-        $history = $historyModel->where('modelable_id', $id)->where('id', $historyId)->firstOrFail();
-        // dd($historyModel->getHistoricalDocuments($id));
+        $history = History::with('childs')->where('modelable_id', $id)->where('id', $historyId)->firstOrFail();
 
         return view('pages.finance.master-data.customer-contract.detail-history', [
             'history' => $history,
-            'customer' => $historyModel->getCustomer($history->payload['customer_id']),
-            'service_type' => $historyModel->getServiceType($history->payload['service_type'] ?? null),
-            'origin_country' => $historyModel->getCountry((int) $history->payload['origin_country_id']),
-            'destination_country' => $historyModel->getCountry((int) $history->payload['destination_country_id']),
-            'origin_port' => $historyModel->getPort($history->payload, 'origin'),
-            'destination_port' => $historyModel->getPort($history->payload, 'destination'),
-            'currency' => $historyModel->getCurrency($history->payload['currency_id']),
-            'documents' => $historyModel->getHistoricalDocuments($id),
-            'charges' => $historyModel->getHistoricalCharges($id)
+            'customer' => $this->getCustomer($history->payload['customer_id']),
+            // 'service_type' => $this->getServiceType($history->payload['service_type'] ?? null),
+            // 'origin_country' => $this->getCountry((int) $history->payload['origin_country_id']),
+            // 'destination_country' => $this->getCountry((int) $history->payload['destination_country_id']),
+            // 'origin_port' => $this->getPort($history->payload, 'origin'),
+            // 'destination_port' => $this->getPort($history->payload, 'destination'),
+            'currency' => $this->getCurrency($history->payload['currency_id']),
+            'documents' => $this->getHistoricalDocuments($historyId),
+            'charges' => $this->getHistoricalCharges($historyId)
         ]);
         // return view('pages.finance.master-data.customer-contract.detail-history', compact('history', 'customer', 'service_type', 'origin_country', 'destination_country', 'origin_port', 'destination_port', 'currency', 'documents', 'charges'));
     }

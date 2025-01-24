@@ -77,39 +77,39 @@
                     </tr>
                     <tr>
                         <td class="fw-bold fs-6 text-gray-800">Service</td>
-                        <td>{{ $service_type }}</td>
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td class="fw-bold fs-6 text-gray-800">Country Origin</td>
-                        <td>{{ $origin_country->country_name }}</td>
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td class="fw-bold fs-6 text-gray-800">Port Origin</td>
-                        <td>{{ $origin_port }}</td>
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td class="fw-bold fs-6 text-gray-800">Country Destination</td>
-                        <td>{{ $destination_country->country_name }}</td>
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td class="fw-bold fs-6 text-gray-800">Port Destination</td>
-                        <td>{{ $destination_port }}</td>
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td class="fw-bold fs-6 text-gray-800">Currency</td>
                         <td>{{ $currency }}</td>
                     </tr>
-                    {{-- <tr>
+                    <tr>
                         <td class="fw-bold fs-6 text-gray-800">Attachment (Document)</td>
                         <td>
                             <div id="fileList">
                                 @forelse($documents as $document)
                                     <div class="file-item">
-                                        <span>{{ $document->contract_file }}</span>
+                                        <span>{{ $document['contract_file'] }}</span>
                                         <div class="d-flex align-items-center justify-content-end gap-2">
-                                            <a href="{{ $document->getFileUrl() }}" class="btn btn-sm px-1 py-3" download>
+                                            {{-- <a href="{{ asset('storage/'.\App\Models\Finance\CustomerContract::FOLDER_NAME.'/'.$document['contract_file']) }}" class="btn btn-sm px-1 py-3" download>
                                                 <i class="bx bx-download text-info fs-2"></i>
-                                            </a>
+                                            </a> --}}
                                         </div>
                                     </div>
                                 @empty
@@ -117,7 +117,7 @@
                                 @endforelse
                             </div>
                         </td>
-                    </tr> --}}
+                    </tr>
                 </table>
             </div>
 
@@ -195,79 +195,6 @@
                 @endforeach
 
             </div>
-            {{-- <div class="accordion mb-5" id="kt_accordion_1">
-                @foreach ($charges as $charge)
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="kt_accordion_{{ $loop->iteration }}_header">
-                            <button class="accordion-button fs-4 fw-semibold @if($loop->iteration != 1) collapsed @endif" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_{{ $loop->iteration }}_body" aria-expanded="true" aria-controls="kt_accordion_{{ $loop->iteration }}_body">
-                                {{ $charge->charge?->charge_code }} - {{ $charge->charge?->charge_name }}
-                            </button>
-                        </h2>
-                        <div id="kt_accordion_{{ $loop->iteration }}_body" class="accordion-collapse collapse @if($loop->iteration == 1) show @endif" aria-labelledby="kt_accordion_{{ $loop->iteration }}_header" data-bs-parent="#kt_accordion_1">
-                            <div class="accordion-body">
-                                @if ($charge->rates->count() > 0)
-                                    @if ($charge->rates[0]->unit_code == "KG")
-                                    <strong class="d-block mb-3">Charge Rates by Kilogram:</strong>
-                                        <table class="table-charge">
-                                            <thead>
-                                                <tr>
-                                                    <th>From</th>
-                                                    <th>To</th>
-                                                    <th>Value</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($charge->rates as $rate)
-                                                    <tr>
-                                                        <td>{{ $rate->from }}</td>
-                                                        <td>{{ $rate->to }}</td>
-                                                        <td>{{ $rate->rate }}</td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    @elseif ($charge->rates[0]->unit_code == "SHIPMENT")
-                                    <strong class="d-block mb-3">Charge Rates by Shipment:</strong>
-                                        <table class="table-charge">
-                                            <thead>
-                                                <tr>
-                                                    <th>Rate</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($charge->rates as $rate)
-                                                    <tr>
-                                                        <td>{{ $rate->rate }}</td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    @elseif ($charge->rates[0]->unit_code == "CONTAINER")
-                                        <strong class="d-block mb-3">Charge Rates by Container:</strong>
-                                        <table class="table-charge">
-                                            <thead>
-                                                <tr>
-                                                    <th>Container Type</th>
-                                                    <th class="text-center">Rate</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($charge->rates as $rate)
-                                                    <tr>
-                                                        <td>{{ $rate->container_type }}</td>
-                                                        <td class="text-center">{{ $rate->rate }}</td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    @endif
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-
-            </div> --}}
             <!--end::Accordion-->
 
             <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px">

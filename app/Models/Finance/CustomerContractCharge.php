@@ -9,12 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Finance\CustomerContract;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use App\Models\Finance\CustomerContractChargeDetail;
-use App\Traits\Eloquent\Historable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 final class CustomerContractCharge extends Model
 {
-    use HasFactory, HasUuids, Historable;
+    use HasFactory, HasUuids;
 
     /**
      * The database table name for the bank informations.
@@ -29,8 +28,6 @@ final class CustomerContractCharge extends Model
      * @var array
      */
     protected $guarded = ['id'];
-
-    protected static ?array $historableActions = ['create', 'update'];
 
     public function charge()
     {

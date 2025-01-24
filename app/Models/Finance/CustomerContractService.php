@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Finance\CustomerContract;
 use App\Models\Operation\Master\Countries;
 use App\Models\Finance\CustomerContractCharge;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -18,6 +19,11 @@ final class CustomerContractService extends Model
 
     protected $table = 'finance.customer_contract_service';
     protected $guarded = ['id'];
+
+    public function contract(): HasOne
+    {
+        return $this->hasOne(CustomerContract::class, 'id', 'customer_contract_id');
+    }
 
     public function charges()
     {
@@ -55,7 +61,7 @@ final class CustomerContractService extends Model
             if (in_array($this->service_type, CustomerContract::NON_SEA_AIR_SERVICES)) {
                 return $this->origin_port;
             } else {
-                return !is_null($this->originPort) ? "{$this->originPort->port_code} - {$this->originPort->port_name}" : 'N/A';
+                return !is_null($this->portOrigin) ? "{$this->portOrigin->port_code} - {$this->portOrigin->port_name}" : 'N/A';
             }
         }
 
@@ -68,7 +74,7 @@ final class CustomerContractService extends Model
             if (in_array($this->service_type, CustomerContract::NON_SEA_AIR_SERVICES)) {
                 return $this->destination_port;
             } else {
-                return !is_null($this->destinationPort) ? "{$this->destinationPort->port_code} - {$this->destinationPort->port_name}" : 'N/A';
+                return !is_null($this->portDestination) ? "{$this->portDestination->port_code} - {$this->portDestination->port_name}" : 'N/A';
             }
         }
 

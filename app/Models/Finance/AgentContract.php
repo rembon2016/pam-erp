@@ -7,6 +7,7 @@ namespace App\Models\Finance;
 use App\Models\Finance\ServiceType;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Finance\AgentContractDocument;
+use App\Models\History;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -97,5 +98,10 @@ final class AgentContract extends Model
     public function serviceType(): HasOne
     {
         return $this->hasOne(ServiceType::class, 'id', 'service_type_id');
+    }
+
+    public function histories(): HasMany
+    {
+        return $this->hasMany(History::class, 'modelable_id', 'id');
     }
 }

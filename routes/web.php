@@ -116,6 +116,11 @@ Route::group(['middleware' => ['auth']], function () {
 
                 // Document Route
                 Route::delete('/document/{id}/delete', [AgentContractController::class, 'deleteDocument'])->name('document.delete');
+
+                // History Route
+                Route::get('/{id}/history', [AgentContractController::class, 'history'])->name('history');
+                Route::get('/{id}/history-list', [AgentContractController::class, 'listHistory'])->name('history-list');
+                Route::get('/{id}/history/{history}', [AgentContractController::class, 'detailHistory'])->name('history-detail');
             });
 
             Route::group([

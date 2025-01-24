@@ -1,4 +1,12 @@
 {{-- New Form without Table --}}
+@php
+    $portFunc = function ($portId) {
+        $port = \App\Models\Operation\Master\Port::where('port_id', $portId)->first();
+
+        return $port->port_code . '-' . $port->port_name;
+    };
+@endphp
+
 <div class="tableServiceForm accordion">
     <div class="tableServiceForm-content">
         <div class="tableServiceForm-heading">
@@ -69,7 +77,7 @@
             </div>
         </div>
         <div class="tableServiceForm-body">
-            @foreach (@$agent_contract->serviceContract as $index => $service)
+            @foreach ($services as $index => $service)
                 <div class="serviceTableRow">
                     <div class="tableServiceForm-body-row">
                         <div class="accordion-toggle tableServiceForm-box" data-bs-toggle="collapse" data-bs-target="#r{{ $index + 1 }}" aria-expanded="true" style="min-width: 80px;">
@@ -84,7 +92,7 @@
                                 style="min-width: 100%;"
                                 disabled>
                                 <option value="" selected hidden>
-                                    {{ $service->porCountry?->country_name }}
+                                    {{ \App\Functions\Eloquent\CustomerContractHelper::getCountry((int) $service['por_country_id'], 'country_name') }}
                                 </option>
                             </select>
                         </div>
@@ -97,7 +105,7 @@
                                 style="min-width: 100%;"
                                 disabled>
                                     <option value="">
-                                        {{ $service->porPort?->port_code.'-'.$service->porPort?->port_name }}
+                                        {{ $portFunc($service['por_port_id']) }}
                                     </option>
                             </select>
                         </div>
@@ -110,7 +118,7 @@
                                 style="min-width: 100%;"
                                 disabled>
                                 <option value="" selected hidden>
-                                    {{ $service->fdcCountry?->country_name }}
+                                    {{ \App\Functions\Eloquent\CustomerContractHelper::getCountry((int) $service['fdc_country_id'], 'country_name') }}
                                 </option>
                             </select>
                         </div>
@@ -123,7 +131,7 @@
                                 style="min-width: 100%;"
                                 disabled>
                                 <option value="" selected hidden>
-                                    {{ $service->fdcPort?->port_code.'-'.$service->fdcPort?->port_name }}
+                                    {{ $portFunc($service['fdc_port_id']) }}
                                 </option>
                             </select>
                         </div>
@@ -132,7 +140,7 @@
                                 type="text"
                                 name="service_data[{{ $index }}][tos]"
                                 class="form-control"
-                                value="{{ $service->tos }}"
+                                value="{{ $service['tos'] }}"
                                 style="min-width: 100%;"
                                 disabled>
                         </div>
@@ -141,7 +149,7 @@
                                 type="text"
                                 name="service_data[{{ $index }}][tos_name]"
                                 class="form-control"
-                                value="{{ $service->tos_name }}"
+                                value="{{ $service['tos_name'] }}"
                                 style="min-width: 100%;"
                                 disabled>
                         </div>
@@ -153,7 +161,7 @@
                                 style="min-width: 100%;"
                                 disabled>
                                 <option value="" selected hidden>
-                                    {{ $service->transit_via }}
+                                    {{ $service['transit_via'] }}
                                 </option>
                             </select>
                         </div>
@@ -163,7 +171,7 @@
                                 name="service_data[{{ $index }}][manual_input_transit]"
                                 class="form-control"
                                 id="input_transit_{{ $index + 1 }}"
-                                value="{{ $service->manual_input_transit }}"
+                                value="{{ $service['manual_input_transit'] }}"
                                 style="min-width: 100%;"
                                 disabled>
                         </div>
@@ -176,7 +184,7 @@
                                 style="min-width: 100%;"
                                 disabled>
                                 <option value="" selected hidden>
-                                    {{ $service->carrier?->carrier_code.'-'.$service->carrier?->carrier_name }}
+                                    {{ $service['carrier_name'] }}
                                 </option>
                             </select>
                         </div>
@@ -185,7 +193,7 @@
                                 type="text"
                                 name="service_data[{{ $index }}][carrier_name]"
                                 class="form-control"
-                                value="{{ $service->carrier?->carrier_name }}"
+                                value="{{ $service['carrier_name'] }}"
                                 id="carrier_name_{{ $index + 1 }}"
                                 style="min-width: 100%;"
                                 disabled>
@@ -195,7 +203,7 @@
                                 type="text"
                                 name="service_data[{{ $index }}][party]"
                                 class="form-control"
-                                value="{{ $service->party }}"
+                                value="{{ $service['party'] }}"
                                 style="min-width: 100%;"
                                 disabled>
                         </div>
@@ -204,7 +212,7 @@
                                 type="text"
                                 name="service_data[{{ $index }}][service_note]"
                                 class="form-control"
-                                value="{{ $service->notes }}"
+                                value="{{ $service['notes'] }}"
                                 style="min-width: 100%;"
                                 disabled>
                         </div>
@@ -361,7 +369,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="tableChargeForm-body">
-                                                    @foreach($service->contractAgentCharge as $chargeIndex => $chargeValue)
+                                                    @foreach($service['charges'] as $chargeIndex => $chargeValue)
+                                                        @php
+                                                            $unitFunc = function ($unitId) use ($chargeValue) {
+                                                                $unit = \App\Models\Operation\Master\Unit::where('unit_id', $chargeValue['unit_id'])->first();
+
+                                                                return $unit;
+                                                            };
+                                                        @endphp
                                                         <div class="chargeTableItemRow_{{ $chargeIndex + 1 }} tableChargeForm-body-row flex-column">
                                                             <div class="d-flex flex-row p-0">
                                                                 <div class="tableChargeForm-box" style="min-width: 80px;">
@@ -379,7 +394,7 @@
                                                                         id="charge_id_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                                                         style="width: 100%;" disabled>
                                                                         <option value="" selected hidden>
-                                                                            {{ $chargeValue->charge_name }}
+                                                                            {{ $chargeValue['charge_name'] }}
                                                                         </option>
                                                                     </select>
                                                                 </div>
@@ -388,7 +403,7 @@
                                                                         type="text"
                                                                         name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][charge_name]"
                                                                         class="form-control"
-                                                                        value="{{ $chargeValue->charge_name }}"
+                                                                        value="{{ $chargeValue['charge_name'] }}"
                                                                         id="charge_name_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                                                         style="width: 100%;"
                                                                         disabled>
@@ -401,13 +416,13 @@
                                                                         <option value="" selected hidden>
                                                                             C/R/N
                                                                         </option>
-                                                                        <option value="cost" @selected($chargeValue->crn == 'cost')>
+                                                                        <option value="cost" @selected($chargeValue['crn'] == 'cost')>
                                                                             Cost
                                                                         </option>
-                                                                        <option value="R" @selected($chargeValue->crn == 'R')>
+                                                                        <option value="R" @selected($chargeValue['crn'] == 'R')>
                                                                             R
                                                                         </option>
-                                                                        <option value="N" @selected($chargeValue->crn == 'N')>
+                                                                        <option value="N" @selected($chargeValue['crn'] == 'N')>
                                                                             N
                                                                         </option>
                                                                     </select>
@@ -418,11 +433,14 @@
                                                                         id="currency_id_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                                                         class="form-select"
                                                                         style="width: 100%;" disabled>
-                                                                        <option value="" @selected(!in_array($chargeValue->currency_id, $currencies->pluck('id')->toArray())) hidden>
+                                                                        @php
+                                                                            $currencies = \App\Models\Finance\Currency::all();
+                                                                        @endphp
+                                                                        <option value="" @selected(!in_array($chargeValue['currency_id'], $currencies->pluck('id')->toArray())) hidden>
                                                                             Currency
                                                                         </option>
                                                                         @foreach ($currencies as $currency)
-                                                                            <option value="{{ $currency->id }}" @selected($chargeValue->currency_id == $currency->id)>
+                                                                            <option value="{{ $currency->id }}" @selected($chargeValue['currency_id'] == $currency->id)>
                                                                                 {{ $currency->currency_name }}
                                                                             </option>
                                                                         @endforeach
@@ -434,8 +452,8 @@
                                                                         id="unit_id_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                                                         class="form-select"
                                                                         style="width: 100%;" disabled>
-                                                                        <option value="{{ $chargeValue?->unit?->unit_name }}" selected hidden>
-                                                                            {{ $chargeValue?->unit?->description." ({$chargeValue?->unit?->unit_name})" }}
+                                                                        <option value="#" selected hidden>
+                                                                            {{ $unitFunc($chargeValue['unit_id'])->description." ({$unitFunc($chargeValue['unit_id'])->unit_name})" }}
                                                                         </option>
                                                                     </select>
                                                                 </div>
@@ -445,7 +463,7 @@
                                                                         class="form-control"
                                                                         id="amount_per_unit_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                                                         name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][amount_per_unit]"
-                                                                        value="{{ $chargeValue->amount_per_unit }}"
+                                                                        value="{{ $chargeValue['amount_per_unit'] }}"
                                                                         style="width: 100%;"
                                                                         disabled>
                                                                 </div>
@@ -455,7 +473,7 @@
                                                                         class="form-control"
                                                                         id="minimum_amount_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                                                         name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][minimum_amount]"
-                                                                        value="{{ $chargeValue->minimum_amount }}"
+                                                                        value="{{ $chargeValue['minimum_amount'] }}"
                                                                         style="width: 100%;"
                                                                         disabled>
                                                                 </div>
@@ -466,7 +484,7 @@
                                                                         id="via_port_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                                                         name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][via_port]"
                                                                         style="width: 100%;"
-                                                                        value="{{ $chargeValue->via_port }}"
+                                                                        value="{{ $chargeValue['via_port'] }}"
                                                                         disabled>
                                                                 </div>
                                                                 <div class="tableChargeForm-box" style="min-width: 130px;">
@@ -474,7 +492,7 @@
                                                                         type="text"
                                                                         class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                                                         name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][20_feet]"
-                                                                        value="{{ $chargeValue->twenty_feet == 0 ? '' : $chargeValue->twenty_feet  }}"
+                                                                        value="{{ $chargeValue['twenty_feet'] == 0 ? '' : $chargeValue['twenty_feet']  }}"
                                                                         style="width: 100%;"
                                                                         disabled>
                                                                 </div>
@@ -483,7 +501,7 @@
                                                                         type="text"
                                                                         class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                                                         name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][20_feet_goh]"
-                                                                        value="{{ $chargeValue->twenty_feet_goh == 0 ? '' : $chargeValue->twenty_feet_goh  }}"
+                                                                        value="{{ $chargeValue['twenty_feet_goh'] == 0 ? '' : $chargeValue['twenty_feet_goh']  }}"
                                                                         style="width: 100%;"
                                                                         disabled>
                                                                 </div>
@@ -492,7 +510,7 @@
                                                                         type="text"
                                                                         class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                                                         name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][40_feet]"
-                                                                        value="{{ $chargeValue->forty_feet == 0 ? '' : $chargeValue->forty_feet }}"
+                                                                        value="{{ $chargeValue['forty_feet'] == 0 ? '' : $chargeValue['forty_feet'] }}"
                                                                         style="width: 100%;"
                                                                         disabled>
                                                                 </div>
@@ -501,7 +519,7 @@
                                                                         type="text"
                                                                         class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                                                         name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][40_feet_goh]"
-                                                                        value="{{ $chargeValue->forty_feet_goh == 0 ? '' : $chargeValue->forty_feet_goh }}"
+                                                                        value="{{ $chargeValue['forty_feet_goh'] == 0 ? '' : $chargeValue['forty_feet_goh'] }}"
                                                                         style="width: 100%;"
                                                                         disabled>
                                                                 </div>
@@ -510,7 +528,7 @@
                                                                         type="text"
                                                                         class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                                                         name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][40_feet_hc]"
-                                                                        value="{{ $chargeValue->forty_feet_hc == 0 ? '' : $chargeValue->forty_feet_hc }}"
+                                                                        value="{{ $chargeValue['forty_feet_hc'] == 0 ? '' : $chargeValue['forty_feet_hc'] }}"
                                                                         style="width: 100%;"
                                                                         disabled>
                                                                 </div>
@@ -519,7 +537,7 @@
                                                                         type="text"
                                                                         class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                                                         name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][40_feet_hc_goh]"
-                                                                        value="{{ $chargeValue->forty_feet_hc_goh == 0 ? '' : $chargeValue->forty_feet_hc_goh }}"
+                                                                        value="{{ $chargeValue['forty_feet_hc_goh'] == 0 ? '' : $chargeValue['forty_feet_hc_goh'] }}"
                                                                         style="width: 100%;"
                                                                         disabled>
                                                                 </div>
@@ -528,7 +546,7 @@
                                                                         type="text"
                                                                         class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                                                         name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][45_feet]"
-                                                                        value="{{ $chargeValue->forty_five_feet == 0 ? '' : $chargeValue->forty_five_feet }}"
+                                                                        value="{{ $chargeValue['forty_five_feet'] == 0 ? '' : $chargeValue['forty_five_feet'] }}"
                                                                         style="width: 100%;"
                                                                         disabled>
                                                                 </div>
@@ -537,7 +555,7 @@
                                                                         type="text"
                                                                         class="form-control unitContainerField_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                                                         name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][45_feet_goh]"
-                                                                        value="{{ $chargeValue->forty_five_feet_goh == 0 ? '' : $chargeValue->forty_five_feet_goh }}"
+                                                                        value="{{ $chargeValue['forty_five_feet_goh'] == 0 ? '' : $chargeValue['forty_five_feet_goh'] }}"
                                                                         style="width: 100%;"
                                                                         disabled>
                                                                 </div>
@@ -546,7 +564,7 @@
                                                                         type="text"
                                                                         class="form-control"
                                                                         name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][por]"
-                                                                        value="{{ $chargeValue->por }}"
+                                                                        value="{{ $chargeValue['por'] }}"
                                                                         style="width: 100%;" disabled>
                                                                 </div>
                                                                 <div class="tableChargeForm-box" style="min-width: 130px;">
@@ -554,7 +572,7 @@
                                                                         type="text"
                                                                         class="form-control"
                                                                         name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][fdc]"
-                                                                        value="{{ $chargeValue->fdc }}"
+                                                                        value="{{ $chargeValue['fdc'] }}"
                                                                         style="width: 100%;" disabled>
                                                                 </div>
                                                                 <div class="tableChargeForm-box" style="min-width: 110px;">
@@ -565,13 +583,13 @@
                                                                         <option value="" selected hidden>
                                                                             PP/CC
                                                                         </option>
-                                                                        <option value="KG" @selected($chargeValue->pp_cc == 'KG')>
+                                                                        <option value="KG" @selected($chargeValue['pp_cc'] == 'KG')>
                                                                             KG
                                                                         </option>
-                                                                        <option value="SHIPMENT" @selected($chargeValue->pp_cc == 'SHIPMENT')>
+                                                                        <option value="SHIPMENT" @selected($chargeValue['pp_cc'] == 'SHIPMENT')>
                                                                             SHIPMENT
                                                                         </option>
-                                                                        <option value="CONTAINER" @selected($chargeValue->pp_cc == 'CONTAINER')>
+                                                                        <option value="CONTAINER" @selected($chargeValue['pp_cc'] == 'CONTAINER')>
                                                                             CONTAINER
                                                                         </option>
                                                                     </select>
@@ -583,7 +601,7 @@
                                                                         id="select_routed_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                                                         style="width: 100%;" disabled>
                                                                         <option value="" selected hidden>
-                                                                            {{ $chargeValue->routed }}
+                                                                            {{ $chargeValue['routed'] }}
                                                                         </option>
                                                                     </select>
                                                                 </div>
@@ -593,7 +611,7 @@
                                                                         name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][manual_input_routed]"
                                                                         class="form-control"
                                                                         id="input_routed_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
-                                                                        value="{{ $chargeValue->manual_input_routed }}"
+                                                                        value="{{ $chargeValue['manual_input_routed'] }}"
                                                                         style="width: 100%;"
                                                                         disabled>
                                                                 </div>
@@ -605,13 +623,13 @@
                                                                         <option value="" selected hidden>
                                                                             IMCO
                                                                         </option>
-                                                                        <option value="KG" @selected($chargeValue->imco == 'KG')>
+                                                                        <option value="KG" @selected($chargeValue['imco'] == 'KG')>
                                                                             KG
                                                                         </option>
-                                                                        <option value="SHIPMENT" @selected($chargeValue->imco == 'SHIPMENT')>
+                                                                        <option value="SHIPMENT" @selected($chargeValue['imco'] == 'SHIPMENT')>
                                                                             SHIPMENT
                                                                         </option>
-                                                                        <option value="CONTAINER" @selected($chargeValue->imco == 'CONTAINER')>
+                                                                        <option value="CONTAINER" @selected($chargeValue['imco'] == 'CONTAINER')>
                                                                             CONTAINER
                                                                         </option>
                                                                     </select>
@@ -624,13 +642,13 @@
                                                                         <option value="" selected hidden>
                                                                             Loading Bay
                                                                         </option>
-                                                                        <option value="KG" @selected($chargeValue->loading_bay == 'KG')>
+                                                                        <option value="KG" @selected($chargeValue['loading_bay'] == 'KG')>
                                                                             KG
                                                                         </option>
-                                                                        <option value="SHIPMENT" @selected($chargeValue->loading_bay == 'SHIPMENT')>
+                                                                        <option value="SHIPMENT" @selected($chargeValue['loading_bay'] == 'SHIPMENT')>
                                                                             SHIPMENT
                                                                         </option>
-                                                                        <option value="CONTAINER" @selected($chargeValue->loading_bay == 'CONTAINER')>
+                                                                        <option value="CONTAINER" @selected($chargeValue['loading_bay'] == 'CONTAINER')>
                                                                             CONTAINER
                                                                         </option>
                                                                     </select>
@@ -640,7 +658,7 @@
                                                                         type="text"
                                                                         class="form-control"
                                                                         name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][commodity]"
-                                                                        value="{{ $chargeValue->commodity }}"
+                                                                        value="{{ $chargeValue['commodity'] }}"
                                                                         style="width: 100%;" disabled>
                                                                 </div>
                                                                 <div class="tableChargeForm-box" style="min-width: 150px;">
@@ -648,7 +666,7 @@
                                                                         type="date"
                                                                         class="form-control"
                                                                         name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][valid_from_date]"
-                                                                        value="{{ $chargeValue->valid_from_date }}"
+                                                                        value="{{ $chargeValue['valid_from_date'] }}"
                                                                         style="width: 100%;" disabled>
                                                                 </div>
                                                                 <div class="tableChargeForm-box" style="min-width: 150px;">
@@ -656,12 +674,12 @@
                                                                         type="date"
                                                                         class="form-control"
                                                                         name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][valid_to_date]"
-                                                                        value="{{ $chargeValue->valid_to_date }}"
+                                                                        value="{{ $chargeValue['valid_to_date'] }}"
                                                                         style="width: 100%;" disabled>
                                                                 </div>
                                                             </div>
 
-                                                            @if ($chargeValue->chargeDetails->count() > 0)
+                                                            @if (count($chargeValue['details']) > 0)
                                                                 <div class="tableChargeDetailContent">
                                                                     <div class="row" style="margin-left: auto; flex-basis: 100% !important; width: 100%; !important;">
                                                                         <div class="col-12">
@@ -673,7 +691,7 @@
                                                                                                 #
                                                                                             </span>
                                                                                         </div>
-                                                                                        @if ($chargeValue->unit?->unit_name == "KG")
+                                                                                        @if ($unitFunc($chargeValue['unit_id'])->unit_name == "KG")
                                                                                             <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
                                                                                                 <span class="tableChargeForm-heading-text">
                                                                                                     From
@@ -684,13 +702,13 @@
                                                                                                     To
                                                                                                 </span>
                                                                                             </div>
-                                                                                        @elseif ($chargeValue->unit?->unit_name == "SHIPMENT")
+                                                                                        @elseif ($unitFunc($chargeValue['unit_id'])->unit_name == "SHIPMENT")
                                                                                             <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
                                                                                                 <span class="tableChargeForm-heading-text">
                                                                                                     Rate
                                                                                                 </span>
                                                                                             </div>
-                                                                                        @elseif ($chargeValue->unit?->unit_name == "CONTAINER")
+                                                                                        @elseif ($unitFunc($chargeValue['unit_id'])->unit_name == "CONTAINER")
                                                                                             <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
                                                                                                 <span class="tableChargeForm-heading-text">
                                                                                                     Container Type
@@ -704,9 +722,9 @@
                                                                                         @endif
                                                                                     </div>
                                                                                     <div class="tableChargeDetailForm-body">
-                                                                                        @foreach ($chargeValue->chargeDetails as $detailIndex => $detailValue)
+                                                                                        @foreach ($chargeValue['details'] as $detailIndex => $detailValue)
                                                                                             <div class="chargeDetailTableItemRow_{{ $detailIndex + 1 }} tableChargeDetailForm-body-row">
-                                                                                                <input type="hidden" name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][charge_detail_data][{{ $detailIndex }}][contract_agent_charge_detail_id]" value="{{ $detailValue->id }}">
+                                                                                                <input type="hidden" name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][charge_detail_data][{{ $detailIndex }}][contract_agent_charge_detail_id]" value="{{ $detailValue['id'] }}">
                                                                                                 <div class="tableChargeDetailForm-box" style="min-width: 70px;">
                                                                                                     <input
                                                                                                         type="text"
@@ -715,13 +733,13 @@
                                                                                                         style=""
                                                                                                         readonly>
                                                                                                 </div>
-                                                                                                @if ($chargeValue->unit?->unit_name == "KG")
+                                                                                                @if ($unitFunc($chargeValue['unit_id'])->unit_name == "KG")
                                                                                                     <div class="tableChargeDetailForm-box" style="min-width: 100px;">
                                                                                                         <input
                                                                                                             type="text"
                                                                                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][charge_detail_data][{{ $detailIndex }}][from]"
                                                                                                             class="form-control"
-                                                                                                            value="{{ $detailValue->from }}"
+                                                                                                            value="{{ $detailValue['from'] }}"
                                                                                                             id="from_{{ $index + 1 }}_{{ $chargeIndex + 1 }}_{{ $detailIndex + 1 }}"
                                                                                                             style="width: 100%;" disabled>
                                                                                                     </div>
@@ -730,7 +748,7 @@
                                                                                                             type="text"
                                                                                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][charge_detail_data][{{ $detailIndex }}][to]"
                                                                                                             class="form-control"
-                                                                                                            value="{{ $detailValue->to }}"
+                                                                                                            value="{{ $detailValue['to'] }}"
                                                                                                             id="to_{{ $index + 1 }}_{{ $chargeIndex + 1 }}_{{ $detailIndex + 1 }}"
                                                                                                             style="width: 100%;" disabled>
                                                                                                     </div>
@@ -739,27 +757,27 @@
                                                                                                             type="text"
                                                                                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][charge_detail_data][{{ $detailIndex }}][value]"
                                                                                                             class="form-control"
-                                                                                                            value="{{ $detailValue->value }}"
+                                                                                                            value="{{ $detailValue['value'] }}"
                                                                                                             id="value_{{ $index + 1 }}_{{ $chargeIndex + 1 }}_{{ $detailIndex + 1 }}"
                                                                                                             style="width: 100%;" disabled>
                                                                                                     </div>
-                                                                                                @elseif ($chargeValue->unit?->unit_name == "SHIPMENT")
+                                                                                                @elseif ($unitFunc($chargeValue['unit_id'])->unit_name == "SHIPMENT")
                                                                                                     <div class="tableChargeDetailForm-box" style="min-width: 100px;">
                                                                                                         <input
                                                                                                             type="text"
                                                                                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][charge_detail_data][{{ $detailIndex }}][value]"
                                                                                                             class="form-control"
-                                                                                                            value="{{ $detailValue->value }}"
+                                                                                                            value="{{ $detailValue['value'] }}"
                                                                                                             id="value_{{ $index + 1 }}_{{ $chargeIndex + 1 }}_{{ $detailIndex + 1 }}"
                                                                                                             style="width: 100%;" disabled>
                                                                                                     </div>
-                                                                                                @elseif ($chargeValue->unit?->unit_name == "CONTAINER")
+                                                                                                @elseif ($unitFunc($chargeValue['unit_id'])->unit_name == "CONTAINER")
                                                                                                     <div class="tableChargeDetailForm-box" style="min-width: 100px;">
                                                                                                         <input
                                                                                                             type="text"
                                                                                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][charge_detail_data][{{ $detailIndex }}][container_type]"
                                                                                                             class="form-control"
-                                                                                                            value="{{ $detailValue->container_type }}"
+                                                                                                            value="{{ $detailValue['container_type'] }}"
                                                                                                             id="container_type_{{ $index + 1 }}_{{ $chargeIndex + 1 }}_{{ $detailIndex + 1 }}"
                                                                                                             style="width: 100%;" disabled>
                                                                                                     </div>
@@ -768,7 +786,7 @@
                                                                                                             type="text"
                                                                                                             name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][charge_detail_data][{{ $detailIndex }}][value]"
                                                                                                             class="form-control"
-                                                                                                            value="{{ $detailValue->value }}"
+                                                                                                            value="{{ $detailValue['value'] }}"
                                                                                                             id="value_{{ $index + 1 }}_{{ $chargeIndex + 1 }}_{{ $detailIndex + 1 }}"
                                                                                                             style="width: 100%;" disabled>
                                                                                                     </div>

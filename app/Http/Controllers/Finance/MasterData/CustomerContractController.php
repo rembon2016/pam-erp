@@ -63,7 +63,6 @@ final class CustomerContractController extends Controller
      */
     public function history(string $id): View
     {
-        // dd($this->customerContractService->getCustomerContractHistories($id));
         return view('pages.finance.master-data.customer-contract.history', compact('id'));
     }
 
@@ -77,15 +76,6 @@ final class CustomerContractController extends Controller
     {
         $history = History::with('childs')->where('modelable_id', $id)->where('id', $historyId)->firstOrFail();
 
-        // dd($this->getContractService($historyId));
-
-
-        // 'service_type' => $this->getServiceType($history->payload['service_type'] ?? null),
-        // 'origin_country' => $this->getCountry((int) $history->payload['origin_country_id']),
-        // 'destination_country' => $this->getCountry((int) $history->payload['destination_country_id']),
-        // 'origin_port' => $this->getPort($history->payload, 'origin'),
-        // 'destination_port' => $this->getPort($history->payload, 'destination'),
-
         return view('pages.finance.master-data.customer-contract.detail-history', [
             'history' => $history,
             'customer' => $this->getCustomer($history->payload['customer_id']),
@@ -93,7 +83,6 @@ final class CustomerContractController extends Controller
             'services' => $this->getContractService($historyId),
             'currency' => CustomerContractHelper::getCurrency($history->payload['currency_id']),
         ]);
-        // return view('pages.finance.master-data.customer-contract.detail-history', compact('history', 'customer', 'service_type', 'origin_country', 'destination_country', 'origin_port', 'destination_port', 'currency', 'documents', 'charges'));
     }
 
     /**

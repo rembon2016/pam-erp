@@ -4,17 +4,26 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
+use Illuminate\Support\Arr;
 use Illuminate\Http\Response;
+use App\Models\Finance\Customer;
 use App\Functions\ObjectResponse;
 use App\Traits\HandleUploadedFile;
 use Illuminate\Support\Facades\DB;
+use App\Models\Finance\ServiceType;
+use App\Traits\Eloquent\Historable;
 use App\Models\Finance\AgentContract;
+use App\Models\Finance\AgentContractCharge;
 use Illuminate\Database\Eloquent\Collection;
+use App\Models\Finance\AgentContractDocument;
+use App\Models\Finance\AgentContractChargeDetail;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Support\Collection as SupportCollection;
+use App\Models\Finance\AgentContractService as EloquentAgentContractService;
 
 final class AgentContractService
 {
-    use HandleUploadedFile;
+    use HandleUploadedFile, Historable;
 
     public function getAgentContracts($filters = [], bool $get_data = true): Collection|Builder
     {
@@ -38,6 +47,21 @@ final class AgentContractService
         return ! is_null($data)
             ? ObjectResponse::success(__('crud.fetched', ['name' => 'Agent Contract']), Response::HTTP_OK, $data)
             : ObjectResponse::error(__('crud.not_found', ['name' => 'Agent Contract']), Response::HTTP_NOT_FOUND);
+    }
+
+    public function getAgentContractHistories(string $id): SupportCollection
+    {
+        $customerContract = $this->getAgentContractById(id: $id);
+        $histories = $customerContract->data->histories;
+
+        return collect(Arr::sortDesc($histories->pluck('payload'), fn ($payload) => $payload['updated_at']))
+            ->map(function ($history, $key) use ($id, $histories) {
+                return array_merge($history, [
+                    'history_id' => $histories[$key]->id,
+                    'customer' => Customer::where('id', $history['customer_id'])->first(),
+                    'service_type' => ServiceType::where('id', $history['service_type_id'])->first()
+                ]);
+            });
     }
 
     public function createAgentContract(array $dto): object
@@ -65,7 +89,7 @@ final class AgentContractService
                 });
             }
 
-            $this->upsertAgentContractService($createdAgentContract, $service_data);
+            $this->upsertAgentContractService($createdAgentContract, $service_data, null);
 
             DB::commit();
 
@@ -100,21 +124,46 @@ final class AgentContractService
             unset($dto['service_data'], $dto['contract_file']);
 
             $getAgentContractResponse->data->update($dto);
+            $parentHistoryId = $this->recordHistory([
+                'modelable_type' => AgentContract::class,
+                'modelable_id' => $getAgentContractResponse->data->id,
+                'payload' => $getAgentContractResponse->data->getOriginal()
+            ]);
+
             if (count($contract_files) > 0) {
-                collect($contract_files)->each(function ($file) use ($getAgentContractResponse) {
+                collect($contract_files)->each(function ($file) use ($getAgentContractResponse, $parentHistoryId) {
                     $file_name = $this->uploadFile(
                         file: $file,
                         folderPrefix: AgentContract::FOLDER_NAME,
                         is_encrypted: false
                     );
 
-                    $getAgentContractResponse->data->documents()->create([
+                    $document = $getAgentContractResponse->data->documents()->create([
                         'contract_file' => $file_name
                     ]);
+
+                    $this->recordHistory([
+                        'modelable_type' => AgentContractDocument::class,
+                        'modelable_id' => $document->id,
+                        'payload' => $document->getOriginal(),
+                        'parent_id' => $parentHistoryId,
+                    ]);
+
                 });
+            } else {
+                if ($getAgentContractResponse->data->documents->count() > 0) {
+                    foreach ($getAgentContractResponse->data->documents as $document) {
+                        $this->recordHistory([
+                            'modelable_type' => AgentContractDocument::class,
+                            'modelable_id' => $document->id,
+                            'payload' => $document->getOriginal(),
+                            'parent_id' => $parentHistoryId,
+                        ]);
+                    }
+                }
             }
 
-            $this->upsertAgentContractService($getAgentContractResponse->data, $service_data);
+            $this->upsertAgentContractService($getAgentContractResponse->data, $service_data, $parentHistoryId);
 
             DB::commit();
 
@@ -158,7 +207,7 @@ final class AgentContractService
         }
     }
 
-    public function upsertAgentContractService($agentContract, $serviceData): void
+    public function upsertAgentContractService($agentContract, $serviceData, $parentHistoryId): void
     {
         $includedServiceId = collect($serviceData)->pluck('service_id')->filter(fn ($item) => $item != null || $item != '')->values();
         if ($includedServiceId->count() > 0) {
@@ -190,15 +239,32 @@ final class AgentContractService
 
                 $serviceContract->update($serviceContractData);
 
-                $this->syncServiceContractChargeData($serviceData[$serviceKey]['charge_data'], $serviceContract, $agentContract);
+                if (request()->routeIs('finance.master-data.agent-contract.update')) {
+                    $this->recordHistory([
+                        'modelable_type' => EloquentAgentContractService::class,
+                        'modelable_id' => $serviceContract->id,
+                        'payload' => $serviceContract->getOriginal(),
+                        'parent_id' => $parentHistoryId,
+                    ]);
+                }
+
+                $this->syncServiceContractChargeData($serviceData[$serviceKey]['charge_data'], $serviceContract, $agentContract, $parentHistoryId);
             } else {
                 $serviceContract = $agentContract->serviceContract()->create($serviceContractData);
-                $this->syncServiceContractChargeData($serviceData[$serviceKey]['charge_data'], $serviceContract, $agentContract);
+                if (request()->routeIs('finance.master-data.agent-contract.update')) {
+                    $this->recordHistory([
+                        'modelable_type' => AgentContractService::class,
+                        'modelable_id' => $serviceContract->id,
+                        'payload' => $serviceContract,
+                        'parent_id' => $parentHistoryId,
+                    ]);
+                }
+                $this->syncServiceContractChargeData($serviceData[$serviceKey]['charge_data'], $serviceContract, $agentContract, $parentHistoryId);
             }
         }
     }
 
-    private function syncServiceContractChargeData($arrayOfCharges, $serviceContract, $agentContract): void
+    private function syncServiceContractChargeData($arrayOfCharges, $serviceContract, $agentContract, $parentHistoryId): void
     {
         $includedChargeId = collect($arrayOfCharges)->pluck('contract_agent_charge_id')->filter(fn ($item) => $item != null || $item != '')->values();
         if ($includedChargeId->count() > 0) {
@@ -255,15 +321,34 @@ final class AgentContractService
                     ->firstOrFail();
 
                 $serviceCharge->update($chargeData);
-                $this->syncServiceContractChargeDetailData($charge['charge_detail_data'], $serviceContract, $agentContract, $serviceCharge);
+
+                if (request()->routeIs('finance.master-data.agent-contract.update')) {
+                    $this->recordHistory([
+                        'modelable_type' => AgentContractCharge::class,
+                        'modelable_id' => $serviceCharge->id,
+                        'payload' => $serviceCharge->getOriginal(),
+                        'parent_id' => $parentHistoryId,
+                    ]);
+                }
+                $this->syncServiceContractChargeDetailData($charge['charge_detail_data'], $serviceContract, $agentContract, $serviceCharge, $parentHistoryId);
             } else {
                 $serviceCharge = $serviceContract->contractAgentCharge()->create($chargeData);
-                $this->syncServiceContractChargeDetailData($charge['charge_detail_data'], $serviceContract, $agentContract, $serviceCharge);
+
+                if (request()->routeIs('finance.master-data.agent-contract.update')) {
+                    $this->recordHistory([
+                        'modelable_type' => AgentContractCharge::class,
+                        'modelable_id' => $serviceCharge->id,
+                        'payload' => $serviceCharge,
+                        'parent_id' => $parentHistoryId,
+                    ]);
+                }
+
+                $this->syncServiceContractChargeDetailData($charge['charge_detail_data'], $serviceContract, $agentContract, $serviceCharge, $parentHistoryId);
             }
         }
     }
 
-    private function syncServiceContractChargeDetailData($arrayOfDetails, $serviceContract, $agentContract, $serviceCharge): void
+    private function syncServiceContractChargeDetailData($arrayOfDetails, $serviceContract, $agentContract, $serviceCharge, $parentHistoryId): void
     {
         $includedDetailId = collect($arrayOfDetails)->pluck('contract_agent_charge_detail_id')->filter(fn ($item) => $item != null || $item != '')->values();
         if ($includedDetailId->count() > 0) {
@@ -281,12 +366,32 @@ final class AgentContractService
             ];
 
             if (! empty($detail['contract_agent_charge_detail_id'])) {
-                $serviceCharge
+                $serviceChargeDetail = $serviceCharge
                     ->chargeDetails()
                     ->where('id', $detail['contract_agent_charge_detail_id'])
-                    ->update($chargeDetailData);
+                    ->first();
+
+                $serviceChargeDetail->update($chargeDetailData);
+
+                if (request()->routeIs('finance.master-data.agent-contract.update')) {
+                    $this->recordHistory([
+                        'modelable_type' => AgentContractChargeDetail::class,
+                        'modelable_id' => $serviceChargeDetail->id,
+                        'payload' => $serviceChargeDetail->getOriginal(),
+                        'parent_id' => $parentHistoryId,
+                    ]);
+                }
             } else {
-                $serviceCharge->chargeDetails()->create($chargeDetailData);
+                $serviceChargeDetail = $serviceCharge->chargeDetails()->create($chargeDetailData);
+
+                if (request()->routeIs('finance.master-data.agent-contract.update')) {
+                    $this->recordHistory([
+                        'modelable_type' => AgentContractChargeDetail::class,
+                        'modelable_id' => $serviceChargeDetail->id,
+                        'payload' => $serviceChargeDetail,
+                        'parent_id' => $parentHistoryId,
+                    ]);
+                }
             }
         }
     }

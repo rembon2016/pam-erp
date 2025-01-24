@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Traits\Eloquent;
 
+use App\Models\Finance\AgentContractCharge;
+use App\Models\Finance\AgentContractChargeDetail;
+use App\Models\Finance\AgentContractDocument;
+use App\Models\Finance\AgentContractService;
 use App\Models\History;
 use Illuminate\Support\Str;
 use App\Models\Finance\Charge;
@@ -37,6 +41,7 @@ trait Historable
         ]);
     }
 
+    // Customer Contract Sections
     public function getContractService(string $historyId): Collection
     {
         $contractServices = History::where([
@@ -109,4 +114,70 @@ trait Historable
     {
         return $customerId ? Customer::find($customerId) : null;
     }
+
+    // AgentContract Service
+    public function getAgentContractService(string $historyId): Collection
+    {
+        $contractServices = History::where([
+            'modelable_type' => AgentContractService::class,
+            'parent_id' => $historyId
+        ])
+        ->orderByRaw("(payload->>'created_at')::timestamp DESC")
+        ->get()
+        ->pluck('payload');
+
+        return $contractServices->map(function ($service) use ($historyId) {
+            return array_merge($service, [
+                'charges' => $this->getAgentHistoricalCharges($historyId, $service['id'])
+            ]);
+        });
+    }
+
+    /**
+     * Get historical charges from history table
+     */
+    public function getAgentHistoricalCharges(string $historyId, string $contractServiceId): Collection
+    {
+        $charges = History::where([
+            'modelable_type' => AgentContractCharge::class,
+            'parent_id' => $historyId,
+        ])
+        ->whereRaw("payload->>'agent_contract_service_id' = ?", [$contractServiceId])
+        ->get();
+
+        return $charges->map(function($chargeHistory) {
+            $charge = $chargeHistory->payload;
+
+            $details = History::where([
+                'modelable_type' => AgentContractChargeDetail::class,
+                'parent_id' => $chargeHistory->parent_id
+            ])
+            ->whereRaw("payload->>'agent_contract_charge_id' = ?", [$chargeHistory->modelable_id])
+            ->orderByRaw("(payload->>'updated_at')::timestamp DESC")
+            ->get()
+            ->pluck('payload');
+
+            $charge['details'] = $details;
+            $charge['charges'] = Charge::find($charge['charge_id']);
+
+            return $charge;
+        });
+    }
+
+    /**
+     * Get historical documents from history table
+     */
+    public function getAgentHistoricalDocuments(string $historyId): Collection
+    {
+        $documents = History::where([
+            'modelable_type' => AgentContractDocument::class,
+            'parent_id' => $historyId,
+        ])
+        ->orderByRaw("(payload->>'created_at')::timestamp DESC")
+        ->get()
+        ->pluck('payload');
+
+        return $documents;
+    }
+
 }

@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
+use App\Models\History;
 use Illuminate\View\View;
 use App\Functions\Utility;
 use Illuminate\Http\Response;
 use App\Functions\ResponseJson;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
+use App\Traits\Eloquent\Historable;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Finance\AgentContract;
@@ -30,9 +32,12 @@ use App\Service\Finance\MasterData\ServiceTypeService;
 use App\Service\Finance\MasterData\AgentContractService;
 use App\Http\Requests\Finance\MasterData\AgentContract\StoreAgentContractRequest;
 use App\Http\Requests\Finance\MasterData\AgentContract\UpdateAgentContractRequest;
+use Carbon\Carbon;
 
 final class AgentContractController extends Controller
 {
+    use Historable;
+
     public function __construct(
         protected AgentContractService $agentContractService,
         protected CustomerService $customerService,
@@ -53,6 +58,37 @@ final class AgentContractController extends Controller
         $services = $this->serviceTypeService->getServiceTypes();
 
         return view('pages.finance.master-data.agent-contract.index', compact('services'));
+    }
+
+    /**
+     * Display a listing of the resource history.
+     *
+     * @param string $id
+     * @return View
+     */
+    public function history(string $id): View
+    {
+        // dd($this->agentContractService->getAgentContractHistories($id));
+        return view('pages.finance.master-data.agent-contract.history', compact('id'));
+    }
+
+    /**
+     * Display a listing of the resource detail history.
+     *
+     * @param string $id
+     * @return View
+     */
+    public function detailHistory(string $id, string $historyId): View
+    {
+        $history = History::with('childs')->where('modelable_id', $id)->where('id', $historyId)->firstOrFail();
+        // dd($this->getAgentContractService($historyId));
+
+        return view('pages.finance.master-data.agent-contract.detail-history', [
+            'history' => $history,
+            'customer' => $this->getCustomer($history->payload['customer_id']),
+            'documents' => $this->getAgentHistoricalDocuments($historyId),
+            'services' => $this->getAgentContractService($historyId),
+        ]);
     }
 
     /**
@@ -98,6 +134,54 @@ final class AgentContractController extends Controller
                     return Utility::generateTableActions([
                         'detail' => route('finance.master-data.agent-contract.detail', $item->id),
                         'edit' => route('finance.master-data.agent-contract.edit', $item->id),
+                        'history' => route('finance.master-data.agent-contract.history', $item->id),
+                        // 'delete' => route('finance.master-data.agent-contract.destroy', $item->id),
+                    ]);
+                })
+                ->rawColumns(['action', 'contract_no'])
+                ->toJson();
+        }
+
+        return ResponseJson::error(
+            Response::HTTP_UNAUTHORIZED,
+            'Access Unauthorized',
+        );
+    }
+
+    public function listHistory(string $id): JsonResponse
+    {
+        if (request()->ajax()) {
+            return DataTables::of($this->agentContractService->getAgentContractHistories($id))
+                ->addIndexColumn()
+                ->editColumn('contract_no', function ($item) {
+                    $is_expired = now()->gt($item['contract_end']);
+                    $contract_no = $is_expired
+                        ? "<span class='badge badge-danger badge-lg'>{$item['contract_no']}</span>"
+                        : $item['contract_no'];
+
+                    return $contract_no;
+                })
+                ->addColumn('customer_code', function ($item) {
+                    return $item['customer']['customer_code'];
+                })
+                ->editColumn('customer_id', function ($item) {
+                    return $item['customer']['customer_name'];
+                })
+                ->editColumn('service_type_id', function ($item) {
+                    return $item['service_type']['service_code'] ?? "N/A";
+                })
+                ->editColumn('contract_date', function ($item) {
+                    return Carbon::parse($item['contract_date'])->format('d/m/Y');
+                })
+                ->editColumn('contract_start', function ($item) {
+                    return Carbon::parse($item['contract_start'])->format('d/m/Y');
+                })
+                ->editColumn('contract_end', function ($item) {
+                    return Carbon::parse($item['contract_end'])->format('d/m/Y');
+                })
+                ->addColumn('action', function ($item) use ($id) {
+                    return Utility::generateTableActions([
+                        'detail' => route('finance.master-data.agent-contract.history-detail', ['id' => $id, 'history' => $item['history_id']]),
                         // 'delete' => route('finance.master-data.agent-contract.destroy', $item->id),
                     ]);
                 })

@@ -82,8 +82,8 @@
             <h3 class="text-center mb-4">Agent Contract Detail Information</h3>
 
             <div class="d-flex flex-column">
-                <p class="mb-0">Created at: {{ $agent_contract->created_at?->format('Y-m-d H:i:s') }}</p>
-                <p class="mb-0">Modified at: {{ $agent_contract->updated_at?->format('Y-m-d H:i:s') }}</p>
+                <p class="mb-0">Created at: {{ \Carbon\Carbon::parse($history->payload['created_at'])->format('Y-m-d H:i:s') }}</p>
+                <p class="mb-0">Modified at: {{ \Carbon\Carbon::parse($history->payload['updated_at'])->format('Y-m-d H:i:s') }}</p>
             </div>
 
             <hr>
@@ -92,23 +92,23 @@
                 <table class="table-detail">
                     <tr>
                         <td class="fw-bold fs-6 text-gray-800">Contract No</td>
-                        <td>{{ $agent_contract->contract_no }}</td>
+                        <td>{{ $history->payload['contract_no'] }}</td>
                     </tr>
                     <tr>
                         <td class="fw-bold fs-6 text-gray-800">Customer Name</td>
-                        <td>{{ $agent_contract->customer?->customer_name }}</td>
+                        <td>{{ $customer->customer_name }}</td>
                     </tr>
                     <tr>
                         <td class="fw-bold fs-6 text-gray-800">Customer Type</td>
                         <td>
-                            @if ($agent_contract->customer?->customerTypes->count() > 1)
+                            @if ($customer->customerTypes->count() > 1)
                                 <ul>
-                                    @foreach ($agent_contract->customer?->customerTypes as $customerType)
+                                    @foreach ($customer->customerTypes as $customerType)
                                         <li>{{ $customerType?->name ?? 'N/A' }}</li>
                                     @endforeach
                                 </ul>
-                            @elseif ($agent_contract->customer?->customerTypes->count() == 1)
-                                {{ $agent_contract->customer?->customerTypes->first()?->name ?? 'N/A' }}
+                            @elseif ($customer->customerTypes->count() == 1)
+                                {{ $customer->customerTypes->first()?->name ?? 'N/A' }}
                             @else
                                 N/A
                             @endif
@@ -116,25 +116,25 @@
                     </tr>
                     <tr>
                         <td class="fw-bold fs-6 text-gray-800">Contract Date</td>
-                        <td>{{ $agent_contract->contract_date?->format('d/m/Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($history->payload['contract_date'])->format('d/m/Y') }}</td>
                     </tr>
                     <tr>
                         <td class="fw-bold fs-6 text-gray-800">Valid From</td>
-                        <td>{{ $agent_contract->contract_start?->format('d/m/Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($history->payload['contract_start'])->format('d/m/Y') }}</td>
                     </tr>
                     <tr>
                         <td class="fw-bold fs-6 text-gray-800">Valid To</td>
-                        <td>{{ $agent_contract->contract_end?->format('d/m/Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($history->payload['contract_end'])->format('d/m/Y') }}</td>
                     </tr>
                     <tr>
                         <td class="fw-bold fs-6 text-gray-800">Attachment (Document)</td>
                         <td>
                             <div id="fileList">
-                                @forelse($agent_contract?->documents as $document)
+                                @forelse($documents as $document)
                                     <div class="file-item">
                                         <span>{{ $document->contract_file }}</span>
                                         <div class="d-flex align-items-center justify-content-end gap-2">
-                                            <a href="{{ $document->getFileUrl() }}" class="btn btn-sm px-1 py-3" download>
+                                            <a href="{{ asset('storage/' . AgentContract::FOLDER_NAME . '/' . $document['contract_file']) }}" class="btn btn-sm px-1 py-3" download>
                                                 <i class="bx bx-download text-info fs-2"></i>
                                             </a>
                                         </div>
@@ -154,7 +154,7 @@
                     <div class="col-12">
                         <div class='mb-10'>
                             <!--begin::Accordion-->
-                            @include('pages.finance.master-data.agent-contract.detail-service-contract-form')
+                            @include('pages.finance.master-data.agent-contract.detail-history-service-contract', ['services' => $services])
                             <!--end::Accordion-->
                         </div>
                     </div>

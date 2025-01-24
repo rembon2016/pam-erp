@@ -237,24 +237,6 @@
                         <div class="accordion-toggle tableServiceForm-box" data-bs-toggle="collapse" data-bs-target="#r${index}" aria-expanded="false" style="min-width: 80px;">
                             <input type="text" value="${index} ↓" class="form-control" style="width: 100%;" readonly>
                         </div>
-                        <div class="tableServiceForm-box" style="min-width: 130px;">
-                            <select
-                                name="service_data[${index - 1}][service]"
-                                class="form-select serviceList"
-                                id="service_id_${index}"
-                                style="min-width: 100%;"
-                                required>
-                                <option value="" selected hidden>
-                                    Service
-                                </option>
-                                @foreach ($serviceVendors as $serviceVendor)
-                                    <option
-                                        value="{{ $serviceVendor->id }}">
-                                        {{ $serviceVendor->service_code }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
                         <div class="tableServiceForm-box">
                             <select
                                 name="service_data[${index - 1}][por_country]"

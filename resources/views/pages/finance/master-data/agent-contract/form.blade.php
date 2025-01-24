@@ -102,7 +102,14 @@
             <div class="col-md-4">
                 <x:form.input label="Contract Validity To" name="contract_end" placeholder="Select Date" type="date" required="true" :model="$agent_contract" />
             </div>
-            <div class="col-md-12">
+            <div class="col-md-6">
+                <x:form.select label="Service" name="service_type_id" defaultOption="Select Service" required="true" :model="$agent_contract">
+                    @foreach ($serviceVendors as $service)
+                        <option value="{{ $service->id }}" @selected($agent_contract?->service_type_id == $service->id) data-code="{{ $service->service_code }}">{{ $service->service_code }}</option>
+                    @endforeach
+                </x:form.select>
+            </div>
+            <div class="col-md-6">
                 <x:form.input label="Attachment (Multiple File Upload)" class="inputFiles" name="contract_file[]" placeholder="Choose File" type="file" :model="$agent_contract" file="true" multiple="true" />
                 <div class="mb-3" id="fileList" style="width: min(560px, 100%)">
                     @foreach($agent_contract?->documents as $document)
@@ -125,7 +132,7 @@
             </div>
             <div class="col-12 mb-10">
                 <div class="d-flex align-items-center justify-content-between mb-5">
-                    <h4 class="mb-5 mt-5">Add Services</h4>
+                    <h4 class="mb-5 mt-5">Add Ports</h4>
                     <div>
                         <button type="button" id="addServices" class="btn btn-icon btn-success rounded" style="height: 30px; width: 30px;">
                             <i class="fa fa-plus pe-0"></i>

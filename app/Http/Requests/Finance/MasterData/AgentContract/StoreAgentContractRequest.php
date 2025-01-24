@@ -32,6 +32,7 @@ final class StoreAgentContractRequest extends FormRequest
             'contract_file' => 'nullable|array',
             'contract_file.*' => 'required|file',
             'contract_description' => 'nullable|string',
+            'service_type_id' => 'required|exists:pgsql.finance.service_types,id',
             'service_data' => 'required|array',
         ];
     }
@@ -48,6 +49,7 @@ final class StoreAgentContractRequest extends FormRequest
             'contract_file.*' => 'Document',
             'contract_description' => 'Description',
             'service_data' => 'Agent Contract Services & Charges',
+            'service_type_id' => 'Service',
         ];
     }
 }

@@ -165,7 +165,7 @@ final class AgentContractService
 
         foreach ($serviceData as $serviceKey => $service) {
             $serviceContractData = [
-                'service_type_id' => $service['service'],
+                // 'service_type_id' => $service['service'],
                 'por_country_id' => isset($service['por_country']) ? $service['por_country'] : null,
                 'por_port_id' => isset($service['por_port']) ? $service['por_port'] : null,
                 'fdc_country_id' => isset($service['fdc_country']) ? $service['fdc_country'] : null,

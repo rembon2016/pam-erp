@@ -33,6 +33,7 @@ final class UpdateAgentContractRequest extends FormRequest
             'contract_file.*' => 'required|file',
             'contract_description' => 'nullable|string',
             'service_data' => 'required|array',
+            'service_type_id' => 'required|exists:pgsql.finance.service_types,id',
         ];
     }
 
@@ -48,6 +49,7 @@ final class UpdateAgentContractRequest extends FormRequest
             'contract_file.*' => 'Document',
             'contract_description' => 'Description',
             'service_data' => 'Agent Contract Services & Charges',
+            'service_type_id' => 'Service',
         ];
     }
 }

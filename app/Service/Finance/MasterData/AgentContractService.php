@@ -20,6 +20,8 @@ final class AgentContractService
     {
         $data = AgentContract::when(! empty($filters['customer']), function ($query) use ($filters) {
             return $query->where('customer_id', $filters['customer']);
+        })->when(!empty($filters['service_type']), function ($query) use ($filters) {
+            return $query->where('service_type_id', $filters['service_type']);
         })->orderBy('contract_end', 'DESC');
 
         if ($get_data) {

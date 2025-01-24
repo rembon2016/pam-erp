@@ -50,9 +50,9 @@ final class AgentContractController extends Controller
      */
     public function index(): View
     {
-        $customers = $this->customerService->getCustomers()->get();
+        $services = $this->serviceTypeService->getServiceTypes();
 
-        return view('pages.finance.master-data.agent-contract.index', compact('customers'));
+        return view('pages.finance.master-data.agent-contract.index', compact('services'));
     }
 
     /**
@@ -81,6 +81,9 @@ final class AgentContractController extends Controller
                 })
                 ->editColumn('customer_id', function ($item) {
                     return $item->customer?->customer_name;
+                })
+                ->editColumn('service_type_id', function ($item) {
+                    return $item->serviceType?->service_code ?? "N/A";
                 })
                 ->editColumn('contract_date', function ($item) {
                     return $item->contract_date?->format('d/m/Y');

@@ -27,6 +27,7 @@
                         <x:layout.table.heading widthPixel="100" title="Contract No" />
                         <x:layout.table.heading widthPixel="100" title="Customer Code" />
                         <x:layout.table.heading widthPixel="100" title="Customer Name" />
+                        <x:layout.table.heading widthPixel="100" title="Service" />
                         <x:layout.table.heading widthPixel="100" title="Contract Date" />
                         <x:layout.table.heading widthPixel="100" title="Valid From" />
                         <x:layout.table.heading widthPixel="100" title="Valid To" />
@@ -42,6 +43,13 @@
     <x:layout.modal.filter-modal>
         <div class="col-12">
             <x:form.select label="Customer" name="customer" defaultOption="Select Contract No" :model="request()" />
+        </div>
+        <div class="col-12">
+            <x:form.select label="Service" name="service_type" defaultOption="Select Service" :model="request()">
+                @foreach ($services as $service)
+                    <option value="{{ $service->id }}" @selected(request()->query('service_type') == $service->id)>{{ $service->service_code }}</option>
+                @endforeach
+            </x:form.select>
         </div>
     </x:layout.modal.filter-modal>
 @endsection
@@ -71,6 +79,10 @@
             "name" => "customer_id",
         ],
         [
+            "data" => "service_type_id",
+            "name" => "service_type_id",
+        ],
+        [
             "data" => "contract_date",
             "name" => "contract_date",
         ],
@@ -96,7 +108,8 @@
         // Initialize filter handler
         new FilterHandler({
             filters: [
-                { name: 'customer', label: 'Customer' }
+                { name: 'customer', label: 'Customer' },
+                { name: 'service_type', label: 'Service' },
             ]
         });
 

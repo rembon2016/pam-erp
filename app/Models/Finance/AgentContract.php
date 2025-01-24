@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Finance;
 
+use App\Models\Finance\ServiceType;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Finance\AgentContractDocument;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -91,5 +92,10 @@ final class AgentContract extends Model
     public function documents(): HasMany
     {
         return $this->hasMany(AgentContractDocument::class, 'agent_contract_id', 'id');
+    }
+
+    public function serviceType(): HasOne
+    {
+        return $this->hasOne(ServiceType::class, 'id', 'service_type_id');
     }
 }

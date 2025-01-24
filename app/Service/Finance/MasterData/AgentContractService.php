@@ -275,6 +275,7 @@ final class AgentContractService
                 'from' => isset($detail['from']) ? $detail['from'] : null,
                 'to' => isset($detail['to']) ? $detail['to'] : null,
                 'value' => isset($detail['value']) ? $detail['value'] : null,
+                'container_type' => isset($detail['container_type']) ? $detail['container_type'] : null,
             ];
 
             if (! empty($detail['contract_agent_charge_detail_id'])) {

@@ -197,6 +197,7 @@
                                                     <option
                                                         value="{{ $charge->id }}"
                                                         data-charge-name="{{ $charge->charge_name }}"
+                                                        data-unit-code="{{ $charge->unit?->unit_name }}"
                                                         @selected($chargeValue->charge_id == $charge->id)>
                                                         {{ $charge->charge_code }}
                                                     </option>

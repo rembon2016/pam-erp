@@ -1,5 +1,6 @@
+{{-- Kilogram --}}
 <div class="tableChargeDetailContent" style="display: none;">
-    <div class="row" style="margin-left: auto; flex-basis: 100% !important; width: 100%; !important;">
+    {{-- <div class="row" style="margin-left: auto; flex-basis: 100% !important; width: 100%; !important;">
         <div class="col-12">
             <div class="mb-2">
                 <div
@@ -59,7 +60,7 @@
                                     class="form-control"
                                     value=""
                                     id="from_1_1_1"
-                                    style="width: 100%;">
+                                    style="width: 100%;" required>
                             </div>
                             <div class="tableChargeDetailForm-box" style="min-width: 100px;">
                                 <input
@@ -68,7 +69,7 @@
                                     class="form-control"
                                     value=""
                                     id="to_1_1_1"
-                                    style="width: 100%;">
+                                    style="width: 100%;" required>
                             </div>
                             <div class="tableChargeDetailForm-box" style="min-width: 100px;">
                                 <input
@@ -77,7 +78,54 @@
                                     class="form-control"
                                     value=""
                                     id="value_1_1_1"
-                                    style="width: 100%;">
+                                    style="width: 100%;" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> --}}
+</div>
+
+
+{{-- Shipment --}}
+{{-- <div class="tableChargeDetailContent" style="display: none;">
+    <div class="row" style="margin-left: auto; flex-basis: 100% !important; width: 100%; !important;">
+        <div class="col-12">
+            <div class="mb-2">
+
+                <div class="table tableChargeDetailForm">
+                    <div class="tableChargeDetailForm-heading">
+                        <div class="tableChargeDetailForm-box text-center" style="min-width: 70px;">
+                            <span class="tableChargeForm-heading-text">
+                                #
+                            </span>
+                        </div>
+                        <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
+                            <span class="tableChargeForm-heading-text">
+                                Rate
+                            </span>
+                        </div>
+                    </div>
+                    <div class="tableChargeDetailForm-body">
+                        <div class="chargeDetailTableItemRow_1 tableChargeDetailForm-body-row">
+                            <div class="tableChargeDetailForm-box" style="min-width: 70px;">
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    value="1"
+                                    style=""
+                                    readonly>
+                            </div>
+                            <div class="tableChargeDetailForm-box" style="min-width: 100px;">
+                                <input
+                                    type="text"
+                                    name="service_data[0][charge_data][0][charge_detail_data][0][value]"
+                                    class="form-control"
+                                    value=""
+                                    id="value_1_1_1"
+                                    style="width: 100%;" required>
                             </div>
                         </div>
                     </div>
@@ -85,4 +133,66 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
+
+
+{{-- Container --}}
+{{-- <div class="tableChargeDetailContent" style="display: none;">
+    <div class="row" style="margin-left: auto; flex-basis: 100% !important; width: 100%; !important;">
+        <div class="col-12">
+            <div class="mb-2">
+                <div class="table tableChargeDetailForm">
+                    <div class="tableChargeDetailForm-heading">
+                        <div class="tableChargeDetailForm-box text-center" style="min-width: 70px;">
+                            <span class="tableChargeForm-heading-text">
+                                #
+                            </span>
+                        </div>
+                        <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
+                            <span class="tableChargeForm-heading-text">
+                                Container Type
+                            </span>
+                        </div>
+                        <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
+                            <span class="tableChargeForm-heading-text">
+                                Rate
+                            </span>
+                        </div>
+                    </div>
+                    <div class="tableChargeDetailForm-body">
+                        @foreach ($container_types as $container_index => $type)
+                            <div class="chargeDetailTableItemRow_{{ $loop->iteration }} tableChargeDetailForm-body-row">
+                                <div class="tableChargeDetailForm-box" style="min-width: 70px;">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        value="{{ $loop->iteration }}"
+                                        style=""
+                                        readonly>
+                                </div>
+                                <div class="tableChargeDetailForm-box" style="min-width: 100px;">
+                                    <input
+                                        type="text"
+                                        name="service_data[0][charge_data][0][charge_detail_data][{{ $container_index }}][container_type]"
+                                        class="form-control"
+                                        value="{{ $type }}"
+                                        id="container_type_1_1_{{ $loop->iteration }}"
+                                        style="width: 100%;" readonly>
+                                </div>
+                                <div class="tableChargeDetailForm-box" style="min-width: 100px;">
+                                    <input
+                                        type="text"
+                                        name="service_data[0][charge_data][0][charge_detail_data][{{ $container_index }}][value]"
+                                        class="form-control"
+                                        value=""
+                                        id="value_1_1_{{ $loop->iteration }}"
+                                        style="width: 100%;" required>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> --}}

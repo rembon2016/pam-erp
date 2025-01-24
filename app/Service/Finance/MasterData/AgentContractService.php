@@ -20,6 +20,8 @@ final class AgentContractService
     {
         $data = AgentContract::when(! empty($filters['customer']), function ($query) use ($filters) {
             return $query->where('customer_id', $filters['customer']);
+        })->when(!empty($filters['service_type']), function ($query) use ($filters) {
+            return $query->where('service_type_id', $filters['service_type']);
         })->orderBy('contract_end', 'DESC');
 
         if ($get_data) {
@@ -165,7 +167,7 @@ final class AgentContractService
 
         foreach ($serviceData as $serviceKey => $service) {
             $serviceContractData = [
-                'service_type_id' => $service['service'],
+                // 'service_type_id' => $service['service'],
                 'por_country_id' => isset($service['por_country']) ? $service['por_country'] : null,
                 'por_port_id' => isset($service['por_port']) ? $service['por_port'] : null,
                 'fdc_country_id' => isset($service['fdc_country']) ? $service['fdc_country'] : null,
@@ -275,6 +277,7 @@ final class AgentContractService
                 'from' => isset($detail['from']) ? $detail['from'] : null,
                 'to' => isset($detail['to']) ? $detail['to'] : null,
                 'value' => isset($detail['value']) ? $detail['value'] : null,
+                'container_type' => isset($detail['container_type']) ? $detail['container_type'] : null,
             ];
 
             if (! empty($detail['contract_agent_charge_detail_id'])) {

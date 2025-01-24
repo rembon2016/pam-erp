@@ -192,13 +192,14 @@
                                             <option value="" selected hidden>
                                                 Charge
                                             </option>
-                                            @foreach ($charges as $charge)
+                                            {{-- @foreach ($charges as $charge)
                                                 <option
                                                     value="{{ $charge->id }}"
-                                                    data-charge-name="{{ $charge->charge_name }}">
+                                                    data-charge-name="{{ $charge->charge_name }}"
+                                                    data-unit-code="{{ $charge->unit?->unit_name }}">
                                                     {{ $charge->charge_code }}
                                                 </option>
-                                            @endforeach
+                                            @endforeach --}}
                                         </select>
                                     </div>
                                     <div class="tableChargeForm-box">

@@ -7,11 +7,6 @@
                     #
                 </span>
             </div>
-            <div class="text-center tableServiceForm-box" style="min-width: 130px;">
-                <span class="tableServiceForm-heading-text">
-                    Service
-                </span>
-            </div>
             <div class="text-center tableServiceForm-box">
                 <span class="tableServiceForm-heading-text">
                     POR Country
@@ -75,25 +70,6 @@
                         <div class="accordion-toggle tableServiceForm-box" data-bs-toggle="collapse" data-bs-target="#r{{ $index + 1 }}" aria-expanded="false" style="min-width: 80px;">
                             <input type="text" value="{{ $index + 1 }} ↓" class="form-control" style="width: 100%;" readonly>
                             <input type="hidden" name="service_data[{{ $index }}][service_id]" value="{{ $service->id }}">
-                        </div>
-                        <div class="tableServiceForm-box" style="min-width: 130px;">
-                            <select
-                                name="service_data[{{ $index }}][service]"
-                                class="form-select serviceList"
-                                id="service_id_{{ $index + 1 }}"
-                                style="min-width: 100%;"
-                                required>
-                                <option value="" selected hidden>
-                                    Service
-                                </option>
-                                @foreach ($serviceVendors as $serviceVendor)
-                                    <option
-                                        value="{{ $serviceVendor->id }}"
-                                        @selected($service->service_type_id == $serviceVendor->id)>
-                                        {{ $serviceVendor->service_code }}
-                                    </option>
-                                @endforeach
-                            </select>
                         </div>
                         <div class="tableServiceForm-box">
                             <select

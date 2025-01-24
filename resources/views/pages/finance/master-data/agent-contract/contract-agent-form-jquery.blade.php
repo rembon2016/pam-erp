@@ -1,5 +1,66 @@
 @push('js')
     <script>
+        function generateChargeByAjax(service_type, serviceId = null, chargeId = null) {
+            $.ajax({
+                url: `{{ route('api.finance.master-data.charge.list') }}?service_type_id=${service_type}`,
+                method: "GET",
+                beforeSend: function () {
+                    if (serviceId !== null && chargeId !== null) {
+                        $(`#charge_id_${serviceId}_${chargeId}`).attr('disabled', true);
+                    } else {
+                        $(".chargeIdClass").each(function () {
+                            $(this).attr('disabled', true);
+                        });
+                    }
+                },
+                success: function (res) {
+                    if (res.ok) {
+                        let chargeList = `<option value="" selected hidden>Charge</option>`;
+                        chargeList += res.data.map((item) => {
+                            return `<option value="${item.id}" data-charge-name="${item.charge_name}" data-unit-code="${item.unit?.unit_name}">${item.charge_code}</option>`;
+                        }).join('');
+
+                        if (serviceId !== null && chargeId !== null) {
+                            $(`#charge_id_${serviceId}_${chargeId}`).html(chargeList);
+                        } else {
+                            $(".chargeIdClass").each(function () {
+                                $(this).html(chargeList);
+                            });
+                        }
+                    } else {
+                        iziToast.error({
+                            title: 'Failed',
+                            message : res.message,
+                            position: 'topRight'
+                        });
+                    }
+                },
+                complete: function () {
+                    if (serviceId !== null && chargeId !== null) {
+                        $(`#charge_id_${serviceId}_${chargeId}`).attr('disabled', false);
+                        $(`#charge_id_${serviceId}_${chargeId}`).parents('.tableChargeForm-body-row').find('.tableChargeForm-box:not(.trigger-show-detail)').find('input, select').val('');
+                        $(`#charge_id_${serviceId}_${chargeId}`).parents('.tableChargeForm-body-row').find('.tableChargeDetailContent').empty();
+                    } else {
+                        $(".chargeIdClass").each(function (chargeIndex) {
+                            $(this).attr('disabled', false);
+                            $(`.chargeTableItemRow_${chargeIndex + 1} .tableChargeForm-box:not(.trigger-show-detail)`).find('input, select').val('');
+                            $(`.chargeTableItemRow_${chargeIndex + 1}`).find('.tableChargeDetailContent').empty();
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            })
+        }
+
+        $("#service_type_id").change(function (event) {
+            event.preventDefault();
+
+            const service_type_id = $(this).val();
+            generateChargeByAjax(service_type_id);
+        })
+
         $(document).off('click', '.trigger-show-detail').on('click', '.trigger-show-detail', function (event) {
             event.preventDefault();
 
@@ -15,11 +76,13 @@
             let serviceTableRow = $('.serviceTableRow')
             let chargeTableRow = $('.chargeTableRow')
             let chargeItemTableRow = $(`.chargeItemTableRow_1`)
+            const service_type_id = $('#service_type_id').val();
 
             $(`${serviceItemRow((serviceTableRow.length + 1), (chargeItemTableRow.length + 1), 1)}`)
                 .insertAfter(chargeTableRow.last())
 
             activateSelect2()
+            generateChargeByAjax(service_type_id, serviceTableRow.length + 1, 1);
 
             if (serviceTableRow.length >= 1) $('#removeServices').removeAttr('disabled')
         })
@@ -46,9 +109,11 @@
             const chargeBody = $(this).parents('.chargeTableRow').find('.tableChargeForm-body');
             const chargeItem = $(chargeBody).find('.tableChargeForm-body-row').length;
             const chargeHtml = chargeItemHtml(serviceIdFromChargeBtn, (chargeItem + 1), 1);
+            const service_type_id = $("#service_type_id").val();
 
             $(chargeBody).append(chargeHtml);
             activateSelect2()
+            generateChargeByAjax(service_type_id, serviceIdFromChargeBtn,(chargeItem + 1));
 
             if (chargeItem >= 1) $(this).parent().find('.removeCharges').removeAttr('disabled')
         })
@@ -73,7 +138,8 @@
             const tableContent = $(this).parents('.tableChargeDetailContent');
             const bodyWrapper = $(tableContent).find('.tableChargeDetailForm-body');
             const chargeDetailItem = $(bodyWrapper).find(".tableChargeDetailForm-body-row").length;
-            const chargeDetailHtml = chargeDetailItemHtml(serviceIdFromBtn, chargeIdFromBtn, (chargeDetailItem + 1));
+            const unit_code = $(`#charge_id_${serviceIdFromBtn}_${chargeIdFromBtn}`).children('option:selected').data('unit-code');
+            const chargeDetailHtml = chargeDetailItemHtml(serviceIdFromBtn, chargeIdFromBtn, (chargeDetailItem + 1), unit_code);
 
             $(bodyWrapper).append(chargeDetailHtml);
 
@@ -135,6 +201,12 @@
             let vendorName = $(this).find(':selected').data('charge-name')
             let findChargeApiUrl = "{{ route('api.finance.master-data.charge.show', ['id' => ':id']) }}"
             findChargeApiUrl = findChargeApiUrl.replace(':id', $(this).find(':selected').val())
+
+            const tableChargeDetailContent = $(this).parents('.tableChargeForm-body-row').find('.tableChargeDetailContent');
+            const selectedUnitCode = $(this).find('option:selected').data('unit-code');
+            const skeletonHtml = chargeDetailSkeleton(serviceId, chargeId, 1, selectedUnitCode);
+
+            $(tableChargeDetailContent).html(skeletonHtml);
 
             $.ajax({
                 url: findChargeApiUrl,
@@ -236,24 +308,6 @@
                     <div class="tableServiceForm-body-row">
                         <div class="accordion-toggle tableServiceForm-box" data-bs-toggle="collapse" data-bs-target="#r${index}" aria-expanded="false" style="min-width: 80px;">
                             <input type="text" value="${index} ↓" class="form-control" style="width: 100%;" readonly>
-                        </div>
-                        <div class="tableServiceForm-box" style="min-width: 130px;">
-                            <select
-                                name="service_data[${index - 1}][service]"
-                                class="form-select serviceList"
-                                id="service_id_${index}"
-                                style="min-width: 100%;"
-                                required>
-                                <option value="" selected hidden>
-                                    Service
-                                </option>
-                                @foreach ($serviceVendors as $serviceVendor)
-                                    <option
-                                        value="{{ $serviceVendor->id }}">
-                                        {{ $serviceVendor->service_code }}
-                                    </option>
-                                @endforeach
-                            </select>
                         </div>
                         <div class="tableServiceForm-box">
                             <select
@@ -555,7 +609,7 @@
 
         function chargeItemHtml(serviceIndex, index, detailIndex) {
             return `
-                <div class="chargeTableItemRow_${serviceIndex} tableChargeForm-body-row flex-column">
+                <div class="chargeTableItemRow_${index} tableChargeForm-body-row flex-column">
                     <div class="d-flex flex-row p-0">
                         <div class="tableChargeForm-box trigger-show-detail" style="min-width: 80px;">
                             <input
@@ -831,63 +885,160 @@
                     </div>
 
                     <div class="tableChargeDetailContent" style="display: none;">
-                        <div class="row" style="margin-left: auto; flex-basis: 100% !important; width: 100%; !important;">
-                            <div class="col-12">
-                                <div class="mb-2">
-                                    <div
-                                        class="d-flex align-items-center justify-content-start mb-1 ps-3">
-                                        <div class="ms-5">
-                                            <button type="button"
-                                                id="add_charge_detail|${serviceIndex}_${index}"
-                                                class="addDetailCharges btn btn-icon btn-success rounded" style="height: 30px; width: 30px;">
-                                                <i class="fa fa-plus pe-0"></i>
-                                            </button>
-                                            <button type="button"
-                                                id="remove_charge_detail|${serviceIndex}_${index}"
-                                                class="removeDetailCharges btn btn-icon btn-warning rounded" style="height: 30px; width: 30px;"
-                                                disabled>
-                                                <i class="fa fa-minus pe-0"></i>
-                                            </button>
-                                        </div>
-                                    </div>
 
-                                    <div class="table tableChargeDetailForm">
-                                        <div class="tableChargeDetailForm-heading">
-                                            <div class="tableChargeDetailForm-box text-center" style="min-width: 70px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    #
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    From
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    To
-                                                </span>
-                                            </div>
-                                            <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
-                                                <span class="tableChargeForm-heading-text">
-                                                    Value
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="tableChargeDetailForm-body">
-                                            ${chargeDetailItemHtml((serviceIndex), (index), (detailIndex))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             `
         }
 
-        function chargeDetailItemHtml(serviceIndex, chargeIndex, index) {
+        function chargeDetailSkeleton(serviceIndex, chargeIndex, detailIndex, unit_code) {
+            let skeletonButton = "";
+            let chargeDetailHeading = "";
+
+            if (unit_code == "KG") {
+                skeletonButton = `
+                 <div
+                    class="d-flex align-items-center justify-content-start mb-1 ps-3">
+                    <div class="ms-5">
+                        <button type="button"
+                            id="add_charge_detail|${serviceIndex}_${chargeIndex}"
+                            class="addDetailCharges btn btn-icon btn-success rounded" style="height: 30px; width: 30px;">
+                            <i class="fa fa-plus pe-0"></i>
+                        </button>
+                        <button type="button"
+                            id="remove_charge_detail|${serviceIndex}_${chargeIndex}"
+                            class="removeDetailCharges btn btn-icon btn-warning rounded" style="height: 30px; width: 30px;"
+                            disabled>
+                            <i class="fa fa-minus pe-0"></i>
+                        </button>
+                    </div>
+                </div>
+                `;
+            }
+
+            if  (unit_code == "KG") {
+                chargeDetailHeading = `
+                    <div class="tableChargeDetailForm-box text-center" style="min-width: 70px;">
+                        <span class="tableChargeForm-heading-text">
+                            #
+                        </span>
+                    </div>
+                    <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
+                        <span class="tableChargeForm-heading-text">
+                            From
+                        </span>
+                    </div>
+                    <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
+                        <span class="tableChargeForm-heading-text">
+                            To
+                        </span>
+                    </div>
+                    <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
+                        <span class="tableChargeForm-heading-text">
+                            Value
+                        </span>
+                    </div>
+                `;
+            } else if (unit_code == "SHIPMENT") {
+                chargeDetailHeading = `
+                <div class="tableChargeDetailForm-box text-center" style="min-width: 70px;">
+                    <span class="tableChargeForm-heading-text">
+                        #
+                    </span>
+                </div>
+                <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
+                    <span class="tableChargeForm-heading-text">
+                        Rate
+                    </span>
+                </div>
+                `;
+
+            } else if (unit_code == "CONTAINER") {
+                chargeDetailHeading = `
+                    <div class="tableChargeDetailForm-box text-center" style="min-width: 70px;">
+                        <span class="tableChargeForm-heading-text">
+                            #
+                        </span>
+                    </div>
+                    <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
+                        <span class="tableChargeForm-heading-text">
+                            Container Type
+                        </span>
+                    </div>
+                    <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
+                        <span class="tableChargeForm-heading-text">
+                            Rate
+                        </span>
+                    </div>
+                `;
+            } else {
+                console.warn(`Unit Code: ${unit_code} is not supported yet.`);
+                return "";
+            }
+
             return `
+                <div class="row" style="margin-left: auto; flex-basis: 100% !important; width: 100%; !important;">
+                    <div class="col-12">
+                        <div class="mb-2">
+                            ${skeletonButton}
+
+                            <div class="table tableChargeDetailForm">
+                                <div class="tableChargeDetailForm-heading">
+                                    ${chargeDetailHeading}
+                                </div>
+                                <div class="tableChargeDetailForm-body">
+                                    ${chargeDetailItemHtml((serviceIndex), (chargeIndex), (detailIndex), (unit_code))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function chargeDetailItemHtml(serviceIndex, chargeIndex, index, unit_code) {
+            if (unit_code == "KG") {
+                return `
+                    <div class="chargeDetailTableItemRow_${index} tableChargeDetailForm-body-row">
+                        <div class="tableChargeDetailForm-box" style="min-width: 70px;">
+                            <input
+                                type="text"
+                                class="form-control"
+                                value="${index}"
+                                style=""
+                                readonly>
+                        </div>
+                        <div class="tableChargeDetailForm-box" style="min-width: 100px;">
+                            <input
+                                type="text"
+                                name="service_data[${serviceIndex - 1}][charge_data][${chargeIndex - 1}][charge_detail_data][${index - 1}][from]"
+                                class="form-control"
+                                value=""
+                                id="from_${serviceIndex}_${chargeIndex}_${index}"
+                                style="width: 100%;" required>
+                        </div>
+                        <div class="tableChargeDetailForm-box" style="min-width: 100px;">
+                            <input
+                                type="text"
+                                name="service_data[${serviceIndex - 1}][charge_data][${chargeIndex - 1}][charge_detail_data][${index - 1}][to]"
+                                class="form-control"
+                                value=""
+                                id="to_${serviceIndex}_${chargeIndex}_${index}"
+                                style="width: 100%;" required>
+                        </div>
+                        <div class="tableChargeDetailForm-box" style="min-width: 100px;">
+                            <input
+                                type="text"
+                                name="service_data[${serviceIndex - 1}][charge_data][${chargeIndex - 1}][charge_detail_data][${index - 1}][value]"
+                                class="form-control"
+                                value=""
+                                id="value_${serviceIndex}_${chargeIndex}_${index}"
+                                style="width: 100%;" required>
+                        </div>
+                    </div>
+                `;
+            } else if (unit_code == "SHIPMENT") {
+                return `
                 <div class="chargeDetailTableItemRow_${index} tableChargeDetailForm-body-row">
                     <div class="tableChargeDetailForm-box" style="min-width: 70px;">
                         <input
@@ -900,32 +1051,51 @@
                     <div class="tableChargeDetailForm-box" style="min-width: 100px;">
                         <input
                             type="text"
-                            name="service_data[${serviceIndex - 1}][charge_data][${chargeIndex - 1}][charge_detail_data][${index - 1}][from]"
-                            class="form-control"
-                            value=""
-                            id="from_${serviceIndex}_${chargeIndex}_${index}"
-                            style="width: 100%;">
-                    </div>
-                    <div class="tableChargeDetailForm-box" style="min-width: 100px;">
-                        <input
-                            type="text"
-                            name="service_data[${serviceIndex - 1}][charge_data][${chargeIndex - 1}][charge_detail_data][${index - 1}][to]"
-                            class="form-control"
-                            value=""
-                            id="to_${serviceIndex}_${chargeIndex}_${index}"
-                            style="width: 100%;">
-                    </div>
-                    <div class="tableChargeDetailForm-box" style="min-width: 100px;">
-                        <input
-                            type="text"
                             name="service_data[${serviceIndex - 1}][charge_data][${chargeIndex - 1}][charge_detail_data][${index - 1}][value]"
                             class="form-control"
                             value=""
                             id="value_${serviceIndex}_${chargeIndex}_${index}"
-                            style="width: 100%;">
+                            style="width: 100%;" required>
                     </div>
                 </div>
-            `
+                `;
+            } else if (unit_code == "CONTAINER") {
+                return `
+                @foreach ($container_types as $container_index => $type)
+                    <div class="chargeDetailTableItemRow_{{ $loop->iteration }} tableChargeDetailForm-body-row">
+                        <div class="tableChargeDetailForm-box" style="min-width: 70px;">
+                            <input
+                                type="text"
+                                class="form-control"
+                                value="{{ $loop->iteration }}"
+                                style=""
+                                readonly>
+                        </div>
+                        <div class="tableChargeDetailForm-box" style="min-width: 100px;">
+                            <input
+                                type="text"
+                                name="service_data[${serviceIndex - 1}][charge_data][${chargeIndex - 1}][charge_detail_data][{{ $container_index }}][container_type]"
+                                class="form-control"
+                                value="{{ $type }}"
+                                id="container_type_${serviceIndex}_${chargeIndex}_{{ $loop->iteration }}"
+                                style="width: 100%;" readonly>
+                        </div>
+                        <div class="tableChargeDetailForm-box" style="min-width: 100px;">
+                            <input
+                                type="text"
+                                name="service_data[${serviceIndex - 1}][charge_data][${chargeIndex - 1}][charge_detail_data][{{ $container_index }}][value]"
+                                class="form-control"
+                                value=""
+                                id="value_${serviceIndex}_${chargeIndex}_{{ $loop->iteration }}"
+                                style="width: 100%;">
+                        </div>
+                    </div>
+                @endforeach
+                `;
+            } else {
+                console.warn(`Unit Code: ${unit_code} is not supported yet.`);
+                return "";
+            }
         }
 
         function activateSelect2() {
@@ -940,7 +1110,8 @@
         }
 
         function chargeOnChange(serviceId, chargeId) {
-            let unitName = $(`#unit_id_${serviceId}_${chargeId}`).children('option:selected').data('unit-code')
+            let unitName = $(`#unit_id_${serviceId}_${chargeId}`).children('option:selected').data('unit-code');
+
             if (unitName == 'KG') {
 
                 // Amount Minimum Via Row

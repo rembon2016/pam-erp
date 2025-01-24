@@ -25,6 +25,7 @@ use App\Service\Finance\MasterData\CarrierService;
 use App\Service\Finance\MasterData\CountryService;
 use App\Service\Finance\MasterData\CurrencyService;
 use App\Service\Finance\MasterData\CustomerService;
+use App\Models\Finance\CustomerContractChargeDetail;
 use App\Service\Finance\MasterData\ServiceTypeService;
 use App\Service\Finance\MasterData\AgentContractService;
 use App\Http\Requests\Finance\MasterData\AgentContract\StoreAgentContractRequest;
@@ -49,9 +50,9 @@ final class AgentContractController extends Controller
      */
     public function index(): View
     {
-        $customers = $this->customerService->getCustomers()->get();
+        $services = $this->serviceTypeService->getServiceTypes();
 
-        return view('pages.finance.master-data.agent-contract.index', compact('customers'));
+        return view('pages.finance.master-data.agent-contract.index', compact('services'));
     }
 
     /**
@@ -80,6 +81,9 @@ final class AgentContractController extends Controller
                 })
                 ->editColumn('customer_id', function ($item) {
                     return $item->customer?->customer_name;
+                })
+                ->editColumn('service_type_id', function ($item) {
+                    return $item->serviceType?->service_code ?? "N/A";
                 })
                 ->editColumn('contract_date', function ($item) {
                     return $item->contract_date?->format('d/m/Y');
@@ -137,10 +141,11 @@ final class AgentContractController extends Controller
         $customers = $this->customerService->getCustomers()->get();
         $serviceVendors = $this->serviceTypeService->getServiceTypes();
         $countries = $this->countryService->getCountries();
-        $charges = $this->chargeService->getCharges();
+        $charges = [];
         $units = $this->unitService->getUnitCollections();
         $carriers = $this->carrierService->getCarriers();
         $currencies = $this->currrencyService->getCurrencies();
+        $container_types = CustomerContractChargeDetail::CONTAINER_TYPES;
         $routedTransits = [
             ['label' => 'DUBAI', 'value' => 'DUBAI'],
             ['label' => 'SINGAPORE', 'value' => 'SINGAPORE'],
@@ -151,7 +156,7 @@ final class AgentContractController extends Controller
 
         return view(
             'pages.finance.master-data.agent-contract.form',
-            compact('data', 'agent_contract', 'customers', 'serviceVendors', 'countries', 'routedTransits', 'carriers', 'charges', 'units', 'currencies')
+            compact('data', 'agent_contract', 'customers', 'serviceVendors', 'countries', 'routedTransits', 'carriers', 'charges', 'units', 'currencies', 'container_types')
         );
     }
 
@@ -189,11 +194,14 @@ final class AgentContractController extends Controller
         $customers = $this->customerService->getCustomers()->get();
         $serviceVendors = $this->serviceTypeService->getServiceTypes();
         $countries = $this->countryService->getCountries();
-        $charges = $this->chargeService->getCharges();
+        $charges = $this->chargeService->getCharges([
+            'service_type_id' => $getAgentContractResponse->data->service_type_id,
+        ]);
         $units = $this->unitService->getUnitCollections();
         $currencies = $this->currrencyService->getCurrencies();
         $carriers = $this->carrierService->getCarriers();
         $ports = $this->portService->getPorts();
+        $container_types = CustomerContractChargeDetail::CONTAINER_TYPES;
         $routedTransits = [
             ['label' => 'DUBAI', 'value' => 'DUBAI'],
             ['label' => 'SINGAPORE', 'value' => 'SINGAPORE'],
@@ -214,6 +222,7 @@ final class AgentContractController extends Controller
             'units' => $units,
             'currencies' => $currencies,
             'ports' => $ports,
+            'container_types' => $container_types,
         ]);
     }
 

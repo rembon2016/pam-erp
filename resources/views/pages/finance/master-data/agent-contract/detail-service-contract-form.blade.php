@@ -690,21 +690,35 @@
                                                                                                 #
                                                                                             </span>
                                                                                         </div>
-                                                                                        <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
-                                                                                            <span class="tableChargeForm-heading-text">
-                                                                                                From
-                                                                                            </span>
-                                                                                        </div>
-                                                                                        <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
-                                                                                            <span class="tableChargeForm-heading-text">
-                                                                                                To
-                                                                                            </span>
-                                                                                        </div>
-                                                                                        <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
-                                                                                            <span class="tableChargeForm-heading-text">
-                                                                                                Value
-                                                                                            </span>
-                                                                                        </div>
+                                                                                        @if ($chargeValue->unit?->unit_name == "KG")
+                                                                                            <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
+                                                                                                <span class="tableChargeForm-heading-text">
+                                                                                                    From
+                                                                                                </span>
+                                                                                            </div>
+                                                                                            <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
+                                                                                                <span class="tableChargeForm-heading-text">
+                                                                                                    To
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        @elseif ($chargeValue->unit?->unit_name == "SHIPMENT")
+                                                                                            <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
+                                                                                                <span class="tableChargeForm-heading-text">
+                                                                                                    Rate
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        @elseif ($chargeValue->unit?->unit_name == "CONTAINER")
+                                                                                            <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
+                                                                                                <span class="tableChargeForm-heading-text">
+                                                                                                    Container Type
+                                                                                                </span>
+                                                                                            </div>
+                                                                                            <div class="tableChargeDetailForm-box text-center" style="min-width: 100px;">
+                                                                                                <span class="tableChargeForm-heading-text">
+                                                                                                    Rate
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        @endif
                                                                                     </div>
                                                                                     <div class="tableChargeDetailForm-body">
                                                                                         @foreach ($chargeValue->chargeDetails as $detailIndex => $detailValue)
@@ -718,33 +732,64 @@
                                                                                                         style=""
                                                                                                         readonly>
                                                                                                 </div>
-                                                                                                <div class="tableChargeDetailForm-box" style="min-width: 100px;">
-                                                                                                    <input
-                                                                                                        type="text"
-                                                                                                        name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][charge_detail_data][{{ $detailIndex }}][from]"
-                                                                                                        class="form-control"
-                                                                                                        value="{{ $detailValue->from }}"
-                                                                                                        id="from_{{ $index + 1 }}_{{ $chargeIndex + 1 }}_{{ $detailIndex + 1 }}"
-                                                                                                        style="width: 100%;" disabled>
-                                                                                                </div>
-                                                                                                <div class="tableChargeDetailForm-box" style="min-width: 100px;">
-                                                                                                    <input
-                                                                                                        type="text"
-                                                                                                        name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][charge_detail_data][{{ $detailIndex }}][to]"
-                                                                                                        class="form-control"
-                                                                                                        value="{{ $detailValue->to }}"
-                                                                                                        id="to_{{ $index + 1 }}_{{ $chargeIndex + 1 }}_{{ $detailIndex + 1 }}"
-                                                                                                        style="width: 100%;" disabled>
-                                                                                                </div>
-                                                                                                <div class="tableChargeDetailForm-box" style="min-width: 100px;">
-                                                                                                    <input
-                                                                                                        type="text"
-                                                                                                        name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][charge_detail_data][{{ $detailIndex }}][value]"
-                                                                                                        class="form-control"
-                                                                                                        value="{{ $detailValue->value }}"
-                                                                                                        id="value_{{ $index + 1 }}_{{ $chargeIndex + 1 }}_{{ $detailIndex + 1 }}"
-                                                                                                        style="width: 100%;" disabled>
-                                                                                                </div>
+                                                                                                @if ($chargeValue->unit?->unit_name == "KG")
+                                                                                                    <div class="tableChargeDetailForm-box" style="min-width: 100px;">
+                                                                                                        <input
+                                                                                                            type="text"
+                                                                                                            name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][charge_detail_data][{{ $detailIndex }}][from]"
+                                                                                                            class="form-control"
+                                                                                                            value="{{ $detailValue->from }}"
+                                                                                                            id="from_{{ $index + 1 }}_{{ $chargeIndex + 1 }}_{{ $detailIndex + 1 }}"
+                                                                                                            style="width: 100%;" disabled>
+                                                                                                    </div>
+                                                                                                    <div class="tableChargeDetailForm-box" style="min-width: 100px;">
+                                                                                                        <input
+                                                                                                            type="text"
+                                                                                                            name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][charge_detail_data][{{ $detailIndex }}][to]"
+                                                                                                            class="form-control"
+                                                                                                            value="{{ $detailValue->to }}"
+                                                                                                            id="to_{{ $index + 1 }}_{{ $chargeIndex + 1 }}_{{ $detailIndex + 1 }}"
+                                                                                                            style="width: 100%;" disabled>
+                                                                                                    </div>
+                                                                                                    <div class="tableChargeDetailForm-box" style="min-width: 100px;">
+                                                                                                        <input
+                                                                                                            type="text"
+                                                                                                            name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][charge_detail_data][{{ $detailIndex }}][value]"
+                                                                                                            class="form-control"
+                                                                                                            value="{{ $detailValue->value }}"
+                                                                                                            id="value_{{ $index + 1 }}_{{ $chargeIndex + 1 }}_{{ $detailIndex + 1 }}"
+                                                                                                            style="width: 100%;" disabled>
+                                                                                                    </div>
+                                                                                                @elseif ($chargeValue->unit?->unit_name == "SHIPMENT")
+                                                                                                    <div class="tableChargeDetailForm-box" style="min-width: 100px;">
+                                                                                                        <input
+                                                                                                            type="text"
+                                                                                                            name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][charge_detail_data][{{ $detailIndex }}][value]"
+                                                                                                            class="form-control"
+                                                                                                            value="{{ $detailValue->value }}"
+                                                                                                            id="value_{{ $index + 1 }}_{{ $chargeIndex + 1 }}_{{ $detailIndex + 1 }}"
+                                                                                                            style="width: 100%;" disabled>
+                                                                                                    </div>
+                                                                                                @elseif ($chargeValue->unit?->unit_name == "CONTAINER")
+                                                                                                    <div class="tableChargeDetailForm-box" style="min-width: 100px;">
+                                                                                                        <input
+                                                                                                            type="text"
+                                                                                                            name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][charge_detail_data][{{ $detailIndex }}][container_type]"
+                                                                                                            class="form-control"
+                                                                                                            value="{{ $detailValue->container_type }}"
+                                                                                                            id="container_type_{{ $index + 1 }}_{{ $chargeIndex + 1 }}_{{ $detailIndex + 1 }}"
+                                                                                                            style="width: 100%;" disabled>
+                                                                                                    </div>
+                                                                                                    <div class="tableChargeDetailForm-box" style="min-width: 100px;">
+                                                                                                        <input
+                                                                                                            type="text"
+                                                                                                            name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][charge_detail_data][{{ $detailIndex }}][value]"
+                                                                                                            class="form-control"
+                                                                                                            value="{{ $detailValue->value }}"
+                                                                                                            id="value_{{ $index + 1 }}_{{ $chargeIndex + 1 }}_{{ $detailIndex + 1 }}"
+                                                                                                            style="width: 100%;" disabled>
+                                                                                                    </div>
+                                                                                                @endif
                                                                                             </div>
                                                                                         @endforeach
                                                                                     </div>

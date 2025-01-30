@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
-use App\Functions\ObjectResponse;
+use Illuminate\Support\Str;
+use Illuminate\Http\Response;
 use App\Models\Finance\Charge;
+use App\Functions\ObjectResponse;
 use App\Models\Finance\ServiceType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Response;
 
 final class ChargeService
 {
@@ -53,6 +54,39 @@ final class ChargeService
                 $createdCharge
             );
         } catch (\Throwable $th) {
+            return ObjectResponse::error(
+                __('crud.error_create', ['name' => 'Charge']),
+                Response::HTTP_INTERNAL_SERVER_ERROR,
+                $th->getTrace()
+            );
+        }
+    }
+
+    public function createMultipleCharge(array $dto)
+    {
+        try {
+            $service = ServiceType::findOrFail($dto["transport_type_id"]);
+            $dto["transport_type"] = $service->service_code;
+            $charges = collect($dto['charges'])->map(function ($item) use ($dto) {
+                $item['id'] = Str::uuid();
+                $item['transport_type'] = $dto['transport_type'];
+                $item['is_agreed_rate'] = $dto['is_agreed_rate'];
+                $item['unit_id'] = $dto['unit_id'];
+                $item['cost_id'] = $dto['cost_id'];
+                $item['revenue_id'] = $dto['revenue_id'];
+                $item['created_at'] = now();
+
+                return $item;
+            });
+
+            Charge::insert($charges->toArray());
+
+            return ObjectResponse::success(
+                message: __('crud.created', ['name' => 'Charge']),
+                statusCode: Response::HTTP_CREATED,
+            );
+        } catch (\Throwable $th) {
+            dd($th);
             return ObjectResponse::error(
                 __('crud.error_create', ['name' => 'Charge']),
                 Response::HTTP_INTERNAL_SERVER_ERROR,

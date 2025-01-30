@@ -99,7 +99,6 @@ final class ChartOfAccountService
                 statusCode: Response::HTTP_CREATED,
             );
         } catch (\Throwable $th) {
-            dd($th);
             return ObjectResponse::error(
                 message: __('crud.error_create', ['name' => 'Chart of Account']),
                 statusCode: Response::HTTP_INTERNAL_SERVER_ERROR,

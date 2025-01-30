@@ -4,22 +4,24 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
-use App\Exports\MasterData\ChargeExport;
-use App\Functions\ResponseJson;
+use App\Http\Requests\Finance\MasterData\Charge\StoreMultipleChargeRequest;
+use Illuminate\View\View;
 use App\Functions\Utility;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Finance\MasterData\Charge\GlobalChargeRequest;
+use Illuminate\Http\Request;
 use App\Models\Finance\Charge;
-use App\Service\Finance\MasterData\ChargeService;
-use App\Service\Finance\MasterData\ChartOfAccountService;
-use App\Service\Finance\MasterData\UnitService;
-use App\Service\Finance\MasterData\ServiceTypeService;
+use App\Functions\ResponseJson;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
+use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\RedirectResponse;
+use App\Exports\MasterData\ChargeExport;
 use Yajra\DataTables\Facades\DataTables;
+use App\Service\Finance\MasterData\UnitService;
+use App\Service\Finance\MasterData\ChargeService;
+use App\Service\Finance\MasterData\ServiceTypeService;
+use App\Service\Finance\MasterData\ChartOfAccountService;
+use App\Http\Requests\Finance\MasterData\Charge\GlobalChargeRequest;
 
 final class ChargeController extends Controller
 {
@@ -98,12 +100,46 @@ final class ChargeController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function createMultiple(): View
+    {
+        $data = [
+            'page' => 'Add Multiple Charge',
+            'action' => route('finance.master-data.charge.store.multiple'),
+            'method' => 'POST',
+        ];
+
+        $charge = new Charge;
+        $accounts = $this->coaService->getChartOfAccounts();
+        $units = $this->unitService->getUnitCollections();
+        $service = $this->serviceType->getServiceTypes();
+
+        return view('pages.finance.master-data.charge.form-multiple', compact('data', 'charge', 'accounts', 'units','service'));
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(GlobalChargeRequest $request): RedirectResponse
     {
         $requestDTO = $request->validated();
         $createChargeResponse = $this->chargeService->createCharge(
+            dto: $requestDTO
+        );
+
+        return $createChargeResponse->success
+            ? to_route('finance.master-data.charge.index')->with('toastSuccess', $createChargeResponse->message)
+            : back()->with('toastError', $createChargeResponse->message)->withInput();
+    }
+
+    /**
+     * Store multiple charges in storage.
+     */
+    public function storeMultiple(StoreMultipleChargeRequest $request): RedirectResponse
+    {
+        $requestDTO = $request->validated();
+        $createChargeResponse = $this->chargeService->createMultipleCharge(
             dto: $requestDTO
         );
 

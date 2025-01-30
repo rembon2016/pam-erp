@@ -8,6 +8,11 @@
     <x:layout.card.wrapper>
         <x:layout.card.header>
             <x:layout.card.toolbar
+                :customLink="[
+                    'link' => route('finance.master-data.charge.create.multiple'),
+                    'text' => 'Add Multiple Charge',
+                    'icon' => 'bx bx-plus'
+                ]"
                 createDataLink="{{ route('finance.master-data.charge.create') }}"
                 exportExcelLink="{{ route('finance.master-data.charge.export.excel') }}"
                 exportCsvLink="{{ route('finance.master-data.charge.export.csv') }}"

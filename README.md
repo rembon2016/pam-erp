@@ -52,3 +52,10 @@ private function getSqlList(): array
     ];
 }
 ```
+
+## Specification
+- Language: PHP ^8.2
+- Framework: Laravel 11
+- Database: PostgreSQL
+- Distribution: Docker
+- Web Server: Nginx

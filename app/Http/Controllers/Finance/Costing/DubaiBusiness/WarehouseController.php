@@ -130,27 +130,13 @@ final class WarehouseController extends Controller
 
     public function port(Request $request)
     {
-        $query = Port::query();
+        $result = $this->dataService->getPort($request);
 
-        // Apply search filter
-        if ($search = $request->input('search')) {
-            $query->where('port_code', 'ilike', '%'.$search.'%');
-            $query->orWhere('port_name', 'ilike', '%'.$search.'%');
-        }
-
-        // Paginate the results
-        $options = $query->orderBy('port_code', 'ASC')->paginate(1000); // Adjust the pagination size as needed
-
-        return response()->json([
-            'results' => $options->items(),
-            'pagination' => ['more' => $options->hasMorePages()],
-        ]);
+        return response()->json($result);
     }
 
     public function cost($id) {
         $joborder = JobOrder::with(['detail', 'loading', 'doc'])->findOrFail($id);
-
-
 
         $vendor_all = $this->dataService->getCustomer('All');
         $vendor_truck = $this->dataService->getCustomer('Trucking Company');

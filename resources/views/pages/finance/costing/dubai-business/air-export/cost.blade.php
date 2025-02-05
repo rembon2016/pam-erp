@@ -92,7 +92,7 @@ select,
                 </div>
 
                 <div class="tab-pane fade" id="export" role="tabpanel">
-                    <x-costing.special-export :costing="$costing" type="cross-air" :vendorLine="$vendor_all" :charge="$charge" :currency="$currency" :joborder='$joborder' :loadingplan="$loadingplan"/>
+                    <x-costing.special-export :costing="$costing" type="dubai-business/cross-air" :vendorLine="$vendor_all" :charge="$charge" :currency="$currency" :joborder='$joborder' :loadingplan="$loadingplan"/>
                     <div class="col-md-4">
                      <x:form.input label="Transaction Date" placeholder="Transaction Date" name="transaction_date_export" type="date" :model="$joborder" />
                      </div>

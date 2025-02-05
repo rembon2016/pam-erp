@@ -21,7 +21,7 @@ class ChargeExport implements FromCollection, WithHeadings, WithMapping
      */
     public function collection()
     {
-        return $this->chargeService->getCharges();
+        return $this->chargeService->getCharges()->data->charges;
     }
 
     public function map($item): array

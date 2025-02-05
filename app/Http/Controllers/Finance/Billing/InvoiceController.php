@@ -186,7 +186,7 @@ final class InvoiceController extends Controller
         $invoice = new Invoice;
         $charges = $this->chargeService->getCharges([
             'is_agreed_rate' => true,
-        ]);
+        ])->data->charges;
         $currencies = $this->currencyService->getCurrencies()->data->currencies;
         $units = $this->unitService->getUnitCollections();
 

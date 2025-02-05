@@ -202,7 +202,7 @@ final class AgentContractController extends Controller
             return to_route('finance.master-data.agent-contract.index')->with('toastError', $getAgentContractResponse->message);
         }
 
-        $currencies = $this->currrencyService->getCurrencies();
+        $currencies = $this->currrencyService->getCurrencies()->data->currencies;
 
         return view('pages.finance.master-data.agent-contract.detail', [
             'agent_contract' => $getAgentContractResponse->data,
@@ -280,11 +280,11 @@ final class AgentContractController extends Controller
         $countries = $this->countryService->getCountries()->data->countries;
         $charges = $this->chargeService->getCharges([
             'service_type_id' => $getAgentContractResponse->data->service_type_id,
-        ]);
+        ])->data->charges;
         $units = $this->unitService->getUnitCollections();
         $currencies = $this->currrencyService->getCurrencies()->data->currencies;
         $carriers = $this->carrierService->getCarriers();
-        $ports = $this->portService->getPorts();
+        $ports = $this->portService->getPorts()->data->ports;
         $container_types = CustomerContractChargeDetail::CONTAINER_TYPES;
         $routedTransits = [
             ['label' => 'DUBAI', 'value' => 'DUBAI'],

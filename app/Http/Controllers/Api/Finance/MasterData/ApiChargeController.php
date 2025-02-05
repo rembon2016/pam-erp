@@ -21,7 +21,7 @@ final class ApiChargeController extends Controller
         return ResponseJson::success(
             Response::HTTP_OK,
             __('crud.fetched', ['name' => 'Charge']),
-            $this->chargeService->getCharges(request()->query())
+            $this->chargeService->getCharges(request()->query())->data->charges
         );
     }
 

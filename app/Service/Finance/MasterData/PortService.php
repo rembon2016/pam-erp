@@ -40,7 +40,7 @@ final class PortService
         $filteredRecords = $ports->count();
 
         return ObjectResponse::success(
-            message: __('crud.fetched', ['name' => 'Country']),
+            message: __('crud.fetched', ['name' => 'Port']),
             statusCode: Response::HTTP_OK,
             data: (object) [
                 'ports' => $ports->get(),

@@ -35,7 +35,7 @@ final class ServiceTypeController extends Controller
      */
     public function index(): View
     {
-        $service_types = $this->serviceTypeService->getServiceTypes();
+        $service_types = $this->serviceTypeService->getServiceTypes()->data->serviceTypes;
 
         return view('pages.finance.master-data.service-type.index', compact('service_types'));
     }
@@ -48,10 +48,15 @@ final class ServiceTypeController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            $service_types = $this->serviceTypeService->getServiceTypeQueries(request()->query());
+            $service_types = $this->serviceTypeService->getServiceTypes(request()->query());
 
-            return DataTables::of($service_types)
+            return DataTables::of($service_types->data->serviceTypeDatatables)
                 ->addIndexColumn()
+                ->with([
+                    'draw' => request()->query('draw'),
+                    'recordsTotal' => $service_types->data->totalRecords,
+                    'recordsFiltered' => $service_types->data->filteredRecords,
+                ])
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([
                         'edit' => route('finance.master-data.service-type.edit', $item->id),
@@ -59,7 +64,10 @@ final class ServiceTypeController extends Controller
                     ]);
                 })
                 ->rawColumns(['action'])
-                ->toJson();
+                ->setTotalRecords($service_types->data->totalRecords)
+                ->setFilteredRecords($service_types->data->filteredRecords)
+                ->skipPaging()
+                ->make(true);
         }
 
         return ResponseJson::error(

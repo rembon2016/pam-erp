@@ -55,7 +55,7 @@ final class AgentContractController extends Controller
      */
     public function index(): View
     {
-        $services = $this->serviceTypeService->getServiceTypes();
+        $services = $this->serviceTypeService->getServiceTypes()->data->serviceTypes;
 
         return view('pages.finance.master-data.agent-contract.index', compact('services'));
     }
@@ -223,7 +223,7 @@ final class AgentContractController extends Controller
 
         $agent_contract = new AgentContract;
         $customers = $this->customerService->getCustomers()->data->customers;
-        $serviceVendors = $this->serviceTypeService->getServiceTypes();
+        $serviceVendors = $this->serviceTypeService->getServiceTypes()->data->serviceTypes;
         $countries = $this->countryService->getCountries()->data->countries;
         $charges = [];
         $units = $this->unitService->getUnitCollections();
@@ -276,7 +276,7 @@ final class AgentContractController extends Controller
         ];
 
         $customers = $this->customerService->getCustomers()->get();
-        $serviceVendors = $this->serviceTypeService->getServiceTypes();
+        $serviceVendors = $this->serviceTypeService->getServiceTypes()->data->serviceTypes;
         $countries = $this->countryService->getCountries()->data->countries;
         $charges = $this->chargeService->getCharges([
             'service_type_id' => $getAgentContractResponse->data->service_type_id,

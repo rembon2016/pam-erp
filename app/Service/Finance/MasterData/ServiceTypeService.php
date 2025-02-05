@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
+use Illuminate\Http\Response;
 use App\Functions\ObjectResponse;
 use App\Models\Finance\ServiceType;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,18 +17,30 @@ final class ServiceTypeService
      */
     public function __construct() {}
 
-    public function getServiceTypeQueries(?array $filters = []): Builder
+    public function getServiceTypes($filters = [])
     {
-        return ServiceType::when(! empty($filters['service_code']), function ($query) use ($filters) {
+        $serviceTypes = ServiceType::when(! empty($filters['service_code']), function ($query) use ($filters) {
             return $query->where('service_code', $filters['service_code']);
         })->when(! empty($filters['service_name']), function ($query) use ($filters) {
             return $query->where('service_name', $filters['service_name']);
         })->orderBy('service_code', 'ASC');
-    }
 
-    public function getServiceTypes($filters = []): Collection
-    {
-        return $this->getServiceTypeQueries($filters)->get();
+        $totalRecords = ServiceType::count();
+        $filteredRecords = $serviceTypes->count();
+
+        return ObjectResponse::success(
+            message: __('crud.fetched', ['name' => 'Service Type']),
+            statusCode: Response::HTTP_OK,
+            data: (object) [
+                'serviceTypes' => $serviceTypes->get(),
+                'serviceTypeDatatables' => $serviceTypes->skip(request()->get('start', 0))
+                    ->take(request()->get('length', 10))
+                    ->orderBy('created_at', 'DESC')
+                    ->get(),
+                'totalRecords' => $totalRecords,
+                'filteredRecords' => $filteredRecords
+            ]
+        );
     }
 
     /**

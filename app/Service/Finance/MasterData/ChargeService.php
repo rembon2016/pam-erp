@@ -24,6 +24,10 @@ final class ChargeService
             return $query->where('is_agreed_rate', true);
         })->when(!empty($filters['service_type_id']), function ($query) use ($filters) {
             return $query->where('transport_type_id', $filters['service_type_id']);
+        })->when(!empty($filters['revenue']), function ($query) use ($filters) {
+            return $query->where('revenue_id', $filters['revenue']);
+        })->when(!empty($filters['cost']), function ($query) use ($filters) {
+            return $query->where('cost_id', $filters['cost']);
         })->orderBy('charge_code', 'ASC');
 
         $totalRecords = Charge::count();

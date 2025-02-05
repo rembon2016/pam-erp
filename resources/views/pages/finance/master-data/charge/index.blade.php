@@ -45,16 +45,18 @@
 
     <x:layout.modal.filter-modal>
         <div class="col-12">
-            <x:form.select label="Charge Code" name="charge_code" defaultOption="Select Charge Code" :model="request()">
-                @foreach ($charges->pluck('charge_code') as $code)
-                    <option value="{{ $code }}" @selected($code == request()->query('charge_code'))>{{ $code }}</option>
+            <x:form.select2 label="Revenue Account" name="revenue" placeholder="Select Account" :model="request()">
+                @foreach ($accounts as $account)
+                    <option value="{{ $account->id }}" @selected($account->id == request()->query('charge_code'))>{{ "{$account->code}: {$account->account_name}" }}</option>
                 @endforeach
-            </x:form.select>
-            <x:form.select label="Charge Name" name="charge_name" defaultOption="Select Charge Name" :model="request()">
-                @foreach ($charges->pluck('charge_name') as $name)
-                    <option value="{{ $name }}" @selected($name == request()->query('charge_name'))>{{ $name }}</option>
+            </x:form.select2>
+        </div>
+        <div class="col-12">
+            <x:form.select2 label="Cost Account" name="cost" placeholder="Select Account" :model="request()">
+                @foreach ($accounts as $account)
+                    <option value="{{ $account->id }}" @selected($account->id == request()->query('charge_code'))>{{ "{$account->code}: {$account->account_name}" }}</option>
                 @endforeach
-            </x:form.select>
+            </x:form.select2>
         </div>
     </x:layout.modal.filter-modal>
 @endsection
@@ -80,12 +82,12 @@
             "name" => "charge_name",
         ],
         [
-            "data" => "revenue_id",
-            "name" => "revenue_id",
+            "data" => "revenue_account",
+            "name" => "revenue_account",
         ],
         [
-            "data" => "cost_id",
-            "name" => "cost_id",
+            "data" => "cost_account",
+            "name" => "cost_account",
         ],
         [
             "data" => "is_agreed_rate",

@@ -37,9 +37,8 @@ final class ChargeController extends Controller
      */
     public function index(): View
     {
-        $charges = $this->chargeService->getCharges()->data->charges;
-
-        return view('pages.finance.master-data.charge.index', compact('charges'));
+        $accounts = $this->coaService->getChartOfAccounts();
+        return view('pages.finance.master-data.charge.index', compact('accounts'));
     }
 
     /**
@@ -67,13 +66,13 @@ final class ChargeController extends Controller
                 ->editColumn('is_agreed_rate', function ($item) {
                     return $item->is_agreed_rate == 1 ? 'Yes' : 'No';
                 })
-                ->editColumn('revenue_id', function ($item) {
+                ->addColumn('revenue_account', function ($item) {
                     return $item?->revenue?->account_name ?? '-';
                 })
                 ->editColumn('transport_type', function ($item) {
                     return $item?->service?->service_code ?? '-';
                 })
-                ->editColumn('cost_id', function ($item) {
+                ->addColumn('cost_account', function ($item) {
                     return $item?->cost?->account_name ?? '-';
                 })
                 ->rawColumns(['action'])

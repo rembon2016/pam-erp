@@ -21,7 +21,7 @@ class DaybookExport implements FromCollection, WithHeadings, WithMapping
      */
     public function collection()
     {
-        return $this->daybookService->getDaybooks();
+        return $this->daybookService->getDaybooks()->data->daybooks;
     }
 
     public function map($item): array

@@ -30,7 +30,11 @@ final class DaybookController extends Controller
      */
     public function index(): View
     {
-        $daybook_codes = $this->daybookService->getDaybooks()->pluck('code');
+        $daybook_codes = $this->daybookService
+            ->getDaybooks()
+            ->data
+            ->daybooks
+            ->pluck('code');
 
         return view('pages.finance.master-data.daybook.index', compact('daybook_codes'));
     }
@@ -43,8 +47,14 @@ final class DaybookController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            return DataTables::of($this->daybookService->getDaybooks(request()->query()))
+            $daybookResponse = $this->daybookService->getDaybooks(request()->query());
+            return DataTables::of($daybookResponse->data->daybookDatatables)
                 ->addIndexColumn()
+                ->with([
+                    'draw' => request()->query('draw'),
+                    'recordsTotal' => $daybookResponse->data->totalRecords,
+                    'recordsFiltered' => $daybookResponse->data->filteredRecords,
+                ])
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([
                         'edit' => route('finance.master-data.daybook.edit', $item->id),
@@ -52,7 +62,10 @@ final class DaybookController extends Controller
                     ]);
                 })
                 ->rawColumns(['action'])
-                ->toJson();
+                ->setTotalRecords($daybookResponse->data->totalRecords)
+                ->setFilteredRecords($daybookResponse->data->filteredRecords)
+                ->skipPaging()
+                ->make(true);
         }
 
         return ResponseJson::error(

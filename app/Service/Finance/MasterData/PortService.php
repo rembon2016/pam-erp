@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
+use Illuminate\Http\Response;
 use App\Functions\ObjectResponse;
 use Illuminate\Support\Facades\DB;
 use App\Models\Operation\Master\Port;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 
 final class PortService
 {
@@ -18,14 +17,11 @@ final class PortService
     public function __construct() {}
 
     /**
-     * Summary of getPortQueries
-     *
-     * @param mixed $filters
-     * @return \Illuminate\Database\Eloquent\Builder
+     * Retrieves all ports ordered by name in ascending order.
      */
-    public function getPortQueries(?array $filters = []): Builder
+    public function getPorts($filters = [])
     {
-        return Port::with('country')
+        $ports = Port::with('country')
             ->when(! empty($filters['country']), function ($query) use ($filters) {
                 $query->where('country_id', $filters['country']);
             })->when(! empty($filters['port_code']), function ($query) use ($filters) {
@@ -39,16 +35,23 @@ final class PortService
             })
             ->whereNotIn('status', ['2', '3'])
             ->orderBy('port_name', 'asc');
-    }
 
-    /**
-     * Retrieves all ports ordered by name in ascending order.
-     *
-     * @return Collection The retrieved ports, or an error response if the operation fails.
-     */
-    public function getPorts($filters = []): Collection
-    {
-        return $this->getPortQueries($filters)->get();
+        $totalRecords = Port::count();
+        $filteredRecords = $ports->count();
+
+        return ObjectResponse::success(
+            message: __('crud.fetched', ['name' => 'Country']),
+            statusCode: Response::HTTP_OK,
+            data: (object) [
+                'ports' => $ports->get(),
+                'portDatatables' => $ports->skip(request()->get('start', 0))
+                    ->take(request()->get('length', 10))
+                    ->orderBy('date_created', 'DESC')
+                    ->get(),
+                'totalRecords' => $totalRecords,
+                'filteredRecords' => $filteredRecords
+            ]
+        );
     }
 
     /**

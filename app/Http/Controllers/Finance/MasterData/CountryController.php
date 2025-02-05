@@ -31,7 +31,7 @@ final class CountryController extends Controller
      */
     public function index(): View
     {
-        $countries = $this->countryService->getCountries();
+        $countries = $this->countryService->getCountries()->data->countries;
 
         return view('pages.finance.master-data.country.index', compact('countries'));
     }
@@ -47,9 +47,15 @@ final class CountryController extends Controller
      */
     public function list()
     {
+        $countryResponse = $this->countryService->getCountries(request()->query());
         if (request()->ajax()) {
-            return DataTables::of($this->countryService->getCountryQueries(request()->query()))
+            return DataTables::of($countryResponse->data->countryDatatables)
                 ->addIndexColumn()
+                ->with([
+                    'draw' => request()->query('draw'),
+                    'recordsTotal' => $countryResponse->data->totalRecords,
+                    'recordsFiltered' => $countryResponse->data->filteredRecords,
+                ])
                 ->addColumn('region_name', function ($item) {
                     return $item->region?->region_name ?? '-';
                 })
@@ -63,7 +69,10 @@ final class CountryController extends Controller
                     ]);
                 })
                 ->rawColumns(['action'])
-                ->toJson();
+                ->setTotalRecords($countryResponse->data->totalRecords)
+                ->setFilteredRecords($countryResponse->data->filteredRecords)
+                ->skipPaging()
+                ->make(true);
         }
 
         return ResponseJson::error(

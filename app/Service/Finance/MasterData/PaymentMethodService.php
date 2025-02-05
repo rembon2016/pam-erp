@@ -12,16 +12,28 @@ use Illuminate\Http\Response;
 
 final class PaymentMethodService
 {
-    public function getPaymentMethodQueries(?array $filters = []): Builder
+    public function getPaymentMethods($filters = [])
     {
-        return PaymentMethod::when(! empty($filters['payment_terms']), function ($query) use ($filters) {
+        $paymentMethods = PaymentMethod::when(! empty($filters['payment_terms']), function ($query) use ($filters) {
             return $query->where('payment_terms', $filters['payment_terms']);
         })->orderBy('payment_terms', 'DESC');
-    }
 
-    public function getPaymentMethods($filters = []): Collection
-    {
-        return $this->getPaymentMethodQueries($filters)->get();
+        $totalRecords = PaymentMethod::count();
+        $filteredRecords = $paymentMethods->count();
+
+        return ObjectResponse::success(
+            message: __('crud.fetched', ['name' => 'Payment Method']),
+            statusCode: Response::HTTP_OK,
+            data: (object) [
+                'paymentMethods' => $paymentMethods->get(),
+                'paymentMethodDatatables' => $paymentMethods->skip(request()->get('start', 0))
+                    ->take(request()->get('length', 10))
+                    ->orderBy('created_at', 'DESC')
+                    ->get(),
+                'totalRecords' => $totalRecords,
+                'filteredRecords' => $filteredRecords
+            ]
+        );
     }
 
     public function getPaymentMethodById(string $id): object

@@ -14,9 +14,9 @@ use Illuminate\Database\Eloquent\Collection;
 
 final class ChargeService
 {
-    public function getChargeQueries(?array $filters = []): Builder
+    public function getCharges($filters = [])
     {
-        return Charge::with(['unit'])->when(! empty($filters['charge_code']), function ($query) use ($filters) {
+        $charges = Charge::with(['unit'])->when(! empty($filters['charge_code']), function ($query) use ($filters) {
             return $query->where('charge_code', $filters['charge_code']);
         })->when(! empty($filters['charge_name']), function ($query) use ($filters) {
             return $query->where('charge_name', $filters['charge_name']);
@@ -24,12 +24,28 @@ final class ChargeService
             return $query->where('is_agreed_rate', true);
         })->when(!empty($filters['service_type_id']), function ($query) use ($filters) {
             return $query->where('transport_type_id', $filters['service_type_id']);
+        })->when(!empty($filters['revenue']), function ($query) use ($filters) {
+            return $query->where('revenue_id', $filters['revenue']);
+        })->when(!empty($filters['cost']), function ($query) use ($filters) {
+            return $query->where('cost_id', $filters['cost']);
         })->orderBy('charge_code', 'ASC');
-    }
 
-    public function getCharges($filters = []): Collection
-    {
-        return $this->getChargeQueries($filters)->get();
+        $totalRecords = Charge::count();
+        $filteredRecords = $charges->count();
+
+        return ObjectResponse::success(
+            message: __('crud.fetched', ['name' => 'GL Charge']),
+            statusCode: Response::HTTP_OK,
+            data: (object) [
+                'charges' => $charges->get(),
+                'chargeDatatables' => $charges->skip(request()->get('start', 0))
+                    ->take(request()->get('length', 10))
+                    ->orderBy('created_at', 'DESC')
+                    ->get(),
+                'totalRecords' => $totalRecords,
+                'filteredRecords' => $filteredRecords
+            ]
+        );
     }
 
     public function getChargeById(string $id): object
@@ -69,6 +85,7 @@ final class ChargeService
             $dto["transport_type"] = $service->service_code;
             $charges = collect($dto['charges'])->map(function ($item) use ($dto) {
                 $item['id'] = Str::uuid();
+                $item['transport_type_id'] = $dto['transport_type_id'];
                 $item['transport_type'] = $dto['transport_type'];
                 $item['is_agreed_rate'] = $dto['is_agreed_rate'];
                 $item['unit_id'] = $dto['unit_id'];

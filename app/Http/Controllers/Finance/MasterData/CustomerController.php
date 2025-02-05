@@ -35,7 +35,7 @@ final class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = $this->customerService->getCustomers()->get();
+        $customers = $this->customerService->getCustomers()->data->customers;
         $customerTypes = Arr::sort(
             array: array_merge(CustomerType::COLLECT, array(CustomerType::OFFICE))
         );
@@ -45,9 +45,15 @@ final class CustomerController extends Controller
 
     public function list()
     {
+        $customerResponse = $this->customerService->getCustomers(request()->query());
         if (request()->ajax()) {
-            return DataTables::of($this->customerService->getCustomers(request()->query()))
+            return DataTables::of($customerResponse->data->customerDatatables)
                 ->addIndexColumn()
+                ->with([
+                    'draw' => request()->query('draw'),
+                    'recordsTotal' => $customerResponse->data->totalRecords,
+                    'recordsFiltered' => $customerResponse->data->filteredRecords,
+                ])
                 ->addColumn('customer_type', function ($item) {
 
                     $html = '<ul style="list-style-type:none; margin:0;padding:0;">';
@@ -68,7 +74,10 @@ final class CustomerController extends Controller
                     ]);
                 })
                 ->rawColumns(['customer_type', 'action'])
-                ->toJson();
+                ->setTotalRecords($customerResponse->data->totalRecords)
+                ->setFilteredRecords($customerResponse->data->filteredRecords)
+                ->skipPaging()
+                ->make(true);
         }
 
         return ResponseJson::error(

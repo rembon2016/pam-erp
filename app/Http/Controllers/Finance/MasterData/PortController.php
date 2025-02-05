@@ -33,7 +33,7 @@ final class PortController extends Controller
      */
     public function index(): View
     {
-        $ports = $this->portService->getPorts();
+        $ports = $this->portService->getPorts()->data->ports;
 
         return view('pages.finance.master-data.port.index', compact('ports'));
     }
@@ -50,9 +50,16 @@ final class PortController extends Controller
      */
     public function list()
     {
+        $portResponse = $this->portService->getPorts(request()->query());
+
         if (request()->ajax()) {
-            return DataTables::of($this->portService->getPortQueries(request()->query()))
+            return DataTables::of($portResponse->data->portDatatables)
                 ->addIndexColumn()
+                ->with([
+                    'draw' => request()->query('draw'),
+                    'recordsTotal' => $portResponse->data->totalRecords,
+                    'recordsFiltered' => $portResponse->data->filteredRecords,
+                ])
                 ->addColumn('country_name', function ($item) {
                     return $item->country?->country_name;
                 })
@@ -66,7 +73,10 @@ final class PortController extends Controller
                     ]);
                 })
                 ->rawColumns(['action'])
-                ->toJson();
+                ->setTotalRecords($portResponse->data->totalRecords)
+                ->setFilteredRecords($portResponse->data->filteredRecords)
+                ->skipPaging()
+                ->make(true);
         }
 
         return ResponseJson::error(

@@ -186,8 +186,8 @@ final class InvoiceController extends Controller
         $invoice = new Invoice;
         $charges = $this->chargeService->getCharges([
             'is_agreed_rate' => true,
-        ]);
-        $currencies = $this->currencyService->getCurrencies();
+        ])->data->charges;
+        $currencies = $this->currencyService->getCurrencies()->data->currencies;
         $units = $this->unitService->getUnitCollections();
 
         return view('pages.finance.billing.invoice.generate', compact('invoice', 'charges', 'currencies', 'units', 'shippings'));

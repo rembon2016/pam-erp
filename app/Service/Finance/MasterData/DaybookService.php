@@ -11,11 +11,28 @@ use Illuminate\Http\Response;
 
 final class DaybookService
 {
-    public function getDaybooks($filters = []): Collection
+    public function getDaybooks($filters = [])
     {
-        return Daybook::when(! empty($filters['daybook_code']), function ($query) use ($filters) {
+        $daybooks = Daybook::when(! empty($filters['daybook_code']), function ($query) use ($filters) {
             $query->where('code', $filters['daybook_code']);
-        })->orderBy('code', 'ASC')->get();
+        })->orderBy('code', 'ASC');
+
+        $totalRecords = Daybook::count();
+        $filteredRecords = $daybooks->count();
+
+        return ObjectResponse::success(
+            message: __('crud.fetched', ['name' => 'Daybook']),
+            statusCode: Response::HTTP_OK,
+            data: (object) [
+                'daybooks' => $daybooks->get(),
+                'daybookDatatables' => $daybooks->skip(request()->get('start', 0))
+                    ->take(request()->get('length', 10))
+                    ->orderBy('created_at', 'DESC')
+                    ->get(),
+                'totalRecords' => $totalRecords,
+                'filteredRecords' => $filteredRecords
+            ]
+        );
     }
 
     public function getDaybookById(string $id): object

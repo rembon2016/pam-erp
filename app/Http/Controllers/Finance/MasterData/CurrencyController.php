@@ -35,7 +35,7 @@ final class CurrencyController extends Controller
      */
     public function index(): View
     {
-        $currencies = $this->currencyService->getCurrencies();
+        $currencies = $this->currencyService->getCurrencies()->data->currencies;
 
         return view('pages.finance.master-data.currency.index', compact('currencies'));
     }
@@ -48,10 +48,15 @@ final class CurrencyController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            $currencies = $this->currencyService->getCurrencyQueries(request()->query());
+            $currencyResponse = $this->currencyService->getCurrencies(request()->query());
 
-            return DataTables::of($currencies)
+            return DataTables::of($currencyResponse->data->currencyDatatables)
                 ->addIndexColumn()
+                ->with([
+                    'draw' => request()->query('draw'),
+                    'recordsTotal' => $currencyResponse->data->totalRecords,
+                    'recordsFiltered' => $currencyResponse->data->filteredRecords,
+                ])
                 ->editColumn('currency_date', function ($item) {
                     return $item->currency_date?->format('d-m-Y');
                 })
@@ -62,7 +67,10 @@ final class CurrencyController extends Controller
                     ]);
                 })
                 ->rawColumns(['action'])
-                ->toJson();
+                ->setTotalRecords($currencyResponse->data->totalRecords)
+                ->setFilteredRecords($currencyResponse->data->filteredRecords)
+                ->skipPaging()
+                ->make(true);
         }
 
         return ResponseJson::error(

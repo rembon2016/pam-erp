@@ -30,7 +30,11 @@ final class PaymentMethodController extends Controller
      */
     public function index(): View
     {
-        $payment_terms = $this->paymentMethodService->getPaymentMethods()->pluck('payment_terms');
+        $payment_terms = $this->paymentMethodService
+            ->getPaymentMethods()
+            ->data
+            ->paymentMethods
+            ->pluck('payment_terms');
 
         return view('pages.finance.master-data.payment-method.index', compact('payment_terms'));
     }
@@ -43,8 +47,15 @@ final class PaymentMethodController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            return DataTables::of($this->paymentMethodService->getPaymentMethodQueries(request()->query()))
+            $paymentMethodResponse = $this->paymentMethodService->getPaymentMethods(request()->query());
+
+            return DataTables::of($paymentMethodResponse->data->paymentMethodDatatables)
                 ->addIndexColumn()
+                ->with([
+                    'draw' => request()->query('draw'),
+                    'recordsTotal' => $paymentMethodResponse->data->totalRecords,
+                    'recordsFiltered' => $paymentMethodResponse->data->filteredRecords,
+                ])
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([
                         'edit' => route('finance.master-data.payment-method.edit', $item->id),
@@ -52,7 +63,10 @@ final class PaymentMethodController extends Controller
                     ]);
                 })
                 ->rawColumns(['action'])
-                ->toJson();
+                ->setTotalRecords($paymentMethodResponse->data->totalRecords)
+                ->setFilteredRecords($paymentMethodResponse->data->filteredRecords)
+                ->skipPaging()
+                ->make(true);
         }
 
         return ResponseJson::error(

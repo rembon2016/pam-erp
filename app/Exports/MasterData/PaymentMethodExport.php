@@ -21,7 +21,7 @@ class PaymentMethodExport implements FromCollection, WithHeadings, WithMapping
      */
     public function collection()
     {
-        return $this->paymentMethodService->getPaymentMethods();
+        return $this->paymentMethodService->getPaymentMethods()->data->paymentMethods;
     }
 
     public function map($item): array

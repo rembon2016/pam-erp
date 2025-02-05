@@ -37,9 +37,8 @@ final class ChargeController extends Controller
      */
     public function index(): View
     {
-        $charges = $this->chargeService->getCharges();
-
-        return view('pages.finance.master-data.charge.index', compact('charges'));
+        $accounts = $this->coaService->getChartOfAccounts();
+        return view('pages.finance.master-data.charge.index', compact('accounts'));
     }
 
     /**
@@ -50,28 +49,40 @@ final class ChargeController extends Controller
     public function list(): JsonResponse
     {
         if (request()->ajax()) {
-            return DataTables::of($this->chargeService->getChargeQueries(request()->query()))
+            $chargeResponse = $this->chargeService->getCharges(request()->query());
+            return DataTables::of($chargeResponse->data->chargeDatatables)
                 ->addIndexColumn()
+                ->with([
+                    'draw' => request()->query('draw'),
+                    'recordsTotal' => $chargeResponse->data->totalRecords,
+                    'recordsFiltered' => $chargeResponse->data->filteredRecords,
+                ])
                 ->addColumn('action', function ($item) {
                     return Utility::generateTableActions([
                         'edit' => route('finance.master-data.charge.edit', $item->id),
                         'delete' => route('finance.master-data.charge.destroy', $item->id),
                     ]);
                 })
+                ->editColumn('transport_type', function ($item) {
+                    return $item->service?->service_name ?? '-';
+                })
                 ->editColumn('is_agreed_rate', function ($item) {
                     return $item->is_agreed_rate == 1 ? 'Yes' : 'No';
                 })
-                ->editColumn('revenue_id', function ($item) {
+                ->addColumn('revenue_account', function ($item) {
                     return $item?->revenue?->account_name ?? '-';
                 })
                 ->editColumn('transport_type', function ($item) {
                     return $item?->service?->service_code ?? '-';
                 })
-                ->editColumn('cost_id', function ($item) {
+                ->addColumn('cost_account', function ($item) {
                     return $item?->cost?->account_name ?? '-';
                 })
                 ->rawColumns(['action'])
-                ->toJson();
+                ->setTotalRecords($chargeResponse->data->totalRecords)
+                ->setFilteredRecords($chargeResponse->data->filteredRecords)
+                ->skipPaging()
+                ->make(true);
         }
 
         return ResponseJson::error(
@@ -94,7 +105,7 @@ final class ChargeController extends Controller
         $charge = new Charge;
         $accounts = $this->coaService->getChartOfAccounts();
         $units = $this->unitService->getUnitCollections();
-        $service = $this->serviceType->getServiceTypes();
+        $service = $this->serviceType->getServiceTypes()->data->serviceTypes;
 
         return view('pages.finance.master-data.charge.form', compact('data', 'charge', 'accounts', 'units','service'));
     }
@@ -113,7 +124,7 @@ final class ChargeController extends Controller
         $charge = new Charge;
         $accounts = $this->coaService->getChartOfAccounts();
         $units = $this->unitService->getUnitCollections();
-        $service = $this->serviceType->getServiceTypes();
+        $service = $this->serviceType->getServiceTypes()->data->serviceTypes;
 
         return view('pages.finance.master-data.charge.form-multiple', compact('data', 'charge', 'accounts', 'units','service'));
     }
@@ -160,7 +171,7 @@ final class ChargeController extends Controller
 
         $accounts = $this->coaService->getChartOfAccounts();
         $units = $this->unitService->getUnitCollections();
-        $service = $this->serviceType->getServiceTypes();
+        $service = $this->serviceType->getServiceTypes()->data->serviceTypes;
 
         $data = [
             'page' => 'Edit Charge',

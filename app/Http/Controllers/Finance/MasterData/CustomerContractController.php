@@ -50,7 +50,7 @@ final class CustomerContractController extends Controller
      */
     public function index(): View
     {
-        $customers = $this->customerService->getCustomers()->get();
+        $customers = $this->customerService->getCustomers()->data->customers;
 
         return view('pages.finance.master-data.customer-contract.index', compact('customers'));
     }
@@ -208,14 +208,14 @@ final class CustomerContractController extends Controller
         $customer_contract = new CustomerContract;
         $customers = $this->customerService->getCustomers([
             'is_exists_customer' => true
-        ])->get();
+        ])->data->customers;
         $charges = $this->chargeService->getCharges([
             'is_agreed_rate' => true,
-        ]);
-        $currencies = $this->currencyService->getCurrencies();
+        ])->data->charges;
+        $currencies = $this->currencyService->getCurrencies()->data->currencies;
         $units = Unit::orderBy('unit_name', 'asc')->get();
         $services = CustomerContract::SERVICES;
-        $countries = $this->countryService->getCountries();
+        $countries = $this->countryService->getCountries()->data->countries;
         $container_types = CustomerContractChargeDetail::CONTAINER_TYPES;
 
         return view('pages.finance.master-data.customer-contract.form', compact('data', 'customer_contract', 'customers', 'charges', 'currencies', 'units', 'services', 'countries', 'container_types'));
@@ -248,14 +248,14 @@ final class CustomerContractController extends Controller
 
         $customers = $this->customerService->getCustomers([
             'is_exists_customer' => true
-        ])->get();
+        ])->data->customers;
         $charges = $this->chargeService->getCharges([
             'is_agreed_rate' => true,
-        ]);
-        $currencies = $this->currencyService->getCurrencies();
+        ])->data->charges;
+        $currencies = $this->currencyService->getCurrencies()->data->currencies;
         $units = Unit::orderBy('unit_name', 'asc')->get();
         $services = CustomerContract::SERVICES;
-        $countries = $this->countryService->getCountries();
+        $countries = $this->countryService->getCountries()->data->countries;
         $container_types = CustomerContractChargeDetail::CONTAINER_TYPES;
 
         $data = [

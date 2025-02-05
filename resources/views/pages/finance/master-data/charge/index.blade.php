@@ -31,6 +31,7 @@
                         <x:layout.table.heading widthPixel="50" title="No" />
                         <x:layout.table.heading widthPixel="100" title="Charge Code" />
                         <x:layout.table.heading widthPixel="100" title="Charge Name" />
+                        <x:layout.table.heading widthPixel="100" title="Transport Type" />
                         <x:layout.table.heading widthPixel="100" title="Revenue Account" />
                         <x:layout.table.heading widthPixel="100" title="Cost Account" />
                         <x:layout.table.heading widthPixel="100" title="Agreed Rate Charge" />
@@ -80,6 +81,10 @@
         [
             "data" => "charge_name",
             "name" => "charge_name",
+        ],
+        [
+            "data" => "transport_type",
+            "name" => "transport_type",
         ],
         [
             "data" => "revenue_account",

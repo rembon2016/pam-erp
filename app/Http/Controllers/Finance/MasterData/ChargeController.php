@@ -63,6 +63,9 @@ final class ChargeController extends Controller
                         'delete' => route('finance.master-data.charge.destroy', $item->id),
                     ]);
                 })
+                ->editColumn('transport_type', function ($item) {
+                    return $item->service?->service_name ?? '-';
+                })
                 ->editColumn('is_agreed_rate', function ($item) {
                     return $item->is_agreed_rate == 1 ? 'Yes' : 'No';
                 })

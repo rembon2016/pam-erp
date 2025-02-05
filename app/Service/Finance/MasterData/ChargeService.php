@@ -85,6 +85,7 @@ final class ChargeService
             $dto["transport_type"] = $service->service_code;
             $charges = collect($dto['charges'])->map(function ($item) use ($dto) {
                 $item['id'] = Str::uuid();
+                $item['transport_type_id'] = $dto['transport_type_id'];
                 $item['transport_type'] = $dto['transport_type'];
                 $item['is_agreed_rate'] = $dto['is_agreed_rate'];
                 $item['unit_id'] = $dto['unit_id'];

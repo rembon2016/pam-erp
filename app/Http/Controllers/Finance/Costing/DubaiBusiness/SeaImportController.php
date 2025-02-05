@@ -36,7 +36,7 @@ final class SeaImportController extends Controller
             $pageSize = ($request->length) ? $request->length : 10;
             $draw = $request->query('draw');
 
-            $joborder = JobOrder::with(['detail', 'loading'])->where('job_order_type', 'SEAIMPORT')->where('status', '!=', 3);
+            $joborder = JobOrder::with(['detail', 'loading','origin','costing'])->where('job_order_type', 'SEAIMPORT')->where('status', '!=', 3);
             $joborder->when(! empty($request['search']['value']), function ($query) use ($request) {
                 $search = $request['search']['value'];
 

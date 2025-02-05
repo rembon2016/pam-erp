@@ -48,7 +48,7 @@ final class CrossAirController extends Controller
             $pageSize = ($request->length) ? $request->length : 10;
             $draw = $request->query('draw');
 
-            $joborder = JobOrderAir::with(['detail', 'loadingplan', 'lpdetail', 'lparrival'])->where('status', '!=', 3);
+            $joborder = JobOrderAir::with(['detail', 'loadingplan', 'lpdetail', 'lparrival','costing'])->where('status', '!=', 3);
             $joborder->when(! empty($request['search']['value']), function ($query) use ($request) {
                 $search = $request['search']['value'];
 

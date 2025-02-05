@@ -36,7 +36,7 @@ final class CustomerContractService
 
     public function getCustomerContracts($filters = [], bool $get_data = true): Collection|Builder
     {
-        $data = CustomerContract::with('histories')->when(! empty($filters['customer']), function ($query) use ($filters) {
+        $data = CustomerContract::with(['histories','customer'])->when(! empty($filters['customer']), function ($query) use ($filters) {
             return $query->where('customer_id', $filters['customer']);
         })->orderBy('contract_end', 'desc');
 

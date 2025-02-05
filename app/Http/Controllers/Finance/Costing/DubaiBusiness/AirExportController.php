@@ -36,7 +36,7 @@ final class AirExportController extends Controller
             $pageSize = ($request->length) ? $request->length : 10;
             $draw = $request->query('draw');
 
-            $joborder = JobOrder::with(['detail', 'loadingplan'])->where('job_order_type', 'AIREXPORT')->where('status', '!=', 3);
+            $joborder = JobOrder::with(['detail', 'loadingplan','costing','lpdetail','lparrival'])->where('job_order_type', 'AIREXPORT')->where('status', '!=', 3);
             $joborder->when(! empty($request['search']['value']), function ($query) use ($request) {
                 $search = $request['search']['value'];
 

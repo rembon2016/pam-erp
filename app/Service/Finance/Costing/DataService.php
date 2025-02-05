@@ -16,7 +16,7 @@ final class DataService
         $start = $request->get('start', 0);
         $pageSize = $request->get('length', 10);
 
-        $query = JobOrder::with(['detail', 'loading'])
+        $query = JobOrder::with(['detail', 'loading','origin','costing'])
             ->activeOrders()
             ->when(!empty(request()->get('vessel_filter')), function ($query) {
                 return $query->where('vessel_id', request()->get('vessel_filter'));

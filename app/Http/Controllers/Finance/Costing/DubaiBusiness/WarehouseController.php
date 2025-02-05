@@ -36,7 +36,7 @@ final class WarehouseController extends Controller
             $pageSize = ($request->length) ? $request->length : 10;
             $draw = $request->query('draw');
 
-            $joborder = JobOrder::with(['detail', 'loading'])->where('job_order_type', 'WAREHOUSE')->where('status', '!=', 3);
+            $joborder = JobOrder::with(['detail', 'loading','costing'])->where('job_order_type', 'WAREHOUSE')->where('status', '!=', 3);
             $joborder->when(! empty($request['search']['value']), function ($query) use ($request) {
                 $search = $request['search']['value'];
 

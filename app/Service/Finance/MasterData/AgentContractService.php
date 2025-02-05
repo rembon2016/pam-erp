@@ -27,7 +27,7 @@ final class AgentContractService
 
     public function getAgentContracts($filters = [], bool $get_data = true): Collection|Builder
     {
-        $data = AgentContract::when(! empty($filters['customer']), function ($query) use ($filters) {
+        $data = AgentContract::with('customer')->when(! empty($filters['customer']), function ($query) use ($filters) {
             return $query->where('customer_id', $filters['customer']);
         })->when(!empty($filters['service_type']), function ($query) use ($filters) {
             return $query->where('service_type_id', $filters['service_type']);

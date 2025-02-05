@@ -215,7 +215,7 @@ final class CustomerContractController extends Controller
         $currencies = $this->currencyService->getCurrencies();
         $units = Unit::orderBy('unit_name', 'asc')->get();
         $services = CustomerContract::SERVICES;
-        $countries = $this->countryService->getCountries();
+        $countries = $this->countryService->getCountries()->data->countries;
         $container_types = CustomerContractChargeDetail::CONTAINER_TYPES;
 
         return view('pages.finance.master-data.customer-contract.form', compact('data', 'customer_contract', 'customers', 'charges', 'currencies', 'units', 'services', 'countries', 'container_types'));
@@ -255,7 +255,7 @@ final class CustomerContractController extends Controller
         $currencies = $this->currencyService->getCurrencies();
         $units = Unit::orderBy('unit_name', 'asc')->get();
         $services = CustomerContract::SERVICES;
-        $countries = $this->countryService->getCountries();
+        $countries = $this->countryService->getCountries()->data->countries;
         $container_types = CustomerContractChargeDetail::CONTAINER_TYPES;
 
         $data = [

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
+use Illuminate\Http\Response;
 use App\Functions\ObjectResponse;
-use App\Models\Operation\Master\Countries;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\Operation\Master\Countries;
 use Illuminate\Database\Eloquent\Collection;
 
 final class CountryService
@@ -19,18 +20,30 @@ final class CountryService
         //
     }
 
-    public function getCountryQueries(?array $filters = []): Builder
+    public function getCountries($filters = [])
     {
-        return Countries::when(! empty($filters['country_code']), function ($query) use ($filters) {
+        $countries = Countries::when(! empty($filters['country_code']), function ($query) use ($filters) {
             return $query->where('country_code', $filters['country_code']);
         })->when(! empty($filters['country_name']), function ($query) use ($filters) {
             return $query->where('country_name', $filters['country_name']);
         })->whereNotIn('status', ['2', '3'])->orderBy('country_name', 'asc');
-    }
 
-    public function getCountries($filters = []): Collection
-    {
-        return $this->getCountryQueries($filters)->get();
+        $totalRecords = Countries::count();
+        $filteredRecords = $countries->count();
+
+        return ObjectResponse::success(
+            message: __('crud.fetched', ['name' => 'Country']),
+            statusCode: Response::HTTP_OK,
+            data: (object) [
+                'countries' => $countries->get(),
+                'countryDatatables' => $countries->skip(request()->get('start', 0))
+                    ->take(request()->get('length', 10))
+                    ->orderBy('date_created', 'DESC')
+                    ->get(),
+                'totalRecords' => $totalRecords,
+                'filteredRecords' => $filteredRecords
+            ]
+        );
     }
 
     public function getCountryById(int $id): object

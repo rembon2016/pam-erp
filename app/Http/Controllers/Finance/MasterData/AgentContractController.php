@@ -224,7 +224,7 @@ final class AgentContractController extends Controller
         $agent_contract = new AgentContract;
         $customers = $this->customerService->getCustomers()->data->customers;
         $serviceVendors = $this->serviceTypeService->getServiceTypes();
-        $countries = $this->countryService->getCountries();
+        $countries = $this->countryService->getCountries()->data->countries;
         $charges = [];
         $units = $this->unitService->getUnitCollections();
         $carriers = $this->carrierService->getCarriers();
@@ -277,7 +277,7 @@ final class AgentContractController extends Controller
 
         $customers = $this->customerService->getCustomers()->get();
         $serviceVendors = $this->serviceTypeService->getServiceTypes();
-        $countries = $this->countryService->getCountries();
+        $countries = $this->countryService->getCountries()->data->countries;
         $charges = $this->chargeService->getCharges([
             'service_type_id' => $getAgentContractResponse->data->service_type_id,
         ]);

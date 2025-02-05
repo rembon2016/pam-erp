@@ -21,7 +21,7 @@ final class CostingService
         $data_costing = [
             'job_order_id' => $request->job_order_id,
             'status' => $request->status_costing,
-            'type' => 'SEAAIR',
+            'type' => $request->type_costing,
             'notes' => $request->notes,
             'created_by' => auth()->user()->email,
         ];

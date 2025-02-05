@@ -32,6 +32,7 @@ select,
      <x:form.wrapper id="costing-form" action="{{ $data['action'] }}" method="{{ $data['method'] }}">
         <input type="hidden" value="{{ $joborder->loading_plan_id }}" name="loading_plan_id">
         <input type="hidden" value="{{ $joborder->job_order_id }}" name="job_order_id">
+         <input type="hidden" name="type_costing" value="SEAAIR">
          <input type="hidden" name="status_costing" id="status_costing" value="">
         <div class="col-md-12">
             <div class="row">

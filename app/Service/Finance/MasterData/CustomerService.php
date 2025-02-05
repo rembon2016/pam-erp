@@ -19,6 +19,7 @@ use App\Models\Operation\Master\CustomerType;
 use App\Models\Operation\Master\Vendor;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -38,9 +39,8 @@ final class CustomerService
      * Get all customers ordered by customer name in ascending order.
      *
      * @param  array  $filters
-     * @return \Illuminate\Database\Eloquent\Builder A collection of all customers.
      */
-    public function getCustomers($filters = []): Builder
+    public function getCustomers($filters = [])
     {
         $customer = Customer::query()
             ->when(! empty($filters['customer_name']), fn ($query) => $query->where('customer_name', 'ilike', '%'.$filters['customer_name'].'%'))
@@ -48,7 +48,22 @@ final class CustomerService
             ->when(!empty($filters['is_exists_customer']) && $filters['is_exists_customer'] == 'true', fn ($query) => $query->whereNotNull('customer_code'))
             ->orderBy('customer_name', 'asc');
 
-        return $customer;
+        $totalRecords = Customer::count();
+        $filteredRecords = $customer->count();
+
+        return ObjectResponse::success(
+            message: __('crud.fetched', ['name' => 'Customer']),
+            statusCode: Response::HTTP_OK,
+            data: (object) [
+                'customers' => $customer->get(),
+                'customerDatatables' => $customer->skip(request()->get('start', 0))
+                    ->take(request()->get('length', 10))
+                    ->orderBy('created_at', 'DESC')
+                    ->get(),
+                'totalRecords' => $totalRecords,
+                'filteredRecords' => $filteredRecords
+            ]
+        );
     }
 
     /**

@@ -50,7 +50,7 @@ final class CustomerContractController extends Controller
      */
     public function index(): View
     {
-        $customers = $this->customerService->getCustomers()->get();
+        $customers = $this->customerService->getCustomers()->data->customers;
 
         return view('pages.finance.master-data.customer-contract.index', compact('customers'));
     }
@@ -208,7 +208,7 @@ final class CustomerContractController extends Controller
         $customer_contract = new CustomerContract;
         $customers = $this->customerService->getCustomers([
             'is_exists_customer' => true
-        ])->get();
+        ])->data->customers;
         $charges = $this->chargeService->getCharges([
             'is_agreed_rate' => true,
         ]);

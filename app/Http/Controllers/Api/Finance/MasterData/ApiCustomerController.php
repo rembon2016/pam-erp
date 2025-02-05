@@ -17,7 +17,7 @@ final class ApiCustomerController extends Controller
 
     public function getCustomers(): JsonResponse
     {
-        $customers = $this->customerService->getCustomers()->get();
+        $customers = $this->customerService->getCustomers()->data->customers;
 
         return ResponseJson::success(code: 200, message: __('crud.fetched', ['name' => 'Customer']), data: $customers);
     }

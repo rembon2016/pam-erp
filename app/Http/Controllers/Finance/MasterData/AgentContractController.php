@@ -228,7 +228,7 @@ final class AgentContractController extends Controller
         $charges = [];
         $units = $this->unitService->getUnitCollections();
         $carriers = $this->carrierService->getCarriers();
-        $currencies = $this->currrencyService->getCurrencies();
+        $currencies = $this->currrencyService->getCurrencies()->data->currencies;
         $container_types = CustomerContractChargeDetail::CONTAINER_TYPES;
         $routedTransits = [
             ['label' => 'DUBAI', 'value' => 'DUBAI'],
@@ -282,7 +282,7 @@ final class AgentContractController extends Controller
             'service_type_id' => $getAgentContractResponse->data->service_type_id,
         ]);
         $units = $this->unitService->getUnitCollections();
-        $currencies = $this->currrencyService->getCurrencies();
+        $currencies = $this->currrencyService->getCurrencies()->data->currencies;
         $carriers = $this->carrierService->getCarriers();
         $ports = $this->portService->getPorts();
         $container_types = CustomerContractChargeDetail::CONTAINER_TYPES;

@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
-use App\Functions\ObjectResponse;
+use Illuminate\Http\Response;
 use App\Models\Finance\Currency;
+use App\Functions\ObjectResponse;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -16,18 +17,30 @@ final class CurrencyService
      */
     public function __construct() {}
 
-    public function getCurrencyQueries(?array $filters = []): Builder
+    public function getCurrencies($filters = [])
     {
-        return Currency::when(! empty($filters['currency_code']), function ($query) use ($filters) {
+        $currencies = Currency::when(! empty($filters['currency_code']), function ($query) use ($filters) {
             return $query->where('currency_code', $filters['currency_code']);
         })->when(! empty($filters['currency_name']), function ($query) use ($filters) {
             return $query->where('currency_name', $filters['currency_name']);
         })->orderBy('currency_code', 'ASC');
-    }
 
-    public function getCurrencies($filters = []): Collection
-    {
-        return $this->getCurrencyQueries($filters)->get();
+        $totalRecords = Currency::count();
+        $filteredRecords = $currencies->count();
+
+        return ObjectResponse::success(
+            message: __('crud.fetched', ['name' => 'Currency']),
+            statusCode: Response::HTTP_OK,
+            data: (object) [
+                'currencies' => $currencies->get(),
+                'currencyDatatables' => $currencies->skip(request()->get('start', 0))
+                    ->take(request()->get('length', 10))
+                    ->orderBy('created_at', 'DESC')
+                    ->get(),
+                'totalRecords' => $totalRecords,
+                'filteredRecords' => $filteredRecords
+            ]
+        );
     }
 
     /**

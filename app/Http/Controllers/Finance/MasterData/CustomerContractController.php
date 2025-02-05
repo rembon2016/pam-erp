@@ -212,7 +212,7 @@ final class CustomerContractController extends Controller
         $charges = $this->chargeService->getCharges([
             'is_agreed_rate' => true,
         ]);
-        $currencies = $this->currencyService->getCurrencies();
+        $currencies = $this->currencyService->getCurrencies()->data->currencies;
         $units = Unit::orderBy('unit_name', 'asc')->get();
         $services = CustomerContract::SERVICES;
         $countries = $this->countryService->getCountries()->data->countries;
@@ -252,7 +252,7 @@ final class CustomerContractController extends Controller
         $charges = $this->chargeService->getCharges([
             'is_agreed_rate' => true,
         ]);
-        $currencies = $this->currencyService->getCurrencies();
+        $currencies = $this->currencyService->getCurrencies()->data->currencies;
         $units = Unit::orderBy('unit_name', 'asc')->get();
         $services = CustomerContract::SERVICES;
         $countries = $this->countryService->getCountries()->data->countries;

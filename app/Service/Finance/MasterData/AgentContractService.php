@@ -70,6 +70,8 @@ final class AgentContractService
         try {
             $service_data = $dto['service_data'];
             $contract_files = !empty($dto['contract_file']) ? $dto['contract_file'] : [];
+            $service_type = ServiceType::findOrFail($dto['service_type_id']);
+            $dto['service_code'] = $service_type->service_code;
 
             unset($dto['service_data'], $dto['contract_file']);
 
@@ -120,6 +122,9 @@ final class AgentContractService
         DB::beginTransaction();
         try {
             $service_data = $dto['service_data'];
+            $service_type = ServiceType::findOrFail($dto['service_type_id']);
+            $dto['service_code'] = $service_type->service_code;
+
             $contract_files = !empty($dto['contract_file']) ? $dto['contract_file'] : [];
             unset($dto['service_data'], $dto['contract_file']);
 

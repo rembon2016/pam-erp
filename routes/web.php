@@ -224,7 +224,9 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/', [ChargeController::class, 'index'])->name('index');
                 Route::get('/list', [ChargeController::class, 'list'])->name('list');
                 Route::get('/create', [ChargeController::class, 'create'])->name('create');
+                Route::get('/create/multiple', [ChargeController::class, 'createMultiple'])->name('create.multiple');
                 Route::post('/', [ChargeController::class, 'store'])->name('store');
+                Route::post('/multiple', [ChargeController::class, 'storeMultiple'])->name('store.multiple');
                 Route::get('/{id}/edit', [ChargeController::class, 'edit'])->name('edit');
                 Route::put('/{id}', [ChargeController::class, 'update'])->name('update');
                 Route::get('/{id}/delete', [ChargeController::class, 'destroy'])->name('destroy');

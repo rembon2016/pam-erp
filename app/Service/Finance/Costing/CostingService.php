@@ -356,6 +356,92 @@ final class CostingService
         }
     }
 
+    public function createCostingSpecialOther(Request $request, $id)
+    {
+        if (! empty($request->vendor_special_other_id)) {
+            foreach ($request->vendor_special_other_id as $k => $row) {
+                if ($row == 'Select') {
+                    continue;
+                }
+                $vendor_name = $request->vendor_special_other_name[$k];
+                $charge_id = $request->charge_special_other_id[$k];
+                $charge = Charge::find($charge_id);
+                $charge_name = $charge->charge_name;
+                $currency_id = $request->currency_special_other_id[$k];
+                $rate = $request->rate_special_other[$k];
+                $amount = $request->amount_special_other[$k];
+                $local_amount = $request->local_amount_special_other[$k];
+                $status = $request->status_special_other[$k];
+                $email = auth()->user()->email;
+                $data_special_other = [
+                    'costing_id' => $id,
+                    'costing_type' => 'other',
+                    'vendor_id' => $row,
+                    'vendor_name' => $vendor_name,
+                    'charge_id' => $charge_id,
+                    'charge_name' => $charge_name,
+                    'currency_id' => $currency_id,
+                    'rate' => $rate,
+                    'amount' => $amount,
+                    'local_amount' => $local_amount,
+                    'status' => $status,
+                    'created_by' => $email,
+                ];
+
+                CostingSpecial::create($data_special_other);
+            }
+        }
+    }
+
+    public function updateCostingSpecialOther(Request $request, $id)
+    {
+        if (! empty($request->vendor_special_other_id)) {
+            foreach ($request->vendor_special_other_id as $k => $row) {
+                if ($row == 'Select') {
+                    continue;
+                }
+                $costing_special_other_id = $request->costing_special_other_id[$k] ?? null;
+                $costing_special_other_delete_id = $request->costing_special_other_delete_id[$k] ?? null;
+                $vendor_name = $request->vendor_special_other_name[$k];
+                $charge_id = $request->charge_special_other_id[$k];
+                $charge = Charge::find($charge_id);
+                $charge_name = $charge->charge_name;
+                $currency_id = $request->currency_special_other_id[$k];
+                $rate = $request->rate_special_other[$k];
+                $amount = $request->amount_special_other[$k];
+                $local_amount = $request->local_amount_special_other[$k];
+                $status = $request->status_special_other[$k];
+                $email = auth()->user()->email;
+                $data_special_other = [
+                    'costing_id' => $id,
+                    'costing_type' => 'other',
+                    'vendor_id' => $row,
+                    'vendor_name' => $vendor_name,
+                    'charge_id' => $charge_id,
+                    'charge_name' => $charge_name,
+                    'currency_id' => $currency_id,
+                    'rate' => $rate,
+                    'amount' => $amount,
+                    'local_amount' => $local_amount,
+                    'status' => $status,
+                    'created_by' => $email,
+                ];
+                if ($costing_special_other_id != null) {
+                    $data_special_other['updated_by'] = auth()->user()->email;
+                    if ($costing_special_other_delete_id != null) {
+                        CostingSpecial::find($costing_special_other_delete_id)->delete();
+                    } else {
+                        CostingSpecial::find($costing_special_other_id)->update($data_special_other);
+                    }
+                } else {
+                    $data_special_other['created_by'] = auth()->user()->email;
+                    CostingSpecial::create($data_special_other);
+                }
+
+            }
+        }
+    }
+
     public function createCostingHead(Request $request, $id, $value, $type, $shipment_by, $ref_id)
     {
         $costing_head = CostingHead::create([
@@ -693,6 +779,102 @@ final class CostingService
                 CostingDetail::create($data_special_export);
             }
 
+        }
+    }
+
+    public function createCostingDetailOther(Request $request, $id, $bl_number, $shipment_by, $head_id, $j)
+    {
+        foreach ($request["vendor_other_{$j}_id"] as $k => $row) {
+            $vendor_name = $request["vendor_other_{$j}_name"][$k] ?? null;
+            $charge_id = $request["charge_other_{$j}_id"][$k] ?? null;
+            if ($charge_id != null) {
+                $charge = Charge::find($charge_id);
+                $charge_name = $charge->charge_name ?? '';
+            } else {
+                $charge_name = '';
+            }
+            $currency_id = $request["currency_other_{$j}_id"][$k] ?? null;
+            $rate = $request["rate_other_{$j}"][$k] ?? null;
+            $amount = $request["amount_other_{$j}"][$k] ?? null;
+            $local_amount = $request["local_amount_other_{$j}"][$k] ?? null;
+            $status = $request["status_other_{$j}"][$k] ?? null;
+            $email = auth()->user()->email;
+            $transaction_date = $request->transaction_date_import;
+            $type = $request["type_other_{$j}"][$k] ?? null;
+            $data_special_export = [
+                'costing_id' => $id,
+                'costing_head_id' => $head_id,
+                'shipment_type' => $shipment_by,
+                'costing_type' => 'other',
+                'costing_value' => $bl_number,
+                'vendor_id' => $row,
+                'vendor_name' => $vendor_name,
+                'charge_id' => $charge_id,
+                'charge_name' => $charge_name,
+                'currency_id' => $currency_id,
+                'rate' => $rate,
+                'amount' => $amount,
+                'local_amount' => $local_amount,
+                'status' => $status,
+                'created_by' => $email,
+                'transaction_date' => $transaction_date,
+                'type' => $type,
+            ];
+
+            CostingDetail::create($data_special_export);
+        }
+    }
+
+    public function updateCostingDetailOther(Request $request, $id, $bl_number, $shipment_by, $head_id, $j)
+    {
+        foreach ($request["vendor_other_{$j}_id"] as $k => $row) {
+            $costing_detail_id = $request["costing_detail_other_{$j}_id"][$k] ?? null;
+            $costing_detail_delete_id = $request["costing_detail_other_{$j}_delete_id"][$k] ?? null;
+            $vendor_name = $request["vendor_other_{$j}_name"][$k] ?? null;
+            $charge_id = $request["charge_other_{$j}_id"][$k] ?? null;
+            if ($charge_id != null) {
+                $charge = Charge::find($charge_id);
+                $charge_name = $charge->charge_name ?? '';
+            } else {
+                $charge_name = '';
+            }
+            $currency_id = $request["currency_other_{$j}_id"][$k] ?? null;
+            $rate = $request["rate_other_{$j}"][$k] ?? null;
+            $amount = $request["amount_other_{$j}"][$k] ?? null;
+            $local_amount = $request["local_amount_other_{$j}"][$k] ?? null;
+            $status = $request["status_other_{$j}"][$k] ?? null;
+            $type = $request["type_other_{$j}"][$k] ?? null;
+            $email = auth()->user()->email;
+            $transaction_date = $request->transaction_date_import;
+            $data_special_export = [
+                'costing_id' => $id,
+                'costing_head_id' => $head_id,
+                'shipment_type' => $shipment_by,
+                'costing_type' => 'other',
+                'costing_value' => $bl_number,
+                'vendor_id' => $row,
+                'vendor_name' => $vendor_name,
+                'charge_id' => $charge_id,
+                'charge_name' => $charge_name,
+                'currency_id' => $currency_id,
+                'rate' => $rate,
+                'amount' => $amount,
+                'local_amount' => $local_amount,
+                'status' => $status,
+                'transaction_date' => $transaction_date,
+                'type' => $type,
+            ];
+            if ($costing_detail_id != null) {
+                $data_special_export['updated_by'] = auth()->user()->email;
+                if ($costing_detail_delete_id != null) {
+                    CostingDetail::find($costing_detail_delete_id)->delete();
+                } else {
+                    CostingDetail::find($costing_detail_id)->update($data_special_export);
+                }
+            } else {
+                $data_special_export['created_by'] = auth()->user()->email;
+                CostingDetail::create($data_special_export);
+            }
         }
     }
 }

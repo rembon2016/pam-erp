@@ -16,16 +16,16 @@ select,
 
 @endpush
 @section('body')
-<x:layout.breadcrumb.wrapper module="Costing" pageName="CROSS AIR">
+<x:layout.breadcrumb.wrapper module="Costing" pageName="AIR IMPORT">
     <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />
-    <x:layout.breadcrumb.item pageName="DETAIL" />
+    <x:layout.breadcrumb.item pageName="Cost" />
 </x:layout.breadcrumb.wrapper>
 
 <x:layout.card.wrapper>
     <x:layout.card.header>
 
         <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-            Cross Air Form
+            AIR IMPORT Form
         </h1>
     </x:layout.card.header>
     <x:layout.card.body>
@@ -60,7 +60,7 @@ select,
                     <button class="nav-link active" id="vendor-tab" data-bs-toggle="tab" data-bs-target="#vendor" type="button" role="tab">Vendor</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="export-tab" data-bs-toggle="tab" data-bs-target="#export" type="button" role="tab">Cross Air Costing</button>
+                    <button class="nav-link" id="export-tab" data-bs-toggle="tab" data-bs-target="#export" type="button" role="tab">Air Import Costing</button>
                 </li>
 
             </ul>
@@ -170,7 +170,7 @@ select,
             console.log(index);
             //ajax disini
            $.ajax({
-            url: `/finance/costing/cross-air/contractmawb/${vendorId}/${mawb}/${types}`, // Replace with your actual route
+            url: `/finance/costing/dubai-business/air-import/contractmawb/${vendorId}/${mawb}/${types}`, // Replace with your actual route
             method: 'GET', // Or 'POST' if your route uses POST
             dataType: 'json',
             success: function (response) {

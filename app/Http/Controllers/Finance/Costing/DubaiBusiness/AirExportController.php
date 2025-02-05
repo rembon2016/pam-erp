@@ -9,10 +9,16 @@ use App\Functions\Convert;
 use App\Functions\ResponseJson;
 use App\Functions\Utility;
 use App\Http\Controllers\Controller;
+use App\Models\Finance\Charge;
 use App\Models\Finance\Costing;
+use App\Models\Finance\Currency;
 use App\Models\Operation\Dxb\JobOrder;
+use App\Models\Operation\Dxb\LoadingPlanLocal as LoadingPlan;
 use App\Models\Operation\Dxb\LoadingPlanDocument;
 use App\Models\Operation\Dxb\OperationDocument;
+use App\Service\Finance\Costing\CostingService;
+use App\Service\Finance\Costing\DataService;
+use App\Service\Finance\Costing\Dxb\CalculationService;
 use App\Models\Operation\Master\Port;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -23,6 +29,12 @@ use Yajra\DataTables\Facades\DataTables;
 
 final class AirExportController extends Controller
 {
+    public function __construct(
+        protected CostingService $costingService,
+        protected CalculationService $calculationService,
+        protected DataService $dataService
+
+    ) {}
     public function index(): View
     {
         return view('pages.finance.costing.dubai-business.air-export.index');
@@ -125,24 +137,115 @@ final class AirExportController extends Controller
 
     public function port(Request $request)
     {
-        $query = Port::query();
+        $result = $this->dataService->getPort($request);
 
-        // Apply search filter
-        if ($search = $request->input('search')) {
-            $query->where('port_code', 'ilike', '%'.$search.'%');
-            $query->orWhere('port_name', 'ilike', '%'.$search.'%');
-        }
-
-        // Paginate the results
-        $options = $query->orderBy('port_code', 'ASC')->paginate(1000); // Adjust the pagination size as needed
-
-        return response()->json([
-            'results' => $options->items(),
-            'pagination' => ['more' => $options->hasMorePages()],
-        ]);
+        return response()->json($result);
     }
 
-    public function cost($id) {}
+    public function cost($id)
+    {
+        $joborder = JobOrder::with(['detail', 'loading', 'doc'])->findOrFail($id);
+
+        $vendor_all = $this->dataService->getCustomer('All');
+        $vendor_truck = $this->dataService->getCustomer('Trucking Company');
+        $vendor_port = $this->dataService->getCustomer('Dubai Port');
+        $vendor_air = $this->dataService->getCustomer('Carrier Agent');
+        $vendor_line = $this->dataService->getCustomer('Shipping Line');
+
+        $charge = Charge::whereNull('deleted_at')->get();
+        $currency = Currency::whereNull('deleted_at')->get();
+
+        $loadingplan = LoadingPlan::where('plan_id', $joborder->loading_plan_id)->get();
+        $loading = LoadingPlan::where('plan_id', $joborder->loading_plan_id)->first();
+
+        $cost = Costing::with(['truck', 'port', 'agent', 'special', 'head', 'head.detail'])->where('job_order_id', $joborder->job_order_id);
+        if ($cost->exists()) {
+            $costing = $cost->first();
+            //return response()->json($costing);
+            $data = [
+                'action' => route('finance.costing.dubai-business.air-export.update', $costing->id),
+                'method' => 'PUT',
+            ];
+        } else {
+            $costing = null;
+            $data = [
+                'action' => route('finance.costing.dubai-business.air-export.store'),
+                'method' => 'POST',
+            ];
+        }
+
+        return view('pages.finance.costing.dubai-business.air-export.cost', compact('joborder', 'vendor_all', 'vendor_truck', 'vendor_port', 'vendor_air', 'vendor_line', 'charge', 'currency', 'loadingplan', 'costing', 'data', 'loading'));
+
+    }
+
+    public function store(Request $request)
+    {
+        $loadingplan = LoadingPlan::with('shipping')->where('plan_id', $request->loading_plan_id)->get();
+        $shipment_by = 'AIREXPORT';
+        $costing = $this->costingService->createCosting($request);
+
+        //$this->costingService->createCostingTruck($request, $costing->id);
+        $this->costingService->createCostingAgent($request, $costing->id);
+        $this->costingService->createCostingSpecialExport($request, $costing->id);
+
+        foreach ($loadingplan as $j => $rx) {
+            if (! empty($request["vendor_mawb_{$j}_id"])) {
+                $costing_head = $this->costingService->createCostingHead($request, $costing->id, $rx->mawb_number, 'mawb', 'AIREXPORT', $rx->plan_id);
+
+                $this->costingService->createCostingDetailMawb($request, $costing->id, $rx->mawb_number, $shipment_by, $costing_head->id, $j);
+            }
+        }
+
+        return to_route('finance.costing.dubai-business.air-export.index')->with('toastSuccess', 'Costing Success');
+    }
+
+    public function update($id, Request $request)
+    {
+        $costing = Costing::find($id);
+        $loadingplan = LoadingPlan::with('shipping')->where('plan_id', $request->loading_plan_id)->get();
+        $shipment_by = 'AIREXPORT';
+        $costing = $this->costingService->updateCosting($request, $id);
+
+        //$this->costingService->updateCostingTruck($request, $id);
+        $this->costingService->updateCostingAgent($request, $id);
+        $this->costingService->updateCostingSpecialExport($request, $id);
+
+        foreach ($loadingplan as $j => $rx) {
+            if (! empty($request["vendor_mawb_{$j}_id"])) {
+
+                $costing_head = $this->costingService->updateCostingHead($request, $id, $rx->mawb_number, 'mawb', 'AIREXPORT', $rx->plan_id);
+
+                $this->costingService->updateCostingDetailMawb($request, $id, $rx->mawb_number, $shipment_by, $costing_head->id, $j);
+
+            }
+        }
+
+        return to_route('finance.costing.dubai-business.air-export.index')->with('toastSuccess', 'Update Success');
+    }
+
+    public function contractmawb($id, $mawb_number, $type)
+    {
+        $result = $this->calculationService->getChargeByMawb($id, $mawb_number, $type, 'AIREXPORT');
+
+        return response()->json($result);
+
+    }
+
+    public function contractlpdxb($id, $loading_id)
+    {
+        $result = $this->calculationService->getChargeExportByLp($id, $loading_id, 'AIREXPORT');
+
+        return response()->json($result);
+    }
+
+    public function status($id, $status)
+    {
+        $costing = Costing::find($id);
+        $costing->status = $status;
+        $costing->save();
+
+        return to_route('finance.costing.dubai-business.air-export.show', $costing->job_order_id)->with('toastSuccess', 'Update Success');
+    }
 
     public function exportCsv()
     {

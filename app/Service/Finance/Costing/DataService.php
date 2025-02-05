@@ -29,7 +29,6 @@ final class DataService
             ->when(!empty(request()->get('origin_filter')), function ($query) {
                 return $query->where('origin_name', 'ilike', "%".request()->get('origin_filter')."%");
             });
-
         if (! empty($request['search']['value'])) {
             $search = $request['search']['value'];
             $query->where('job_order_code', 'ilike', "%{$search}%");

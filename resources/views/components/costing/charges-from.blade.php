@@ -232,6 +232,8 @@
                 setChargeBl(vendorId, vendorName, vendorCode, value, 'manual-bl', 'or');
             @elseif ($type == 'mawb')
                 setChargeMawb(vendorId, vendorName, vendorCode, value, 'manual-mawb');
+            @elseif ($type == 'other')
+                setChargeOther(vendorId, vendorName, vendorCode, value, 'manual-other','All');
             @endif
 
 
@@ -309,6 +311,8 @@
                 first = 'Bl';
             } else if (type == 'mawb') {
                 first = 'Mawb';
+            }else if(type == 'other'){
+                first = 'Other';
             }
             var vendor_id = data['vendor_id'];
             var vendor_code = data['vendor_code'];
@@ -322,7 +326,7 @@
             console.log(vendor_id, vendor_code, vendor_name);
             var typeParent = typeParent;
             if (typeParent == 'parent') {
-                if (vendor == 'manual-bl' || vendor == 'manual-mawb') {
+                if (vendor == 'manual-bl' || vendor == 'manual-mawb' || vendor == 'manual-other') {
                     console.log("delete masuk");
                     $('#row-' + type + '-' + key + '-' + (index - 1)).remove();
                 }

@@ -429,9 +429,15 @@ Route::group(['middleware' => ['auth']], function () {
                     'as' => 'sea-import.',
                 ], function () {
                     Route::get('/', [SeaImportController::class, 'index'])->name('index');
+                    Route::get('/port', [SeaImportController::class, 'port'])->name('port');
                     Route::get('/list', [SeaImportController::class, 'list'])->name('list');
                     Route::get('/show/{id}', [SeaImportController::class, 'show'])->name('show');
                     Route::get('/cost/{id}', [SeaImportController::class, 'cost'])->name('cost');
+                    Route::get('/contractbl/{id}/{bl_number}/{type}', [SeaImportController::class, 'contractbl'])->name('contractbl');
+                    Route::get('/contractlp/{id}/{loading_id}', [SeaImportController::class, 'contractlp'])->name('contractlp');
+                    Route::post('/store', [SeaImportController::class, 'store'])->name('store');
+                    Route::get('/status/{id}/{status}', [SeaImportController::class, 'status'])->name('status');
+                    Route::put('/update/{id}', [SeaImportController::class, 'update'])->name('update');
                     Route::get('/export/csv', [SeaImportController::class, 'exportCsv'])->name('export.csv');
                 });
 
@@ -440,9 +446,15 @@ Route::group(['middleware' => ['auth']], function () {
                     'as' => 'sea-export.',
                 ], function () {
                     Route::get('/', [SeaExportController::class, 'index'])->name('index');
+                    Route::get('/port', [SeaExportController::class, 'port'])->name('port');
                     Route::get('/list', [SeaExportController::class, 'list'])->name('list');
                     Route::get('/show/{id}', [SeaExportController::class, 'show'])->name('show');
                     Route::get('/cost/{id}', [SeaExportController::class, 'cost'])->name('cost');
+                    Route::get('/contractbl/{id}/{bl_number}/{type}', [SeaExportController::class, 'contractbl'])->name('contractbl');
+                    Route::get('/contractlp/{id}/{loading_id}', [SeaExportController::class, 'contractlp'])->name('contractlp');
+                    Route::post('/store', [SeaExportController::class, 'store'])->name('store');
+                    Route::get('/status/{id}/{status}', [SeaExportController::class, 'status'])->name('status');
+                    Route::put('/update/{id}', [SeaExportController::class, 'update'])->name('update');
                     Route::get('/export/csv', [SeaExportController::class, 'exportCsv'])->name('export.csv');
                 });
 
@@ -451,7 +463,13 @@ Route::group(['middleware' => ['auth']], function () {
                     'as' => 'air-import.',
                 ], function () {
                     Route::get('/', [AirImportController::class, 'index'])->name('index');
+                    Route::get('/port', [AirImportController::class, 'port'])->name('port');
+                    Route::get('/contractmawb/{id}/{bl_number}/{type}', [AirImportController::class, 'contractmawb'])->name('contractmawb');
+                    Route::get('/contractlpdxb/{id}/{loading_id}', [AirImportController::class, 'contractlpdxb'])->name('contractlpdxb');
                     Route::get('/list', [AirImportController::class, 'list'])->name('list');
+                    Route::post('/store', [AirImportController::class, 'store'])->name('store');
+                    Route::get('/status/{id}/{status}', [AirImportController::class, 'status'])->name('status');
+                    Route::put('/update/{id}', [AirImportController::class, 'update'])->name('update');
                     Route::get('/show/{id}', [AirImportController::class, 'show'])->name('show');
                     Route::get('/cost/{id}', [AirImportController::class, 'cost'])->name('cost');
                     Route::get('/export/csv', [AirImportController::class, 'exportCsv'])->name('export.csv');
@@ -462,7 +480,13 @@ Route::group(['middleware' => ['auth']], function () {
                     'as' => 'air-export.',
                 ], function () {
                     Route::get('/', [AirExportController::class, 'index'])->name('index');
+                    Route::get('/port', [AirExportController::class, 'port'])->name('port');
+                    Route::get('/contractmawb/{id}/{bl_number}/{type}', [AirExportController::class, 'contractmawb'])->name('contractmawb');
+                    Route::get('/contractlpdxb/{id}/{loading_id}', [AirExportController::class, 'contractlpdxb'])->name('contractlpdxb');
                     Route::get('/list', [AirExportController::class, 'list'])->name('list');
+                    Route::post('/store', [AirExportController::class, 'store'])->name('store');
+                    Route::get('/status/{id}/{status}', [AirExportController::class, 'status'])->name('status');
+                    Route::put('/update/{id}', [AirExportController::class, 'update'])->name('update');
                     Route::get('/show/{id}', [AirExportController::class, 'show'])->name('show');
                     Route::get('/cost/{id}', [AirExportController::class, 'cost'])->name('cost');
                     Route::get('/export/csv', [AirExportController::class, 'exportCsv'])->name('export.csv');
@@ -473,7 +497,12 @@ Route::group(['middleware' => ['auth']], function () {
                     'as' => 'warehouse.',
                 ], function () {
                     Route::get('/', [WarehouseController::class, 'index'])->name('index');
+                    Route::get('/contract/{id}/{numbers}/{type}', [WarehouseController::class, 'contract'])->name('contract');
+                    Route::get('/port', [WarehouseController::class, 'port'])->name('port');
                     Route::get('/list', [WarehouseController::class, 'list'])->name('list');
+                    Route::post('/store', [WarehouseController::class, 'store'])->name('store');
+                    Route::get('/status/{id}/{status}', [WarehouseController::class, 'status'])->name('status');
+                    Route::put('/update/{id}', [WarehouseController::class, 'update'])->name('update');
                     Route::get('/show/{id}', [WarehouseController::class, 'show'])->name('show');
                     Route::get('/cost/{id}', [WarehouseController::class, 'cost'])->name('cost');
                     Route::get('/export/csv', [WarehouseController::class, 'exportCsv'])->name('export.csv');

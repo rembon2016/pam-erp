@@ -3,9 +3,9 @@
 namespace App\Models\Operation\Dxb;
 
 use App\Models\Dxb\HistoriJob;
-use App\Models\Master\LocalCustomer;
-use App\Models\Master\Office;
-use App\Models\Master\Port;
+use App\Models\Operation\Master\LocalCustomer;
+use App\Models\Operation\Master\Office;
+use App\Models\Operation\Master\Port;
 use App\Traits\Filterable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Http;

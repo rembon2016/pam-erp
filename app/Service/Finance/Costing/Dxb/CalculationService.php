@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Finance\Costing\Origin;
+namespace App\Service\Finance\Costing\Dxb;
 
 use App\Models\Finance\AgentContract;
 use App\Models\Finance\AgentContractCharge;
 use App\Models\Finance\AgentContractChargeDetail;
 use App\Models\Finance\AgentContractService;
 use App\Models\Finance\Currency;
-use App\Models\Operation\Dxb\LoadingPlan;
-use App\Models\Operation\Origin\LoadingPlan as LoadingPlanOrigin;
-use App\Models\Operation\Origin\LoadingReportBL;
-use App\Models\Operation\Origin\LoadingReportDetail;
-use App\Models\Operation\Origin\ShippingInstruction;
+use App\Models\Operation\Dxb\LoadingPlanLocal;
+use App\Models\Operation\Dxb\LoadingReportBL;
+use App\Models\Operation\Dxb\LoadingReportDetail;
+use App\Models\Operation\Dxb\ShippingInstruction;
 use Illuminate\Http\Response;
 
 final class CalculationService
@@ -168,11 +167,9 @@ final class CalculationService
 
     public function getChargeByMawb($id, $mawb_number, $type, $mode)
     {
-        if ($mode == 'SEAAIR') {
-            $lp = LoadingPlan::where('mawb_number', $mawb_number)->first();
-        } else {
-            $lp = LoadingPlanOrigin::where('mawb_number', $mawb_number)->first();
-        }
+
+        $lp = LoadingPlanLocal::where('mawb_number', $mawb_number)->first();
+
 
         $contract = AgentContract::where('customer_id', $id)->whereHas('serviceType', function ($query) use ($type) {
             if ($type != 'All') {
@@ -420,13 +417,6 @@ final class CalculationService
 
     public function getChargeExportByLp($id, $loading_id, $mode)
     {
-        if ($mode == 'SEAAIR') {
-            $shipment = ShippingInstruction::where('status', '!=', 3)
-                ->where('loading_id', $loading_id)
-                ->get();
-
-            $loading_plan_dxb = $shipment->pluck('loading_plan_dxb')->toArray();
-        }
 
         $contract = AgentContract::where('customer_id', $id)->first();
 
@@ -438,11 +428,9 @@ final class CalculationService
 
             return $result;
         }
-        if ($mode == 'SEAAIR') {
-            $ship = ShippingInstruction::whereIn('loading_plan_dxb', $loading_plan_dxb)->first();
-        } else {
-            $ship = ShippingInstruction::where('loading_id', $loading_id)->first();
-        }
+
+        $ship = ShippingInstruction::where('loading_id', $loading_id)->first();
+
 
         $service = AgentContractService::where('agent_contract_id', $contract->id)->where('por_country_id', $ship->origin->country_id)->where('por_port_id', $ship->port_of_loading);
         if ($service->exists()) {
@@ -463,11 +451,9 @@ final class CalculationService
         $charge = AgentContractCharge::with(['charge', 'unit'])->where('agent_contract_service_id', $service->id)->get();
         $charge_mawb = [];
         foreach ($charge as $row) {
-            if ($mode == 'SEAAIR') {
-                $shipping = ShippingInstruction::whereIn('loading_plan_dxb', $loading_plan_dxb)->get();
-            } else {
-                $shipping = ShippingInstruction::where('loading_id', $loading_id)->get();
-            }
+
+            $shipping = ShippingInstruction::where('loading_id', $loading_id)->get();
+
 
             if ($row->unit->unit_name == 'KG') {
                 // $chw = 0.0;
@@ -486,7 +472,7 @@ final class CalculationService
                     $amount_in_usd = $amount_in_aed / 3.67;
                 }
                 $rate = $jum;
-            } elseif ($row->unit->unit_name == 'SHIPMENT') {
+            } else if ($row->unit->unit_name == 'SHIPMENT') {
                 $count = count($shipping);
                 $currency = Currency::find($row->currency_id);
                 if ($currency->currency_code == 'USD') {
@@ -527,5 +513,280 @@ final class CalculationService
             return $result;
         }
 
+    }
+
+
+    public function getChargeByOther($id, $idx, $type)
+    {
+
+        $ship = ShippingInstruction::where('ctd_number', $idx)->first();
+        $contract = AgentContract::where('customer_id', $id)->first();
+
+        if ($contract == null) {
+            $charge_bl = null;
+            $result = [
+                'status' => false,
+                'data' => $charge_bl,
+            ];
+
+            return $result;
+
+        }
+
+
+        $service = AgentContractService::where('agent_contract_id', $contract->id)->where('por_country_id', $ship->origin->country_id)->where('por_port_id', $ship->port_of_loading);
+        if ($service->exists()) {
+            $service = $service->first();
+        } else {
+            $service = AgentContractService::where('agent_contract_id', $contract->id)->first();
+        }
+        if ($service == null) {
+            $charge_bl = null;
+            $result = [
+                'status' => false,
+                'data' => $charge_bl,
+            ];
+
+            return $result;
+        }
+
+        $charge = AgentContractCharge::with(['charge', 'unit'])->where('agent_contract_service_id', $service->id)->get();
+        $charge_bl = [];
+        //return response()->json($charge);
+        foreach ($charge as $row) {
+            $shipping = ShippingInstruction::where('ctd_number', $idx)->get();
+            if ($row->unit->unit_name == 'KG') {
+                // $chw = 0.0;
+                // foreach($shipping as $r){
+                //     $chw = $chw + $r->order->chw;
+                // }
+                $chw = $shipping->sum(fn ($r) => $r->order->chw);
+                $currency = Currency::find($row->currency_id);
+                $detail = AgentContractChargeDetail::where('agent_contract_charge_id', $row->id)->where('from', '<=', $chw)->where('to', '>=', $chw)->first();
+                $jum = $detail->value ?? 0;
+                if ($currency->currency_code == 'USD') {
+                    $amount_in_usd = $jum;
+                    $amount_in_aed = $jum * 3.67;
+                } else {
+                    $amount_in_aed = $jum;
+                    $amount_in_usd = $amount_in_aed / 3.67;
+                }
+                $rate = $jum;
+            } elseif ($row->unit->unit_name == 'SHIPMENT') {
+                $count = count($shipping);
+                $currency = Currency::find($row->currency_id);
+                if ($currency->currency_code == 'USD') {
+
+                    $amount_in_usd = $row->amount_per_unit * $count;
+                    $amount_in_aed = $amount_in_usd * 3.67;
+                } else {
+                    $amount_in_aed = $row->amount_per_unit * $count;
+                    $amount_in_usd = $amount_in_aed / 3.67;
+                }
+                $rate = $row->amount_per_unit;
+            } elseif ($row->unit->unit_name == 'CONTAINER') {
+                $currency = Currency::find($row->currency_id);
+                $jum = 0;
+
+                foreach ($container as $x) {
+
+                    if (substr($x->container_type, 0, 5) == '20 FT') {
+                        if (strpos($x->container_type, 'GOH') !== false) {
+                            $jum += $row->twenty_feet_goh;
+                        } else {
+                            $jum += $row->twenty_feet;
+                        }
+                    } elseif (substr($x->container_type, 0, 5) == '40 FT') {
+
+                        if (strpos($x->container_type, 'HC GOH') !== false) {
+                            $jum += $row->forty_feet_hc_goh;
+                        } elseif (strpos($x->container_type, 'HC') !== false) {
+                            $jum += $row->forty_feet_hc;
+                        } elseif (strpos($x->container_type, 'GOH') !== false) {
+                            $jum += $row->forty_feet_goh;
+                        } else {
+                            $jum += $row->forty_feet;
+                        }
+                    } elseif (substr($x->container_type, 0, 5) == '45 FT') {
+                        if (strpos($x->container_type, 'GOH') !== false) {
+                            $jum += $row->forty_five_feet_goh;
+                        } else {
+                            $jum += $row->forty_five_feet;
+                        }
+                    }
+                }
+
+                if ($currency->currency_code == 'USD') {
+                    $amount_in_usd = $jum;
+                    $amount_in_aed = $jum * 3.67;
+                } else {
+                    $amount_in_aed = $jum;
+                    $amount_in_usd = $amount_in_aed / 3.67;
+                }
+                $rate = $jum;
+            }
+            $charge_bl[] = [
+                'charge_id' => $row->charge_id,
+                'charge_name' => $row->charge->charge_name,
+                'charge_code' => $row->charge->charge_code,
+                'currency_id' => $row->currency_id,
+                'rate' => $rate,
+                'amount_in_usd' => $amount_in_usd,
+                'amount_in_aed' => $amount_in_aed,
+                'status' => 'Debit',
+            ];
+        }
+
+        if (! empty($charge_bl)) {
+            $result = [
+                'status' => true,
+                'data' => $charge_bl,
+            ];
+
+            return $result;
+        } else {
+            $charge_bl = null;
+            $result = [
+                'status' => false,
+                'data' => $charge_bl,
+            ];
+
+            return $result;
+        }
+    }
+
+    public function getChargeByCourier($id, $idx, $type)
+    {
+
+
+        $contract = AgentContract::where('customer_id', $id)->first();
+
+        if ($contract == null) {
+            $charge_bl = null;
+            $result = [
+                'status' => false,
+                'data' => $charge_bl,
+            ];
+
+            return $result;
+
+        }
+
+
+        $service = AgentContractService::where('agent_contract_id', $contract->id);
+        $service = $service->first();
+        if ($service == null) {
+            $charge_bl = null;
+            $result = [
+                'status' => false,
+                'data' => $charge_bl,
+            ];
+
+            return $result;
+        }
+
+        $charge = AgentContractCharge::with(['charge', 'unit'])->where('agent_contract_service_id', $service->id)->get();
+        $charge_bl = [];
+        //return response()->json($charge);
+        foreach ($charge as $row) {
+            $shipping = ShippingInstruction::where('courir_tracking_resi', $idx)->get();
+            if ($row->unit->unit_name == 'KG') {
+                // $chw = 0.0;
+                // foreach($shipping as $r){
+                //     $chw = $chw + $r->order->chw;
+                // }
+                $chw = $shipping->sum(fn ($r) => $r->order->chw);
+                $currency = Currency::find($row->currency_id);
+                $detail = AgentContractChargeDetail::where('agent_contract_charge_id', $row->id)->where('from', '<=', $chw)->where('to', '>=', $chw)->first();
+                $jum = $detail->value ?? 0;
+                if ($currency->currency_code == 'USD') {
+                    $amount_in_usd = $jum;
+                    $amount_in_aed = $jum * 3.67;
+                } else {
+                    $amount_in_aed = $jum;
+                    $amount_in_usd = $amount_in_aed / 3.67;
+                }
+                $rate = $jum;
+            } elseif ($row->unit->unit_name == 'SHIPMENT') {
+                $count = count($shipping);
+                $currency = Currency::find($row->currency_id);
+                if ($currency->currency_code == 'USD') {
+
+                    $amount_in_usd = $row->amount_per_unit * $count;
+                    $amount_in_aed = $amount_in_usd * 3.67;
+                } else {
+                    $amount_in_aed = $row->amount_per_unit * $count;
+                    $amount_in_usd = $amount_in_aed / 3.67;
+                }
+                $rate = $row->amount_per_unit;
+            } elseif ($row->unit->unit_name == 'CONTAINER') {
+                $currency = Currency::find($row->currency_id);
+                $jum = 0;
+
+                foreach ($container as $x) {
+
+                    if (substr($x->container_type, 0, 5) == '20 FT') {
+                        if (strpos($x->container_type, 'GOH') !== false) {
+                            $jum += $row->twenty_feet_goh;
+                        } else {
+                            $jum += $row->twenty_feet;
+                        }
+                    } elseif (substr($x->container_type, 0, 5) == '40 FT') {
+
+                        if (strpos($x->container_type, 'HC GOH') !== false) {
+                            $jum += $row->forty_feet_hc_goh;
+                        } elseif (strpos($x->container_type, 'HC') !== false) {
+                            $jum += $row->forty_feet_hc;
+                        } elseif (strpos($x->container_type, 'GOH') !== false) {
+                            $jum += $row->forty_feet_goh;
+                        } else {
+                            $jum += $row->forty_feet;
+                        }
+                    } elseif (substr($x->container_type, 0, 5) == '45 FT') {
+                        if (strpos($x->container_type, 'GOH') !== false) {
+                            $jum += $row->forty_five_feet_goh;
+                        } else {
+                            $jum += $row->forty_five_feet;
+                        }
+                    }
+                }
+
+                if ($currency->currency_code == 'USD') {
+                    $amount_in_usd = $jum;
+                    $amount_in_aed = $jum * 3.67;
+                } else {
+                    $amount_in_aed = $jum;
+                    $amount_in_usd = $amount_in_aed / 3.67;
+                }
+                $rate = $jum;
+            }
+            $charge_bl[] = [
+                'charge_id' => $row->charge_id,
+                'charge_name' => $row->charge->charge_name,
+                'charge_code' => $row->charge->charge_code,
+                'currency_id' => $row->currency_id,
+                'rate' => $rate,
+                'amount_in_usd' => $amount_in_usd,
+                'amount_in_aed' => $amount_in_aed,
+                'status' => 'Debit',
+            ];
+        }
+
+        if (! empty($charge_bl)) {
+            $result = [
+                'status' => true,
+                'data' => $charge_bl,
+            ];
+
+            return $result;
+        } else {
+            $charge_bl = null;
+            $result = [
+                'status' => false,
+                'data' => $charge_bl,
+            ];
+
+            return $result;
+        }
     }
 }

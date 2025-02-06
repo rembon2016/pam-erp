@@ -96,7 +96,7 @@
             <x:layout.sidebar.child-menu name="Debit Note for Revenue" link="{{ route('finance.general-transaction.debit-note.index', ['type' => 'revenue']) }}" :activeCondition="Route::is('finance.general-transaction.debit-note.*') && request()->route()->parameter('type') == 'revenue'" />
             <x:layout.sidebar.child-menu name="Debit Note for Non Trade" link="{{ route('finance.general-transaction.debit-note.index', ['type' => 'non-trade']) }}" :activeCondition="Route::is('finance.general-transaction.debit-note.*') && request()->route()->parameter('type') == 'non-trade'" />
         </x:layout.sidebar.parent-menu>
-        <x:layout.sidebar.child-menu name="Journal Voucher" link="/" />
+        <x:layout.sidebar.child-menu name="Journal Voucher" link="{{ route('finance.general-transaction.journal-voucher.index') }}" :activeCondition="Route::is('finance.general-transaction.journal-voucher.*')" />
         <x:layout.sidebar.parent-menu name="Receipt Voucher" iconClass="bx bxs-file">
             <x:layout.sidebar.child-menu name="Receipt Voucher" link="/" />
             <x:layout.sidebar.child-menu name="Receipt Voucher Overseas" link="/" />

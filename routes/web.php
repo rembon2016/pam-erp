@@ -16,6 +16,7 @@ use App\Http\Controllers\Finance\Costing\SeaAirController;
 use App\Http\Controllers\Finance\GeneralTransaction\CreditNoteController;
 use App\Http\Controllers\Finance\GeneralTransaction\CreditorJournalVoucherController;
 use App\Http\Controllers\Finance\GeneralTransaction\DebitNoteController;
+use App\Http\Controllers\Finance\GeneralTransaction\JournalVoucherController;
 use App\Http\Controllers\Finance\GeneralWise\Shipment\ShipmentController;
 use App\Http\Controllers\Finance\MasterData\AgentContractController;
 use App\Http\Controllers\Finance\MasterData\ChargeController;
@@ -575,6 +576,15 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/', [DebitNoteController::class, 'index'])->name('index');
                 Route::get('/list', [DebitNoteController::class, 'list'])->name('list');
                 Route::get('/create', [DebitNoteController::class, 'create'])->name('create');
+            });
+
+            Route::group([
+                'prefix' => 'journal-voucher',
+                'as' => 'journal-voucher.',
+            ], function () {
+                Route::get('/', [JournalVoucherController::class, 'index'])->name('index');
+                Route::get('/list', [JournalVoucherController::class, 'list'])->name('list');
+                Route::get('/create', [JournalVoucherController::class, 'create'])->name('create');
             });
 
         });

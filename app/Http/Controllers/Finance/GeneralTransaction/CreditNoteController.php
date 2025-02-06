@@ -1,0 +1,41 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Controllers\Finance\GeneralTransaction;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+final class CreditNoteController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(string $type)
+    {
+        return view("pages.finance.general-transaction.credit-note.{$type}.index");
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function list(string $type)
+    {
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create(string $type)
+    {
+        $data = [
+            'page' => 'Add Credit Note For ' . ucfirst($type),
+            'action' => route('finance.general-transaction.creditor-journal-voucher.create'),
+            'method' => 'POST',
+        ];
+
+        return view("pages.finance.general-transaction.credit-note.{$type}.create", compact('data'));
+    }
+}

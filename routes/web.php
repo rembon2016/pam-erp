@@ -13,6 +13,8 @@ use App\Http\Controllers\Finance\Costing\DubaiBusiness\SeaImportController;
 use App\Http\Controllers\Finance\Costing\DubaiBusiness\TruckingController;
 use App\Http\Controllers\Finance\Costing\DubaiBusiness\WarehouseController;
 use App\Http\Controllers\Finance\Costing\SeaAirController;
+use App\Http\Controllers\Finance\GeneralTransaction\CreditNoteController;
+use App\Http\Controllers\Finance\GeneralTransaction\CreditorJournalVoucherController;
 use App\Http\Controllers\Finance\GeneralWise\Shipment\ShipmentController;
 use App\Http\Controllers\Finance\MasterData\AgentContractController;
 use App\Http\Controllers\Finance\MasterData\ChargeController;
@@ -541,6 +543,32 @@ Route::group(['middleware' => ['auth']], function () {
                 });
             });
         });
+
+        Route::group([
+            'prefix' => 'general-transaction',
+            'as' => 'general-transaction.',
+        ], function () {
+
+            Route::group([
+                'prefix' => 'creditor-journal-voucher',
+                'as' => 'creditor-journal-voucher.',
+            ], function () {
+                Route::get('/', [CreditorJournalVoucherController::class, 'index'])->name('index');
+                Route::get('/list', [CreditorJournalVoucherController::class, 'list'])->name('list');
+                Route::get('/create', [CreditorJournalVoucherController::class, 'create'])->name('create');
+            });
+
+            Route::group([
+                'prefix' => 'credit-note/{type}',
+                'as' => 'credit-note.'
+            ], function () {
+                Route::get('/', [CreditNoteController::class, 'index'])->name('index');
+                Route::get('/list', [CreditNoteController::class, 'list'])->name('list');
+                Route::get('/create', [CreditNoteController::class, 'create'])->name('create');
+            });
+
+        });
+
     });
 
     Route::group([

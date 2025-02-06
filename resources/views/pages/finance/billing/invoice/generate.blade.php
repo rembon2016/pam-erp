@@ -151,13 +151,16 @@
                                             @if (!is_null($item->billingCustomer) && $item->billingCustomer?->customerContracts->count() > 0)
                                                 @foreach ($item->billingCustomer?->customerContracts as $contract)
                                                     @php
-                                                        $chargeRate = $contract->getChargeRate($item->order_sum_chw);
-                                                        $rate = $chargeRate?->rate;
+                                                        // dd($item);
+                                                        // $chargeRate = $contract->getChargeRate($item->order_sum_chw);
+                                                        // $rate = $chargeRate?->rate;
+                                                        $rate = 0;
                                                         $amount = $item->order_sum_chw * $rate;
 
                                                         $currency_code = trim($contract->currency?->currency_code);
                                                         $local_amount = $currency_code == 'AED' ? ($amount * 3.67) : $amount;
                                                     @endphp
+
                                                     {{-- Handle Generated Charges by Customer Contract --}}
                                                     <tr class="charge-row">
                                                         <td>

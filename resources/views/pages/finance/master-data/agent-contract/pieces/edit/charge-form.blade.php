@@ -188,6 +188,7 @@
                                             <select
                                                 name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][charge_id]"
                                                 class="form-select chargeIdClass selectLists"
+                                                data-placeholder="Charge"
                                                 id="charge_id_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                                 style="width: 100%;">
                                                 <option value="" selected hidden>

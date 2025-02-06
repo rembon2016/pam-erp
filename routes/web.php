@@ -18,6 +18,7 @@ use App\Http\Controllers\Finance\GeneralTransaction\CreditorJournalVoucherContro
 use App\Http\Controllers\Finance\GeneralTransaction\DebitNoteController;
 use App\Http\Controllers\Finance\GeneralTransaction\JournalVoucherController;
 use App\Http\Controllers\Finance\GeneralTransaction\PaymentRequestController;
+use App\Http\Controllers\Finance\GeneralTransaction\PaymentVoucherController;
 use App\Http\Controllers\Finance\GeneralTransaction\ReceiptVoucherController;
 use App\Http\Controllers\Finance\GeneralWise\Shipment\ShipmentController;
 use App\Http\Controllers\Finance\MasterData\AgentContractController;
@@ -605,6 +606,15 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/', [PaymentRequestController::class, 'index'])->name('index');
                 Route::get('/list', [PaymentRequestController::class, 'list'])->name('list');
                 Route::get('/create', [PaymentRequestController::class, 'create'])->name('create');
+            });
+
+            Route::group([
+                'prefix' => 'payment-voucher/{type}',
+                'as' => 'payment-voucher.',
+            ], function () {
+                Route::get('/', [PaymentVoucherController::class, 'index'])->name('index');
+                Route::get('/list', [PaymentVoucherController::class, 'list'])->name('list');
+                Route::get('/create', [PaymentVoucherController::class, 'create'])->name('create');
             });
 
         });

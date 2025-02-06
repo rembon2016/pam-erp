@@ -103,10 +103,10 @@
             <x:layout.sidebar.child-menu name="Receipt Voucher Cancellation" link="{{ route('finance.general-transaction.receipt-voucher.index', ['type' => 'cancellation']) }}" :activeCondition="Route::is('finance.general-transaction.receipt-voucher.*') && request()->route()->parameter('type') == 'cancellation'" />
         </x:layout.sidebar.parent-menu>
         <x:layout.sidebar.child-menu name="Payment Request" link="{{ route('finance.general-transaction.payment-request.index') }}" :activeCondition="Route::is('finance.general-transaction.payment-request.*')" />
-        <x:layout.sidebar.parent-menu name="Payment Voucher" iconClass="bx bxs-file">
-            <x:layout.sidebar.child-menu name="Payment Voucher" link="/" />
-            <x:layout.sidebar.child-menu name="Payment Voucher Overseas" link="/" />
-            <x:layout.sidebar.child-menu name="Payment Voucher Cancellation" link="/" />
+        <x:layout.sidebar.parent-menu name="Payment Voucher" iconClass="bx bxs-file" :showCondition="Route::is('finance.general-transaction.payment-voucher.*')">
+            <x:layout.sidebar.child-menu name="Payment Voucher" link="{{ route('finance.general-transaction.payment-voucher.index', ['type' => 'index']) }}" :activeCondition="Route::is('finance.general-transaction.payment-voucher.*') && request()->route()->parameter('type') == 'index'" />
+            <x:layout.sidebar.child-menu name="Payment Voucher Overseas" link="{{ route('finance.general-transaction.payment-voucher.index', ['type' => 'overseas']) }}" :activeCondition="Route::is('finance.general-transaction.payment-voucher.*') && request()->route()->parameter('type') == 'overseas'" />
+            <x:layout.sidebar.child-menu name="Payment Voucher Cancellation" link="{{ route('finance.general-transaction.payment-voucher.index', ['type' => 'cancellation']) }}" :activeCondition="Route::is('finance.general-transaction.payment-voucher.*') && request()->route()->parameter('type') == 'cancellation'" />
         </x:layout.sidebar.parent-menu>
         <x:layout.sidebar.parent-menu name="Accrual" iconClass="bx bxs-file">
             <x:layout.sidebar.child-menu name="Accrual Reversal" link="/" />

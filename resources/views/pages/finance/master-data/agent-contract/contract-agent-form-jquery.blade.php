@@ -2,7 +2,6 @@
     <script>
         function generateChargeByAjax(service_type, serviceId = null, chargeId = null) {
             if (service_type !== '' && service_type !== undefined && service_type !== null) {
-                console.log('request charge');
                 $.ajax({
                     url: `{{ route('api.finance.master-data.charge.list') }}?service_type_id=${service_type}`,
                     method: "GET",

@@ -88,13 +88,13 @@ final class ShippingInstructionService
 
     public function getShippingInstructionsByJobId(string|array $job_orders): Collection
     {
-        $data = ShippingInstruction::select(['job_id', 'ctd_number', 'customer_id'])
+        $data = ShippingInstruction::select(['job_id', 'ctd_number', 'customer_id', 'shipment_by'])
             ->withSum('order', 'chw')
             ->with(['agreedRates', 'billingCustomer', 'billingCustomer.customerContracts', 'billingCustomer.customerContracts.currency', 'billingCustomer.customerContracts.charges'])
             ->whereHas('billingCustomer')
             ->whereIn('job_id', is_array($job_orders) ? $job_orders : [$job_orders]);
 
-        $dxbData = DxbShippingInstruction::select(['job_id', 'ctd_number', 'customer_id'])
+        $dxbData = DxbShippingInstruction::select(['job_id', 'ctd_number', 'customer_id', 'shipment_by'])
             ->withSum('order', 'chw')
             ->with(['agreedRates', 'billingCustomer', 'billingCustomer.customerContracts', 'billingCustomer.customerContracts.currency', 'billingCustomer.customerContracts.charges'])
             ->whereHas('billingCustomer')

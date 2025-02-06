@@ -84,6 +84,18 @@ final class CustomerContract extends Model
         self::COURIER => 'Courier',
     ];
 
+    const SHIPPING_SERVICES = [
+        'AIR' => self::CROSS_AIR,
+        'SEAAIR' => self::SEA_AIR,
+        'SEAIMPORT' => self::SEA_IMPORT,
+        'SEAEXPORT' => self::SEA_EXPORT,
+        'AIRIMPORT' => self::AIR_IMPORT,
+        'AIREXPORT' => self::AIR_EXPORT,
+        'WAREHOUSE' => self::WAREHOUSE,
+        'TRUCKING' => self::TRUCKING,
+        'COURIER' => self::COURIER,
+    ];
+
     public function getFileURL()
     {
         return asset('storage/'.self::FOLDER_NAME.'/'.$this->contract_file);
@@ -109,6 +121,14 @@ final class CustomerContract extends Model
         return $this->hasMany(CustomerContractCharge::class, 'customer_contract_id', 'id');
     }
 
+    public function relatedServiceCharges(string $shipment_by)
+    {
+        return in_array($shipment_by, array_keys(self::SHIPPING_SERVICES))
+            ? $this->charges()->whereHas('service', function ($query) use ($shipment_by) {
+                $query->where('service_type', self::SHIPPING_SERVICES[$shipment_by]);
+            })->get() : collect([]);
+    }
+
     public function rates()
     {
         return $this->hasMany(CustomerContractChargeDetail::class, 'customer_contract_id', 'id');
@@ -122,6 +142,23 @@ final class CustomerContract extends Model
     public function charge()
     {
         return $this->hasOne(Charge::class, 'id', 'charge_id');
+    }
+
+    public function customer()
+    {
+        return $this->hasOne(Customer::class, 'id', 'customer_id');
+    }
+
+    public static function generateUniqueCodeByCustomer(Customer $customer): string
+    {
+        $customer_code = $customer->customer_code;
+        $countOfContract = self::where('customer_id', $customer->id)->count('id');
+        $lastNumber = $countOfContract + 1;
+
+        $nextNumber = str_pad("$lastNumber", 4, '0', STR_PAD_LEFT);
+        $contract_number = "{$customer_code}/{$nextNumber}";
+
+        return $contract_number;
     }
 
     public function getChargeRate($quantity)
@@ -142,23 +179,6 @@ final class CustomerContract extends Model
         }
 
         return $rate;
-    }
-
-    public function customer()
-    {
-        return $this->hasOne(Customer::class, 'id', 'customer_id');
-    }
-
-    public static function generateUniqueCodeByCustomer(Customer $customer): string
-    {
-        $customer_code = $customer->customer_code;
-        $countOfContract = self::where('customer_id', $customer->id)->count('id');
-        $lastNumber = $countOfContract + 1;
-
-        $nextNumber = str_pad("$lastNumber", 4, '0', STR_PAD_LEFT);
-        $contract_number = "{$customer_code}/{$nextNumber}";
-
-        return $contract_number;
     }
 
     public function getCurrency()

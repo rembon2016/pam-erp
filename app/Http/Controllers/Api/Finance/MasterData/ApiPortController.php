@@ -20,7 +20,7 @@ final class ApiPortController extends Controller
         return ResponseJson::success(
             Response::HTTP_OK,
             __('crud.fetched', ['name' => 'Port']),
-            $this->portService->getPorts(request()->query())
+            $this->portService->getPorts(request()->query())->data->ports
         );
     }
 }

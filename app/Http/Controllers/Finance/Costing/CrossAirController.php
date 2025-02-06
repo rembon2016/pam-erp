@@ -125,8 +125,13 @@ final class CrossAirController extends Controller
         $joborder = JobOrderAir::with(['detail', 'loading', 'doc'])->findOrFail($id);
         $op = OperationDocument::where('job_order_id', $id)->first();
         $lpdoc = LoadingPlanDocument::where('loading_id', $joborder->loading_plan_id)->get();
-
-        return view('pages.finance.costing.cross-air.show', compact('id', 'joborder', 'op', 'lpdoc'));
+        $cost = Costing::where('job_order_id', $joborder->job_order_id);
+        if ($cost->exists()) {
+            $costing = $cost->first();
+        } else {
+            $costing = null;
+        }
+        return view('pages.finance.costing.cross-air.show', compact('id', 'joborder', 'op', 'lpdoc','costing'));
     }
 
     public function port(Request $request)

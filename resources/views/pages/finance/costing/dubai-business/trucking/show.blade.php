@@ -1,6 +1,6 @@
 @extends('layout.app')
 @section('body')
-    <x:layout.breadcrumb.wrapper module="Costing" pageName="SEA AIR">
+    <x:layout.breadcrumb.wrapper module="Costing" pageName="TRUCKING">
         <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />
         <x:layout.breadcrumb.item pageName="DETAIL" />
     </x:layout.breadcrumb.wrapper>
@@ -437,7 +437,7 @@
                 @endif
             </div>
              <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px; margin-top: 20px">
-            <x:form.cancel-button href="{{ route('finance.costing.sea-air.index') }}" label="Cancel" />
+            <x:form.cancel-button href="{{ route('finance.costing.dubai-business.trucking.index') }}" label="Cancel" />
 
 
 
@@ -452,7 +452,7 @@
 $(document).on('click', '#closed-button', function (e) {
     e.preventDefault(); // Prevent the default link behavior
 
-    const url = "{{ route('finance.costing.sea-air.status',[$costing?->id, 2]) }}"; // Get the URL from the link
+    const url = "{{ route('finance.costing.dubai-business.trucking.status',[$costing?->id, 2]) }}"; // Get the URL from the link
 
     Swal.fire({
         title: 'Are you sure?',
@@ -474,7 +474,7 @@ $(document).on('click', '#closed-button', function (e) {
 $(document).on('click', '#reopen-button', function (e) {
     e.preventDefault(); // Prevent the default link behavior
 
-    const url = "{{ route('finance.costing.sea-air.status',[$costing?->id, 3]) }}"; // Get the URL from the link
+    const url = "{{ route('finance.costing.dubai-business.trucking.status',[$costing?->id, 3]) }}"; // Get the URL from the link
 
     Swal.fire({
         title: 'Are you sure?',

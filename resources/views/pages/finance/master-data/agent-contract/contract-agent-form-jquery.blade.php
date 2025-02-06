@@ -1,64 +1,70 @@
 @push('js')
     <script>
         function generateChargeByAjax(service_type, serviceId = null, chargeId = null) {
-            $.ajax({
-                url: `{{ route('api.finance.master-data.charge.list') }}?service_type_id=${service_type}`,
-                method: "GET",
-                beforeSend: function () {
-                    if (serviceId !== null && chargeId !== null) {
-                        $(`#charge_id_${serviceId}_${chargeId}`).attr('disabled', true);
-                    } else {
-                        $(".chargeIdClass").each(function () {
-                            $(this).attr('disabled', true);
-                        });
-                    }
-                },
-                success: function (res) {
-                    if (res.ok) {
-                        let chargeList = `<option value="" selected hidden>Charge</option>`;
-                        chargeList += res.data.map((item) => {
-                            return `<option value="${item.id}" data-charge-name="${item.charge_name}" data-unit-code="${item.unit?.unit_name}">${item.charge_code}</option>`;
-                        }).join('');
-
+            if (service_type !== '' && service_type !== undefined && service_type !== null) {
+                console.log('request charge');
+                $.ajax({
+                    url: `{{ route('api.finance.master-data.charge.list') }}?service_type_id=${service_type}`,
+                    method: "GET",
+                    beforeSend: function () {
                         if (serviceId !== null && chargeId !== null) {
-                            $(`#charge_id_${serviceId}_${chargeId}`).html(chargeList);
+                            $(`#charge_id_${serviceId}_${chargeId}`).attr('disabled', true);
                         } else {
                             $(".chargeIdClass").each(function () {
-                                $(this).html(chargeList);
+                                $(this).attr('disabled', true);
                             });
                         }
-                    } else {
-                        iziToast.error({
-                            title: 'Failed',
-                            message : res.message,
-                            position: 'topRight'
-                        });
+                    },
+                    success: function (res) {
+                        if (res.ok) {
+                            let chargeList = `<option value="" selected hidden>Charge</option>`;
+                            chargeList += res.data.map((item) => {
+                                return `<option value="${item.id}" data-charge-name="${item.charge_name}" data-unit-code="${item.unit?.unit_name}">${item.charge_code}</option>`;
+                            }).join('');
+
+                            if (serviceId !== null && chargeId !== null) {
+                                $(`#charge_id_${serviceId}_${chargeId}`).html(chargeList);
+                            } else {
+                                $(".chargeIdClass").each(function () {
+                                    $(this).html(chargeList);
+                                });
+                            }
+                        } else {
+                            iziToast.error({
+                                title: 'Failed',
+                                message : res.message,
+                                position: 'topRight'
+                            });
+                        }
+                    },
+                    complete: function () {
+                        if (serviceId !== null && chargeId !== null) {
+                            $(`#charge_id_${serviceId}_${chargeId}`).attr('disabled', false);
+                            $(`#charge_id_${serviceId}_${chargeId}`).parents('.tableChargeForm-body-row').find('.tableChargeForm-box:not(.trigger-show-detail)').find('input, select').val('');
+                            $(`#charge_id_${serviceId}_${chargeId}`).parents('.tableChargeForm-body-row').find('.tableChargeDetailContent').empty();
+                        } else {
+                            $(".chargeIdClass").each(function (chargeIndex) {
+                                $(this).attr('disabled', false);
+                                $(`.chargeTableItemRow_${chargeIndex + 1} .tableChargeForm-box:not(.trigger-show-detail)`).find('input, select').val('');
+                                $(`.chargeTableItemRow_${chargeIndex + 1}`).find('.tableChargeDetailContent').empty();
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
                     }
-                },
-                complete: function () {
-                    if (serviceId !== null && chargeId !== null) {
-                        $(`#charge_id_${serviceId}_${chargeId}`).attr('disabled', false);
-                        $(`#charge_id_${serviceId}_${chargeId}`).parents('.tableChargeForm-body-row').find('.tableChargeForm-box:not(.trigger-show-detail)').find('input, select').val('');
-                        $(`#charge_id_${serviceId}_${chargeId}`).parents('.tableChargeForm-body-row').find('.tableChargeDetailContent').empty();
-                    } else {
-                        $(".chargeIdClass").each(function (chargeIndex) {
-                            $(this).attr('disabled', false);
-                            $(`.chargeTableItemRow_${chargeIndex + 1} .tableChargeForm-box:not(.trigger-show-detail)`).find('input, select').val('');
-                            $(`.chargeTableItemRow_${chargeIndex + 1}`).find('.tableChargeDetailContent').empty();
-                        });
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error(error);
-                }
-            })
+                });
+            }
         }
 
         $("#service_type_id").change(function (event) {
             event.preventDefault();
+            const serviceTypeElem = $(this);
 
-            const service_type_id = $(this).val();
-            generateChargeByAjax(service_type_id);
+            reactivateSelect2('.chargeIdClass', function () {
+                const service_type_id = $(serviceTypeElem).val();
+                generateChargeByAjax(service_type_id);
+            })
         })
 
         $(document).off('click', '.trigger-show-detail').on('click', '.trigger-show-detail', function (event) {
@@ -622,8 +628,9 @@
                         <div class="tableChargeForm-box" style="min-width: 170px;">
                             <select
                                 name="service_data[${serviceIndex - 1}][charge_data][${index - 1}][charge_id]"
-                                class="form-select chargeIdClass"
+                                class="form-select chargeIdClass selectLists"
                                 id="charge_id_${serviceIndex}_${index}"
+                                data-placeholder="Charge"
                                 style="width: 100%;">
                                 <option value="" selected hidden>
                                     Charge
@@ -1105,8 +1112,29 @@
                     $(this).select2({
                         placeholder: placeholder,
                     })
-                })
+                });
             })
+        }
+
+        async function reactivateSelect2(targetElement, executedFunction) {
+            $(targetElement).each(function (index) {
+                if ($(this).hasClass("select2-hidden-accessible")) {
+                    $(this).select2('destroy');
+                }
+            });
+
+            if (typeof executedFunction == "function") {
+                await executedFunction();
+            }
+
+            setTimeout(() => {
+                $(targetElement).each(function (index) {
+                    let placeholder = $(this).data('placeholder')
+                    $(this).select2({
+                        placeholder: placeholder,
+                    })
+                });
+            }, 1500);
         }
 
         function chargeOnChange(serviceId, chargeId) {

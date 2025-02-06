@@ -187,7 +187,7 @@
                                         <div class="tableChargeForm-box" style="min-width: 170px;">
                                             <select
                                                 name="service_data[{{ $index }}][charge_data][{{ $chargeIndex }}][charge_id]"
-                                                class="form-select chargeIdClass"
+                                                class="form-select chargeIdClass selectLists"
                                                 id="charge_id_{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
                                                 style="width: 100%;">
                                                 <option value="" selected hidden>

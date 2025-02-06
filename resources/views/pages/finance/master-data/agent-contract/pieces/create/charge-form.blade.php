@@ -186,7 +186,8 @@
                                     <div class="tableChargeForm-box" style="min-width: 170px;">
                                         <select
                                             name="service_data[0][charge_data][0][charge_id]"
-                                            class="form-select chargeIdClass"
+                                            class="form-select chargeIdClass selectLists"
+                                            data-placeholder="Charge"
                                             id="charge_id_1_1"
                                             style="width: 100%;">
                                             <option value="" selected hidden>

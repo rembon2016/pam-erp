@@ -14,15 +14,27 @@ use App\Models\Operation\Dxb\JobOrder;
 use App\Models\Operation\Dxb\LoadingPlanDocument;
 use App\Models\Operation\Dxb\OperationDocument;
 use App\Models\Operation\Master\Port;
+use App\Models\Finance\Charge;
+use App\Models\Finance\CostingDetail;
+use App\Models\Finance\Currency;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
+use App\Service\Finance\Costing\CostingService;
+use App\Service\Finance\Costing\DataService;
+use App\Service\Finance\Costing\Dxb\CalculationService;
 
 final class CourierController extends Controller
 {
+    public function __construct(
+        protected CostingService $costingService,
+        protected CalculationService $calculationService,
+        protected DataService $dataService
+
+    ) {}
     public function index(): View
     {
         return view('pages.finance.costing.dubai-business.courier.index');
@@ -117,24 +129,94 @@ final class CourierController extends Controller
 
     public function port(Request $request)
     {
-        $query = Port::query();
+        $result = $this->dataService->getPort($request);
 
-        // Apply search filter
-        if ($search = $request->input('search')) {
-            $query->where('port_code', 'ilike', '%'.$search.'%');
-            $query->orWhere('port_name', 'ilike', '%'.$search.'%');
-        }
-
-        // Paginate the results
-        $options = $query->orderBy('port_code', 'ASC')->paginate(1000); // Adjust the pagination size as needed
-
-        return response()->json([
-            'results' => $options->items(),
-            'pagination' => ['more' => $options->hasMorePages()],
-        ]);
+        return response()->json($result);
     }
 
-    public function cost($id) {}
+    public function cost($id) {
+        $joborder = JobOrder::with(['detail', 'loading', 'doc','detail.shipping'])->findOrFail($id);
+
+        $vendor_all = $this->dataService->getCustomer('All');
+        $vendor_truck = $this->dataService->getCustomer('Trucking Company');
+        $vendor_port = $this->dataService->getCustomer('Dubai Port');
+        $vendor_air = $this->dataService->getCustomer('Carrier Agent');
+        $vendor_line = $this->dataService->getCustomer('Shipping Line');
+
+        $charge = Charge::whereNull('deleted_at')->get();
+        $currency = Currency::whereNull('deleted_at')->get();
+
+        $cost = Costing::with(['truck', 'port', 'agent', 'special', 'head', 'head.detail'])->where('job_order_id', $joborder->job_order_id);
+        if ($cost->exists()) {
+            $costing = $cost->first();
+            $details = CostingDetail::with('currency')->selectRaw('costing_id,vendor_id,vendor_name, SUM(amount) as total_amount,currency_id')
+                ->groupBy('costing_id', 'vendor_id', 'vendor_name', 'currency_id')
+                ->where('costing_id', $costing->id)
+                ->get();
+            // return response()->json($details);
+            $data = [
+                'action' => route('finance.costing.dubai-business.courier.update', $costing->id),
+                'method' => 'PUT',
+            ];
+        } else {
+            $costing = null;
+            $details = null;
+            $data = [
+                'action' => route('finance.costing.dubai-business.courier.store'),
+                'method' => 'POST',
+            ];
+        }
+
+        return view('pages.finance.costing.dubai-business.courier.cost', compact('id', 'joborder','vendor_truck', 'vendor_port', 'vendor_air', 'vendor_line', 'charge', 'currency','costing', 'data', 'vendor_all', 'details'));
+    }
+
+    public function store(Request $request)
+    {
+
+        $joborder = JobOrder::find($request->job_order_id);
+        $shipment_by = 'COURIER';
+        $costing = $this->costingService->createCosting($request);
+
+        $this->costingService->createCostingSpecialOther($request, $costing->id);
+
+
+            if (! empty($request["vendor_other_0_id"])) {
+                $costing_head = $this->costingService->createCostingHead($request, $costing->id, $joborder->loading_plan_number, 'other', 'COURIER', null);
+
+                $this->costingService->createCostingDetailOther($request, $costing->id,$joborder->loading_plan_number, $shipment_by, $costing_head->id, 0);
+            }
+
+
+        return to_route('finance.costing.dubai-business.courier.index')->with('toastSuccess', 'Costing Success');
+    }
+
+
+    public function update($id, Request $request)
+    {
+        $costing = Costing::find($id);
+        $joborder = JobOrder::find($request->job_order_id);
+        $shipment_by = 'COURIER';
+        $costing = $this->costingService->updateCosting($request, $id);
+        $this->costingService->updateCostingSpecialOther($request, $id);
+
+            if (! empty($request["vendor_other_0_id"])) {
+
+                $costing_head = $this->costingService->updateCostingHead($request, $id, $joborder->loading_plan_number, 'other', 'COURIER', null);
+
+                $this->costingService->updateCostingDetailOther($request, $id, $joborder->loading_plan_number, $shipment_by, $costing_head->id, 0);
+            }
+
+
+
+        return to_route('finance.costing.dubai-business.courier.index')->with('toastSuccess', 'Update Success');
+    }
+
+    public function contract($id, $numbers, $type)
+    {
+        $result = $this->calculationService->getChargeByCourier($id, $numbers, $type);
+
+        return response()->json($result);
+    }
 
     public function exportCsv()
     {

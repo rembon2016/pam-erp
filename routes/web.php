@@ -513,7 +513,12 @@ Route::group(['middleware' => ['auth']], function () {
                     'as' => 'trucking.',
                 ], function () {
                     Route::get('/', [TruckingController::class, 'index'])->name('index');
+                    Route::get('/contract/{id}/{numbers}/{type}', [TruckingController::class, 'contract'])->name('contract');
+                    Route::get('/port', [TruckingController::class, 'port'])->name('port');
                     Route::get('/list', [TruckingController::class, 'list'])->name('list');
+                    Route::post('/store', [TruckingController::class, 'store'])->name('store');
+                    Route::get('/status/{id}/{status}', [TruckingController::class, 'status'])->name('status');
+                    Route::put('/update/{id}', [TruckingController::class, 'update'])->name('update');
                     Route::get('/show/{id}', [TruckingController::class, 'show'])->name('show');
                     Route::get('/cost/{id}', [TruckingController::class, 'cost'])->name('cost');
                     Route::get('/export/csv', [TruckingController::class, 'exportCsv'])->name('export.csv');
@@ -524,7 +529,12 @@ Route::group(['middleware' => ['auth']], function () {
                     'as' => 'courier.',
                 ], function () {
                     Route::get('/', [CourierController::class, 'index'])->name('index');
+                    Route::get('/contract/{id}/{numbers}/{type}', [CourierController::class, 'contract'])->name('contract');
+                    Route::get('/port', [CourierController::class, 'port'])->name('port');
                     Route::get('/list', [CourierController::class, 'list'])->name('list');
+                    Route::post('/store', [CourierController::class, 'store'])->name('store');
+                    Route::get('/status/{id}/{status}', [CourierController::class, 'status'])->name('status');
+                    Route::put('/update/{id}', [CourierController::class, 'update'])->name('update');
                     Route::get('/show/{id}', [CourierController::class, 'show'])->name('show');
                     Route::get('/cost/{id}', [CourierController::class, 'cost'])->name('cost');
                     Route::get('/export/csv', [CourierController::class, 'exportCsv'])->name('export.csv');

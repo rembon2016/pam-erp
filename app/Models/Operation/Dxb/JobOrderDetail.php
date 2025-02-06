@@ -17,7 +17,10 @@ class JobOrderDetail extends Model
     public static $rules = [];
 
     protected $fillable = ['job_order_detail_id', 'job_order_id', 'ctd_number', 'job_id'];
-
+    public function shipping()
+    {
+        return $this->belongsTo(ShippingInstruction::class, 'job_id', 'job_id');
+    }
     public function order()
     {
         return $this->belongsTo(Order::class, 'job_id', 'job_id');

@@ -136,7 +136,7 @@ final class WarehouseController extends Controller
     }
 
     public function cost($id) {
-        $joborder = JobOrder::with(['detail', 'loading', 'doc'])->findOrFail($id);
+        $joborder = JobOrder::with(['detail', 'loading', 'doc','detail.shipping'])->findOrFail($id);
 
         $vendor_all = $this->dataService->getCustomer('All');
         $vendor_truck = $this->dataService->getCustomer('Trucking Company');
@@ -201,7 +201,7 @@ final class WarehouseController extends Controller
 
             if (! empty($request["vendor_other_0_id"])) {
 
-                $costing_head = $this->costingService->updateCostingHead($request, $id, $joborder->loading_plan_number, 'other', 'WAREHOUSE', $rx->loading_report_bl_id);
+                $costing_head = $this->costingService->updateCostingHead($request, $id, $joborder->loading_plan_number, 'other', 'WAREHOUSE', $joborder->loading_plan_id);
 
                 $this->costingService->updateCostingDetailOther($request, $id, $joborder->loading_plan_number, $shipment_by, $costing_head->id, 0);
             }

@@ -97,10 +97,10 @@
             <x:layout.sidebar.child-menu name="Debit Note for Non Trade" link="{{ route('finance.general-transaction.debit-note.index', ['type' => 'non-trade']) }}" :activeCondition="Route::is('finance.general-transaction.debit-note.*') && request()->route()->parameter('type') == 'non-trade'" />
         </x:layout.sidebar.parent-menu>
         <x:layout.sidebar.child-menu name="Journal Voucher" link="{{ route('finance.general-transaction.journal-voucher.index') }}" :activeCondition="Route::is('finance.general-transaction.journal-voucher.*')" />
-        <x:layout.sidebar.parent-menu name="Receipt Voucher" iconClass="bx bxs-file">
-            <x:layout.sidebar.child-menu name="Receipt Voucher" link="/" />
-            <x:layout.sidebar.child-menu name="Receipt Voucher Overseas" link="/" />
-            <x:layout.sidebar.child-menu name="Receipt Voucher Cancellation" link="/" />
+        <x:layout.sidebar.parent-menu name="Receipt Voucher" iconClass="bx bxs-file" :showCondition="Route::is('finance.general-transaction.receipt-voucher.*')">
+            <x:layout.sidebar.child-menu name="Receipt Voucher" link="{{ route('finance.general-transaction.receipt-voucher.index', ['type' => 'index']) }}" :activeCondition="Route::is('finance.general-transaction.receipt-voucher.*') && request()->route()->parameter('type') == 'index'" />
+            <x:layout.sidebar.child-menu name="Receipt Voucher Overseas" link="{{ route('finance.general-transaction.receipt-voucher.index', ['type' => 'overseas']) }}" :activeCondition="Route::is('finance.general-transaction.receipt-voucher.*') && request()->route()->parameter('type') == 'overseas'" />
+            <x:layout.sidebar.child-menu name="Receipt Voucher Cancellation" link="{{ route('finance.general-transaction.receipt-voucher.index', ['type' => 'cancellation']) }}" :activeCondition="Route::is('finance.general-transaction.receipt-voucher.*') && request()->route()->parameter('type') == 'cancellation'" />
         </x:layout.sidebar.parent-menu>
         <x:layout.sidebar.child-menu name="Payment Request" link="/" />
         <x:layout.sidebar.parent-menu name="Payment Voucher" iconClass="bx bxs-file">

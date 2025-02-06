@@ -92,9 +92,9 @@
             <x:layout.sidebar.child-menu name="Credit Note for Revenue" link="{{ route('finance.general-transaction.credit-note.index', ['type' => 'revenue']) }}" :activeCondition="Route::is('finance.general-transaction.credit-note.*') && request()->route()->parameter('type') == 'revenue'" />
             <x:layout.sidebar.child-menu name="Credit Note for Non Trade" link="{{ route('finance.general-transaction.credit-note.index', ['type' => 'non-trade']) }}" :activeCondition="Route::is('finance.general-transaction.credit-note.*') && request()->route()->parameter('type') == 'non-trade'" />
         </x:layout.sidebar.parent-menu>
-        <x:layout.sidebar.parent-menu name="Debit Note" iconClass="bx bxs-file">
-            <x:layout.sidebar.child-menu name="Debit Note for Revenue" link="/" />
-            <x:layout.sidebar.child-menu name="Debit Note for Non Trade" link="/" />
+        <x:layout.sidebar.parent-menu name="Debit Note" iconClass="bx bxs-file" :showCondition="Route::is('finance.general-transaction.debit-note.*')">
+            <x:layout.sidebar.child-menu name="Debit Note for Revenue" link="{{ route('finance.general-transaction.debit-note.index', ['type' => 'revenue']) }}" :activeCondition="Route::is('finance.general-transaction.debit-note.*') && request()->route()->parameter('type') == 'revenue'" />
+            <x:layout.sidebar.child-menu name="Debit Note for Non Trade" link="{{ route('finance.general-transaction.debit-note.index', ['type' => 'non-trade']) }}" :activeCondition="Route::is('finance.general-transaction.debit-note.*') && request()->route()->parameter('type') == 'non-trade'" />
         </x:layout.sidebar.parent-menu>
         <x:layout.sidebar.child-menu name="Journal Voucher" link="/" />
         <x:layout.sidebar.parent-menu name="Receipt Voucher" iconClass="bx bxs-file">

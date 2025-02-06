@@ -15,6 +15,7 @@ use App\Http\Controllers\Finance\Costing\DubaiBusiness\WarehouseController;
 use App\Http\Controllers\Finance\Costing\SeaAirController;
 use App\Http\Controllers\Finance\GeneralTransaction\CreditNoteController;
 use App\Http\Controllers\Finance\GeneralTransaction\CreditorJournalVoucherController;
+use App\Http\Controllers\Finance\GeneralTransaction\DebitNoteController;
 use App\Http\Controllers\Finance\GeneralWise\Shipment\ShipmentController;
 use App\Http\Controllers\Finance\MasterData\AgentContractController;
 use App\Http\Controllers\Finance\MasterData\ChargeController;
@@ -565,6 +566,15 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/', [CreditNoteController::class, 'index'])->name('index');
                 Route::get('/list', [CreditNoteController::class, 'list'])->name('list');
                 Route::get('/create', [CreditNoteController::class, 'create'])->name('create');
+            });
+
+            Route::group([
+                'prefix' => 'debit-note/{type}',
+                'as' => 'debit-note.'
+            ], function () {
+                Route::get('/', [DebitNoteController::class, 'index'])->name('index');
+                Route::get('/list', [DebitNoteController::class, 'list'])->name('list');
+                Route::get('/create', [DebitNoteController::class, 'create'])->name('create');
             });
 
         });

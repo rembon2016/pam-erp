@@ -69,6 +69,8 @@ final class ShippingInstructionService
                 return $query->where('si.voyage_number_mother', $filters['voyage']);
             })->when(!empty($filters['origin']), function ($query) use ($filters) {
                 return $query->where('si.origin_name', $filters['origin']);
+            })->when(!empty($filters['customer']), function ($query) use ($filters) {
+                return $query->where('si.customer_id', $filters['customer']);
             });
 
         $dxbQuery = DB::table('dxb.shipping_instruction as si')->select([
@@ -105,6 +107,8 @@ final class ShippingInstructionService
                 return $query->where('si.voyage_number_mother', $filters['voyage']);
             })->when(!empty($filters['origin']), function ($query) use ($filters) {
                 return $query->where('si.origin_name', $filters['origin']);
+            })->when(!empty($filters['customer']), function ($query) use ($filters) {
+                return $query->where('si.customer_id', $filters['customer']);
             });
 
         $shippingInstructions = $originQuery->union($dxbQuery)

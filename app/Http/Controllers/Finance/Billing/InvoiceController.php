@@ -109,6 +109,7 @@ final class InvoiceController extends Controller
                 'mother_vessel_name',
                 'voyage',
                 'origin',
+                'customer'
             ])->toArray();
 
         if (request()->ajax()) {

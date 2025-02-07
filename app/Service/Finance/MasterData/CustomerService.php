@@ -71,19 +71,20 @@ final class CustomerService
      *
      * @param  array  $columns  = []
      */
-    public function getBillingCustomers(array $columns = []): Collection
+    public function getBillingCustomers(array $columns = [], $filters = []): Collection
     {
-        return Cache::remember('biling-customers-select2', 60 * 5, function () use ($columns) {
-            return CustomerBilling::query()
-                ->when(empty($columns), function ($query) {
-                    return $query->select('customer_id', 'customer_code', 'customer_name', 'status');
-                })
-                ->when(! empty($columns), function ($query) use ($columns) {
-                    return $query->select($columns);
-                })
-                ->where('status', 1)
-                ->get();
-        });
+        return CustomerBilling::query()
+            ->when(empty($columns), function ($query) {
+                return $query->select('customer_id', 'customer_code', 'customer_name', 'status');
+            })
+            ->when(! empty($columns), function ($query) use ($columns) {
+                return $query->select($columns);
+            })
+            ->when(!empty($filters['q']), function ($query) use ($filters) {
+                return $query->where('customer_name', 'ilike', '%'.$filters['q'].'%');
+            })
+            ->where('status', 1)
+            ->get();
     }
 
     /**

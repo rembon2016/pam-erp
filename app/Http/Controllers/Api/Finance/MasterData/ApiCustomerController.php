@@ -27,7 +27,10 @@ final class ApiCustomerController extends Controller
      */
     public function getBillingCustomers()
     {
-        $customerResponse = $this->customerService->getBillingCustomers();
+        $customerResponse = $this->customerService->getBillingCustomers(
+            columns: [],
+            filters: request()->query()
+        );
 
         return ResponseJson::success(code: 200, message: __('crud.fetched', ['name' => 'Customer']), data: $customerResponse);
     }

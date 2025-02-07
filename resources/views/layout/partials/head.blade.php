@@ -44,3 +44,5 @@
 
     <!-- Layout JS -->
     <script src="{{ asset('assets-v2/js/layout.js') }}"></script>
+
+    @stack('css')

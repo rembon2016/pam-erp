@@ -64,7 +64,7 @@
     </div>
 
     <!-- End Main Wrapper -->
-    @include('layout.partials.theme-settings')
+    {{-- @include('layout.partials.theme-settings') --}}
 
     @include('layout.partials.footer-scripts')
 </body>

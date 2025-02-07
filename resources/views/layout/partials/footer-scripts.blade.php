@@ -89,3 +89,5 @@
 
 <!-- Custom JS -->
 <script src="{{ asset('/assets-v2/js/script.js') }}"></script>
+
+@stack('js')

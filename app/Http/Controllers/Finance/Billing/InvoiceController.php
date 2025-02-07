@@ -111,7 +111,7 @@ final class InvoiceController extends Controller
                 'origin',
             ])->toArray();
 
-        // if (request()->ajax()) {
+        if (request()->ajax()) {
             $instructions = $this->shippingInstructionService->getShippingInstructionByCustomerCondition(condition: $billingCustomerCondition, filters: $shippingFilters);
 
             return DataTables::of($instructions->data)
@@ -124,12 +124,12 @@ final class InvoiceController extends Controller
                 ->addIndexColumn()
                 ->rawColumns(['row_checkbox'])
                 ->toJson();
-        // }
+        }
 
-        // return ResponseJson::error(
-        //     Response::HTTP_UNAUTHORIZED,
-        //     'Access Unauthorized',
-        // );
+        return ResponseJson::error(
+            Response::HTTP_UNAUTHORIZED,
+            'Access Unauthorized',
+        );
     }
 
     public function detail(string $id): View|RedirectResponse

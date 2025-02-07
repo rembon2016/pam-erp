@@ -165,7 +165,7 @@
                         <x:layout.sidebar-v2.menu-item name="Role & Permission" link="#" />
                     </x:layout.sidebar-v2.dropdown-menu>
 
-                    <x:layout.sidebar-v2.menu-item name="Logout" iconClass="fe fe-power" link="#" />
+                    <x:layout.sidebar-v2.menu-item name="Logout" iconClass="fe fe-power" link="{{ route('auth.logout') }}" />
                 </ul>
             </div>
         </div>

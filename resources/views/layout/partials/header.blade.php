@@ -189,8 +189,8 @@
                     <span class="animate-circle"></span>
                 </span>
                 <span class="user-content">
-                    <span class="user-details">Admin</span>
-                    <span class="user-name">John Smith</span>
+                    <span class="user-details">Administrator</span>
+                    <span class="user-name">{{ auth()->user()->full_name }}</span>
                 </span>
             </a>
             <div class="dropdown-menu menu-drop-user">
@@ -198,17 +198,17 @@
                     <div class="subscription-menu">
                         <ul>
                             <li>
-                                <a class="dropdown-item" href="{{ url('profile') }}">Profile</a>
+                                <a class="dropdown-item" href="{{ route('profile.index') }}">Profile</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{{ url('settings') }}">Settings</a>
+                                <a class="dropdown-item" href="{{ url('settings') }}">Change Password</a>
                             </li>
                         </ul>
                     </div>
                     <div class="subscription-logout">
                         <ul>
                             <li class="pb-0">
-                                <a class="dropdown-item" href="{{ url('login') }}">Log Out</a>
+                                <a class="dropdown-item" href="{{ route('auth.logout') }}">Log Out</a>
                             </li>
                         </ul>
                     </div>

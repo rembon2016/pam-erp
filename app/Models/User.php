@@ -101,4 +101,9 @@ final class User extends Authenticatable
         self::ADMIN_ROLE, self::HR_ROLE, self::ACCOUNTING_ROLE,
         self::SALES_ROLE, self::FINANCE_ROLE,
     ];
+
+    public function getFullNameAttribute()
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
 }

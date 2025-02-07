@@ -49,7 +49,7 @@
 
     <div class="page-wrapper">
         <div class="content container-fluid">
-    @yield('content')
+            @yield('body')
         </div>
     </div>
     {{-- End Main Content --}}

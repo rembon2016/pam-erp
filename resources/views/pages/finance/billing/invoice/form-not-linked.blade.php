@@ -114,7 +114,12 @@
 
 @push('js')
 <script>
-    const tableAjaxUrl = "{{ route('finance.billing.invoice.shipment.list') }}" + "?billing-customer=not-linked" ;
+    let tableAjaxUrl = "{{ route('finance.billing.invoice.shipment.list') }}" + "?billing-customer=not-linked";
+    const urlParams = new URLSearchParams(window.location.search);
+    const stringParams = Array.from(urlParams.entries()).map(([key, value]) => `${key}=${value}`).join('&');
+
+    if (stringParams !== '' && stringParams !== null && stringParams !== undefined) tableAjaxUrl += `&${stringParams}`;
+
     const selectedData = new Set();
 
     function updateCheckboxStates(table) {
@@ -290,7 +295,7 @@
             function (result) {
                 return {
                     results: result.data.map(item => ({
-                        id: `${item.mother_vessel_name} - ${item.voyage_number_mother}`,
+                        id: item.mother_vessel_id,
                         text: `${item.mother_vessel_name} - ${item.voyage_number_mother}`
                     })),
                 };

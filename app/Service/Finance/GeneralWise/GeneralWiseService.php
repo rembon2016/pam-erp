@@ -4,60 +4,97 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\GeneralWise;
 
-use App\Functions\ObjectResponse;
 use Illuminate\Http\Response;
+use App\Functions\ObjectResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 final class GeneralWiseService
 {
     public function getVessels(): object
     {
-        $response = $this->processApiRequest('api/shippinginstruction/vessel');
+        $originVessel = DB::table('origin.shipping_instruction')->select([
+                'mother_vessel_name',
+                'mother_vessel_id',
+                'voyage_number_mother',
+                'port_of_destination',
+                'loading_id'
+            ])
+            ->whereNotNull('mother_vessel_name')
+            ->where("status","!=",3)
+            ->distinct();
 
-        return $response;
+        $dxbVessel = DB::table('dxb.shipping_instruction')->select([
+                'mother_vessel_name',
+                'mother_vessel_id',
+                'voyage_number_mother',
+                'port_of_destination',
+                'loading_id'
+            ])
+            ->whereNotNull('mother_vessel_name')
+            ->where("status","!=",3)
+            ->distinct();
+
+        $vesselData = $originVessel->union($dxbVessel)->get();
+
+        $vesselData = $vesselData->unique(function($i, $key){
+            return $i->mother_vessel_name.$i->mother_vessel_id.($i->voyage_number_mother ?? "");
+        })->sortBy('mother_vessel_name')->values();
+
+        return ObjectResponse::success(
+            message: 'Successfully Fetch Vessel sData from API!',
+            statusCode: Response::HTTP_OK,
+            data: $vesselData
+        );
     }
 
     public function getOrigins(): object
     {
-        $response = $this->processApiRequest('api/shippinginstruction/origin/name');
+        $originCountry = DB::table('origin.shipping_instruction')->select([
+                'origin_name'
+            ])
+            ->whereNotNull('origin_name')
+            ->where("status","!=",3)
+            ->orderBy('origin_name','ASC')
+            ->distinct('origin_name');
 
-        return $response;
+        $originData = $originCountry->get();
+
+        return ObjectResponse::success(
+            message: 'Successfully Fetch Origin Data from API!',
+            statusCode: Response::HTTP_OK,
+            data: $originData
+        );
     }
 
     public function getVoyages(): object
     {
-        $response = $this->processApiRequest('api/shippinginstruction/voyage');
+        $originVoyage = DB::table('origin.shipping_instruction')->select([
+                'port_of_destination',
+                'voyage_number_mother',
+                'loading_id',
+                'to_consignee'
+            ])
+            ->whereNotNull('voyage_number_mother')
+            ->where("status","!=",3)
+            ->distinct('voyage_number_mother');
 
-        return $response;
-    }
+        $dxbVoyage = DB::table('dxb.shipping_instruction')->select([
+                'port_of_destination',
+                'voyage_number_mother',
+                'loading_id',
+                'to_consignee'
+            ])
+            ->whereNotNull('voyage_number_mother')
+            ->where("status","!=",3)
+            ->distinct('voyage_number_mother');
 
-    private function processApiRequest(string $url)
-    {
-        // Temporary disable
-        // $base_url = (request()->query('type') == "seaair" || request()->query('type') == "crossair")
-        //     ? config('pds-operation.api.origin')
-        //     : config('pds-operation.api.dxb');
+        $voyageData = $originVoyage->union($dxbVoyage)->get();
 
-        $base_url = config('pds-operation.api.origin');
-
-        $api_url = "{$base_url}/{$url}";
-        $api_response = Http::get($api_url, [
-            'shipment_by' => request()->query('shipment_by') ?? '',
-        ]);
-
-        if ($api_response->successful()) {
-            $response_data = $api_response->json();
-
-            return ObjectResponse::success(
-                message: 'Successfully Fetch Data from API!',
-                statusCode: Response::HTTP_OK,
-                data: $response_data['data']
-            );
-        } else {
-            return ObjectResponse::error(
-                message: 'Failed to Fetch Data from API!',
-                statusCode: Response::HTTP_INTERNAL_SERVER_ERROR,
-            );
-        }
+        return ObjectResponse::success(
+            message: 'Successfully Fetch Voyage Data from API!',
+            statusCode: Response::HTTP_OK,
+            data: $voyageData
+        );
     }
 }

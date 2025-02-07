@@ -100,8 +100,19 @@ final class InvoiceController extends Controller
             ? 'empty'
             : 'exists';
 
-        if (request()->ajax()) {
-            $instructions = $this->shippingInstructionService->getShippingInstructionByCustomerCondition(condition: $billingCustomerCondition);
+            $shippingFilters = collect(request()->query())->only([
+                'service_type',
+                'month',
+                'year',
+                'start_date',
+                'end_date',
+                'mother_vessel_name',
+                'voyage',
+                'origin',
+            ])->toArray();
+
+        // if (request()->ajax()) {
+            $instructions = $this->shippingInstructionService->getShippingInstructionByCustomerCondition(condition: $billingCustomerCondition, filters: $shippingFilters);
 
             return DataTables::of($instructions->data)
                 ->addColumn('row_checkbox', function ($col) {
@@ -113,12 +124,12 @@ final class InvoiceController extends Controller
                 ->addIndexColumn()
                 ->rawColumns(['row_checkbox'])
                 ->toJson();
-        }
+        // }
 
-        return ResponseJson::error(
-            Response::HTTP_UNAUTHORIZED,
-            'Access Unauthorized',
-        );
+        // return ResponseJson::error(
+        //     Response::HTTP_UNAUTHORIZED,
+        //     'Access Unauthorized',
+        // );
     }
 
     public function detail(string $id): View|RedirectResponse

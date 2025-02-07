@@ -25,19 +25,19 @@ final class ShippingInstructionService
      * @param  string  $condition:  exists,empty
      * @param  array  $columns  select only specific columns
      */
-    public function getShippingInstructionByCustomerCondition(string $condition = 'exists'): object
+    public function getShippingInstructionByCustomerCondition(string $condition = 'exists', $filters = []): object
     {
         $customer_column = $condition == 'exists' ? 'c.customer_name' : 'si.customer_name';
         $originQuery = DB::table('origin.shipping_instruction as si')->select([
-            'si.job_id',
-            'si.ctd_number as ctd_number',
-            DB::raw("$customer_column AS customer_name"),
-            'si.origin_name as origin_name',
-            'sio.qty as qty',
-            'sio.chw as chw',
-            DB::raw('COALESCE(jo.job_order_code, joa.job_order_code) AS job_order_code'),
-            'si.date_created as date_created',
-        ])
+                'si.job_id',
+                'si.ctd_number as ctd_number',
+                DB::raw("$customer_column AS customer_name"),
+                'si.origin_name as origin_name',
+                'sio.qty as qty',
+                'sio.chw as chw',
+                DB::raw('COALESCE(jo.job_order_code, joa.job_order_code) AS job_order_code'),
+                'si.date_created as date_created',
+            ])
             ->join('origin.si_order as sio', 'si.job_id', '=', 'sio.job_id')
             ->join(DB::raw('origin.job_order_detail as jod'), 'si.job_id', '=', 'jod.job_id')
             ->leftJoin(DB::raw('origin.job_order as jo'), function ($join) {
@@ -53,18 +53,34 @@ final class ShippingInstructionService
             })
             ->when($condition == 'exists', function ($query) {
                 return $query->whereNotNull('si.customer_id')->join('accounting.customer as c', 'si.customer_id', '=', 'c.customer_id');
+            })->when(!empty($filters['service_type']), function ($query) use ($filters) {
+                return $query->where('si.shipment_by', $filters['service_type']);
+            })->when(!empty($filters['month']), function ($query) use ($filters) {
+                return $query->whereMonth('si.date_created', $filters['month']);
+            })->when(!empty($filters['year']), function ($query) use ($filters) {
+                return $query->whereYear('si.date_created', $filters['year']);
+            })->when(!empty($filters['start_date']), function ($query) use ($filters) {
+                return $query->whereDate('si.date_created', '>=', $filters['start_date']);
+            })->when(!empty($filters['end_date']), function ($query) use ($filters) {
+                return $query->whereDate('si.date_created', '<=', $filters['end_date']);
+            })->when(!empty($filters['mother_vessel_name']), function ($query) use ($filters) {
+                return $query->where('si.mother_vessel_id', $filters['mother_vessel_name']);
+            })->when(!empty($filters['voyage']), function ($query) use ($filters) {
+                return $query->where('si.voyage_number_mother', $filters['voyage']);
+            })->when(!empty($filters['origin']), function ($query) use ($filters) {
+                return $query->where('si.origin_name', $filters['origin']);
             });
 
         $dxbQuery = DB::table('dxb.shipping_instruction as si')->select([
-            'si.job_id',
-            'si.ctd_number as ctd_number',
-            DB::raw("$customer_column AS customer_name"),
-            'si.origin_name as origin_name',
-            'sio.qty as qty',
-            'sio.chw as chw',
-            DB::raw('jo.job_order_code AS job_order_code'),
-            'si.date_created as date_created',
-        ])
+                'si.job_id',
+                'si.ctd_number as ctd_number',
+                DB::raw("$customer_column AS customer_name"),
+                'si.origin_name as origin_name',
+                'sio.qty as qty',
+                'sio.chw as chw',
+                DB::raw('jo.job_order_code AS job_order_code'),
+                'si.date_created as date_created',
+            ])
             ->join('dxb.si_order as sio', 'si.job_id', '=', 'sio.job_id')
             ->join(DB::raw('dxb.job_order_detail as jod'), 'si.job_id', '=', 'jod.job_id')
             ->leftJoin('dxb.job_order as jo', 'jo.job_order_id', '=', 'jod.job_order_id')
@@ -73,6 +89,22 @@ final class ShippingInstructionService
             })
             ->when($condition == 'exists', function ($query) {
                 return $query->whereNotNull('si.customer_id')->join('accounting.customer as c', 'si.customer_id', '=', 'c.customer_id');
+            })->when(!empty($filters['service_type']), function ($query) use ($filters) {
+                return $query->where('si.shipment_by', $filters['service_type']);
+            })->when(!empty($filters['month']), function ($query) use ($filters) {
+                return $query->whereMonth('si.date_created', $filters['month']);
+            })->when(!empty($filters['year']), function ($query) use ($filters) {
+                return $query->whereYear('si.date_created', $filters['year']);
+            })->when(!empty($filters['start_date']), function ($query) use ($filters) {
+                return $query->whereDate('si.date_created', '>=', $filters['start_date']);
+            })->when(!empty($filters['end_date']), function ($query) use ($filters) {
+                return $query->whereDate('si.date_created', '<=', $filters['end_date']);
+            })->when(!empty($filters['mother_vessel_name']), function ($query) use ($filters) {
+                return $query->where('si.mother_vessel_id', $filters['mother_vessel_name']);
+            })->when(!empty($filters['voyage']), function ($query) use ($filters) {
+                return $query->where('si.voyage_number_mother', $filters['voyage']);
+            })->when(!empty($filters['origin']), function ($query) use ($filters) {
+                return $query->where('si.origin_name', $filters['origin']);
             });
 
         $shippingInstructions = $originQuery->union($dxbQuery)

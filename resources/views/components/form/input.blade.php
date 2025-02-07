@@ -17,7 +17,7 @@
 
     @php
         $valueRecondition = $type == 'date'
-            ? $model?->{$name}?->format('Y-m-d')
+            ? (is_string($model?->{$name}) ? $model?->{$name} : $model?->{$name}?->format('Y-m-d'))
             : (!empty($customModelling) ? $customModelling : $model?->{$name});
     @endphp
 

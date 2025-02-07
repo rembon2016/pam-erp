@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Http;
 
 final class GeneralWiseService
 {
-    public function getVessels(): object
+    public function getVessels($filters = []): object
     {
         $originVessel = DB::table('origin.shipping_instruction')->select([
                 'mother_vessel_name',
@@ -22,6 +22,9 @@ final class GeneralWiseService
             ])
             ->whereNotNull('mother_vessel_name')
             ->where("status","!=",3)
+            ->when(!empty($filters['q']), function ($query) use ($filters) {
+                return $query->where(DB::raw("CONCAT(COALESCE(mother_vessel_name, ''), ' - ' ,COALESCE(voyage_number_mother, ''))"), 'ILIKE', "%{$filters['q']}%");
+            })
             ->distinct();
 
         $dxbVessel = DB::table('dxb.shipping_instruction')->select([
@@ -33,6 +36,9 @@ final class GeneralWiseService
             ])
             ->whereNotNull('mother_vessel_name')
             ->where("status","!=",3)
+            ->when(!empty($filters['q']), function ($query) use ($filters) {
+                return $query->where(DB::raw("CONCAT(COALESCE(mother_vessel_name, ''), ' - ' ,COALESCE(voyage_number_mother, ''))"), 'ILIKE', "%{$filters['q']}%");
+            })
             ->distinct();
 
         $vesselData = $originVessel->union($dxbVessel)->get();
@@ -48,13 +54,16 @@ final class GeneralWiseService
         );
     }
 
-    public function getOrigins(): object
+    public function getOrigins($filters = []): object
     {
         $originCountry = DB::table('origin.shipping_instruction')->select([
                 'origin_name'
             ])
             ->whereNotNull('origin_name')
             ->where("status","!=",3)
+            ->when(!empty($filters['q']), function ($query) use ($filters) {
+                return $query->where('origin_name', 'ilike', '%' . $filters['q'] . '%');
+            })
             ->orderBy('origin_name','ASC')
             ->distinct('origin_name');
 
@@ -67,7 +76,7 @@ final class GeneralWiseService
         );
     }
 
-    public function getVoyages(): object
+    public function getVoyages($filters = []): object
     {
         $originVoyage = DB::table('origin.shipping_instruction')->select([
                 'port_of_destination',
@@ -77,6 +86,9 @@ final class GeneralWiseService
             ])
             ->whereNotNull('voyage_number_mother')
             ->where("status","!=",3)
+            ->when(!empty($filters['q']), function ($query) use ($filters) {
+                return $query->where('voyage_number_mother', 'ilike', '%' . $filters['q'] . '%');
+            })
             ->distinct('voyage_number_mother');
 
         $dxbVoyage = DB::table('dxb.shipping_instruction')->select([
@@ -87,6 +99,9 @@ final class GeneralWiseService
             ])
             ->whereNotNull('voyage_number_mother')
             ->where("status","!=",3)
+            ->when(!empty($filters['q']), function ($query) use ($filters) {
+                return $query->where('voyage_number_mother', 'ilike', '%' . $filters['q'] . '%');
+            })
             ->distinct('voyage_number_mother');
 
         $voyageData = $originVoyage->union($dxbVoyage)->get();

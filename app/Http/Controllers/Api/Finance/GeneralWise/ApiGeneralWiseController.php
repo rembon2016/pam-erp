@@ -18,21 +18,21 @@ final class ApiGeneralWiseController extends Controller
     public function vessel(): JsonResponse
     {
         return ResponseJson::fromObject(
-            $this->generalWiseService->getVessels()
+            $this->generalWiseService->getVessels(request()->query())
         );
     }
 
     public function voyage(): JsonResponse
     {
         return ResponseJson::fromObject(
-            $this->generalWiseService->getVoyages()
+            $this->generalWiseService->getVoyages(request()->query())
         );
     }
 
     public function origin(): JsonResponse
     {
         return ResponseJson::fromObject(
-            $this->generalWiseService->getOrigins()
+            $this->generalWiseService->getOrigins(request()->query())
         );
     }
 }

@@ -296,7 +296,7 @@
                 return {
                     results: result.data.map(item => ({
                         id: item.mother_vessel_id,
-                        text: `${item.mother_vessel_name} - ${item.voyage_number_mother}`
+                        text: `${item.mother_vessel_name} ` + (item.voyage_number_mother !== null ? `- ${item.voyage_number_mother}` : '')
                     })),
                 };
             }

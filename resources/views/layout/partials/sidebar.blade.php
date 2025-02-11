@@ -5,7 +5,7 @@
                 <ul class="sidebar-vertical">
                     <!-- Main -->
                     <x:layout.sidebar-v2.menu-title title="Main Menu" />
-                    <x:layout.sidebar-v2.menu-item name="Dashboard" iconClass="fe fe-home" link="{{ route('dashboard') }}" activeCondition="true" />
+                    <x:layout.sidebar-v2.menu-item name="Dashboard" iconClass="fe fe-home" link="{{ route('dashboard') }}" :activeCondition="Route::is('dashboard')" />
 
                     <x:layout.sidebar-v2.dropdown-menu name="Master Data" iconClass="fe fe-grid">
                         <x:layout.sidebar-v2.menu-item name="Customer" link="#" />
@@ -161,8 +161,8 @@
                     <x:layout.sidebar-v2.menu-title title="Others" />
 
                     <x:layout.sidebar-v2.dropdown-menu name="Settings" iconClass="fe fe-settings">
-                        <x:layout.sidebar-v2.menu-item name="User" link="#" />
-                        <x:layout.sidebar-v2.menu-item name="Role & Permission" link="#" />
+                        <x:layout.sidebar-v2.menu-item name="User" link="{{ route('settings.user.index') }}" :activeCondition="Route::is('settings.user.*')" />
+                        <x:layout.sidebar-v2.menu-item name="Role & Permission" link="{{ route('settings.role-permission.index') }}" :activeCondition="Route::is('settings.role-permission.*')" />
                     </x:layout.sidebar-v2.dropdown-menu>
 
                     <x:layout.sidebar-v2.menu-item name="Logout" iconClass="fe fe-power" link="{{ route('auth.logout') }}" />

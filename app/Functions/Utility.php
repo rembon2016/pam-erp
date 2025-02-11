@@ -9,12 +9,17 @@ final class Utility
 {
     public static function generateTableActions(array $actions)
     {
-        $tableActions = '<div class="d-flex flex-wrap align-items-center justify-content-center gap-3">';
+        $tableActions = '<div class="dropdown dropdown-action">';
+        $tableActions .= '<a href="#" class="btn-action-icon show" data-bs-toggle="dropdown" aria-expanded="true"><i class="fas fa-ellipsis-v"></i></a>';
+        $tableActions .= '<div class="dropdown-menu dropdown-menu-end" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0px, 30px, 0px);">';
+        $tableActions .= '<ul>';
 
         foreach ($actions as $type => $url) {
             $tableActions .= self::generateActionButton($type, $url);
         }
 
+        $tableActions .= '</ul>';
+        $tableActions .= '</div>';
         $tableActions .= '</div>';
 
         return $tableActions;
@@ -22,48 +27,50 @@ final class Utility
 
     public static function generateActionButton(string $type, string $url)
     {
-        $button = '';
+        $button = '<li>';
         switch ($type) {
             case 'edit':
-                $button = '<a href="'.$url.'" class="action-btn btn-icon"><i class="bx bx-edit text-action-warning"></i></a>';
+                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="far fa-edit me-2"></i> Edit</a>';
                 break;
 
             case 'delete':
-                $button = '<a href="'.$url.'" class="action-btn btn-icon" onclick="deleteConfirmation(event)"><i class="bx bx-trash text-action-danger"></i></a>';
+                $button .= '<a href="'.$url.'" class="dropdown-item" onclick="deleteConfirmation(event)"><i class="far fa-trash-alt me-2"></i> Delete</a>';
                 break;
 
             case 'detail':
-                $button = '<a href="'.$url.'" class="action-btn btn-icon"><i class="bx bx-info-circle text-action-info"></i></a>';
+                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="far fa-eye me-2"></i> View</a>';
                 break;
 
             case 'show':
-                $button = '<a href="'.$url.'" class="action-btn btn-icon"><i class="bx bx-show text-action-info"></i></a>';
+                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="bx bx-show text-action-info"></i></a>';
                 break;
 
             case 'cost':
-                $button = '<a href="'.$url.'" class="action-btn btn-icon"><i class="bx bx-dollar text-action-success"></i></a>';
+                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="bx bx-dollar text-action-success"></i></a>';
                 break;
 
             case 'download':
-                $button = '<a href="'.$url.'" class="action-btn btn-icon" download><i class="bx bx-download text-action-success"></i></a>';
+                $button .= '<a href="'.$url.'" class="dropdown-item" download><i class="fa fa-download"></i> Download</a>';
                 break;
 
             case 'download-link':
-                $button = '<a href="'.$url.'" class="action-btn btn-icon"><i class="bx bx-download text-action-success"></i></a>';
+                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="fa fa-download"></i> Download</a>';
                 break;
 
             case 'cancel':
-                $button = '<button data-href="'.$url.'" class="action-btn btn-icon rounded confirm-btn"><i class="bx bx-x-circle text-action-danger"></i></buttonn>';
+                $button .= '<button data-href="'.$url.'" class="dropdown-item rounded confirm-btn"><i class="bx bx-x-circle text-action-danger"></i></buttonn>';
                 break;
 
             case 'history':
-                $button = '<a href="'.$url.'" class="action-btn btn-icon"><i class="bx bx-history text-action-info"></i></a>';
+                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="bx bx-history text-action-info"></i></a>';
                 break;
 
             default:
-                $button = '<a href="'.$url.'" class="action-btn btn-icon"><i class="bx bx-loader text-action-primary"></i></a>';
+                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="bx bx-loader text-action-primary"></i></a>';
                 break;
         }
+
+        $button .= '</li>';
 
         return $button;
     }

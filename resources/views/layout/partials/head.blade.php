@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{{ asset('assets-v2/css/bootstrap-datetimepicker.min.css') }}">
 
     <!-- Datatables CSS -->
-    <link rel="stylesheet" href="assets/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="{{ asset('assets-v2/css/dataTables.bootstrap5.min.css') }}">
 
     <!-- Select2 CSS -->
     <link rel="stylesheet" href="{{ asset('assets-v2/plugins/select2/css/select2.min.css') }}">

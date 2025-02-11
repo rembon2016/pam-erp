@@ -24,15 +24,15 @@
 
                     <x:layout.sidebar-v2.dropdown-menu name="General Wise" iconClass="fe fe-grid">
                         <x:layout.sidebar-v2.dropdown-menu name="Shipments" level="2">
-                            <x:layout.sidebar-v2.menu-item name="Sea Air" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Cross Air" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Sea Import" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Sea Export" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Air Import" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Air Export" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Warehouse" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Trucking" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Courier" link="#" />
+                            <x:layout.sidebar-v2.menu-item name="Sea Air" link="{{ route('finance.general-wise.shipment.index', 'seaair') }}" :activeCondition="last(request()->segments()) == 'seaair'" />
+                            <x:layout.sidebar-v2.menu-item name="Cross Air" link="{{ route('finance.general-wise.shipment.index', 'crossair') }}" :activeCondition="last(request()->segments()) == 'crossair'" />
+                            <x:layout.sidebar-v2.menu-item name="Sea Import" link="{{ route('finance.general-wise.shipment.index', 'seaimport') }}" :activeCondition="last(request()->segments()) == 'seaimport'" />
+                            <x:layout.sidebar-v2.menu-item name="Sea Export" link="{{ route('finance.general-wise.shipment.index', 'seaexport') }}" :activeCondition="last(request()->segments()) == 'seaexport'" />
+                            <x:layout.sidebar-v2.menu-item name="Air Import" link="{{ route('finance.general-wise.shipment.index', 'airimport') }}" :activeCondition="last(request()->segments()) == 'airimport'" />
+                            <x:layout.sidebar-v2.menu-item name="Air Export" link="{{ route('finance.general-wise.shipment.index', 'airexport') }}" :activeCondition="last(request()->segments()) == 'airexport'" />
+                            <x:layout.sidebar-v2.menu-item name="Warehouse" link="{{ route('finance.general-wise.shipment.index', 'warehouse') }}" :activeCondition="last(request()->segments()) == 'warehouse'" />
+                            <x:layout.sidebar-v2.menu-item name="Trucking" link="{{ route('finance.general-wise.shipment.index', 'trucking') }}" :activeCondition="last(request()->segments()) == 'trucking'" />
+                            <x:layout.sidebar-v2.menu-item name="Courier" link="{{ route('finance.general-wise.shipment.index', 'courier') }}" :activeCondition="last(request()->segments()) == 'courier'" />
                         </x:layout.sidebar-v2.dropdown-menu>
                         <x:layout.sidebar-v2.menu-item name="CTD" link="#" />
                         <x:layout.sidebar-v2.menu-item name="Customer" link="#" />

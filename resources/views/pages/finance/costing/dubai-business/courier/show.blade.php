@@ -1,6 +1,12 @@
 @extends('layout.main-layout')
 @section('title', 'Detail of Courier Costing')
-
+@push('css')
+    <style>
+        .card-detail{
+            margin: 0 0 10px 0 !important;
+        }
+    </style>
+@endpush
 @section('body')
     <x:layout.breadcrumb.wrapper module="Costing" pageName="COURIER">
         <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />
@@ -10,71 +16,68 @@
     <x:layout.card.wrapper>
         <x:layout.card.header>
 
-           <h1 class="page-heading text-dark fw-bold fs-3 text-center my-0 w-100">
+           <h1 class="page-heading text-dark fw-bold fs-3 text-center my-0 w-100 mb-5">
                Courier Information
             </h1>
         </x:layout.card.header>
         <x:layout.card.body>
-             <div class="row mb-5">
-                <div class="col-md-6 col-12 mb-3">
-                    <div class="card card-flush card-transition shadow-sm border p-4">
+             <div class="row">
+                <div class="col-md-4 col-12">
+                    <div class="card card-flush card-transition shadow-sm border p-4 card-detail">
                         <h5 class="mb-3">Job Order Code</h5>
                         <span>{{ $joborder->job_order_code ?? '-' }}</span>
                     </div>
                 </div>
-                <div class="col-md-6 col-12 mb-3">
-                    <div class="card card-flush card-transition shadow-sm border p-4">
+                <div class="col-md-4 col-12">
+                    <div class="card card-flush card-transition shadow-sm border p-4 card-detail">
                         <h5 class="mb-3">Origin</h5>
                         <span>{{ $joborder?->origin->city ?? '-' }}</span>
                     </div>
                 </div>
-            </div>
-
-            <div class="row mb-5">
-                <div class="col-md-6 col-12 mb-3">
-                    <div class="card card-flush card-transition shadow-sm border p-4">
+                <div class="col-md-4 col-12">
+                    <div class="card card-flush card-transition shadow-sm border p-4 card-detail">
                         <h5 class="mb-3">Trucking Courier No</h5>
                         <span>{{ $joborder?->loading_plan_number ?? '-' }}</span>
                     </div>
                 </div>
-
             </div>
 
-            <div class="row mb-5">
-                <div class="col-md-4 col-6 mb-3">
-                    <div class="card card-flush card-transition shadow-sm border p-4">
+
+            <div class="row">
+                <div class="col-md-4 col-6">
+                    <div class="card card-flush card-transition shadow-sm border p-4 card-detail">
                         <h5 class="mb-3">Date Order</h5>
                         <span>{{ \Carbon\Carbon::parse($joborder->date_order)->format('d M Y') }}</span>
                     </div>
                 </div>
-                <div class="col-md-4 col-6 mb-3">
-                    <div class="card card-flush card-transition shadow-sm border p-4">
+                <div class="col-md-4 col-6">
+                    <div class="card card-flush card-transition shadow-sm border p-4 card-detail">
                         <h5 class="mb-3">Eta Transit Port</h5>
                         <span>{{ \Carbon\Carbon::parse($joborder->eta_dubai)->format('d M Y') }}</span>
                     </div>
                 </div>
-                <div class="col-md-4 col-6 mb-3">
-                    <div class="card card-flush card-transition shadow-sm border p-4">
+                <div class="col-md-4 col-6">
+                    <div class="card card-flush card-transition shadow-sm border p-4 card-detail">
                         <h5 class="mb-3">Destination Charges</h5>
                         <span>{{ $joborder->destination_charges ?? '-' }}</span>
                     </div>
                 </div>
             </div>
 
-            <div class="row mb-5">
+            <div class="row">
                 <div class="col-12">
-                    <div class="card card-flush card-transition shadow-sm border p-4">
+                    <div class="card card-flush card-transition shadow-sm border p-4 card-detail">
                         <h5 class="mb-3">Description</h5>
                         <span>{{ $joborder->description ?? '-' }}</span>
                     </div>
                 </div>
             </div>
 
-            <div class="row mb-5">
-                <div class="col-12 mb-3">
-                    <div class="card card-flush card-transition shadow-sm border p-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card card-flush card-transition shadow-sm border p-4 card-detail">
                         <div class="d-flex flex-column gap-4">
-                            <div class="mb-5">
+                            <div class="mb-2">
                                 <h5 class="mb-3">CTD Number</h5>
                                 <div class="d-flex flex-row gap-3 flex-wrap">
                                     @forelse($joborder->detail as $detail)
@@ -103,11 +106,11 @@
                 </div>
             </div>
 
-            <div class="row mb-5">
-                <div class="col-12 mb-3">
+            <div class="row">
+                <div class="col-12">
                     <div class="card card-flush shadow-sm border p-4">
-                        <h5 class="mb-5">Documents</h5>
-                        <div class="row mb-5 align-item-stretch">
+                        <h5 class="mb-2">Documents</h5>
+                        <div class="row mb-2 align-item-stretch">
                             <div class="col-md-6">
                                 <div class="card card-flush card-transition shadow-sm border p-4 h-100">
                                     <h5 class="mb-3">Operation Chart</h5>
@@ -141,7 +144,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-5 align-item-stretch">
+                        <div class="row mb-2 align-item-stretch">
                             <div class="col-md-4">
                                 <div class="card card-flush card-transition shadow-sm border p-4 h-100">
                                     <h5 class="mb-3">Shipping Line Invoices</h5>
@@ -189,7 +192,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-5 align-item-stretch">
+                        <div class="row mb-2 align-item-stretch">
                             <div class="col-md-4">
                                 <div class="card card-flush card-transition shadow-sm border p-4 h-100">
                                     <h5 class="mb-3">DCA Approval</h5>
@@ -236,7 +239,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-5 align-item-stretch">
+                        <div class="row mb-2 align-item-stretch">
                             <div class="col-md-4">
                                 <div class="card card-flush card-transition shadow-sm border p-4 h-100">
                                     <h5 class="mb-3">Calogi Invoices</h5>
@@ -283,7 +286,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-5 align-item-stretch">
+                        <div class="row mb-2 align-item-stretch">
                             <div class="col-md-4">
                                 <div class="card card-flush card-transition shadow-sm border p-4 h-100">
                                     <h5 class="mb-3">Cash Voucher</h5>
@@ -330,7 +333,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-5 align-item-stretch">
+                        <div class="row mb-2 align-item-stretch">
                             <div class="col-md-6">
                                 <div class="card card-flush card-transition shadow-sm border p-4 h-100">
                                     <h5 class="mb-3">Shipping Line Do</h5>
@@ -362,7 +365,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-5 align-item-stretch">
+                        <div class="row mb-2 align-item-stretch">
                             <div class="col-md-6">
                                 <div class="card card-flush card-transition shadow-sm border p-4 h-100">
                                     <h5 class="mb-3">Airline Agreed Rate</h5>
@@ -394,7 +397,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-5 align-item-stretch">
+                        <div class="row mb-2 align-item-stretch">
                             <div class="col-md-12">
                                 <div class="card card-flush card-transition shadow-sm border p-4 h-100">
                                     <h5 class="mb-3">CTD</h5>
@@ -411,7 +414,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-5 align-item-stretch">
+                        <div class="row mb-2 align-item-stretch">
                             <div class="col-md-12">
                                 <div class="card card-flush card-transition shadow-sm border p-4 h-100">
                                     <h5 class="mb-3">Other</h5>

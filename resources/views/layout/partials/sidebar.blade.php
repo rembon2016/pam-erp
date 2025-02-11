@@ -46,23 +46,21 @@
                     <x:layout.sidebar-v2.menu-title title="Transactions" />
 
                     <x:layout.sidebar-v2.dropdown-menu name="Billing" iconClass="fe fe-grid">
-                        <x:layout.sidebar-v2.menu-item name="Generate Invoice" link="#" />
-                        <x:layout.sidebar-v2.menu-item name="Invoice List" link="#" />
+                        <x:layout.sidebar-v2.menu-item name="Generate Invoice" link="{{ route('finance.billing.invoice.create.not-linked-billing-customer', ['billing-customer' => 'not-linked']) }}" :activeCondition="Route::is('finance.billing.invoice.*') && !Route::is('finance.billing.invoice.index')"  />
+                        <x:layout.sidebar-v2.menu-item name="Invoice List" link="{{ route('finance.billing.invoice.index') }}" :activeCondition="Route::is('finance.billing.invoice.index')" />
                     </x:layout.sidebar-v2.dropdown-menu>
 
                     <x:layout.sidebar-v2.dropdown-menu name="Costing" iconClass="fe fe-grid">
-                        <x:layout.sidebar-v2.menu-item name="Sea Air" link="#" />
-                        <x:layout.sidebar-v2.menu-item name="Cross Air" link="#" />
-                        <x:layout.sidebar-v2.dropdown-menu name="Dubai Business" level="2">
-                            <x:layout.sidebar-v2.menu-item name="Sea Air" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Cross Air" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Sea Import" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Sea Export" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Air Import" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Air Export" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Warehouse" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Trucking" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Courier" link="#" />
+                        <x:layout.sidebar-v2.menu-item name="Sea Air" link="{{ route('finance.costing.sea-air.index') }}" :activeCondition="Route::is('finance.costing.sea-air.*')" />
+                        <x:layout.sidebar-v2.menu-item name="Cross Air" link="{{ route('finance.costing.cross-air.index') }}" :activeCondition="Route::is('finance.costing.cross-air.*')" />
+                        <x:layout.sidebar-v2.dropdown-menu name="Dubai Business" level="2" :showCondition="Route::is('finance.costing.dubai-business.*')">
+                            <x:layout.sidebar-v2.menu-item name="Sea Import" link="{{ route('finance.costing.dubai-business.sea-import.index') }}" :activeCondition="Route::is('finance.costing.dubai-business.sea-import.*')" />
+                            <x:layout.sidebar-v2.menu-item name="Sea Export" link="{{ route('finance.costing.dubai-business.sea-export.index') }}" :activeCondition="Route::is('finance.costing.dubai-business.sea-export.*')" />
+                            <x:layout.sidebar-v2.menu-item name="Air Import" link="{{ route('finance.costing.dubai-business.air-import.index') }}" :activeCondition="Route::is('finance.costing.dubai-business.air-import.*')" />
+                            <x:layout.sidebar-v2.menu-item name="Air Export" link="{{ route('finance.costing.dubai-business.air-export.index') }}" :activeCondition="Route::is('finance.costing.dubai-business.air-export.*')" />
+                            <x:layout.sidebar-v2.menu-item name="Warehouse" link="{{ route('finance.costing.dubai-business.warehouse.index') }}" :activeCondition="Route::is('finance.costing.dubai-business.warehouse.*')" />
+                            <x:layout.sidebar-v2.menu-item name="Trucking" link="{{ route('finance.costing.dubai-business.trucking.index') }}" :activeCondition="Route::is('finance.costing.dubai-business.trucking.*')" />
+                            <x:layout.sidebar-v2.menu-item name="Courier" link="{{ route('finance.costing.dubai-business.courier.index') }}" :activeCondition="Route::is('finance.costing.dubai-business.courier.*')" />
                         </x:layout.sidebar-v2.dropdown-menu>
                     </x:layout.sidebar-v2.dropdown-menu>
 

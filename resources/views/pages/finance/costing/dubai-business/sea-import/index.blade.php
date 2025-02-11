@@ -1,4 +1,5 @@
-@extends('layout.app')
+@extends('layout.main-layout')
+@section('title', 'Sea Import Costing')
 
 @section('body')
       <x:layout.breadcrumb.wrapper module="Costing" pageName="SEA Import">

@@ -1,4 +1,6 @@
-@extends('layout.app')
+@extends('layout.main-layout')
+@section('title', 'Detail of Sea Export Costing')
+
 @section('body')
     <x:layout.breadcrumb.wrapper module="Costing" pageName="SEA EXPORT">
         <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />

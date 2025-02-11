@@ -1,4 +1,6 @@
-@extends('layout.app')
+@extends('layout.main-layout')
+@section('title', content: 'Form Warehouse Costing')
+
 @push('css')
 <style>
 td {

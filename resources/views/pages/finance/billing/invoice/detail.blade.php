@@ -1,4 +1,5 @@
-@extends('layout.app')
+@extends('layout.main-layout')
+@section('title', 'Detail of Invoice')
 @push('css')
 <style>
     .table-detail {

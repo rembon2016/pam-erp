@@ -1,4 +1,6 @@
-@extends('layout.app')
+@extends('layout.main-layout')
+@section('title', 'Form Sea Air Costing')
+
 @push('css')
 <style>
 td {
@@ -151,8 +153,8 @@ select,
          <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px; margin-top: 20px">
             <x:form.cancel-button href="{{ route('finance.costing.sea-air.index') }}" label="Cancel" />
             @if($costing?->status != 2)
-            <button type="button" class="btn btn-sm custom-btn custom-btn-primary" id="save-button">Save</button>
-            <button type="button" class="btn btn-sm custom-btn custom-btn-primary" id="post-button">Post</button>
+            <button type="button" class="btn btn-primary" id="save-button">Save</button>
+            <button type="button" class="btn btn-primary" id="post-button">Post</button>
             @endif
         </div>
         </x:form.wrapper>

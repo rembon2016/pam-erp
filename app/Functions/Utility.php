@@ -42,31 +42,31 @@ final class Utility
                 break;
 
             case 'show':
-                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="bx bx-show text-action-info"></i></a>';
+                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="bx bx-show text-action-info me-2"></i></a>';
                 break;
 
             case 'cost':
-                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="bx bx-dollar text-action-success"></i></a>';
+                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="bx bx-dollar text-action-success me-2"></i></a>';
                 break;
 
             case 'download':
-                $button .= '<a href="'.$url.'" class="dropdown-item" download><i class="fa fa-download"></i> Download</a>';
+                $button .= '<a href="'.$url.'" class="dropdown-item" download><i class="fa fa-download me-2"></i> Download</a>';
                 break;
 
             case 'download-link':
-                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="fa fa-download"></i> Download</a>';
+                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="fa fa-download me-2"></i> Download</a>';
                 break;
 
             case 'cancel':
-                $button .= '<button data-href="'.$url.'" class="dropdown-item rounded confirm-btn"><i class="bx bx-x-circle text-action-danger"></i></buttonn>';
+                $button .= '<button data-href="'.$url.'" class="dropdown-item rounded confirm-btn"><i class="bx bx-x-circle text-action-danger me-2"></i></buttonn>';
                 break;
 
             case 'history':
-                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="bx bx-history text-action-info"></i></a>';
+                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="bx bx-history text-action-info me-2"></i></a>';
                 break;
 
             default:
-                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="bx bx-loader text-action-primary"></i></a>';
+                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="bx bx-loader text-action-primary me-2"></i></a>';
                 break;
         }
 

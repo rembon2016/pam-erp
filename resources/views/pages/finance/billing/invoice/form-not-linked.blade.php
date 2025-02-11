@@ -1,6 +1,8 @@
-@extends('layout.app')
+@extends('layout.main-layout')
+@section('title', 'Form Not Linked Billing Customer')
+
 @section('body')
-    <x:layout.breadcrumb.wrapper module="Billing" pageName="Billing Customer - Not Linked">
+    <x:layout.breadcrumb.wrapper module="Billing" pageName="Not Linked Billing Customer">
         <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />
         <x:layout.breadcrumb.item pageName="Billing" />
         <x:layout.breadcrumb.item pageName="Invoice" href="{{ route('finance.billing.invoice.index') }}" />

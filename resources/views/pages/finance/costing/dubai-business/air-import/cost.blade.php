@@ -1,4 +1,6 @@
-@extends('layout.app')
+@extends('layout.main-layout')
+@section('title', 'Form Air Import Costing')
+
 @push('css')
 <style>
 td {

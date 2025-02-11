@@ -42,11 +42,11 @@ final class Utility
                 break;
 
             case 'show':
-                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="bx bx-show text-action-info me-2"></i></a>';
+                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="bx bx-show text-action-info me-2"></i> View</a>';
                 break;
 
             case 'cost':
-                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="bx bx-dollar text-action-success me-2"></i></a>';
+                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="bx bx-dollar me-2"></i> Cost</a>';
                 break;
 
             case 'download':
@@ -58,15 +58,15 @@ final class Utility
                 break;
 
             case 'cancel':
-                $button .= '<button data-href="'.$url.'" class="dropdown-item rounded confirm-btn"><i class="bx bx-x-circle text-action-danger me-2"></i></buttonn>';
+                $button .= '<button data-href="'.$url.'" class="dropdown-item rounded confirm-btn"><i class="bx bx-x-circle me-2"></i> Cancel</button>';
                 break;
 
             case 'history':
-                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="bx bx-history text-action-info me-2"></i></a>';
+                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="bx bx-history me-2"></i> History</a>';
                 break;
 
             default:
-                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="bx bx-loader text-action-primary me-2"></i></a>';
+                $button .= '<a href="'.$url.'" class="dropdown-item"><i class="bx bx-loader me-2"></i> Custom</a>';
                 break;
         }
 

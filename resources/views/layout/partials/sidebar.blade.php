@@ -7,7 +7,7 @@
                     <x:layout.sidebar-v2.menu-title title="Main Menu" />
                     <x:layout.sidebar-v2.menu-item name="Dashboard" iconClass="fe fe-home" link="{{ route('dashboard') }}" :activeCondition="Route::is('dashboard')" />
 
-                    <x:layout.sidebar-v2.dropdown-menu name="Master Data" iconClass="fe fe-grid">
+                    <x:layout.sidebar-v2.dropdown-menu name="Master Data" iconClass="fe fe-database">
                         <x:layout.sidebar-v2.menu-item name="Customer" link="{{ route('finance.master-data.customer.index') }}" :activeCondition="Route::is('finance.master-data.customer.*')" />
                         <x:layout.sidebar-v2.menu-item name="Customer Contract" link="{{ route('finance.master-data.customer-contract.index') }}" :activeCondition="Route::is('finance.master-data.customer-contract.*')" />
                         <x:layout.sidebar-v2.menu-item name="Agent Contract" link="{{ route('finance.master-data.agent-contract.index') }}" :activeCondition="Route::is('finance.master-data.agent-contract.*')" />
@@ -22,7 +22,7 @@
                         <x:layout.sidebar-v2.menu-item name="Daybook" link="{{ route('finance.master-data.daybook.index') }}" :activeCondition="Route::is('finance.master-data.daybook.*')" />
                     </x:layout.sidebar-v2.dropdown-menu>
 
-                    <x:layout.sidebar-v2.dropdown-menu name="General Wise" iconClass="fe fe-grid">
+                    <x:layout.sidebar-v2.dropdown-menu name="General Wise" iconClass="fe fe-layers">
                         <x:layout.sidebar-v2.dropdown-menu name="Shipments" level="2">
                             <x:layout.sidebar-v2.menu-item name="Sea Air" link="{{ route('finance.general-wise.shipment.index', 'seaair') }}" :activeCondition="last(request()->segments()) == 'seaair'" />
                             <x:layout.sidebar-v2.menu-item name="Cross Air" link="{{ route('finance.general-wise.shipment.index', 'crossair') }}" :activeCondition="last(request()->segments()) == 'crossair'" />
@@ -45,12 +45,12 @@
 
                     <x:layout.sidebar-v2.menu-title title="Transactions" />
 
-                    <x:layout.sidebar-v2.dropdown-menu name="Billing" iconClass="fe fe-grid">
+                    <x:layout.sidebar-v2.dropdown-menu name="Billing" iconClass="fe fe-file-text">
                         <x:layout.sidebar-v2.menu-item name="Generate Invoice" link="{{ route('finance.billing.invoice.create.not-linked-billing-customer', ['billing-customer' => 'not-linked']) }}" :activeCondition="Route::is('finance.billing.invoice.*') && !Route::is('finance.billing.invoice.index')"  />
                         <x:layout.sidebar-v2.menu-item name="Invoice List" link="{{ route('finance.billing.invoice.index') }}" :activeCondition="Route::is('finance.billing.invoice.index')" />
                     </x:layout.sidebar-v2.dropdown-menu>
 
-                    <x:layout.sidebar-v2.dropdown-menu name="Costing" iconClass="fe fe-grid">
+                    <x:layout.sidebar-v2.dropdown-menu name="Costing" iconClass="fe fe-dollar-sign">
                         <x:layout.sidebar-v2.menu-item name="Sea Air" link="{{ route('finance.costing.sea-air.index') }}" :activeCondition="Route::is('finance.costing.sea-air.*')" />
                         <x:layout.sidebar-v2.menu-item name="Cross Air" link="{{ route('finance.costing.cross-air.index') }}" :activeCondition="Route::is('finance.costing.cross-air.*')" />
                         <x:layout.sidebar-v2.dropdown-menu name="Dubai Business" level="2" :showCondition="Route::is('finance.costing.dubai-business.*')">
@@ -64,7 +64,7 @@
                         </x:layout.sidebar-v2.dropdown-menu>
                     </x:layout.sidebar-v2.dropdown-menu>
 
-                    <x:layout.sidebar-v2.dropdown-menu name="General Transaction" iconClass="fe fe-grid">
+                    <x:layout.sidebar-v2.dropdown-menu name="General Transaction" iconClass="fe fe-shuffle">
                         <x:layout.sidebar-v2.menu-item name="Creditor Journal Voucher" link="{{ route('finance.general-transaction.creditor-journal-voucher.index') }}" :activeCondition="Route::is('finance.general-transaction.creditor-journal-voucher.*')" />
 
                         <x:layout.sidebar-v2.dropdown-menu name="Credit Note" level="2">
@@ -133,7 +133,7 @@
 
                     <x:layout.sidebar-v2.menu-title title="Reports" />
 
-                    <x:layout.sidebar-v2.dropdown-menu name="Finance Reports" iconClass="fe fe-grid">
+                    <x:layout.sidebar-v2.dropdown-menu name="Finance Reports" iconClass="fe fe-bar-chart">
                         <x:layout.sidebar-v2.menu-item name="Debtors Book" link="#" />
                         <x:layout.sidebar-v2.menu-item name="Creditors Book" link="#" />
                         <x:layout.sidebar-v2.menu-item name="Sales Book" link="#" />
@@ -147,7 +147,7 @@
                         <x:layout.sidebar-v2.menu-item name="Loan Report" link="#" />
                     </x:layout.sidebar-v2.dropdown-menu>
 
-                    <x:layout.sidebar-v2.dropdown-menu name="Accounting Reports" iconClass="fe fe-grid">
+                    <x:layout.sidebar-v2.dropdown-menu name="Accounting Reports" iconClass="fe fe-book">
                         <x:layout.sidebar-v2.menu-item name="General Ledger Report" link="#" />
                         <x:layout.sidebar-v2.menu-item name="Trial Balance Report" link="#" />
                         <x:layout.sidebar-v2.menu-item name="Balance Sheet Statement" link="#" />

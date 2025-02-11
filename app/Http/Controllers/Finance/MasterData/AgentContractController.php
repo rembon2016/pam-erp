@@ -107,7 +107,7 @@ final class AgentContractController extends Controller
                 ->editColumn('contract_no', function ($item) {
                     $is_expired = now()->gt($item->contract_end);
                     $contract_no = $is_expired
-                        ? "<span class='badge badge-danger badge-lg'>{$item->contract_no}</span>"
+                        ? "<span class='badge badge-soft-danger badge-border'>{$item->contract_no}</span>"
                         : $item->contract_no;
 
                     return $contract_no;
@@ -156,7 +156,7 @@ final class AgentContractController extends Controller
                 ->editColumn('contract_no', function ($item) {
                     $is_expired = now()->gt($item['contract_end']);
                     $contract_no = $is_expired
-                        ? "<span class='badge badge-danger badge-lg'>{$item['contract_no']}</span>"
+                        ? "<span class='badge badge-soft-danger badge-border'>{$item['contract_no']}</span>"
                         : $item['contract_no'];
 
                     return $contract_no;

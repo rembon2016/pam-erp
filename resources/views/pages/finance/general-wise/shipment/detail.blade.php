@@ -1,4 +1,6 @@
-@extends('layout.app')
+@extends('layout.main-layout')
+@section('title', 'Detail of Shipment')
+
 @section('body')
     <x:layout.breadcrumb.wrapper module="Master Data" pageName="Order Detail">
         <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />
@@ -11,5 +13,3 @@
         <x-shipment.detail-card :shipment="$shipment" :type="$type" />
     </x:layout.card.wrapper>
 @endsection
-
-

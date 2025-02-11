@@ -1,4 +1,5 @@
-@extends('layout.app')
+@extends('layout.main-layout')
+@section('title', 'Customer')
 
 @section('body')
     <x:layout.breadcrumb.wrapper module="Master Data" pageName="Customer">

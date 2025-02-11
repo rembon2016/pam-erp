@@ -1,4 +1,9 @@
-@extends('layout.app')
+@extends('layout.main-layout')
+
+@section('title')
+    {{ $data['page'] }}
+@endsection
+
 
 @push('css')
 <style>

@@ -1,4 +1,5 @@
-@extends('layout.app')
+@extends('layout.main-layout')
+@section('title', 'Detail of Customer Contract')
 
 @push('css')
 <style>

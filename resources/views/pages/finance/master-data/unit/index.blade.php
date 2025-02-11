@@ -1,4 +1,6 @@
-@extends('layout.app')
+@extends('layout.main-layout')
+@section('title', 'Unit')
+
 @section('body')
     <x:layout.breadcrumb.wrapper module="Master Data" pageName="Unit">
         <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />

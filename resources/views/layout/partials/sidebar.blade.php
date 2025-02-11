@@ -10,12 +10,12 @@
                     <x:layout.sidebar-v2.dropdown-menu name="Master Data" iconClass="fe fe-grid">
                         <x:layout.sidebar-v2.menu-item name="Customer" link="{{ route('finance.master-data.customer.index') }}" :activeCondition="Route::is('finance.master-data.customer.*')" />
                         <x:layout.sidebar-v2.menu-item name="Customer Contract" link="{{ route('finance.master-data.customer-contract.index') }}" :activeCondition="Route::is('finance.master-data.customer-contract.*')" />
-                        <x:layout.sidebar-v2.menu-item name="Agent Contract" link="{{ route('finance.master-data.customer.index') }}" :activeCondition="Route::is('finance.master-data.customer.*')" />
-                        <x:layout.sidebar-v2.menu-item name="Country" link="{{ route('finance.master-data.agent-contract.index') }}" :activeCondition="Route::is('finance.master-data.agent-contract.*')" />
+                        <x:layout.sidebar-v2.menu-item name="Agent Contract" link="{{ route('finance.master-data.agent-contract.index') }}" :activeCondition="Route::is('finance.master-data.agent-contract.*')" />
+                        <x:layout.sidebar-v2.menu-item name="Country" link="{{ route('finance.master-data.country.index') }}" :activeCondition="Route::is('finance.master-data.country.*')" />
                         <x:layout.sidebar-v2.menu-item name="Port" link="{{ route('finance.master-data.port.index') }}" :activeCondition="Route::is('finance.master-data.port.*')" />
                         <x:layout.sidebar-v2.menu-item name="Service Type" link="{{ route('finance.master-data.service-type.index') }}" :activeCondition="Route::is('finance.master-data.service-type.*')" />
                         <x:layout.sidebar-v2.menu-item name="Unit" link="{{ route('finance.master-data.unit.index') }}" :activeCondition="Route::is('finance.master-data.unit.*')" />
-                        <x:layout.sidebar-v2.menu-item name="Payment Method" link="{{ route('finance.master-data.payment-method.index') }}" :activeCondition="Route::is('finance.master-data.customer.*')" />
+                        <x:layout.sidebar-v2.menu-item name="Payment Method" link="{{ route('finance.master-data.payment-method.index') }}" :activeCondition="Route::is('finance.master-data.payment-method.*')" />
                         <x:layout.sidebar-v2.menu-item name="Currency" link="{{ route('finance.master-data.currency.index') }}" :activeCondition="Route::is('finance.master-data.currency.*')" />
                         <x:layout.sidebar-v2.menu-item name="GL Charge Master" link="{{ route('finance.master-data.charge.index') }}" :activeCondition="Route::is('finance.master-data.charge.*')" />
                         <x:layout.sidebar-v2.menu-item name="Chart of Account" link="{{ route('finance.master-data.chart-of-account.index') }}" :activeCondition="Route::is('finance.master-data.chart-of-account.*')" />

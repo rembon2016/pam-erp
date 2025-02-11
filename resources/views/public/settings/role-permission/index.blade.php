@@ -132,19 +132,19 @@
                         <div class="dropdown-menu dropdown-menu-end">
                             <ul class="d-block">
                                 <li>
-                                    <a class="d-flex align-items-center download-item" href="javascript:void(0);">
+                                    <a class="d-flex align-items-center download-item" href="{{ route('settings.role-permission.export.excel') }}">
                                         <i class="far fa-file-excel me-2"></i>
                                         Excel
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="d-flex align-items-center download-item" href="javascript:void(0);">
+                                    <a class="d-flex align-items-center download-item" href="{{ route('settings.role-permission.export.csv') }}">
                                         <i class="far fa-file-text me-2"></i>
                                         CSV
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="d-flex align-items-center download-item" href="javascript:void(0);">
+                                    <a class="d-flex align-items-center download-item" href="{{ route('settings.role-permission.export.pdf') }}">
                                         <i class="far fa-file-pdf me-2"></i>
                                         PDF
                                     </a>

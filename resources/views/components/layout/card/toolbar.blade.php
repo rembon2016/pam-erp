@@ -167,9 +167,9 @@
             @if (!empty($customLink))
                 <li>
                     @if(isset($customLink['link']))
-                    <a href="{{ $customLink['link'] }}" class="btn btn-impooort" id="custom-link-button">
+                    <a href="{{ $customLink['link'] }}" class="btn btn-import" id="custom-link-button">
                         @if (!empty($customLink['icon']))
-                        <i class="{{ $customLink['icon'] }}"></i>
+                        <i class="{{ $customLink['icon'] }} me-1"></i>
                         @endif
                         {{ $customLink['text'] }}
                     </a>

@@ -1,4 +1,6 @@
-@extends('layout.app')
+@extends('layout.main-layout')
+@section('title', 'Chart of Account')
+
 @section('body')
     <x:layout.breadcrumb.wrapper module="Master Data" pageName="Chart of Account">
         <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />
@@ -69,11 +71,9 @@
                                             <div style="margin-left:40px;">{{ $chartOfAccount->account_name }}</div>
                                         </td>
                                         <td>
-                                            <div class="btn-group">
-                                                <a href="{{ route('finance.master-data.chart-of-account.edit', $chartOfAccount->id) }}" class="btn btn-success btn-sm btn-icon">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                            </div>
+                                            <a href="{{ route('finance.master-data.chart-of-account.edit', $chartOfAccount->id) }}" class="btn btn-success text-white">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach

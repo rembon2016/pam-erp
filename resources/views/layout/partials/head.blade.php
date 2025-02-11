@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="{{ asset('assets-v2/plugins/fontawesome/css/fontawesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets-v2/plugins/fontawesome/css/all.min.css') }}">
 
+    {{-- Boxicons CSS --}}
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
     <!-- Feather CSS -->
     <link rel="stylesheet" href="{{ asset('assets-v2/plugins/feather/feather.css') }}">
 

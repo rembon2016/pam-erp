@@ -1,26 +1,26 @@
     <!-- Header -->
     <div class="header header-one">
-        <a href="{{ url('/') }}"
+        <a href="{{ route('dashboard') }}"
             class="d-inline-flex d-sm-inline-flex align-items-center d-md-inline-flex d-lg-none align-items-center device-logo">
-            <img src="{{ asset('/assets-v2/img/logo.png') }}" class="img-fluid logo2" alt="Logo">
+            <img src="{{ asset('assets/logos/pam-long.png') }}" class="img-fluid logo2" alt="Logo">
         </a>
         <div class="main-logo d-inline float-start d-lg-flex align-items-center d-none d-sm-none d-md-none">
             <div class="logo-white">
-                <a href="{{ url('/') }}">
-                    <img src="{{ asset('/assets-v2/img/logo-full-white.png') }}" class="img-fluid logo-blue"
+                <a href="{{ route('dashboard') }}">
+                    <img src="{{ asset('assets/logos/pam-long.png') }}" class="img-fluid logo-blue"
                         alt="Logo">
                 </a>
-                <a href="{{ url('/') }}">
-                    <img src="{{ asset('/assets-v2/img/logo-small-white.png') }}" class="img-fluid logo-small"
+                <a href="{{ route('dashboard') }}">
+                    <img src="{{ asset('assets/logos/pam-512-512.png') }}" class="img-fluid logo-small"
                         alt="Logo">
                 </a>
             </div>
             <div class="logo-color">
-                <a href="{{ url('/') }}">
-                    <img src="{{ asset('/assets-v2/img/logo.png') }}" class="img-fluid logo-blue" alt="Logo">
+                <a href="{{ route('dashboard') }}">
+                    <img src="{{ asset('assets/logos/pam-long.png') }}" class="img-fluid logo-blue" alt="Logo">
                 </a>
-                <a href="{{ url('/') }}">
-                    <img src="{{ asset('/assets-v2/img/logo-small.png') }}" class="img-fluid logo-small"
+                <a href="{{ route('dashboard') }}">
+                    <img src="{{ asset('assets/logos/pam-512-512.png') }}" class="img-fluid logo-small"
                         alt="Logo">
                 </a>
             </div>
@@ -84,7 +84,7 @@
             </a>
             <div class="dropdown-menu notifications">
                 <div class="topnav-dropdown-header">
-                    <div class="notification-title">Notifications <a href="{{ url('notifications') }}">View all</a>
+                    <div class="notification-title">Notifications <a href="{{ route('notifications') }}">View all</a>
                     </div>
                     <a href="javascript:void(0)" class="clear-noti d-flex align-items-center">Mark all as read <i
                             class="fe fe-check-circle"></i></a>
@@ -92,7 +92,7 @@
                 <div class="noti-content">
                     <ul class="notification-list">
                         <li class="notification-message">
-                            <a href="{{ url('profile') }}">
+                            <a href="{{ route('profile') }}">
                                 <div class="d-flex">
                                     <span class="avatar avatar-md active">
                                         <img class="avatar-img rounded-circle" alt="avatar-img"
@@ -112,7 +112,7 @@
                             </a>
                         </li>
                         <li class="notification-message">
-                            <a href="{{ url('profile') }}">
+                            <a href="{{ route('profile') }}">
                                 <div class="d-flex">
                                     <span class="avatar avatar-md active">
                                         <img class="avatar-img rounded-circle" alt="avatar-img"
@@ -129,7 +129,7 @@
                             </a>
                         </li>
                         <li class="notification-message">
-                            <a href="{{ url('profile') }}">
+                            <a href="{{ route('profile') }}">
                                 <div class="d-flex">
                                     <span class="avatar avatar-md">
                                         <img class="avatar-img rounded-circle" alt="avatar-img"
@@ -150,7 +150,7 @@
                             </a>
                         </li>
                         <li class="notification-message">
-                            <a href="{{ url('profile') }}">
+                            <a href="{{ route('profile') }}">
                                 <div class="d-flex">
                                     <span class="avatar avatar-md">
                                         <img class="avatar-img rounded-circle" alt="avatar-img"

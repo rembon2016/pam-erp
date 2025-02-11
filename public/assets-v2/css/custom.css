@@ -1,0 +1,33 @@
+.form-control, .form-select {
+    font-size: 0.9rem !important;
+}
+
+.form-control::placeholder, .form-select > option:not(:selected) {
+    color: rgba(0, 0, 0, 0.5)
+}
+
+.search-table-box {
+    position: relative;
+    width: min(350px, 90%);
+}
+
+.search-table-box i {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+}
+
+.search-table-box .search-input {
+    padding-left: 30px;
+    height: 39px;
+    width: 100%;
+}
+
+.search-table-box .search-input::placeholder {
+    color: #7e7e7e;
+}

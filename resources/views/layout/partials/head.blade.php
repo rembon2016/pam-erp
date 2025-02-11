@@ -44,6 +44,7 @@
 
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ asset('assets-v2/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets-v2/css/custom.css') }}">
 
 
     {{-- iziToast CSS --}}

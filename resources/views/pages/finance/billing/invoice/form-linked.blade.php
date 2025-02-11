@@ -74,7 +74,7 @@
 
     <x:layout.card.wrapper>
         <x:layout.card.header>
-            <div class="d-flex flex-column w-100" style="row-gap: 5px;">
+            <div class="d-flex w-100 align-items-center flex-wrap justify-content-between w-100" style="gap: 5px;">
                 <i class="text-muted">Selected CTD: <span id="total_selected">0</span> Data</i>
                 <div class="d-flex align-items-center justify-content-end gap-2">
                     <x:layout.card.toolbar
@@ -139,116 +139,215 @@
         $("#ctd_data").val(ctd_data_value);
     }
 
-    var KTDataTable = function() {
-        var t, e;
-        return {
-            init: function() {
+    // var KTDataTable = function() {
+    //     var t, e;
+    //     return {
+    //         init: function() {
 
-                (t = document.querySelector("#linked-table")) && (t.querySelectorAll(
-                        "tbody tr").forEach((t => {
-                        const e = t.querySelectorAll("td"),
-                            r = moment(e[3].innerHTML, "dd mm yyyy").format();
-                        e[3].setAttribute("data-order", r)
-                    })), e = $(t).DataTable({
-                        searchDelay: 500,
-                        pageLength: 10,
-                        processing: true,
-                        serverSide: true,
-                        ajax: tableAjaxUrl,
-                        columns: [
-                            {
-                                data: "row_checkbox",
-                                name: "row_checkbox",
-                                orderable: false,
-                                searchable: false
-                            },
-                            {
-                                data: "DT_RowIndex",
-                                name: "DT_RowIndex",
-                                orderable: false,
-                                searchable: false
-                            },
-                            {
-                                data: "ctd_number",
-                                name: "ctd_number",
-                            },
-                            {
-                                data: "billing_customer_name",
-                                name: "billing_customer_name",
-                            },
-                            {
-                                data: "job_order_code",
-                                name: "job_order_code",
-                            },
-                            {
-                                data: "origin_name",
-                                name: "origin_name",
-                            },
-                            {
-                                data: "qty",
-                                name: "qty",
-                            },
-                            {
-                                data: "chw",
-                                name: "chw",
-                            },
-                        ],
-                        columnDefs: [
-                        {
-                            // Optional: Adjust render logic for specific columns directly in JS
-                            targets: '_all',
-                            render: function(data, type, row, meta) {
-                                // If the data is null, display 'N/A'
-                                return data === null ? 'N/A' : data;
-                            }
-                        }
-                    ]
-                    }), document.querySelector('[data-kt-ecommerce-order-filter="search"]').addEventListener(
-                        "keyup", (function(t) {
-                            e.search(t.target.value).draw()
-                        })), (() => {
-                            const t = document.querySelector('[data-kt-ecommerce-order-filter="status"]');
-                            $(t).on("change", (t => {
-                                let r = t.target.value;
-                                "all" === r && (r = ""), e.column(2).search(r).draw()
-                            }))
+    //             (t = document.querySelector("#linked-table")) && (t.querySelectorAll(
+    //                     "tbody tr").forEach((t => {
+    //                     const e = t.querySelectorAll("td"),
+    //                         r = moment(e[3].innerHTML, "dd mm yyyy").format();
+    //                     e[3].setAttribute("data-order", r)
+    //                 })), e = $(t).DataTable({
+    //                     searchDelay: 500,
+    //                     pageLength: 10,
+    //                     processing: true,
+    //                     serverSide: true,
+    //                     ajax: tableAjaxUrl,
+    //                     columns: [
+    //                         {
+    //                             data: "row_checkbox",
+    //                             name: "row_checkbox",
+    //                             orderable: false,
+    //                             searchable: false
+    //                         },
+    //                         {
+    //                             data: "DT_RowIndex",
+    //                             name: "DT_RowIndex",
+    //                             orderable: false,
+    //                             searchable: false
+    //                         },
+    //                         {
+    //                             data: "ctd_number",
+    //                             name: "ctd_number",
+    //                         },
+    //                         {
+    //                             data: "billing_customer_name",
+    //                             name: "billing_customer_name",
+    //                         },
+    //                         {
+    //                             data: "job_order_code",
+    //                             name: "job_order_code",
+    //                         },
+    //                         {
+    //                             data: "origin_name",
+    //                             name: "origin_name",
+    //                         },
+    //                         {
+    //                             data: "qty",
+    //                             name: "qty",
+    //                         },
+    //                         {
+    //                             data: "chw",
+    //                             name: "chw",
+    //                         },
+    //                     ],
+    //                     columnDefs: [
+    //                     {
+    //                         // Optional: Adjust render logic for specific columns directly in JS
+    //                         targets: '_all',
+    //                         render: function(data, type, row, meta) {
+    //                             // If the data is null, display 'N/A'
+    //                             return data === null ? 'N/A' : data;
+    //                         }
+    //                     }
+    //                 ]
+    //                 }), document.querySelector('[data-kt-ecommerce-order-filter="search"]').addEventListener(
+    //                     "keyup", (function(t) {
+    //                         e.search(t.target.value).draw()
+    //                     })), (() => {
+    //                         const t = document.querySelector('[data-kt-ecommerce-order-filter="status"]');
+    //                         $(t).on("change", (t => {
+    //                             let r = t.target.value;
+    //                             "all" === r && (r = ""), e.column(2).search(r).draw()
+    //                         }))
 
-                            $(document).on('click', '.row-checkbox:not(#select_all)', function () {
-                                const row = e.row($(this).closest('tr')).data();
-                                const uniqueId = row.job_id;
-                                if ($(this).prop('checked')) {
-                                    selectedData.add(uniqueId);
-                                } else {
-                                    selectedData.delete(uniqueId);
-                                }
+    //                         $(document).on('click', '.row-checkbox:not(#select_all)', function () {
+    //                             const row = e.row($(this).closest('tr')).data();
+    //                             const uniqueId = row.job_id;
+    //                             if ($(this).prop('checked')) {
+    //                                 selectedData.add(uniqueId);
+    //                             } else {
+    //                                 selectedData.delete(uniqueId);
+    //                             }
 
-                                updateCheckboxStates(e);
-                            })
+    //                             updateCheckboxStates(e);
+    //                         })
 
-                            // Handle select all checkbox
-                            $(document).on('click', '#select_all', function() {
-                                const isChecked = $(this).prop('checked');
-                                e.rows({
-                                    page: 'current'
-                                }).every(function() {
-                                    const data = this.data();
-                                    const uniqueId = data.job_id;
-                                    if (isChecked) {
-                                        selectedData.add(uniqueId);
-                                    } else {
-                                        selectedData.delete(uniqueId);
-                                    }
-                                });
-                                updateCheckboxStates(e);
-                            });
+    //                         // Handle select all checkbox
+    //                         $(document).on('click', '#select_all', function() {
+    //                             const isChecked = $(this).prop('checked');
+    //                             e.rows({
+    //                                 page: 'current'
+    //                             }).every(function() {
+    //                                 const data = this.data();
+    //                                 const uniqueId = data.job_id;
+    //                                 if (isChecked) {
+    //                                     selectedData.add(uniqueId);
+    //                                 } else {
+    //                                     selectedData.delete(uniqueId);
+    //                                 }
+    //                             });
+    //                             updateCheckboxStates(e);
+    //                         });
 
-                            e.on('draw', function () {
-                                updateCheckboxStates(e);
-                            })
-                    })())
-            }
+    //                         e.on('draw', function () {
+    //                             updateCheckboxStates(e);
+    //                         })
+    //                 })())
+    //         }
+    //     }
+    // }();
+
+    const e = $("#linked-table").DataTable({
+        bFilter: false,
+        autoWidth: false,
+        sDom: 'fBtlpi',
+        ordering: true,
+        searchDelay: 500,
+        pageLength: 10,
+        processing: true,
+        serverSide: true,
+        ajax: tableAjaxUrl,
+        columns: [
+            {
+                data: "row_checkbox",
+                name: "row_checkbox",
+                orderable: false,
+                searchable: false
+            },
+            {
+                data: "DT_RowIndex",
+                name: "DT_RowIndex",
+                orderable: false,
+                searchable: false
+            },
+            {
+                data: "ctd_number",
+                name: "ctd_number",
+            },
+            {
+                data: "billing_customer_name",
+                name: "billing_customer_name",
+            },
+            {
+                data: "job_order_code",
+                name: "job_order_code",
+            },
+            {
+                data: "origin_name",
+                name: "origin_name",
+            },
+            {
+                data: "qty",
+                name: "qty",
+            },
+            {
+                data: "chw",
+                name: "chw",
+            },
+        ],
+        columnDefs: [ {
+            "targets": 'no-sort',
+            "orderable": false,
+        } ],
+        language: {
+            search: ' ',
+            sLengthMenu: '_MENU_',
+            paginate: {
+                next: 'Next <i class=" fa fa-angle-double-right ms-2"></i>',
+                previous: '<i class="fa fa-angle-double-left me-2"></i> Previous'
+            },
+            },
+        initComplete: (settings, json)=>{
+            $('.dataTables_filter').appendTo('#tableSearch');
+            $('.dataTables_filter').appendTo('.search-input');
+        },
+    });
+
+    $(document).on('click', '.row-checkbox:not(#select_all)', function () {
+        const row = e.row($(this).closest('tr')).data();
+        const uniqueId = row.job_id;
+        if ($(this).prop('checked')) {
+            selectedData.add(uniqueId);
+        } else {
+            selectedData.delete(uniqueId);
         }
-    }();
+
+        updateCheckboxStates(e);
+    })
+
+    // Handle select all checkbox
+    $(document).on('click', '#select_all', function() {
+        const isChecked = $(this).prop('checked');
+        e.rows({
+            page: 'current'
+        }).every(function() {
+            const data = this.data();
+            const uniqueId = data.job_id;
+            if (isChecked) {
+                selectedData.add(uniqueId);
+            } else {
+                selectedData.delete(uniqueId);
+            }
+        });
+        updateCheckboxStates(e);
+    });
+
+    e.on('draw', function () {
+        updateCheckboxStates(e);
+    })
 
     $(document).ready(function () {
         $("#custom-link-button").off('click').on('click', function (event) {
@@ -271,10 +370,6 @@
             }
         });
     })
-
-    KTUtil.onDOMContentLoaded((function() {
-        KTDataTable.init()
-    }));
 
     $(document).ready(function () {
         // Billing Customer Select2

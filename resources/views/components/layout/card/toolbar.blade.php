@@ -105,7 +105,11 @@
 </div> --}}
 
 
-<div class="d-flex justify-content-end mb-3">
+<div class="d-flex justify-content-between align-items-center flex-wrap mb-3 gap-3">
+    <div class="search-table-box">
+        <i class="bx bx-search-alt text-primary"></i>
+        <input type="text" class="form-control search-input" data-action="search-datatable" placeholder="Search ...">
+    </div>
     <div class="list-btn">
         <ul class="filter-list">
             @if ($withFilter)

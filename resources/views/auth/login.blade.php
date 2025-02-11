@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
 	<head><base href="../../../">
 		<title>PDS PAM ERP</title>
@@ -60,4 +60,75 @@
 		</div>
         @include('layout.script')
 	</body>
-</html>
+</html> --}}
+
+
+@extends('layout.main-layout')
+@section('title', 'Login')
+
+@section('body')
+
+<div class="login-wrapper">
+    <div class="container">
+
+        <img class="img-fluid logo-dark mb-2 logo-color" src="{{ asset('assets/logos/pam-long.png') }}" alt="Logo">
+        <img class="img-fluid logo-light mb-2" src="{{ asset('assets/logos/pam-long.png') }}" alt="Logo">
+        <div class="loginbox">
+
+            <div class="login-right">
+                <div class="login-right-wrap">
+                    <h1>Login</h1>
+                    <p class="account-subtitle">Access to our dashboard</p>
+
+                    <form method="post" action="{{ route('auth.authenticate') }}">
+                        @csrf
+                        <div class="input-block mb-3">
+                            <label class="form-control-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email">
+                            <div class="text-danger pt-2">
+                                @error('email')
+                                    {{ $message }}
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="input-block mb-3">
+                            <label class="form-control-label">Password</label>
+                            <div class="pass-group">
+                                <input type="password" class="form-control pass-input" id="password" name="password" placeholder="Enter your password">
+                                <span class="fa-solid fa-eye-slash toggle-password"></span>
+                                <div class="text-danger pt-2">
+                                    @error('password')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        {{-- <div class="input-block mb-3">
+                            <div class="row justify-content-end">
+                                <div class="col-6 text-end">
+                                    <a class="forgot-link" href="{{ url('forgot-password') }}">Forgot Password ?</a>
+                                </div>
+                            </div>
+                        </div> --}}
+                        <button class="btn btn-lg  btn-primary w-100" type="submit">Login</button>
+                        {{-- <div class="login-or">
+                            <span class="or-line"></span>
+                            <span class="span-or">or</span>
+                        </div>
+                        <!-- Social Login -->
+                        <div class="social-login mb-3">
+                            <span>Login with</span>
+                            <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a><a href="#"
+                                class="google"><i class="fab fa-google"></i></a>
+                        </div>
+                        <!-- /Social Login -->
+                        <div class="text-center dont-have">Don't have an account yet? <a
+                                href="{{ url('register') }}">Register</a></div> --}}
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection

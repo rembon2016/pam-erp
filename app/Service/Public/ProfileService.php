@@ -39,7 +39,7 @@ final class ProfileService
 
         } catch (\Throwable $th) {
             return ObjectResponse::error(
-                message: $th->getMessage(),
+                message: 'Failed to Update User Profile!',
                 errors: $th->getTrace()
             );
         }

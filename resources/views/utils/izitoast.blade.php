@@ -8,7 +8,9 @@
             });
         })
     </script>
-@elseif(session('toastError'))
+@endif
+
+@if(session('toastError'))
     <script>
         $(document).ready(function(){
             iziToast.error({
@@ -18,7 +20,9 @@
             });
         })
     </script>
-@elseif(session('toastInfo'))
+@endif
+
+@if(session('toastInfo'))
     <script>
         $(document).ready(function(){
             iziToast.info({
@@ -27,7 +31,9 @@
             });
         })
     </script>
-@elseif(session('toastWarning'))
+@endif
+
+@if(session('toastWarning'))
     <script>
         $(document).ready(function(){
             iziToast.warning({

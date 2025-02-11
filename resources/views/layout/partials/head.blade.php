@@ -42,6 +42,10 @@
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ asset('assets-v2/css/style.css') }}">
 
+
+    {{-- iziToast CSS --}}
+    <link rel="stylesheet" href="{{ asset('assets/plugins/iziToast/css/iziToast.min.css') }}">
+
     <!-- Layout JS -->
     <script src="{{ asset('assets-v2/js/layout.js') }}"></script>
 

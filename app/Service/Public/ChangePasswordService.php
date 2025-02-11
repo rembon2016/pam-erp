@@ -37,12 +37,12 @@ final class ChangePasswordService
             $user->update(['password' => bcrypt($dto['password'])]);
 
             return ObjectResponse::success(
-                message: 'Password changed successfully',
+                message: 'Successfully change password!',
                 data: $user,
             );
         } catch (\Throwable $th) {
             return ObjectResponse::error(
-                message: $th->getMessage(),
+                message: 'Failed to change password!',
                 errors: $th->getTrace()
             );
         }

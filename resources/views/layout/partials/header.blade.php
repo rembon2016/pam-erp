@@ -201,7 +201,7 @@
                                 <a class="dropdown-item" href="{{ route('profile.index') }}">Profile</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{{ url('settings') }}">Change Password</a>
+                                <a class="dropdown-item" href="{{ route('reset_password.index') }}">Change Password</a>
                             </li>
                         </ul>
                     </div>

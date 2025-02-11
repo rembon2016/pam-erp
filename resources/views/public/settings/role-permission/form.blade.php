@@ -1,4 +1,8 @@
-@extends('layout.app')
+@extends('layout.main-layout')
+@section('title')
+    {{ $data['page'] }}
+@endsection
+
 @section('body')
     <x:layout.breadcrumb.wrapper module="Settings" pageName="{!! $data['page'] !!}">
         <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />
@@ -13,7 +17,7 @@
             </div>
             <div class="col-12">
                 <div class="mb-10">
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-column">
                         <label class="required form-label">Permission</label>
                         <div class="d-flex mt-2">
                             <label class="form-check form-check-sm form-check-custom form-check-solid me-5" id="all">
@@ -25,7 +29,7 @@
                     </div>
                     <div class="row">
                         @foreach ($permissions as $key => $row)
-                            <h5 class="text-decoration-underline mt-5">{{ Str::upper($key) }}</h5>
+                            <h6 class="mt-5 mb-2">{{ Str::upper($key) }}</h6>
                             @foreach($row as $permission)
                                 <div class="col-md-4">
                                     <div class="d-flex mt-2">

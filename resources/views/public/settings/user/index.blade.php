@@ -112,9 +112,11 @@
     <div class="list-btn">
         <ul class="filter-list">
             <li>
-                <a class="btn btn-filters w-auto popup-toggle" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                    data-bs-original-title="Filter"><span class="me-2"><img
-                            src="http://127.0.0.1:8000/assets/img/icons/filter-icon.svg" alt="filter"></span>Filter
+                <a class="btn btn-filters w-auto popup-toggle" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Filter">
+                    <span class="me-2">
+                        <img src="{{ asset('assets-v2/img/icons/filter-icon.svg') }}" alt="filter">
+                    </span>
+                        Filter
                 </a>
             </li>
             <li>
@@ -131,7 +133,7 @@
                                 </a>
                             </li> --}}
                             <li>
-                                <a class="d-flex align-items-center download-item" href="javascript:void(0);">
+                                <a class="d-flex align-items-center download-item" href="{{ route('settings.user.export.csv') }}">
                                     <i class="far fa-file-text me-2"></i>
                                     CSV
                                 </a>

@@ -31,27 +31,44 @@
     <title>{{ config('app.name') }} - @yield('title')</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ URL::asset('/assets/img/favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/logos/pam-64-64.png') }}">
 
     @include('layout.partials.head')
 </head>
-    <body>
+    @if (Route::is('auth.*'))
+        <body class="twocolumn-panel">
+    @else
+        <body>
+    @endif
+
+
     <!-- Main Wrapper -->
-    <div class="main-wrapper">
+    @if (Route::is('auth.*'))
+        <div class="main-wrapper login-body">
+    @else
+        <div class="main-wrapper">
+    @endif
 
-    {{-- Header/Navbar Component --}}
-    @include('layout.partials.header')
 
-    {{-- Sidebar Component --}}
-    @include('layout.partials.sidebar')
+    @if (!Route::is('auth.*'))
+        {{-- Header/Navbar Component --}}
+        @include('layout.partials.header')
+
+        {{-- Sidebar Component --}}
+        @include('layout.partials.sidebar')
+    @endif
+
 
     {{-- Main Contennt --}}
-
-    <div class="page-wrapper">
-        <div class="content container-fluid">
-            @yield('body')
+    @if (Route::is('auth.*'))
+        @yield('body')
+    @else
+        <div class="page-wrapper">
+            <div class="content container-fluid">
+                @yield('body')
+            </div>
         </div>
-    </div>
+    @endif
     {{-- End Main Content --}}
 
     {{-- @component('components.add-modal-popup')

@@ -19,7 +19,7 @@
                         <x:layout.sidebar-v2.menu-item name="Currency" link="#" />
                         <x:layout.sidebar-v2.menu-item name="GL Charge Master" link="#" />
                         <x:layout.sidebar-v2.menu-item name="Chart of Account" link="#" />
-                        <x:layout.sidebar-v2.menu-item name="Daybook" link="#" />
+                        <x:layout.sidebar-v2.menu-item name="Daybook" link="{{ route('finance.master-data.daybook.index') }}" :activeCondition="Route::is('finance.master-data.daybook.*')" />
                     </x:layout.sidebar-v2.dropdown-menu>
 
                     <x:layout.sidebar-v2.dropdown-menu name="General Wise" iconClass="fe fe-grid">

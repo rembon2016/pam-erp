@@ -84,6 +84,9 @@
 
 <script src="{{ asset('/assets-v2/js/html2canvas.min.js') }}"></script>
 
+@include('utils.alert')
+@include('utils.izitoast')
+
 @livewireScriptConfig
 
 <!-- Theme Settings JS -->
@@ -93,9 +96,6 @@
 <!-- Custom JS -->
 <script src="{{ asset('/assets-v2/js/script.js') }}"></script>
 <script src="{{ asset('assets/js/main.js') }}"></script>
-
-@include('utils.alert')
-@include('utils.izitoast')
 
 @stack('js')
 <script>

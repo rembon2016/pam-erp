@@ -1,45 +1,41 @@
+<script>
+    iziToast.settings({
+        timeout: 3500,
+        position: "topRight",
+        pauseOnHover: false,
+        transitionIn: "bounceInLeft",
+        transitionOut: "fadeOutRight",
+        transitionInMobile: "bounceInLeft",
+        transitionOutMobile: "fadeOutRight",
+    });
+</script>
+
 @if(session('toastSuccess'))
     <script>
-        $(document).ready(function(){
-            iziToast.success({
-                title: 'Success',
-                message : '{{ session('toastSuccess') }}',
-                position: 'topRight'
-            });
-        })
+        iziToast.success({
+            title: 'Success',
+            message : '{{ session('toastSuccess') }}',
+        });
     </script>
-@endif
-
-@if(session('toastError'))
+@elseif(session('toastError'))
     <script>
-        $(document).ready(function(){
-            iziToast.error({
-                title: 'Failed',
-                message : '{{ session('toastError') }}',
-                position: 'topRight'
-            });
-        })
+        iziToast.error({
+            title: 'Failed',
+            message : '{{ session('toastError') }}',
+        });
     </script>
-@endif
-
-@if(session('toastInfo'))
+@elseif(session('toastInfo'))
     <script>
-        $(document).ready(function(){
-            iziToast.info({
-                title: 'Info'
-                message : '{{ session('toastInfo') }}',
-            });
-        })
+        iziToast.info({
+            title: 'Info'
+            message : '{{ session('toastInfo') }}',
+        });
     </script>
-@endif
-
-@if(session('toastWarning'))
+@elseif(session('toastWarning'))
     <script>
-        $(document).ready(function(){
-            iziToast.warning({
-                title: 'Caution'
-                message : '{{ session('toastWarning') }}',
-            });
-        })
+        iziToast.warning({
+            title: 'Caution'
+            message : '{{ session('toastWarning') }}',
+        });
     </script>
 @endif

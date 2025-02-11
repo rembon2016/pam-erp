@@ -160,7 +160,7 @@ final class DaybookController extends Controller
 
     public function exportPdf()
     {
-        $data = $this->daybookService->getDaybooks();
+        $data = $this->daybookService->getDaybooks()->data->daybooks;
         $pdf = Pdf::loadView('exports.pdf.daybook', compact('data'));
         $file_name = 'list_daybook_'.time().'.pdf';
 

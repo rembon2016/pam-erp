@@ -161,7 +161,6 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card-table">
-            <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-center table-hover" id="user_table">
                         <thead class="thead-light">
@@ -252,7 +251,7 @@
 				$('.dataTables_filter').appendTo('#tableSearch');
 				$('.dataTables_filter').appendTo('.search-input');
 			},
-    })
+    });
 
 
 </script>

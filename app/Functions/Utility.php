@@ -9,7 +9,7 @@ final class Utility
 {
     public static function generateTableActions(array $actions)
     {
-        $tableActions = '<div class="dropdown dropdown-action">';
+        $tableActions = '<div class="dropdown dropdown-action d-flex align-items-center justify-content-center">';
         $tableActions .= '<a href="#" class="btn-action-icon show" data-bs-toggle="dropdown" aria-expanded="true"><i class="fas fa-ellipsis-v"></i></a>';
         $tableActions .= '<div class="dropdown-menu dropdown-menu-end" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0px, 30px, 0px);">';
         $tableActions .= '<ul>';

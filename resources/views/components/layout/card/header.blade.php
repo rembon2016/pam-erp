@@ -1,3 +1,7 @@
-<div class="card-header align-items-center py-5 mt-5 ">
+{{-- <div class="card-header align-items-center py-5 mt-5 ">
+    {{ $slot }}
+</div> --}}
+
+<div class="col-12">
     {{ $slot }}
 </div>

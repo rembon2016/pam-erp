@@ -62,8 +62,7 @@
     //     KTDataTable.init()
     // }));
 
-    $("#{{ $id }}").DataTable({
-			bFilter: false,
+    const e = $("#{{ $id }}").DataTable({
 			autoWidth: false,
 			sDom: 'fBtlpi',
 			ordering: true,
@@ -90,4 +89,9 @@
 				$('.dataTables_filter').appendTo('.search-input');
 			},
     });
+
+    $('input[data-action="search-datatable"]').on('keyup', function (event) {
+        event.preventDefault();
+        e.search(event.target.value).draw();
+    })
 </script>

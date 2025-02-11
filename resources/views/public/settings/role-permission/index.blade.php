@@ -113,7 +113,11 @@
     </div> --}}
 
 
-    <div class="d-flex justify-content-end mb-3">
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-3 gap-3">
+        <div class="search-table-box">
+            <i class="bx bx-search-alt text-primary"></i>
+            <input type="text" class="form-control search-input" data-action="search-datatable" placeholder="Search ...">
+        </div>
         <div class="list-btn">
             <ul class="filter-list">
                 <li>
@@ -231,7 +235,7 @@
     //     KTDataTable.init()
     // }));
 
-    $("#role_table").DataTable({
+    const e = $("#role_table").DataTable({
 			bFilter: false,
 			autoWidth: false,
 			sDom: 'fBtlpi',
@@ -258,6 +262,11 @@
 				$('.dataTables_filter').appendTo('#tableSearch');
 				$('.dataTables_filter').appendTo('.search-input');
 			},
+    })
+
+    $('input[data-action="search-datatable"]').on('keyup', function (event) {
+        event.preventDefault();
+        e.search(event.target.value).draw();
     })
 </script>
 @endpush

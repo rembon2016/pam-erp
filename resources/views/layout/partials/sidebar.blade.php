@@ -5,7 +5,7 @@
                 <ul class="sidebar-vertical">
                     <!-- Main -->
                     <x:layout.sidebar-v2.menu-title title="Main Menu" />
-                    <x:layout.sidebar-v2.menu-item name="Dashboard" iconClass="fe fe-home" link="#" activeCondition="true" />
+                    <x:layout.sidebar-v2.menu-item name="Dashboard" iconClass="fe fe-home" link="{{ route('dashboard') }}" activeCondition="true" />
 
                     <x:layout.sidebar-v2.dropdown-menu name="Master Data" iconClass="fe fe-grid">
                         <x:layout.sidebar-v2.menu-item name="Customer" link="#" />

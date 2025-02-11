@@ -1,4 +1,6 @@
-@extends('layout.app')
+@extends('layout.main-layout')
+@section('title', 'Debit Note for Revenue')
+
 @section('body')
     <x:layout.breadcrumb.wrapper module="General Transaction" pageName="Debit Note for Revenue">
         <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />

@@ -1,4 +1,6 @@
-@extends('layout.app')
+@extends('layout.main-layout')
+@section('title', 'Payment Voucher Cancellation')
+
 @section('body')
     <x:layout.breadcrumb.wrapper module="General Transaction" pageName="Payment Voucher Cancellation">
         <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />

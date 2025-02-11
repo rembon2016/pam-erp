@@ -65,33 +65,33 @@
                     </x:layout.sidebar-v2.dropdown-menu>
 
                     <x:layout.sidebar-v2.dropdown-menu name="General Transaction" iconClass="fe fe-grid">
-                        <x:layout.sidebar-v2.menu-item name="Creditor Journal Voucher" link="#" />
+                        <x:layout.sidebar-v2.menu-item name="Creditor Journal Voucher" link="{{ route('finance.general-transaction.creditor-journal-voucher.index') }}" :activeCondition="Route::is('finance.general-transaction.creditor-journal-voucher.*')" />
 
                         <x:layout.sidebar-v2.dropdown-menu name="Credit Note" level="2">
-                            <x:layout.sidebar-v2.menu-item name="Credit Note for Cost" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Credit Note for Revenue" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Credit Note for Non-Trade" link="#" />
+                            <x:layout.sidebar-v2.menu-item name="Credit Note for Cost" link="{{ route('finance.general-transaction.credit-note.index', ['type' => 'cost']) }}" :activeCondition="Route::is('finance.general-transaction.credit-note.*') && request()->route('type') == 'cost'" />
+                            <x:layout.sidebar-v2.menu-item name="Credit Note for Revenue" link="{{ route('finance.general-transaction.credit-note.index', ['type' => 'revenue']) }}" :activeCondition="Route::is('finance.general-transaction.credit-note.*') && request()->route('type') == 'revenue'" />
+                            <x:layout.sidebar-v2.menu-item name="Credit Note for Non-Trade" link="{{ route('finance.general-transaction.credit-note.index', ['type' => 'non-trade']) }}" :activeCondition="Route::is('finance.general-transaction.credit-note.*') && request()->route('type') == 'non-trade'" />
                         </x:layout.sidebar-v2.dropdown-menu>
 
                         <x:layout.sidebar-v2.dropdown-menu name="Debit Note" level="2">
-                            <x:layout.sidebar-v2.menu-item name="Debit Note for Revenue" link="#" />
+                            <x:layout.sidebar-v2.menu-item name="Debit Note for Revenue" link="{{ route('finance.general-transaction.debit-note.index', ['type' => 'cost']) }}" :activeCondition="Route::is('finance.general-transaction.debit-note.*') && request()->route('type') == 'cost'"  />
                             <x:layout.sidebar-v2.menu-item name="Debit Note for Non-Trade" link="#" />
                         </x:layout.sidebar-v2.dropdown-menu>
 
-                        <x:layout.sidebar-v2.menu-item name="Journal Voucher" link="#" />
+                        <x:layout.sidebar-v2.menu-item name="Journal Voucher" link="{{ route('finance.general-transaction.journal-voucher.index') }}" :activeCondition="Route::is('finance.general-transaction.journal-voucher.*')" />
 
                         <x:layout.sidebar-v2.dropdown-menu name="Receipt Voucher" level="2">
-                            <x:layout.sidebar-v2.menu-item name="Receipt Voucher" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Receipt Voucher Overseas" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Receipt Voucher Cancellation" link="#" />
+                            <x:layout.sidebar-v2.menu-item name="Receipt Voucher" link="{{ route('finance.general-transaction.receipt-voucher.index', ['type' => 'index']) }}" :activeCondition="Route::is('finance.general-transaction.receipt-voucher.*') && request()->route('type') == 'index'"  />
+                            <x:layout.sidebar-v2.menu-item name="Receipt Voucher Overseas" link="{{ route('finance.general-transaction.receipt-voucher.index', ['type' => 'overseas']) }}" :activeCondition="Route::is('finance.general-transaction.receipt-voucher.*') && request()->route('type') == 'overseas'"  />
+                            <x:layout.sidebar-v2.menu-item name="Receipt Voucher Cancellation" link="{{ route('finance.general-transaction.receipt-voucher.index', ['type' => 'cancellation']) }}" :activeCondition="Route::is('finance.general-transaction.receipt-voucher.*') && request()->route('type') == 'cancellation'"  />
                         </x:layout.sidebar-v2.dropdown-menu>
 
-                        <x:layout.sidebar-v2.menu-item name="Payment Request" link="#" />
+                        <x:layout.sidebar-v2.menu-item name="Payment Request" link="{{ route('finance.general-transaction.payment-request.index') }}" :activeCondition="Route::is('finance.general-transaction.payment-request.*')"  />
 
                         <x:layout.sidebar-v2.dropdown-menu name="Payment Voucher" level="2">
-                            <x:layout.sidebar-v2.menu-item name="Payment Voucher" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Payment Voucher Overseas" link="#" />
-                            <x:layout.sidebar-v2.menu-item name="Payment Voucher Cancellation" link="#" />
+                            <x:layout.sidebar-v2.menu-item name="Payment Voucher" link="{{ route('finance.general-transaction.payment-voucher.index', ['type' => 'index']) }}" :activeCondition="Route::is('finance.general-transaction.payment-voucher.*') && request()->route('type') == 'index'"   />
+                            <x:layout.sidebar-v2.menu-item name="Payment Voucher Overseas" link="{{ route('finance.general-transaction.payment-voucher.index', ['type' => 'overseas']) }}" :activeCondition="Route::is('finance.general-transaction.payment-voucher.*') && request()->route('type') == 'overseas'"   />
+                            <x:layout.sidebar-v2.menu-item name="Payment Voucher Cancellation" link="{{ route('finance.general-transaction.payment-voucher.index', ['type' => 'cancellation']) }}" :activeCondition="Route::is('finance.general-transaction.payment-voucher.*') && request()->route('type') == 'cancellation'"   />
                         </x:layout.sidebar-v2.dropdown-menu>
 
                         <x:layout.sidebar-v2.dropdown-menu name="Accrual" level="2">

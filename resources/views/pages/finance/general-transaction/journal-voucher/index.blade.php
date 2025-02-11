@@ -1,4 +1,5 @@
-@extends('layout.app')
+@extends('layout.main-layout')
+@section('title', 'Journal Voucher')
 @section('body')
     <x:layout.breadcrumb.wrapper module="General Transaction" pageName="Journal Voucher">
         <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />

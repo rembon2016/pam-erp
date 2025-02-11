@@ -1,4 +1,6 @@
-@extends('layout.app')
+@extends('layout.main-layout')
+@section('title', 'Receipt Voucher Overseas')
+
 @section('body')
     <x:layout.breadcrumb.wrapper module="General Transaction" pageName="Receipt Voucher Overseas">
         <x:layout.breadcrumb.item pageName="Home" href="{{ route('dashboard') }}" />

@@ -224,7 +224,7 @@
 
                                     <div
                                         class="d-flex align-items-center mb-1 ps-3">
-                                        <h4 class="my-5 mx-3">Charge Details</h4>
+                                        <h6 class="m-3">Charge Details</h6>
                                     </div>
 
                                     <div class="row">
@@ -732,7 +732,7 @@
                                                                                                         class="form-control"
                                                                                                         value="{{ $detailIndex + 1 }}"
                                                                                                         style=""
-                                                                                                        readonly>
+                                                                                                        disabled>
                                                                                                 </div>
                                                                                                 @if ($unitFunc($chargeValue['unit_id'])->unit_name == "KG")
                                                                                                     <div class="tableChargeDetailForm-box" style="min-width: 100px;">

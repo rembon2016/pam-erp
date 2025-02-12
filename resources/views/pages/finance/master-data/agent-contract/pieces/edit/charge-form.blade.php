@@ -4,16 +4,16 @@
 
             <div
                 class="d-flex align-items-center mb-1 ps-3">
-                <h4 class="my-5 mx-3">Charge Details</h4>
+                <h6 class="m-3">Charge Details</h6>
                 <div class="ms-5">
                     <button type="button"
                         id="add_charge_{{ $index + 1 }}"
-                        class="addCharges btn btn-icon btn-success rounded" style="height: 30px; width: 30px;">
+                        class="addCharges btn btn-success d-inline-flex align-items-center justify-content-center" style="height: 30px; width: 30px;">
                         <i class="fa fa-plus pe-0"></i>
                     </button>
                     <button type="button"
                         id="remove_charge_{{ $index + 1 }}"
-                        class="removeCharges btn btn-icon btn-warning rounded" style="height: 30px; width: 30px;"
+                        class="removeCharges btn btn-danger d-inline-flex align-items-center justify-content-center" style="height: 30px; width: 30px;"
                         disabled>
                         <i class="fa fa-minus pe-0"></i>
                     </button>

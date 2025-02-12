@@ -462,16 +462,16 @@
                                 <div class="mb-10">
                                     <div
                                         class="d-flex align-items-center mb-1 ps-3">
-                                        <h4 class="my-5 mx-3">Charge Details</h4>
+                                        <h6 class="m-3">Charge Details</h6>
                                         <div class="ms-5">
                                             <button type="button"
                                                 id="add_charge_${index}"
-                                                class="addCharges btn btn-icon btn-success rounded" style="height: 30px; width: 30px;">
+                                                class="addCharges btn btn-success d-inline-flex align-items-center justify-content-center" style="height: 30px; width: 30px;">
                                                 <i class="fa fa-plus pe-0"></i>
                                             </button>
                                             <button type="button"
                                                 id="remove_charge_${index}"
-                                                class="removeCharges btn btn-icon btn-warning rounded" style="height: 30px; width: 30px;"
+                                                class="removeCharges btn btn-danger d-inline-flex align-items-center justify-content-center" style="height: 30px; width: 30px;"
                                                 disabled>
                                                 <i class="fa fa-minus pe-0"></i>
                                             </button>
@@ -908,12 +908,12 @@
                     <div class="ms-5">
                         <button type="button"
                             id="add_charge_detail|${serviceIndex}_${chargeIndex}"
-                            class="addDetailCharges btn btn-icon btn-success rounded" style="height: 30px; width: 30px;">
+                            class="addDetailCharges btn btn-success d-inline-flex align-items-center justify-content-center" style="height: 30px; width: 30px;">
                             <i class="fa fa-plus pe-0"></i>
                         </button>
                         <button type="button"
                             id="remove_charge_detail|${serviceIndex}_${chargeIndex}"
-                            class="removeDetailCharges btn btn-icon btn-warning rounded" style="height: 30px; width: 30px;"
+                            class="removeDetailCharges btn btn-danger d-inline-flex align-items-center justify-content-center" style="height: 30px; width: 30px;"
                             disabled>
                             <i class="fa fa-minus pe-0"></i>
                         </button>

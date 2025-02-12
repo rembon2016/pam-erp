@@ -42,8 +42,8 @@
         width: 3px;
     }
 
-    .tableServiceForm .tableServiceForm-content::-webkit-scrollbar-track, .tableChargeForm::-webkit-scrollbar-tra{
-        background-color: #000;
+    .tableServiceForm .tableServiceForm-content::-webkit-scrollbar-track, .tableChargeForm::-webkit-scrollbar-track{
+        background-color: #fff;
     }
 
     .tableServiceForm .tableServiceForm-content {

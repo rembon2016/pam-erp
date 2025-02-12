@@ -49,7 +49,7 @@
     }
 
     .tableServiceForm .tableServiceForm-content::-webkit-scrollbar-track, .tableChargeForm::-webkit-scrollbar-track{
-        background-color: #000;
+        background-color: #fff;
     }
 
     .tableServiceForm .tableServiceForm-content {
@@ -121,11 +121,11 @@
                         <div class="file-item">
                             <span>{{ $document->contract_file }}</span>
                             <div class="d-flex align-items-center justify-content-end gap-2">
-                                <a href="{{ $document->getFileUrl() }}" class="btn btn-sm px-1 py-3" download>
-                                    <i class="bx bx-download text-info fs-2"></i>
+                                <a href="{{ $document->getFileUrl() }}" class="btn px-1" download>
+                                    <i class="bx bx-download text-primary fs-5"></i>
                                 </a>
-                                <button type="button" data-action="{{ route('finance.master-data.agent-contract.document.delete', $document->id) }}" data-type="delete-existing-file" class="btn btn-sm px-1 py-3">
-                                    <i class="bx bx-trash text-danger fs-2"></i>
+                                <button type="button" data-action="{{ route('finance.master-data.agent-contract.document.delete', $document->id) }}" data-type="delete-existing-file" class="btn btn-sm px-1">
+                                    <i class="bx bx-trash text-danger fs-5"></i>
                                 </button>
                             </div>
                         </div>
@@ -136,13 +136,13 @@
                 <x:form.textarea label="Description" name="contract_description" placeholder="Type Description of Contract" :model="$agent_contract" />
             </div>
             <div class="col-12 mb-10">
-                <div class="d-flex align-items-center justify-content-between mb-5">
-                    <h4 class="mb-5 mt-5">Add Ports</h4>
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h5 class="my-3">Add Ports</h5>
                     <div>
-                        <button type="button" id="addServices" class="btn btn-icon btn-success rounded" style="height: 30px; width: 30px;">
+                        <button type="button" id="addServices" class="btn btn-success d-inline-flex align-items-center justify-content-center" style="height: 30px; width: 30px;">
                             <i class="fa fa-plus pe-0"></i>
                         </button>
-                        <button type="button" id="removeServices" class="btn btn-icon btn-warning rounded" style="height: 30px; width: 30px;" disabled>
+                        <button type="button" id="removeServices" class="btn btn-danger d-inline-flex align-items-center justify-content-center" style="height: 30px; width: 30px;" disabled>
                             <i class="fa fa-minus pe-0"></i>
                         </button>
                     </div>
@@ -150,7 +150,7 @@
                 @include('pages.finance.master-data.agent-contract.service-contract-form')
             </div>
         </div>
-        <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px">
+        <div class="d-flex align-items-center w-100 justify-content-end mt-3" style="gap: 7.5px">
             <x:form.cancel-button href="{{ route('finance.master-data.agent-contract.index') }}" label="Cancel" />
             <x:form.submit-button label="Submit" />
         </div>
@@ -228,7 +228,7 @@
                 `<div class="file-item uploaded-file">
                     <span>${file.name}</span>
                     <button type="button" data-type="delete-file" data-index="${index}" class="btn btn-sm">
-                        <i class="bx bx-trash text-danger fs-2"></i>
+                        <i class="bx bx-trash text-danger fs-5"></i>
                     </button>
                 </div>`
             );

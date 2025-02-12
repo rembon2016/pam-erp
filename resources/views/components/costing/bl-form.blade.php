@@ -10,7 +10,7 @@
             <button class="nav-link" id="ctd-tab" data-bs-toggle="tab" data-bs-target="#ctd-tab-{{ $k }}" type="button" role="tab">CTD</button>
         </li>
     </ul>
-    <div class="tab-content p-5 bg-white costing-tab-content">
+    <div class="tab-content p-3 bg-white costing-tab-content">
         <div class="tab-pane fade show active" id="bl-tab-{{ $k }}" role="tabpanel">
             <x-costing.charges-from :costing="$costing" :k="$k" type="bl" :vendor="$vendorLine" :value="$row->bl_number" :charge="$charge" :currency="$currency" />
 

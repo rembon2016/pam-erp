@@ -137,7 +137,8 @@ $(document).ready(function () {
     $("[data-control='select2']").each(function () {
         const select_placeholder = $(this).data('placeholder');
         $(this).select2({
-            placeholder: select_placeholder
+            placeholder: select_placeholder,
+            width: "100%",
         })
     })
 });

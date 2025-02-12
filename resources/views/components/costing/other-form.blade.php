@@ -10,7 +10,7 @@
         </li>
 
     </ul>
-    <div class="tab-content p-5 bg-white border border-top-0">
+    <div class="tab-content p-3 bg-white border border-top-0">
         <div class="tab-pane fade show active" id="other-tab-0" role="tabpanel">
             <x-costing.charges-from :costing="$costing" :k="0" type="other" :value="$joborder->loading_plan_number" :vendor="$vendorAll" :charge="$charge" :currency="$currency" />
         </div>

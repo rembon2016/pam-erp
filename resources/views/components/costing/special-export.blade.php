@@ -8,23 +8,23 @@
 </style>
 @endpush
 <div>
-    <div class="mb-5">
+    <div class="mb-3">
         <label class="form-label">Add Special Charges?</label>
 
         <div class="d-flex align-items-center gap-4">
             <div class="d-flex align-items-center gap-1">
                 <input type="radio" id="special_charges_no_export" name="special_charges_export" value="no" checked>
-                <label for="special_charges_no_export">No</label>
+                <label class="mb-0" for="special_charges_no_export">No</label>
             </div>
             <div class="d-flex align-items-center gap-1">
                 <input type="radio" id="special_charges_yes_export" name="special_charges_export" value="yes">
-                <label for="special_charges_yes_export">Yes</label>
+                <label class="mb-0" for="special_charges_yes_export">Yes</label>
             </div>
         </div>
     </div>
 
     <!-- Form Container -->
-    <div id="special-export-charges-form" class="d-none">
+    <div id="special-export-charges-form" class="d-none mb-3">
 
         <div style="display: flex; align-items: center; justify-content: end;margin-bottom:5px;">
              @if($costing?->status != 2)

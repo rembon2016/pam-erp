@@ -7,22 +7,22 @@
     </style>
 @endpush
 <div>
-    <div class="mb-5">
+    <div class="mb-3">
         <label class="form-label">Add Special Charges?</label>
         <div class="d-flex align-items-center gap-4">
             <div class="d-flex align-items-center gap-1">
                 <input type="radio" id="special_charges_no" name="special_charges" value="no" checked>
-                <label for="special_charges_no">No</label>
+                <label class="mb-0" for="special_charges_no">No</label>
             </div>
             <div class="d-flex align-items-center gap-1">
                 <input type="radio" id="special_charges_yes" name="special_charges" value="yes">
-                <label for="special_charges_yes">Yes</label>
+                <label class="mb-0" for="special_charges_yes">Yes</label>
             </div>
         </div>
     </div>
 
     <!-- Form Container -->
-    <div id="special-charges-form" class="d-none">
+    <div id="special-charges-form" class="d-none mb-3">
 
         <div style="display: flex; align-items: center; justify-content: end;">
             @if ($costing?->status != 2)

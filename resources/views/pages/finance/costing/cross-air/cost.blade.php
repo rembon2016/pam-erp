@@ -26,7 +26,7 @@ select,
 <x:layout.card.wrapper>
     <x:layout.card.header>
 
-        <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
+        <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0 mb-3">
             Cross Air Form
         </h1>
     </x:layout.card.header>
@@ -67,7 +67,7 @@ select,
                 </li>
 
             </ul>
-            <div class="tab-content p-5 bg-white border border-top-0">
+            <div class="tab-content p-3 bg-white border border-top-0">
                 <div class="tab-pane fade show active" id="vendor" role="tabpanel">
                     <ul class="nav nav-tabs costing-tabs default-costing-tabs" id="myTab" role="tablist">
                         {{-- <li class="nav-item" role="presentation">
@@ -78,7 +78,7 @@ select,
                         </li>
 
                     </ul>
-                    <div class="tab-content p-5 bg-white border border-top-0">
+                    <div class="tab-content p-3 bg-white border border-top-0">
                         {{-- <div class="tab-pane fade show active" id="trucking" role="tabpanel">
                             @if($costing == null)
                             <x-costing.trucking-form-air :loading="$loading" :vendorTruck="$vendor_truck" />

@@ -20,8 +20,8 @@ final class SearchFilter
         return $next($builder)
             ->when(request()->has('search'), function ($q) {
                 return $q->whereHas('chartOfAccounts', function ($query) {
-                    return $query->where('account_number', 'like', '%'.request('search').'%')
-                        ->orWhere('account_name', 'like', '%'.request('search').'%');
+                    return $query->where('account_number', 'ilike', '%'.request('search').'%')
+                        ->orWhere('account_name', 'ilike', '%'.request('search').'%');
                 });
             });
     }

@@ -90,7 +90,7 @@
 
 <script>
     $(document).ready(function () {
-        $('.data-search').keyup(function (e) {
+        $('.search-input').keyup(function (e) {
             let keyboardKey = e.key
             let coaTableUrl = "{{ route('finance.master-data.chart-of-account.index') }}"
 

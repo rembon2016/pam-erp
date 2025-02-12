@@ -8,15 +8,6 @@
 @push('css')
 
 <style>
-    .btn-success {
-        background-color: #2FD075!important;
-        border-color: #2FD075!important;
-    }
-    .btn-warning {
-        background-color: #FFE600!important;
-        border-color: #FFE600!important;
-    }
-
     select.select2-hidden-accessible:disabled + .select2-container .select2-selection {
         background-color: #eaeaea!important;
     }
@@ -66,11 +57,11 @@
             <div class="col-md-12">
                 <div class='mb-10'>
                     <label class="form-label required" for="customer_type">Customer Type</label>
-                    <div class="row">
+                    <div class="row mb-3">
                         @foreach ($customerTypes as $type)
                             <div class="col-md-2">
-                                <div class="d-flex mt-3">
-                                    <label class="form-check form-check-sm form-check-custom form-check-solid me-5">
+                                <div class="d-flex">
+                                    <label class="form-check form-check-sm form-check-custom form-check-solid">
                                         @if (@$customer)
                                             @php
                                                 $types = @$customer->customerTypes->pluck('name')->toArray();
@@ -123,7 +114,7 @@
                             role="tab">Sales</button>
                     </li>
                 </ul>
-                <div class="tab-content p-5 bg-white border border-top-0">
+                <div class="tab-content p-3 bg-white border border-top-0">
                     <div class="tab-pane fade show active" id="address" role="tabpanel">
                         <div class="row mb-4">
                             <div class="col-md-4">
@@ -177,8 +168,13 @@
                                     placeholder="Type Warehouse Provider" :customModelling="@$customer->customerAddress->warehouse_provider" disabled="{{ @$customer->data_from == 'operation' }}" />
                             </div>
                         </div>
+
+
+                        <hr>
+
                         <div class="row">
-                            <h2 class="mb-5">Contact Information</h2>
+                            <h4 class="mb-4 mt-2">Contact Information</h4>
+
                             <div id="contact-form">
                                 @if (@$customer && !empty(@$customer->customerAddress->contact_informations))
                                     @foreach (@$customer->customerAddress->contact_informations as $key => $baseContract)
@@ -202,7 +198,7 @@
                                                 @if (@$customer->data_from == 'erp')
                                                     <div class="col-auto d-flex">
                                                         <button type="button" class="btn btn-success me-2" onclick="addRow('.contact-row', '#contact-form')">+</button>
-                                                        <button type="button" class="btn btn-warning" onclick="removeRow('.contact-row')"
+                                                        <button type="button" class="btn btn-danger" onclick="removeRow('.contact-row')"
                                                             disabled>-</button>
                                                     </div>
                                                 @endif
@@ -226,7 +222,7 @@
                                         @if (@$customer->data_from == 'erp')
                                             <div class="col-auto d-flex">
                                                 <button type="button" class="btn btn-success me-2" onclick="addRow('.contact-row', '#contact-form')">+</button>
-                                                <button type="button" class="btn btn-warning" onclick="removeRow('.contact-row')"
+                                                <button type="button" class="btn btn-danger" onclick="removeRow('.contact-row')"
                                                     disabled>-</button>
                                             </div>
                                         @endif
@@ -248,7 +244,7 @@
                                             </div>
                                             <div class="col-auto d-flex">
                                                 <button type="button" class="btn btn-success me-2" onclick="addRow('.email-row', '#email-form')">+</button>
-                                                <button type="button" class="btn btn-warning" onclick="removeRow('.email-row')"
+                                                <button type="button" class="btn btn-danger" onclick="removeRow('.email-row')"
                                                     disabled>-</button>
                                             </div>
                                         </div>
@@ -261,7 +257,7 @@
                                         </div>
                                         <div class="col-auto d-flex">
                                             <button type="button" class="btn btn-success me-2" onclick="addRow('.email-row', '#email-form')">+</button>
-                                            <button type="button" class="btn btn-warning" onclick="removeRow('.email-row')"
+                                            <button type="button" class="btn btn-danger" onclick="removeRow('.email-row')"
                                                 disabled>-</button>
                                         </div>
                                     </div>
@@ -380,8 +376,8 @@
                                                 </div>
                                             </div>
                                             <div class="col-auto d-flex">
-                                                <button type="button" class="btn btn-success me-2" onclick="addRow('.account-row', '#account-form')">+</button>
-                                                <button type="button" class="btn btn-warning" onclick="removeRow('.account-row')"
+                                                <button type="button" class="btn btn-primary me-2" onclick="addRow('.account-row', '#account-form')">+</button>
+                                                <button type="button" class="btn btn-danger" onclick="removeRow('.account-row')"
                                                     disabled>-</button>
                                             </div>
                                         </div>
@@ -416,7 +412,7 @@
                                         </div>
                                         <div class="col-auto d-flex">
                                             <button type="button" class="btn btn-success me-2" onclick="addRow('.account-row', '#account-form')">+</button>
-                                            <button type="button" class="btn btn-warning" onclick="removeRow('.account-row')"
+                                            <button type="button" class="btn btn-danger" onclick="removeRow('.account-row')"
                                                 disabled>-</button>
                                         </div>
                                     </div>
@@ -592,7 +588,7 @@
 
         function updateMinusButton(rowClass) {
             const rowCount = $(rowClass).length
-            $('.btn-warning').prop('disabled', rowCount === 1)
+            $('.btn-danger').prop('disabled', rowCount === 1)
         }
     </script>
 @endpush

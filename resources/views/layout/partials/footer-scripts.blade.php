@@ -87,7 +87,7 @@
 @include('utils.alert')
 @include('utils.izitoast')
 
-@livewireScriptConfig
+{{-- @livewireScriptConfig --}}
 
 <!-- Theme Settings JS -->
 <script src="{{ asset('/assets-v2/js/theme-settings.js') }}"></script>

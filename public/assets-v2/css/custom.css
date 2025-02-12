@@ -88,3 +88,11 @@
     max-width: 100% !important;
     word-wrap: break-word;
 }
+
+.form-control:not([type="file"], textarea), .form-select {
+    height: 43px !important;
+}
+
+.costing-table td {
+    vertical-align: middle;
+}

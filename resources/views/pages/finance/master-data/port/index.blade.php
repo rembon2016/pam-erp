@@ -44,14 +44,8 @@
     <x:layout.modal.filter-modal>
         <div class="col-12">
             <x:form.select label="Port Name" name="port_name" defaultOption="Select Port Name" :model="request()">
-                @foreach ($ports->pluck('port_name') as $name)
-                    <option value="{{ $name }}" @selected($name == request()->query('port_name'))>{{ $name }}</option>
-                @endforeach
             </x:form.select>
             <x:form.select label="Port Code" name="port_code" defaultOption="Select Port Code" :model="request()">
-                @foreach ($ports->pluck('port_code') as $code)
-                    <option value="{{ $code }}" @selected($code == request()->query('port_code'))>{{ $code }}</option>
-                @endforeach
             </x:form.select>
         </div>
     </x:layout.modal.filter-modal>
@@ -97,15 +91,32 @@
 ])
 @endcomponent
 
-<script src="{{ asset('assets/js/custom/filter-handler.js') }}"></script>
 <script>
     $(document).ready(function () {
-        new FilterHandler({
-            filters: [
-                { name: 'port_name', label: 'Port Name' },
-                { name: 'port_code', label: 'Port Code' }
-            ]
-        });
-    });
+        ['port_name', 'port_code'].forEach(item => {
+            let labelText = item.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')
+            let labelName = 'Select ' + labelText;
+            let url = "{{ route('api.finance.master-data.port.data_filter', ['column' => ':column']) }}";
+            url = url.replace(':column', item);
+
+            generateAjaxSelect2(
+                item,
+                url,
+                labelName,
+                function (result) {
+                    return {
+                        results: getMappingResult(item, result),
+                    };
+                }
+            );
+        })
+    })
+
+    function getMappingResult(columnName, result) {
+        return result.data.map(item => ({
+            id: item.port_id,
+            text: columnName == 'port_name' ? item.port_name : item.port_code
+        }))
+    }
 </script>
 @endpush

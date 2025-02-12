@@ -122,10 +122,10 @@
                             <span>{{ $document->contract_file }}</span>
                             <div class="d-flex align-items-center justify-content-end gap-2">
                                 <a href="{{ $document->getFileUrl() }}" class="btn btn-sm px-1 py-3" download>
-                                    <i class="bx bx-download text-info fs-2"></i>
+                                    <i class="bx bx-download text-info fs-5"></i>
                                 </a>
                                 <button type="button" data-action="{{ route('finance.master-data.agent-contract.document.delete', $document->id) }}" data-type="delete-existing-file" class="btn btn-sm px-1 py-3">
-                                    <i class="bx bx-trash text-danger fs-2"></i>
+                                    <i class="bx bx-trash text-danger fs-5"></i>
                                 </button>
                             </div>
                         </div>
@@ -228,7 +228,7 @@
                 `<div class="file-item uploaded-file">
                     <span>${file.name}</span>
                     <button type="button" data-type="delete-file" data-index="${index}" class="btn btn-sm">
-                        <i class="bx bx-trash text-danger fs-2"></i>
+                        <i class="bx bx-trash text-danger fs-5"></i>
                     </button>
                 </div>`
             );

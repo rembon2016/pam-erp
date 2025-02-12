@@ -47,10 +47,10 @@
                             <span>{{ $document->contract_file }}</span>
                             <div class="d-flex align-items-center justify-content-end gap-2">
                                 <a href="{{ $document->getFileUrl() }}" class="btn btn-sm px-1 py-3" download>
-                                    <i class="bx bx-download text-info fs-2"></i>
+                                    <i class="bx bx-download text-info fs-5"></i>
                                 </a>
                                 <button type="button" data-action="{{ route('finance.master-data.customer-contract.document.delete', $document->id) }}" data-type="delete-existing-file" class="btn btn-sm px-1 py-3">
-                                    <i class="bx bx-trash text-danger fs-2"></i>
+                                    <i class="bx bx-trash text-danger fs-5"></i>
                                 </button>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                 </div>
             </div>
 
-            <div class="row px-0 ps-6 service-item-wrapper">
+            <div class="row ps-6 service-item-wrapper">
 
                 @php
                     $contractServices = old('charges', $customer_contract?->services->toArray());
@@ -104,7 +104,7 @@
                     <div class="col-12 border p-0 mb-3 service-item">
                         <div class="d-flex flex-column">
                             <div class="d-flex align-items-center justify-content-between gap-2 p-3 border service-heading" style="cursor: pointer;">
-                                <h5 class="mb-0 service-title">Service #{{ $loop->iteration }}</h5>
+                                <h6 class="mb-0 service-title">Service #{{ $loop->iteration }}</h6>
                                 <div class="d-flex align-item-center gap-3">
                                     <button type="button" class="btn btn-icon btn-danger" data-type="delete-service">
                                         <i class="bx bx-trash-alt"></i>
@@ -198,8 +198,8 @@
                             </div>
 
                             <div class="charges-container">
-                                <div class="d-flex align-items-center justify-content-between gap-2 mb-3 p-3">
-                                    <h5 class="mb-0">Charges</h5>
+                                <div class="d-flex align-items-center justify-content-between gap-2 p-3">
+                                    <h6 class="mb-0">Charges</h6>
                                     <div class="d-flex align-item-center gap-3">
                                         <button type="button" class="btn btn-success btn-icon btn-sm" data-type="add-charge">
                                             <i class="bx bx-plus"></i>
@@ -212,7 +212,7 @@
                                         <div class="col-12 border p-0 mb-3 charge-item">
                                             <div class="d-flex flex-column">
                                                 <div class="d-flex align-items-center justify-content-between gap-2 p-3 border charge-heading" style="cursor: pointer;">
-                                                    <h5 class="mb-0 charge-title">Charge #{{ $loop->iteration }}</h5>
+                                                    <h6 class="mb-0 charge-title">Charge #{{ $loop->iteration }}</h6>
                                                     <div class="d-flex align-item-center gap-3">
                                                         <button type="button" class="btn btn-icon btn-danger" data-type="delete-charge">
                                                             <i class="bx bx-trash-alt"></i>
@@ -506,7 +506,7 @@
                 <div class="col-12 border p-0 mb-3 service-item">
                     <div class="d-flex flex-column">
                         <div class="d-flex align-items-center justify-content-between gap-2 p-3 border service-heading" style="cursor: pointer;">
-                            <h5 class="mb-0 service-title">Service #${serviceIndex + 1}</h5>
+                            <h6 class="mb-0 service-title">Service #${serviceIndex + 1}</h6>
                             <div class="d-flex align-item-center gap-3">
                                 <button type="button" class="btn btn-icon btn-danger" data-type="delete-service">
                                     <i class="bx bx-trash-alt"></i>
@@ -576,8 +576,8 @@
                         </div>
 
                         <div class="charges-container">
-                            <div class="d-flex align-items-center justify-content-between gap-2 mb-3 p-3">
-                                <h5 class="mb-0">Charges</h5>
+                            <div class="d-flex align-items-center justify-content-between gap-2 p-3">
+                                <h6 class="mb-0">Charges</h6>
                                 <div class="d-flex align-item-center gap-3">
                                     <button type="button" class="btn btn-success btn-icon btn-sm" data-type="add-charge">
                                         <i class="bx bx-plus"></i>
@@ -589,7 +589,7 @@
                                 <div class="col-12 border p-0 mb-3 charge-item">
                                     <div class="d-flex flex-column">
                                         <div class="d-flex align-items-center justify-content-between gap-2 p-3 border charge-heading" style="cursor: pointer;">
-                                            <h5 class="mb-0 charge-title">Charge #1</h5>
+                                            <h6 class="mb-0 charge-title">Charge #1</h6>
                                             <div class="d-flex align-item-center gap-3">
                                                 <button type="button" class="btn btn-icon btn-danger" data-type="delete-charge">
                                                     <i class="bx bx-trash-alt"></i>
@@ -629,7 +629,7 @@
                 <div class="col-12 border p-0 mb-3 charge-item">
                     <div class="d-flex flex-column">
                         <div class="d-flex align-items-center justify-content-between gap-2 p-3 border charge-heading" style="cursor: pointer;">
-                            <h5 class="mb-0 charge-title">Charge #${chargeIndex + 1}</h5>
+                            <h6 class="mb-0 charge-title">Charge #${chargeIndex + 1}</h6>
                             <div class="d-flex align-item-center gap-3">
                                 <button type="button" class="btn btn-icon btn-danger" data-type="delete-charge">
                                     <i class="bx bx-trash-alt"></i>
@@ -1104,7 +1104,7 @@
                     `<div class="file-item uploaded-file">
                         <span>${file.name}</span>
                         <button type="button" data-type="delete-file" data-index="${index}" class="btn btn-sm">
-                            <i class="bx bx-trash text-danger fs-2"></i>
+                            <i class="bx bx-trash text-danger fs-5"></i>
                         </button>
                     </div>`
                 );

@@ -136,7 +136,7 @@
                                         <span>{{ $document->contract_file }}</span>
                                         <div class="d-flex align-items-center justify-content-end gap-2">
                                             <a href="{{ $document->getFileUrl() }}" class="btn btn-sm px-1 py-3" download>
-                                                <i class="bx bx-download text-info fs-2"></i>
+                                                <i class="bx bx-download text-info fs-5"></i>
                                             </a>
                                         </div>
                                     </div>

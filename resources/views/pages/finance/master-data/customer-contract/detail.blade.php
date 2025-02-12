@@ -31,9 +31,9 @@
         <x:layout.breadcrumb.item pageName="Customer Contract" href="{{ route('finance.master-data.customer-contract.index') }}" />
     </x:layout.breadcrumb.wrapper>
 
-    <x:layout.card.wrapper>
+    <div class="card">
         <div class="card-body">
-            <h3 class="text-center mb-4">Customer Contract Detail Information</h3>
+            <h3 class="text-center mb-4 mt-2">Customer Contract Detail Information</h3>
 
             <div class="d-flex flex-column">
                 <p class="mb-0">Created at: {{ $customer_contract->created_at?->format('Y-m-d H:i:s') }}</p>
@@ -43,17 +43,17 @@
             <hr>
 
             <div class="table-responsive mb-10">
-                <table class="table-detail">
+                <table class="table-detail table-striped">
                     <tr>
-                        <td class="fw-bold fs-6 text-gray-800">Contract No</td>
+                        <td class="fw-semibold text-dark">Contract No</td>
                         <td>{{ $customer_contract->contract_no }}</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold fs-6 text-gray-800">Customer Name</td>
+                        <td class="fw-semibold text-dark">Customer Name</td>
                         <td>{{ $customer_contract->customer?->customer_name }}</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold fs-6 text-gray-800">Customer Type</td>
+                        <td class="fw-semibold text-dark">Customer Type</td>
                         <td>
                             @if ($customer_contract->customer?->customerTypes->count() > 1)
                                 <ul>
@@ -69,27 +69,27 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="fw-bold fs-6 text-gray-800">Valid From</td>
+                        <td class="fw-semibold text-dark">Valid From</td>
                         <td>{{ $customer_contract->contract_start?->format('d/m/Y') }}</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold fs-6 text-gray-800">Valid To</td>
+                        <td class="fw-semibold text-dark">Valid To</td>
                         <td>{{ $customer_contract->contract_end?->format('d/m/Y') }}</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold fs-6 text-gray-800">Currency</td>
+                        <td class="fw-semibold text-dark">Currency</td>
                         <td>{{ $customer_contract->getCurrency() }}</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold fs-6 text-gray-800">Attachment (Document)</td>
+                        <td class="fw-semibold text-dark">Attachment (Document)</td>
                         <td>
                             <div id="fileList">
                                 @forelse($customer_contract?->documents as $document)
                                     <div class="file-item">
                                         <span>{{ $document->contract_file }}</span>
                                         <div class="d-flex align-items-center justify-content-end gap-2">
-                                            <a href="{{ $document->getFileUrl() }}" class="btn btn-sm px-1 py-3" download>
-                                                <i class="bx bx-download text-info fs-2"></i>
+                                            <a href="{{ $document->getFileUrl() }}" class="btn btn-sm px-1" download>
+                                                <i class="bx bx-download text-primary fs-5"></i>
                                             </a>
                                         </div>
                                     </div>
@@ -101,13 +101,15 @@
                     </tr>
                 </table>
             </div>
+        </div>
+    </div>
 
             <!--begin::Accordion-->
             <div class="accordion mb-4" id="kt_accordion_service">
                 @foreach ($customer_contract?->services as $service_index => $service)
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="kt_accordion_{{ $service_index + 1 }}_header">
-                            <button class="accordion-button fs-4 fw-semibold @if($service_index != 0) collapsed @endif" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_{{ $service_index + 1 }}_body" aria-expanded="true" aria-controls="kt_accordion_{{ $service_index + 1 }}_body">
+                            <button class="accordion-button fs-7 fw-semibold @if($service_index != 0) collapsed @endif" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_{{ $service_index + 1 }}_body" aria-expanded="true" aria-controls="kt_accordion_{{ $service_index + 1 }}_body">
                                 {{ $service->getServiceType() }} #{{ $service_index + 1 }}
                             </button>
                         </h2>
@@ -136,13 +138,13 @@
                                     </div>
                                 </div>
 
-                                <h5 class="mb-5">List of Charges</h5>
+                                <h6 class="mb-3">List of Charges</h6>
 
                                 <div class="accordion" id="kt_accordion_{{ $service_index + 1 }}">
                                     @foreach ($service?->charges as $charge_index => $charge)
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="kt_accordion_{{ $service_index + 1 }}_{{ $charge_index + 1 }}_header">
-                                                <button class="accordion-button fs-4 fw-semibold @if($charge_index != 0) collapsed @endif" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_{{ $service_index + 1 }}_{{ $charge_index + 1 }}_body" aria-expanded="true" aria-controls="kt_accordion_{{ $service_index + 1 }}_{{ $charge_index + 1 }}_body">
+                                                <button class="accordion-button fs-7 fw-semibold @if($charge_index != 0) collapsed @endif" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_{{ $service_index + 1 }}_{{ $charge_index + 1 }}_body" aria-expanded="true" aria-controls="kt_accordion_{{ $service_index + 1 }}_{{ $charge_index + 1 }}_body">
                                                     {{ $charge->charge?->charge_code }} - {{ $charge->charge?->charge_name }}
                                                 </button>
                                             </h2>
@@ -220,6 +222,4 @@
             <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px">
                 <x:form.cancel-button href="{{ route('finance.master-data.customer-contract.index') }}" label="Close" />
             </div>
-        </div>
-    </x:layout.card.wrapper>
 @endsection

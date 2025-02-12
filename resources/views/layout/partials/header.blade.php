@@ -203,6 +203,9 @@
                             <li>
                                 <a class="dropdown-item" href="{{ route('reset_password.index') }}">Change Password</a>
                             </li>
+                            @if (Auth::user()->type == 'operation')
+                                <a class="dropdown-item" href="{{ route('auth.redirect.operation') }}">Switch to Operation</a>
+                            @endif
                         </ul>
                     </div>
                     <div class="subscription-logout">

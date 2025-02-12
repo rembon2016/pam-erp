@@ -1,10 +1,11 @@
 @props([
-'createDataLink' => $createDataLink ?? null,
-'exportExcelLink' => $exportExcelLink ?? null,
-'exportCsvLink' => $exportCsvLink ?? null,
-'exportPdfLink' => $exportPdfLink ?? null,
-'customLink' => $customLink ?? [],
-'withFilter' => $withFilter ?? false,
+    'createDataLink' => $createDataLink ?? null,
+    'exportExcelLink' => $exportExcelLink ?? null,
+    'exportCsvLink' => $exportCsvLink ?? null,
+    'exportPdfLink' => $exportPdfLink ?? null,
+    'customLink' => $customLink ?? [],
+    'withFilter' => $withFilter ?? false,
+    'withSearch' => $withSearch ?? true,
 ])
 
 {{-- <div class="card-toolbar flex-row-fluid justify-content-start gap-2">
@@ -104,12 +105,13 @@
     <div id="kt_ecommerce_report_customer_orders_export" class="d-none"></div>
 </div> --}}
 
-
 <div class="d-flex justify-content-between align-items-center flex-wrap mb-3 gap-3">
+    @if ($withSearch)
     <div class="search-table-box">
         <i class="bx bx-search-alt text-primary"></i>
         <input type="text" class="form-control search-input" data-action="search-datatable" placeholder="Search ...">
     </div>
+    @endif
     <div class="list-btn">
         <ul class="filter-list">
             @if ($withFilter)

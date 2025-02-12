@@ -77,9 +77,9 @@
         <x:layout.breadcrumb.item pageName="Master Data" />
     </x:layout.breadcrumb.wrapper>
 
-    <x:layout.card.wrapper>
+    <div class="card">
         <div class="card-body">
-            <h3 class="text-center mb-4">Agent Contract Detail Information</h3>
+            <h3 class="text-center mb-4 mt-2">Invoice Detail Information</h3>
 
             <div class="d-flex flex-column">
                 <p class="mb-0">Created at: {{ $data->created_at?->format('Y-m-d H:i:s') }}</p>
@@ -91,19 +91,19 @@
             <div class="table-responsive mb-10">
                 <table class="table-detail">
                     <tr>
-                        <td class="fw-bold fs-6 text-gray-800">Invoice No</td>
+                        <td class="fw-semibold text-dark">Invoice No</td>
                         <td>{{ $data->invoice_nno }}</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold fs-6 text-gray-800">Invoice Date</td>
+                        <td class="fw-semibold text-dark">Invoice Date</td>
                         <td>{{ $data->invoice_date?->format('d/m/y') }}</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold fs-6 text-gray-800">Invoice Due Date</td>
+                        <td class="fw-semibold text-dark">Invoice Due Date</td>
                         <td>{{ $data->invoice_due_date?->format('d/m/y') }}</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold fs-6 text-gray-800">CTD No.</td>
+                        <td class="fw-semibold text-dark">CTD No.</td>
                         <td>
                             @if ($data->invoiceShipment->count() > 1)
                                 <ul class="mb-0">
@@ -119,33 +119,34 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="fw-bold fs-6 text-gray-800">Billing Customer</td>
+                        <td class="fw-semibold text-dark">Billing Customer</td>
                         <td>{{ $data->customer?->customer_name }}</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold fs-6 text-gray-800">Additional Charges</td>
+                        <td class="fw-semibold text-dark">Additional Charges</td>
                         <td> - </td>
                     </tr>
                     <tr>
-                        <td class="fw-bold fs-6 text-gray-800">Billing Amount</td>
+                        <td class="fw-semibold text-dark">Billing Amount</td>
                         <td>{{ $data->total }}</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold fs-6 text-gray-800">Description</td>
+                        <td class="fw-semibold text-dark">Description</td>
                         <td>{{ $data->description }}</td>
                     </tr>
                 </table>
             </div>
-
-            <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px">
-                <x:form.cancel-button href="{{ route('finance.billing.invoice.index') }}" label="Close" />
-
-                @if ($data->is_approved == 0)
-                    <a href="{{ route('finance.billing.invoice.approve', $data->id) }}" class="btn btn-sm custom-btn custom-btn-primary">Approve</a>
-                @else
-                    <button type="button" class="btn btn-sm custom-btn custom-btn-primary" disabled>Approved</button>
-                @endif
-            </div>
         </div>
-    </x:layout.card.wrapper>
+    </div>
+
+
+    <div class="d-flex align-items-center w-100 justify-content-end" style="gap: 7.5px">
+        <x:form.cancel-button href="{{ route('finance.billing.invoice.index') }}" label="Close" />
+
+        @if ($data->is_approved == 0)
+            <a href="{{ route('finance.billing.invoice.approve', $data->id) }}" class="btn btn-sm custom-btn custom-btn-primary">Approve</a>
+        @else
+            <button type="button" class="btn btn-primary" disabled>Approved</button>
+        @endif
+    </div>
 @endsection

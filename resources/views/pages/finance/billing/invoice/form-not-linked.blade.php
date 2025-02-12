@@ -79,6 +79,7 @@
                             'text' => 'Update Multiple Billing Customer'
                         ]"
                         :withFilter="false"
+                        :withSearch="false"
                     />
                 </div>
             </div>

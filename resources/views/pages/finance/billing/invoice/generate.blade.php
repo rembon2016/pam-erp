@@ -68,10 +68,10 @@
                                 <input type="hidden" name="data[{{ $item->ctd_number }}][ctd_number]" value="{{ $item->ctd_number }}">
                                 <input type="hidden" name="data[{{ $item->ctd_number }}][job_id]" value="{{ $item->job_id }}">
                                 <div class="d-flex align-items-center justify-content-end gap-2">
-                                    <button type="button" class="btn btn-icon btn-success rounded" data-type="add-item" style="width: 30px; height: 30px;">
+                                    <button type="button" class="btn btn-success d-inline-flex align-items-center justify-content-center" data-type="add-item" style="width: 30px; height: 30px;">
                                         <i class="fa fa-plus pe-0"></i>
                                     </button>
-                                    <button type="button" class="btn btn-icon btn-primary rounded" data-type="expand-item" style="width: 30px; height: 30px;">
+                                    <button type="button" class="btn btn-primary d-inline-flex align-items-center justify-content-center" data-type="expand-item" style="width: 30px; height: 30px;">
                                         <i class="fa fa-angle-down"></i>
                                     </button>
                                 </div>

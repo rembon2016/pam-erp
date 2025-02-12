@@ -56,11 +56,11 @@ final class CustomerController extends Controller
                 ])
                 ->addColumn('customer_type', function ($item) {
 
-                    $html = '<ul style="list-style-type:none; margin:0;padding:0;">';
+                    $html = '<ul class="d-flex flex-column" style="list-style-type:none; margin:0;padding:0; row-gap: 5px;">';
 
                     foreach ($item->customerTypes as $customerType) {
                         $customerTypeName = empty($customerType) ? 'N/A' : e($customerType->name);
-                        $html .= '<li><span class="badge bg-success">'.$customerTypeName.'</span></li>';
+                        $html .= '<li><span class="badge badge-soft-success">'.$customerTypeName.'</span></li>';
                     }
 
                     $html .= '</ul>';

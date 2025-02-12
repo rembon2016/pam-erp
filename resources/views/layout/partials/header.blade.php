@@ -2,7 +2,7 @@
     <div class="header header-one">
         <a href="{{ route('dashboard') }}"
             class="d-inline-flex d-sm-inline-flex align-items-center d-md-inline-flex d-lg-none align-items-center device-logo">
-            <img src="{{ asset('assets/logos/pam-long.png') }}" class="img-fluid logo2" alt="Logo">
+            <img src="{{ asset('assets/logos/pam-long.png') }}" class="img-fluid logo2 h-100" alt="Logo">
         </a>
         <div class="main-logo d-inline float-start d-lg-flex align-items-center d-none d-sm-none d-md-none">
             <div class="logo-white">

@@ -46,10 +46,10 @@
                         <div class="file-item">
                             <span>{{ $document->contract_file }}</span>
                             <div class="d-flex align-items-center justify-content-end gap-2">
-                                <a href="{{ $document->getFileUrl() }}" class="btn btn-sm px-1 py-3" download>
-                                    <i class="bx bx-download text-info fs-5"></i>
+                                <a href="{{ $document->getFileUrl() }}" class="btn btn-sm px-1" download>
+                                    <i class="bx bx-download text-primary fs-5"></i>
                                 </a>
-                                <button type="button" data-action="{{ route('finance.master-data.customer-contract.document.delete', $document->id) }}" data-type="delete-existing-file" class="btn btn-sm px-1 py-3">
+                                <button type="button" data-action="{{ route('finance.master-data.customer-contract.document.delete', $document->id) }}" data-type="delete-existing-file" class="btn btn-sm px-1">
                                     <i class="bx bx-trash text-danger fs-5"></i>
                                 </button>
                             </div>

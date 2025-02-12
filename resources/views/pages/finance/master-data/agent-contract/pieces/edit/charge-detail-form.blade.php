@@ -9,12 +9,12 @@
                         <div class="ms-5">
                             <button type="button"
                                 id="add_charge_detail|{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
-                                class="addDetailCharges btn btn-icon btn-success rounded" style="height: 30px; width: 30px;">
+                                class="addDetailCharges btn btn-success d-inline-flex align-items-center justify-content-center" style="height: 30px; width: 30px;">
                                 <i class="fa fa-plus pe-0"></i>
                             </button>
                             <button type="button"
                                 id="remove_charge_detail|{{ $index + 1 }}_{{ $chargeIndex + 1 }}"
-                                class="removeDetailCharges btn btn-icon btn-warning rounded" style="height: 30px; width: 30px;"
+                                class="removeDetailCharges btn btn-danger d-inline-flex align-items-center justify-content-center" style="height: 30px; width: 30px;"
                                 disabled>
                                 <i class="fa fa-minus pe-0"></i>
                             </button>

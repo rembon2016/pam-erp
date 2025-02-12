@@ -73,20 +73,20 @@ select,
                         {{-- <li class="nav-item" role="presentation">
                             <button class="nav-link pam-tab active" id="trucking-tab" data-bs-toggle="tab" data-bs-target="#trucking" type="button" role="tab">Trucking</button>
                         </li> --}}
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link pam-tab" id="agent-tab" data-bs-toggle="tab" data-bs-target="#agent" type="button" role="tab">Agent Airlines</button>
+                        <li class="nav-item " role="presentation">
+                            <button class="nav-link pam-tab active" id="agent-tab" data-bs-toggle="tab" data-bs-target="#agent" type="button" role="tab">Agent Airlines</button>
                         </li>
 
                     </ul>
                     <div class="tab-content p-5 bg-white border border-top-0">
-                        <div class="tab-pane fade show active" id="trucking" role="tabpanel">
+                        {{-- <div class="tab-pane fade show active" id="trucking" role="tabpanel">
                             @if($costing == null)
                             <x-costing.trucking-form-air :loading="$loading" :vendorTruck="$vendor_truck" />
                             @else
                              <x-costing.trucking-form-edit :costing="$costing" :vendorTruck="$vendor_truck" />
                             @endif
-                        </div>
-                        <div class="tab-pane fade" id="agent" role="tabpanel">
+                        </div> --}}
+                        <div class="tab-pane fade show active" id="agent" role="tabpanel">
                             <x-costing.agent-form  :costing="$costing" :vendorAir="$vendor_air" />
 
                         </div>

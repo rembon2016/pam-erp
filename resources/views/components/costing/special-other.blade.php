@@ -26,13 +26,13 @@
 
         <div style="display: flex; align-items: center; justify-content: end;">
             @if ($costing?->status != 2)
-                <button type="button" id="add-row-special" class="btn btn-icon btn-success rounded"
-                    style="height: 30px; width: 30px;margin-right:5px;">
+                <button type="button" id="add-row-special" class="btn btn-icon btn-primary rounded"
+                    style="height: 30px; width: 30px;margin-right:5px;padding: 0 0 0 4px;">
                     <i class="fa fa-plus pe-0"></i>
                 </button>
             @endif
-            <button type="button" id="updown" class="btn btn-icon btn-primary rounded"
-                style="height: 30px; width: 30px;">
+            <button type="button" id="updown" class="btn btn-icon btn-secondary rounded"
+                style="height: 30px; width: 30px;padding:0px;">
                 <i class="fa fa-angle-down"></i>
             </button>
         </div>

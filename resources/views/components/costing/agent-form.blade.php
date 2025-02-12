@@ -1,7 +1,7 @@
 <div class="container mt-4 costing-table">
     <div style="display: flex; align-items: center; justify-content: end;">
         @if($costing?->status != 2)
-        <button type="button" id="add-row" class="btn btn-icon btn-success rounded" style="height: 30px; width: 30px; margin-right:5px;">
+        <button type="button" id="add-row" class="btn btn-icon btn-primary rounded add-rows" style="height: 30px; width: 30px; margin-right:5px;padding:0 0 0 4px;">
             <i class="fa fa-plus pe-0"></i>
         </button>
         @endif
@@ -33,7 +33,7 @@
             </div>
             <div class="col-md-1 d-flex align-items-end">
                 @if($costing->status == 1)
-                <button type="button" class="btn btn-icon btn-danger remove-row" data-row-id="{{ $key }}" style="height: 30px; width: 30px;margin-top:20px;">
+                <button type="button" class="btn btn-icon btn-danger remove-row" data-row-id="{{ $key }}" style="height: 30px; width: 30px;margin-top:20px;padding:0px;">
                     <i class="fa fa-trash"></i>
                 </button>
                 @endif
@@ -75,8 +75,8 @@ $(document).ready(function () {
                     <input type="text" class="form-control" id="vendor_air_name_${rowId}" name="vendor_air_name[]" readonly>
                 </div>
                 <div class="col-md-1 d-flex align-items-end">
-                    <button type="button" class="btn btn-icon btn-danger remove-row" data-row-id="${rowId}" style="height: 30px; width: 30px;margin-top:20px;">
-                        <i class="fa fa-minus"></i>
+                    <button type="button" class="btn btn-icon btn-danger remove-row" data-row-id="${rowId}" style="height: 30px; width: 30px;margin-top:20px;padding:0px;">
+                        <i class="fa fa-trash"></i>
                     </button>
                 </div>
             </div>`;

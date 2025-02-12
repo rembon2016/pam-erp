@@ -24,15 +24,15 @@
     <!-- Form Container -->
     <div id="special-charges-form" class="d-none">
 
-        <div style="display: flex; align-items: center; justify-content: end;">
+        <div style="display: flex; align-items: center; justify-content: end;padding-bottom:5px;">
             @if ($costing?->status != 2)
-                <button type="button" id="add-row-special" class="btn btn-icon btn-success rounded"
-                    style="height: 30px; width: 30px;margin-right:5px;">
+                <button type="button" id="add-row-special" class="btn btn-icon btn-primary rounded"
+                    style="height: 30px; width: 30px;margin-right:5px;padding:0 0 0 4px;">
                     <i class="fa fa-plus pe-0"></i>
                 </button>
             @endif
-            <button type="button" id="updown" class="btn btn-icon btn-primary rounded"
-                style="height: 30px; width: 30px;">
+            <button type="button" id="updown" class="btn btn-icon btn-secondary rounded"
+                style="height: 30px; width: 30px;padding:0px;">
                 <i class="fa fa-angle-down"></i>
             </button>
         </div>
@@ -151,7 +151,7 @@
     <td>
         @if ($costing->status == 1)
             <button type="button" class="btn btn-icon btn-danger btn-remove-row"
-                style="height: 30px; width: 30px;margin-top:5px;">
+                style="height: 30px; width: 30px;margin-top:5px;padding:0px;">
                 <i class="fa fa-trash"></i>
             </button>
         @endif
@@ -204,7 +204,7 @@
             </select>
         </td>
         <td> <button type="button" class="btn btn-icon btn-danger btn-remove-row"
-                style="height: 30px; width: 30px;margin-top:5px;">
+                style="height: 30px; width: 30px;margin-top:5px;padding:0px;">
                 <i class="fa fa-trash"></i>
             </button></td>
     </tr>
@@ -319,7 +319,7 @@
                         <option value="Credit">Credit</option>
                     </select>
                 </td>
-                <td><button type="button" class="btn btn-icon btn-danger btn-remove-row" style="height: 30px; width: 30px;margin-top:5px;">
+                <td><button type="button" class="btn btn-icon btn-danger btn-remove-row" style="height: 30px; width: 30px;margin-top:5px;padding:0px;">
                     <i class="fa fa-trash"></i>
                 </button>
                 </td>
@@ -448,7 +448,7 @@
                         <option value="Credit" ${'Credit' == status ? 'selected' : ''}>Credit</option>
                     </select>
                 </td>
-                <td><button type="button" class="btn btn-icon btn-danger btn-remove-row" style="height: 30px; width: 30px;margin-top:5px;">
+                <td><button type="button" class="btn btn-icon btn-danger btn-remove-row" style="height: 30px; width: 30px;margin-top:5px;padding:0px;">
                     <i class="fa fa-trash"></i>
                 </button>
                 </td>

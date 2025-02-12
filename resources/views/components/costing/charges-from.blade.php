@@ -14,15 +14,15 @@
                 <button class="btn custom-btn custom-btn-primary btn-sm">CTD NO: {{ $ctd->ctd_number }}</button>
             @endif --}}
 
-        <div style="display: flex; align-items: center; justify-content: end;">
+        <div style="display: flex; align-items: center; justify-content: end;padding-bottom:5px;">
             @if ($costing?->status != 2)
                 <button type="button" id="add-row-{{ $type }}-{{ $k }}"
-                    class="btn btn-icon btn-success rounded" style="height: 30px; width: 30px;margin-right:5px;">
+                    class="btn btn-icon btn-primary rounded" style="height: 30px; width: 30px;margin-right:5px;padding: 0 0 0 4px;">
                     <i class="fa fa-plus pe-0"></i>
                 </button>
             @endif
             <button type="button" id="updown-{{ $type }}-{{ $k }}"
-                class="btn btn-icon btn-primary rounded" style="height: 30px; width: 30px;">
+                class="btn btn-icon btn-secondary rounded" style="height: 30px; width: 30px;padding:0px;">
                 <i class="fa fa-angle-down"></i>
             </button>
         </div>
@@ -153,7 +153,7 @@
         @if ($costing->status == 1)
             <button type="button"
                 class="btn btn-icon btn-danger btn-remove-row-{{ $type }}-{{ $k }}"
-                style="height: 30px; width: 30px;margin-top:5px;">
+                style="height: 30px; width: 30px;margin-top:2px;padding:0px;">
                 <i class="fa fa-trash"></i>
             </button>
         @endif
@@ -293,7 +293,7 @@
                     <option value="Credit">Credit</option>
                 </select>
             </td>
-            <td><button type="button" class="btn btn-icon btn-danger btn-remove-row-{{ $type }}-{{ $k }}" style="height: 30px; width: 30px;margin-top:5px;">
+            <td><button type="button" class="btn btn-icon btn-danger btn-remove-row-{{ $type }}-{{ $k }}" style="height: 30px; width: 30px;margin-top:2px;padding:0px;">
                             <i class="fa fa-trash"></i>
                         </button></td>
         </tr>
@@ -410,7 +410,7 @@
             </td>
             <td>
                 <button type="button" class="btn btn-icon btn-danger btn-remove-row-${type}-${key}"
-                    style="height: 30px; width: 30px; margin-top:5px;">
+                    style="height: 30px; width: 30px; margin-top:0px;padding:0px;">
                     <i class="fa fa-trash"></i>
                 </button>
             </td>

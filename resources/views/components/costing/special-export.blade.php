@@ -26,13 +26,13 @@
     <!-- Form Container -->
     <div id="special-export-charges-form" class="d-none">
 
-        <div style="display: flex; align-items: center; justify-content: end;">
+        <div style="display: flex; align-items: center; justify-content: end;margin-bottom:5px;">
              @if($costing?->status != 2)
-            <button type="button" id="add-row-special-export" class="btn btn-icon btn-success rounded" style="height: 30px; width: 30px;margin-right:5px;">
+            <button type="button" id="add-row-special-export" class="btn btn-icon btn-primary rounded" style="height: 30px; width: 30px;margin-right:5px;padding:0 0 0 4px;">
                 <i class="fa fa-plus pe-0"></i>
             </button>
             @endif
-            <button type="button" id="updown-special-export" class="btn btn-icon btn-primary rounded" style="height: 30px; width: 30px;">
+            <button type="button" id="updown-special-export" class="btn btn-icon btn-secondary rounded" style="height: 30px; width: 30px;padding:0px;">
                 <i class="fa fa-angle-down"></i>
             </button>
         </div>
@@ -122,7 +122,7 @@
                         </td>
                         <td>
                         @if($costing->status == 1)
-                          <button type="button" class="btn btn-icon btn-danger btn-remove-row-special-export" style="height: 30px; width: 30px;margin-top:5px;">
+                          <button type="button" class="btn btn-icon btn-danger btn-remove-row-special-export" style="height: 30px; width: 30px;margin-top:5px;padding:0px;">
                                 <i class="fa fa-trash"></i>
                             </button>
                         @endif
@@ -165,7 +165,7 @@
                                 <option value="Credit">Credit</option>
                             </select>
                         </td>
-                        <td><button type="button" class="btn btn-icon btn-danger btn-remove-row-special-export" style="height: 30px; width: 30px;margin-top:5px;">
+                        <td><button type="button" class="btn btn-icon btn-danger btn-remove-row-special-export" style="height: 30px; width: 30px;margin-top:5px;padding:0px;">
                     <i class="fa fa-trash"></i>
                 </button></td>
                     </tr>
@@ -280,7 +280,7 @@ let isVisibleSpecialExport = true; // Track the visibility state
                         <option value="Credit">Credit</option>
                     </select>
                 </td>
-                <td><button type="button" class="btn btn-icon btn-danger btn-remove-row-special-export" style="height: 30px; width: 30px;margin-top:5px;">
+                <td><button type="button" class="btn btn-icon btn-danger btn-remove-row-special-export" style="height: 30px; width: 30px;margin-top:2px;padding:0px;">
                     <i class="fa fa-trash"></i>
                 </button></td>
             </tr>
@@ -409,7 +409,7 @@ function setChargeSpecialExport(data,index, type){
                         <option value="Credit" ${'Credit' == status ? 'selected' : ''}>Credit</option>
                     </select>
                 </td>
-                <td><button type="button" class="btn btn-icon btn-danger btn-remove-row" style="height: 30px; width: 30px;margin-top:5px;">
+                <td><button type="button" class="btn btn-icon btn-danger btn-remove-row" style="height: 30px; width: 30px;margin-top:0px;padding:0p;x">
                     <i class="fa fa-trash"></i>
                 </button>
                 </td>

@@ -72,7 +72,13 @@
     <x:layout.card.wrapper>
         <x:layout.card.header>
             <div class="d-flex w-100 align-items-center flex-wrap justify-content-between w-100" style="gap: 5px;">
-                <i class="text-muted">Selected CTD: <span id="total_selected">0</span> Data</i>
+                <div class="d-flex flex-column justify-content-start w-50 mb-3" style="gap: 5px;">
+                    <i class="text-muted">Selected CTD: <span id="total_selected">0</span> Data</i>
+                    <div class="search-table-box">
+                        <i class="bx bx-search-alt text-primary"></i>
+                        <input type="text" class="form-control search-input" data-action="search-datatable" placeholder="Search ...">
+                    </div>
+                </div>
                 <div class="d-flex align-items-center justify-content-end gap-2">
                     <x:layout.card.toolbar
                         :customLink="[
@@ -148,7 +154,6 @@
     }
 
     const e = $("#not-linked-table").DataTable({
-        bFilter: false,
         autoWidth: false,
         sDom: 'fBtlpi',
         ordering: true,
@@ -208,6 +213,11 @@
             $('.dataTables_filter').appendTo('.search-input');
         },
     });
+
+    $('input[data-action="search-datatable"]').on('keyup', function (event) {
+        event.preventDefault();
+        e.search(event.target.value).draw();
+    })
 
     $(document).on('click', '.row-checkbox:not(#select_all)', function () {
         const row = e.row($(this).closest('tr')).data();

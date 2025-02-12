@@ -83,6 +83,7 @@
                             'icon' => 'bx bx-plus'
                         ]"
                         :withFilter="false"
+                        :withSearch="false"
                     />
                 </div>
             </div>

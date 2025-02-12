@@ -11,7 +11,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
-                <h2 class="modal-title mb-5">{{ $title }}</h2>
+                <h4 class="modal-title mb-2">{{ $title }}</h4>
                 <hr>
 
                 <form action="{{ $action }}" class="row justify-content-center" method="{{ $method }}" target="{{ $target }}">
@@ -20,12 +20,12 @@
                     @endif
                     {{ $slot }}
 
-                    <div class="row mb-3 mt-5" style="row-gap: 10px;">
+                    <div class="row mb-3 mt-5 filter-buttons" style="row-gap: 10px;">
                         <div class="col-md-6">
-                            <button type="button" class="btn btn-sm custom-btn custom-btn-outline-danger w-100" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="d-inline-flex align-items-center justify-content-center btn w-100 btn-secondary m-0" data-bs-dismiss="modal">Close</button>
                         </div>
                         <div class="col-md-6">
-                            <button type="submit" class="btn btn-sm custom-btn custom-btn-primary w-100">{{ $submitButton }}</button>
+                            <button type="submit" class="d-inline-flex align-items-center justify-content-center btn w-100 btn-primary">{{ $submitButton }}</button>
                         </div>
                     </div>
                 </form>

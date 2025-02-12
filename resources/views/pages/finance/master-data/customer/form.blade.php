@@ -353,19 +353,20 @@
                                             <div class="col">
                                                 <input type="hidden" name="customer_account[customer_account_id][]" value="{{ $customerAccount->id }}">
                                                 <div class="mb-3">
-                                                    <select name="customer_account[chart_of_account_id][]" style="width: 228px;" class="form-select account-select2" data-control="select2" data-placeholder="Select Account" id="customer_account[chart_of_account_id][]">
+                                                    <select name="customer_account[chart_of_account_id][]"
+                                                            style="width: 228px;"
+                                                            class="form-select account-select2"
+                                                            data-control="select2"
+                                                            data-placeholder="Select Account"
+                                                            id="customer_account_{{ $loop->index }}">
                                                         @foreach ($accountGroups as $group)
-                                                            <optgroup label="{{ str($group->name)->upper() }}">
-                                                                @foreach ($group->subAccountGroups as $subGroup)
-                                                                    <optgroup label="{{ '-' . $subGroup->code . ' -- ' . str($subGroup->name)->upper() }}">
-                                                                        @php
-                                                                            $chartOfAccounts = $subGroup->chartOfAccounts()
-                                                                                ->orderBy('account_number', 'asc')
-                                                                                ->get();
-                                                                        @endphp
-                                                                        @foreach ($chartOfAccounts as $account)
-                                                                            <option value="{{ $account->id }}" @selected($customerAccount->chart_of_account_id == $account->id)>
-                                                                                {{ '--' . $account->account_number . ' --- ' . str($account->account_name)->upper() }}
+                                                            <optgroup label="{{ str($group['name'])->upper() }}">
+                                                                @foreach ($group['subAccountGroups'] as $subGroup)
+                                                                    <optgroup label="{{ '-' . $subGroup['code'] . ' -- ' . str($subGroup['name'])->upper() }}">
+                                                                        @foreach ($subGroup['chartOfAccounts'] as $account)
+                                                                            <option value="{{ $account['id'] }}"
+                                                                                {{ $customerAccount->chart_of_account_id == $account['id'] ? 'selected' : '' }}>
+                                                                                {{ '--' . $account['account_number'] . ' --- ' . str($account['account_name'])->upper() }}
                                                                             </option>
                                                                         @endforeach
                                                                     </optgroup>
@@ -378,7 +379,7 @@
                                             <div class="col-auto d-flex">
                                                 <button type="button" class="btn btn-primary me-2" onclick="addRow('.account-row', '#account-form')">+</button>
                                                 <button type="button" class="btn btn-danger" onclick="removeRow('.account-row')"
-                                                    disabled>-</button>
+                                                    {{ $loop->first && $loop->count == 1 ? 'disabled' : '' }}>-</button>
                                             </div>
                                         </div>
                                     @endforeach
@@ -390,17 +391,12 @@
                                                 <label for="#customer_account[chart_of_account_id][]" class='form-label'>Account</label>
                                                 <select name="customer_account[chart_of_account_id][]" style="width: 228px;" class="form-select account-select2" data-control="select2" data-placeholder="Select Account Number">
                                                     @foreach ($accountGroups as $group)
-                                                        <optgroup label="{{ str($group->name)->upper() }}">
-                                                            @foreach ($group->subAccountGroups as $subGroup)
-                                                                <optgroup label="{{ '-' . $subGroup->code . ' -- ' . str($subGroup->name)->upper() }}">
-                                                                    @php
-                                                                        $chartOfAccounts = $subGroup->chartOfAccounts()
-                                                                            ->orderBy('account_number', 'asc')
-                                                                            ->get();
-                                                                    @endphp
-                                                                    @foreach ($chartOfAccounts as $account)
-                                                                        <option value="{{ $account->id }}">
-                                                                            {{ '--' . $account->account_number . ' --- ' . str($account->account_name)->upper() }}
+                                                        <optgroup label="{{ str($group['name'])->upper() }}">
+                                                            @foreach ($group['subAccountGroups'] as $subGroup)
+                                                                <optgroup label="{{ '-' . $subGroup['code'] . ' -- ' . str($subGroup['name'])->upper() }}">
+                                                                    @foreach ($subGroup['chartOfAccounts'] as $account)
+                                                                        <option value="{{ $account['id'] }}">
+                                                                            {{ '--' . $account['account_number'] . ' --- ' . str($account['account_name'])->upper() }}
                                                                         </option>
                                                                     @endforeach
                                                                 </optgroup>

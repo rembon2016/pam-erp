@@ -4,25 +4,27 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Finance\MasterData;
 
-use App\Constants\Customer\CustomerAddress;
-use App\Constants\Customer\CustomerType;
-use App\Exports\MasterData\CustomerExport;
-use App\Functions\ResponseJson;
+use Illuminate\View\View;
 use App\Functions\Utility;
+use Illuminate\Support\Arr;
+use Illuminate\Http\Response;
+use App\Functions\ResponseJson;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Finance\Currency;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Finance\AccountGroup;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\RedirectResponse;
+use App\Constants\Customer\CustomerType;
+use Yajra\DataTables\Facades\DataTables;
+use App\Exports\MasterData\CustomerExport;
+use App\Models\Operation\Master\Countries;
+use App\Constants\Customer\CustomerAddress;
+use App\Service\Finance\MasterData\CustomerService;
 use App\Http\Requests\Finance\MasterData\Customer\StoreCustomerRequest;
 use App\Http\Requests\Finance\MasterData\Customer\UpdateCustomerRequest;
-use App\Models\Finance\AccountGroup;
-use App\Models\Finance\Currency;
-use App\Models\Operation\Master\Countries;
-use App\Service\Finance\MasterData\CustomerService;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
-use Illuminate\Support\Arr;
-use Illuminate\View\View;
-use Maatwebsite\Excel\Facades\Excel;
-use Yajra\DataTables\Facades\DataTables;
 
 final class CustomerController extends Controller
 {
@@ -99,9 +101,16 @@ final class CustomerController extends Controller
 
         $customerTypes = Arr::sort(CustomerType::COLLECT);
         $customerAddressTypes = CustomerAddress::COLLECT;
-        $currencies = Currency::orderBy('currency_name', 'asc')->get();
-        $countries = Countries::orderBy('country_name', 'asc')->get();
-        $accountGroups = AccountGroup::orderBy('code', 'asc')->get();
+
+        $currencies = Currency::select('id', 'currency_code', 'currency_name')
+            ->orderBy('currency_name', 'asc')
+            ->get();
+
+        $countries = Countries::select('country_id', 'country_name')
+            ->orderBy('country_name', 'asc')
+            ->get();
+
+        $accountGroups = $this->getTransformedAccountGroups();
 
         return view('pages.finance.master-data.customer.form', compact('data', 'customerTypes', 'currencies', 'customerAddressTypes', 'countries', 'accountGroups'));
     }
@@ -135,6 +144,10 @@ final class CustomerController extends Controller
     {
         $customerResponse = $this->customerService->getCustomerById(id: $id);
 
+        if (!$customerResponse->success) {
+            return back()->with('toastError', $customerResponse->message);
+        }
+
         $data = [
             'page' => 'Edit Customer',
             'action' => route('finance.master-data.customer.update', $id),
@@ -143,9 +156,16 @@ final class CustomerController extends Controller
 
         $customerTypes = Arr::sort(CustomerType::COLLECT);
         $customerAddressTypes = CustomerAddress::COLLECT;
-        $currencies = Currency::orderBy('currency_name', 'asc')->get();
-        $countries = Countries::orderBy('country_name', 'asc')->get();
-        $accountGroups = AccountGroup::orderBy('code', 'asc')->get();
+
+        $currencies = Currency::select('id', 'currency_code', 'currency_name')
+            ->orderBy('currency_name')
+            ->get();
+
+        $countries = Countries::select('country_id', 'country_name')
+            ->orderBy('country_name')
+            ->get();
+
+        $accountGroups = $this->getTransformedAccountGroups($customerResponse->data->load('customerAccounts')->customerAccounts->pluck('chart_of_account_id'));
 
         return $customerResponse->success
             ? view('pages.finance.master-data.customer.form', [
@@ -209,5 +229,39 @@ final class CustomerController extends Controller
         $file_name = 'list_customer_'.time().'.csv';
 
         return Excel::download(new CustomerExport, $file_name);
+    }
+
+    private function getTransformedAccountGroups(?Collection $selectedAccountIds = null): Collection
+    {
+        return DB::table('finance.chart_of_accounts as coa')
+            ->select([
+                'coa.id', 'coa.account_number', 'coa.account_name',
+                'sag.id as sub_group_id', 'sag.name as sub_group_name', 'sag.code as sub_group_code',
+                'ag.id as group_id', 'ag.name as group_name', 'ag.code as group_code'
+            ])
+            ->join('finance.sub_account_groups as sag', 'coa.sub_account_group_id', '=', 'sag.id')
+            ->join('finance.account_groups as ag', 'sag.account_group_id', '=', 'ag.id')
+            ->orderBy('ag.code')
+            ->orderBy('sag.code')
+            ->orderBy('coa.account_number')
+            ->get()
+            ->groupBy('group_id')
+            ->map(fn($group) => [
+                'id' => $group->first()->group_id,
+                'name' => $group->first()->group_name,
+                'code' => $group->first()->group_code,
+                'subAccountGroups' => $group->groupBy('sub_group_id')
+                    ->map(fn($subGroup) => [
+                        'id' => $subGroup->first()->sub_group_id,
+                        'name' => $subGroup->first()->sub_group_name,
+                        'code' => $subGroup->first()->sub_group_code,
+                        'chartOfAccounts' => $subGroup->map(fn($item) => [
+                            'id' => $item->id,
+                            'account_number' => $item->account_number,
+                            'account_name' => $item->account_name,
+                            'selected' => $selectedAccountIds ? $selectedAccountIds->contains($item->id) : false
+                        ])->values()
+                    ])->values()
+            ])->values();
     }
 }

@@ -89,7 +89,10 @@
                 <thead>
                     <x:layout.table.row>
                         <th class="min-w-50px">
-                            <input type="checkbox" class="row-checkbox" id="select_all">
+                            <label class="custom_check">
+                                <input type="checkbox" class="row-checkbox" id="select_all">
+                                <span class="checkmark"></span>
+                            </label>
                         </th>
                         <x:layout.table.heading widthPixel="50" title="No" />
                         <x:layout.table.heading widthPixel="100" title="CTD No" />

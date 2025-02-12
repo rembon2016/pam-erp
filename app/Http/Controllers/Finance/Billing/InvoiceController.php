@@ -117,7 +117,13 @@ final class InvoiceController extends Controller
 
             return DataTables::of($instructions->data)
                 ->addColumn('row_checkbox', function ($col) {
-                    return "<input type='checkbox' class='row-checkbox' value='{$col->job_id}' />";
+
+
+                return '<label class="custom_check">
+                    <input type="checkbox" class="row-checkbox" value="' . $col->job_id . '">
+                    <span class="checkmark"></span>
+                </label>';
+                    // return "<input type='checkbox' class='row-checkbox' value='{$col->job_id}' />";
                 })
                 ->addColumn('billing_customer_name', function ($col) {
                     return $col->customer_name ?? '-';

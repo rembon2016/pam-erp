@@ -35,9 +35,7 @@ final class ServiceTypeController extends Controller
      */
     public function index(): View
     {
-        $service_types = $this->serviceTypeService->getServiceTypes()->data->serviceTypes;
-
-        return view('pages.finance.master-data.service-type.index', compact('service_types'));
+        return view('pages.finance.master-data.service-type.index');
     }
 
     /**

@@ -96,6 +96,7 @@
 <!-- Custom JS -->
 <script src="{{ asset('/assets-v2/js/script.js') }}"></script>
 <script src="{{ asset('assets/js/main.js') }}"></script>
+<script src="{{ asset('assets/js/history-shipping-icons.js') }}"></script>
 
 @stack('js')
 <script>

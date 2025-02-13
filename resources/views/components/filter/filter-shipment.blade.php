@@ -107,7 +107,7 @@
             </x-form.select2>
         @endif
 
-        
+
 
         <div class="d-flex flex-column align-items-center">
             <button class="btn-clear" id="btn-clear">Clear Filter</button>
@@ -200,9 +200,9 @@
                         placeholder: 'Choose',
                         allowClear: false,
                         data: data,
-                        initSelection: function(element, callback) {
-                            callback(null);
-                        },
+                        // initSelection: function(element, callback) {
+                        //     callback(null);
+                        // },
                         matcher: function(params, data) {
                             if ($.trim(params.term) === '') {
                                 return data;
@@ -244,20 +244,20 @@
                     { id: 'SEA AIR', text: 'SEA AIR' },
                     { id: 'AIR', text: 'AIR' }
                 ],
-                initSelection: function(element, callback) {
-                    callback(null);
-                }
+                // initSelection: function(element, callback) {
+                //     callback(null);
+                // }
             }).val(null).trigger('change');
 
             // Initialize other dynamic select2s based on conditions
             if (['seaair', 'crossair', 'seaimport', 'airimport'].includes(currentType)) {
                 initializeSelect2WithData(
-                    'origin', 
+                    'origin',
                     '{{ route('finance.general-wise.shipment.origin', ['type' => $type]) }}',
                     'origin_name'
                 );
             }
-            
+
             if (['seaair', 'crossair', 'seaexport', 'airexport'].includes(currentType)) {
                 initializeSelect2WithData(
                     'destination',
@@ -265,7 +265,7 @@
                     'port_destination_name'
                 );
             }
-            
+
             if (['seaair', 'crossair', 'seaimport', 'seaexport'].includes(currentType)) {
                 initializeSelect2WithData(
                     'vessel',
@@ -282,7 +282,7 @@
                     'carrier_name'
                 );
             }
-            
+
             if (!['warehouse', 'trucking', 'courier'].includes(currentType)) {
                 initializeSelect2WithData(
                     'eta',
@@ -375,13 +375,13 @@
 
                 // Get DataTable instance from window object
                 var dataTable = window.shipmentDataTable;
-                
+
                 if (dataTable) {
                     dataTable.ajax.reload(null, false);
 
                     // Make the total order API call
                     const totalOrderUrl = `${API_BASE}/api/shippinginstruction/totalorder`;
-                    
+
                     $.ajax({
                         url: totalOrderUrl,
                         type: 'GET',
@@ -411,7 +411,7 @@
                         error: function(xhr, status, error) {
                             console.error('Error fetching total order data:', error);
                             $('#totalOrderSection').hide();
-                            
+
                             // Reset all values to '-' on error
                             $('#totalQty, #totalChargable, #totalGrossWeight, #totalMeasurement, #totalTeus').text('-');
                         }
@@ -429,20 +429,20 @@
             $('#btn-clear').on('click', function() {
                 // Clear all select2 fields
                 $('#shipment_by, #origin, #destination, #vessel, #eta, #status, #carrier, #shipper, #consignee').val(null).trigger('change');
-                
+
                 // Clear date inputs
                 $('#from_date_etd, #to_date_etd').val('');
-                
+
                 // Reset export button text to initial state
                 $('.button-export-text').text('Export All Data to CSV');
-                
+
                 // Uncheck all checkboxes
                 $('.row-checkbox').prop('checked', false);
                 $('#select_all').prop('checked', false);
-                
+
                 // Hide total order section
                 $('#totalOrderSection').hide();
-                
+
                 // Get the DataTable instance and reload
                 var dataTable = $('#datatable').DataTable();
                 if (dataTable) {

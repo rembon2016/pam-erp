@@ -38,8 +38,7 @@ final class CurrencyService
                 'currencies' => $currencyCollections,
                 'currencyDatatables' => $currencies->skip(request()->get('start', 0))
                     ->take(request()->get('length', 10))
-                    ->orderBy('created_at', 'DESC')
-                    ->get(),
+                    ->orderBy('created_at', 'DESC'),
                 'totalRecords' => $totalRecords,
                 'filteredRecords' => $filteredRecords
             ]

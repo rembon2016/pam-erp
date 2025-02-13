@@ -22,24 +22,29 @@ final class CountryService
 
     public function getCountries($filters = [])
     {
-        $countries = Countries::when(! empty($filters['country_code']), function ($query) use ($filters) {
-            return $query->where('country_code', $filters['country_code']);
-        })->when(! empty($filters['country_name']), function ($query) use ($filters) {
-            return $query->where('country_name', $filters['country_name']);
-        })->whereNotIn('status', ['2', '3'])->orderBy('country_name', 'asc');
+        $countries = Countries::whereNotIn('status', ['2', '3'])
+            ->when(!empty($filters['country_code']), function ($query) use ($filters) {
+                return $query->where('country_code', $filters['country_code']);
+            })
+            ->when(!empty($filters['country_name']), function ($query) use ($filters) {
+                return $query->where('country_name', $filters['country_name']);
+            })
+            ->orderBy('country_name', 'asc')
+            ->orderBy('date_created', 'desc');
 
         $totalRecords = Countries::count();
-        $filteredRecords = $countries->count();
+
+        $countryCollections = $countries->get();
+
+        $filteredRecords = count($countryCollections);
 
         return ObjectResponse::success(
             message: __('crud.fetched', ['name' => 'Country']),
             statusCode: Response::HTTP_OK,
             data: (object) [
-                'countries' => $countries->get(),
+                'countries' => $countryCollections,
                 'countryDatatables' => $countries->skip(request()->get('start', 0))
-                    ->take(request()->get('length', 10))
-                    ->orderBy('date_created', 'DESC')
-                    ->get(),
+                    ->take(request()->get('length', 10)),
                 'totalRecords' => $totalRecords,
                 'filteredRecords' => $filteredRecords
             ]

@@ -27,8 +27,36 @@ final class ChartOfAccountService
 
     public function getAccountGroups(): Collection
     {
+        $searchTerm = request('search');
+
         $accountGroupQueries = AccountGroup::query()
-            ->with(['subAccountGroups', 'chartOfAccounts'])
+            ->select('id', 'code', 'name')
+            ->with([
+                'subAccountGroups' => function ($query) use ($searchTerm) {
+                    $query->select('id', 'account_group_id', 'code', 'name')
+                        ->orderBy('code', 'asc')
+                        ->when($searchTerm, function ($q) use ($searchTerm) {
+                            $q->where(function ($sq) use ($searchTerm) {
+                                $sq->where('name', 'ilike', '%' . $searchTerm . '%')
+                                    ->orWhere('code', 'ilike', '%' . $searchTerm . '%')
+                                    ->orWhereHas('chartOfAccounts', function ($cq) use ($searchTerm) {
+                                        $cq->where('account_name', 'ilike', '%' . $searchTerm . '%')
+                                            ->orWhere('account_number', 'ilike', '%' . $searchTerm . '%');
+                                    });
+                            });
+                        });
+                },
+                'subAccountGroups.chartOfAccounts' => function ($query) use ($searchTerm) {
+                    $query->select('id', 'sub_account_group_id', 'account_number', 'account_name')
+                        ->orderBy('account_number', 'asc')
+                        ->when($searchTerm, function ($q) use ($searchTerm) {
+                            $q->where(function ($cq) use ($searchTerm) {
+                                $cq->where('account_name', 'ilike', '%' . $searchTerm . '%')
+                                    ->orWhere('account_number', 'ilike', '%' . $searchTerm . '%');
+                            });
+                        });
+                }
+            ])
             ->orderBy('code', 'asc');
 
         $accountGroups = Pipeline::send($accountGroupQueries)

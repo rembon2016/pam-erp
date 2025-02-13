@@ -32,53 +32,54 @@
                 </thead>
                 <tbody class="fw-semibold text-gray-600">
                     @foreach ($accountGroups as $accountGroup)
-                        <tr>
-                            <td>
-                                <div>
-                                    <dt class="font-weight-bold"> {{ $accountGroup->code }} </dt>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <dt class="font-weight-bold"> {{ $accountGroup->name }} </dt>
-                                </div>
-                            </td>
+                        @if($accountGroup->subAccountGroups->isNotEmpty())
+                            <tr>
+                                <td>
+                                    <div>
+                                        <dt class="font-weight-bold">{{ $accountGroup->code }}</dt>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <dt class="font-weight-bold">{{ $accountGroup->name }}</dt>
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
                             @foreach ($accountGroup->subAccountGroups as $subAccountGroup)
-                                <tr>
-                                    <td>
-                                        <div style="margin-left:20px;">
-                                            <dt class="font-weight-bold">{{ $subAccountGroup->code }}
-                                    </td>
-                                    <td>
-                                        <div style="margin-left:20px;">
-                                            <dt class="font-weight-bold">{{ $subAccountGroup->name }}</dt>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @php
-                                    $chartOfAccounts = $subAccountGroup->chartOfAccounts()
-                                        ->orderBy('account_number', 'asc')
-                                        ->get();
-                                @endphp
-                                @foreach ($chartOfAccounts as $chartOfAccount)
+                                @if($subAccountGroup->chartOfAccounts->isNotEmpty())
                                     <tr>
                                         <td>
-                                            <div style="margin-left:40px;">{{ $chartOfAccount->account_number }}</div>
-                                        </td>
-                                        </td>
-
-                                        <td>
-                                            <div style="margin-left:40px;">{{ $chartOfAccount->account_name }}</div>
+                                            <div style="margin-left:20px;">
+                                                <dt class="font-weight-bold">{{ $subAccountGroup->code }}</dt>
+                                            </div>
                                         </td>
                                         <td>
-                                            <a href="{{ route('finance.master-data.chart-of-account.edit', $chartOfAccount->id) }}" class="btn btn-success text-white">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
+                                            <div style="margin-left:20px;">
+                                                <dt class="font-weight-bold">{{ $subAccountGroup->name }}</dt>
+                                            </div>
                                         </td>
+                                        <td></td>
                                     </tr>
-                                @endforeach
+                                    @foreach ($subAccountGroup->chartOfAccounts as $chartOfAccount)
+                                        <tr>
+                                            <td>
+                                                <div style="margin-left:40px;">{{ $chartOfAccount->account_number }}</div>
+                                            </td>
+                                            <td>
+                                                <div style="margin-left:40px;">{{ $chartOfAccount->account_name }}</div>
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('finance.master-data.chart-of-account.edit', $chartOfAccount->id) }}"
+                                                class="btn btn-success text-white">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             @endforeach
-                        </tr>
+                        @endif
                     @endforeach
                 </tbody>
             </x:layout.table.wrapper>

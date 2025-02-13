@@ -19,9 +19,22 @@ final class SearchFilter
     {
         return $next($builder)
             ->when(request()->has('search'), function ($q) {
-                return $q->whereHas('chartOfAccounts', function ($query) {
-                    return $query->where('account_number', 'ilike', '%'.request('search').'%')
-                        ->orWhere('account_name', 'ilike', '%'.request('search').'%');
+                return $q->where(function ($query) {
+                    $searchTerm = '%' . request('search') . '%';
+
+                    // Search in AccountGroup
+                    $query->where('name', 'ilike', $searchTerm)
+                        ->orWhere('code', 'ilike', $searchTerm)
+                        // Search in SubAccountGroup
+                        ->orWhereHas('subAccountGroups', function ($subQuery) use ($searchTerm) {
+                            $subQuery->where('name', 'ilike', $searchTerm)
+                                ->orWhere('code', 'ilike', $searchTerm);
+                        })
+                        // Search in ChartOfAccounts
+                        ->orWhereHas('subAccountGroups.chartOfAccounts', function ($coaQuery) use ($searchTerm) {
+                            $coaQuery->where('account_number', 'ilike', $searchTerm)
+                                ->orWhere('account_name', 'ilike', $searchTerm);
+                        });
                 });
             });
     }

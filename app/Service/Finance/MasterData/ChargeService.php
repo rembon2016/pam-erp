@@ -31,17 +31,19 @@ final class ChargeService
         })->orderBy('charge_code', 'ASC');
 
         $totalRecords = Charge::count();
-        $filteredRecords = $charges->count();
+
+        $chargeCollections = $charges->get();
+
+        $filteredRecords = count($chargeCollections);
 
         return ObjectResponse::success(
             message: __('crud.fetched', ['name' => 'GL Charge']),
             statusCode: Response::HTTP_OK,
             data: (object) [
-                'charges' => $charges->get(),
+                'charges' => $chargeCollections,
                 'chargeDatatables' => $charges->skip(request()->get('start', 0))
                     ->take(request()->get('length', 10))
-                    ->orderBy('created_at', 'DESC')
-                    ->get(),
+                    ->orderBy('created_at', 'DESC'),
                 'totalRecords' => $totalRecords,
                 'filteredRecords' => $filteredRecords
             ]

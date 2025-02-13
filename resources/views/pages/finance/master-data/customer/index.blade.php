@@ -44,18 +44,8 @@
     <x:layout.modal.filter-modal>
         <div class="col-12">
             <x:form.select2 label="Customer Name" name="customer_name" placeholder="Select Customer Name" :model="request()">
-                @foreach ($customers->pluck('customer_name') as $item)
-                    <option value="{{ $item }}" @selected($item == request()->query('customer_name'))>
-                        {{ $item }}
-                    </option>
-                @endforeach
             </x:form.select2>
-            <x:form.select2 label="Customer Type" name="customer_type_name[]" placeholder="Select Customer Type" :model="request()" multiple="true">
-                @foreach ($customerTypes as $type)
-                    <option value="{{ $type }}" @selected($type == request()->query('customer_type_name'))>
-                        {{ $type }}
-                    </option>
-                @endforeach
+            <x:form.select2 label="Customer Type" name="customer_type_name[]" id="customer_type_name" placeholder="Select Customer Type" :model="request()" multiple="true">
             </x:form.select2>
         </div>
     </x:layout.modal.filter-modal>
@@ -96,19 +86,6 @@
 <script src="{{ asset('assets/js/custom/filter-handler.js') }}"></script>
 <script>
     $(document).ready(function () {
-        let multipleSelectStyles = [
-            'display:flex;',
-            'flex-wrap:wrap;',
-            'flex-direction:row;',
-            'row-gap:10px;'
-        ]
-
-        let customerTypeNameElement = $('select[name="customer_type_name[]"]')
-        let customerNameElement = $('select[name="customer_name"]')
-
-        // Apply styles to select2
-        $('ul.select2-selection__rendered').attr('style', multipleSelectStyles.join(' '))
-
         // Initialize filter handler
         new FilterHandler({
             filters: [
@@ -123,6 +100,42 @@
             customerTypeNameElement.val(initialCustomerTypes);
             customerTypeNameElement.trigger('change');
         }
+
+        // Select 2 Data Binding
+        ['customer_name', 'customer_type_name'].forEach(item => {
+            let placeholder = item == 'customer_name' ? 'Select Customer Name' : 'Select Customer Type Name';
+            generateAjaxSelect2(
+                item,
+                "{{ route('api.finance.master-data.customer.filter-data') }}",
+                placeholder,
+                function (result) {
+                    let pagingData = result.data;
+                    let hasMorePages = pagingData.next_page_url !== null;
+
+                    if (item == 'customer_name') {
+                        return {
+                            results: pagingData.data.map(item => ({
+                                id: item.id,
+                                text: item.customer_name
+                            })),
+                            pagination: {
+                                more: hasMorePages
+                            }
+                        };
+                    } else {
+                        return {
+                            results: pagingData.data.map(item => ({
+                                id: item.id,
+                                text: item.customer_code
+                            })),
+                            pagination: {
+                                more: hasMorePages
+                            }
+                        };
+                    }
+                }
+            );
+        })
     })
 </script>
 @endpush

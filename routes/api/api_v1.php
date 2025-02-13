@@ -33,6 +33,9 @@ Route::group([
         ], function () {
             Route::get('/', [ApiCustomerController::class, 'getCustomers'])->name('list');
             Route::get('/billing-customer', [ApiCustomerController::class, 'getBillingCustomers'])->name('billing.list');
+
+            // Filters
+            Route::get('/customer-filter', [ApiCustomerController::class, 'getCustomerForFilters'])->name('filter-data');
         });
 
         // Port Route

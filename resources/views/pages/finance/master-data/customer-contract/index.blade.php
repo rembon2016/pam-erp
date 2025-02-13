@@ -42,7 +42,7 @@
 
     <x:layout.modal.filter-modal>
         <div class="col-12">
-            <x:form.select label="Customer" name="customer" defaultOption="Select Customer" :model="request()" />
+            <x:form.select2 label="Customer" name="customer" placeholder="Select Customer" :model="request()" />
         </div>
     </x:layout.modal.filter-modal>
 @endsection

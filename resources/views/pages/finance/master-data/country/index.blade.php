@@ -42,8 +42,8 @@
 
     <x:layout.modal.filter-modal>
         <div class="col-12">
-            <x:form.select label="Country Code" name="country_code" defaultOption="Select Country Code" :model="request()" />
-            <x:form.select label="Country Name" name="country_name" defaultOption="Select Country Name" :model="request()" />
+            <x:form.select2 label="Country Code" name="country_code" placeholder="Select Country Code" :model="request()" />
+            <x:form.select2 label="Country Name" name="country_name" placeholder="Select Country Name" :model="request()" />
         </div>
     </x:layout.modal.filter-modal>
 @endsection
@@ -108,7 +108,7 @@
                     if (item == 'country_code') {
                         return {
                             results: pagingData.data.map(item => ({
-                                id: item.id,
+                                id: item.country_id,
                                 text: item.country_code
                             })),
                             pagination: {
@@ -118,7 +118,7 @@
                     } else {
                         return {
                             results: pagingData.data.map(item => ({
-                                id: item.id,
+                                id: item.country_id,
                                 text: item.country_name
                             })),
                             pagination: {

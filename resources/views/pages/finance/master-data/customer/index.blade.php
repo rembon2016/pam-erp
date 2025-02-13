@@ -43,10 +43,8 @@
 
     <x:layout.modal.filter-modal>
         <div class="col-12">
-            <x:form.select2 label="Customer Name" name="customer_name" placeholder="Select Customer Name" :model="request()">
-            </x:form.select2>
-            <x:form.select2 label="Customer Type" name="customer_type_name[]" id="customer_type_name" placeholder="Select Customer Type" :model="request()" multiple="true">
-            </x:form.select2>
+            <x:form.select2 label="Customer Name" name="customer_name" placeholder="Select Customer Name" :model="request()" />
+            <x:form.select2 label="Customer Type" name="customer_type_name[]" id="customer_type_name" placeholder="Select Customer Type" :model="request()" multiple="true" />
         </div>
     </x:layout.modal.filter-modal>
 @endsection

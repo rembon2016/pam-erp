@@ -44,10 +44,10 @@
 
     <x:layout.modal.filter-modal>
         <div class="col-12">
-            <x:form.select label="Customer" name="customer" defaultOption="Select Contract No" :model="request()" />
+            <x:form.select2 label="Customer" name="customer" placeholder="Select Contract No" :model="request()" />
         </div>
         <div class="col-12">
-            <x:form.select label="Service" name="service_type" defaultOption="Select Service" :model="request()" />
+            <x:form.select2 label="Service" name="service_type" placeholder="Select Service" :model="request()" />
         </div>
     </x:layout.modal.filter-modal>
 @endsection

@@ -42,16 +42,8 @@
 
     <x:layout.modal.filter-modal>
         <div class="col-12">
-            <x:form.select label="Country Code" name="country_code" defaultOption="Select Country Code" :model="request()">
-                @foreach ($countries->pluck('country_code') as $code)
-                    <option value="{{ $code }}" @selected($code == request()->query('country_code'))>{{ $code }}</option>
-                @endforeach
-            </x:form.select>
-            <x:form.select label="Country Name" name="country_name" defaultOption="Select Country Name" :model="request()">
-                @foreach ($countries->pluck('country_name') as $name)
-                    <option value="{{ $name }}" @selected($name == request()->query('country_name'))>{{ $name }}</option>
-                @endforeach
-            </x:form.select>
+            <x:form.select label="Country Code" name="country_code" defaultOption="Select Country Code" :model="request()" />
+            <x:form.select label="Country Name" name="country_name" defaultOption="Select Country Name" :model="request()" />
         </div>
     </x:layout.modal.filter-modal>
 @endsection
@@ -102,6 +94,41 @@
                 { name: 'country_name', label: 'Country Name' }
             ]
         });
+
+        ['country_code', 'country_name'].forEach(item => {
+            let placeholder = item == 'country_code' ? 'Select Country Code' : 'Select Country Name';
+            generateAjaxSelect2(
+                item,
+                "{{ route('api.finance.master-data.country.filter-data') }}",
+                placeholder,
+                function (result) {
+                    let pagingData = result.data;
+                    let hasMorePages = pagingData.next_page_url !== null;
+
+                    if (item == 'country_code') {
+                        return {
+                            results: pagingData.data.map(item => ({
+                                id: item.id,
+                                text: item.country_code
+                            })),
+                            pagination: {
+                                more: hasMorePages
+                            }
+                        };
+                    } else {
+                        return {
+                            results: pagingData.data.map(item => ({
+                                id: item.id,
+                                text: item.country_name
+                            })),
+                            pagination: {
+                                more: hasMorePages
+                            }
+                        };
+                    }
+                }
+            );
+        })
     });
 </script>
 @endpush

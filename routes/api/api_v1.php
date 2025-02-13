@@ -65,6 +65,9 @@ Route::group([
             'as' => 'country.',
         ], function () {
             Route::get('/', [ApiCountryController::class, 'list'])->name('list');
+
+            // Filters
+            Route::get('/country-filter', [ApiCountryController::class, 'getCountryForFilters'])->name('filter-data');
         });
 
         // Charge Route

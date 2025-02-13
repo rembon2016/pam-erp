@@ -31,9 +31,7 @@ final class CountryController extends Controller
      */
     public function index(): View
     {
-        $countries = $this->countryService->getCountries()->data->countries;
-
-        return view('pages.finance.master-data.country.index', compact('countries'));
+        return view('pages.finance.master-data.country.index');
     }
 
     /**

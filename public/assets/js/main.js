@@ -27,6 +27,12 @@ async function generateAjaxSelect2(id, url, placeholder, processFunction, select
             url,
             dataType: 'json',
             delay: 250,
+            data: function (params) {
+                return {
+                    search: params.term,
+                    page: params.page || 1
+                };
+            },
             processResults: processFunction,
             cache: true
         },

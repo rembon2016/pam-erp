@@ -21,7 +21,7 @@ final class PortService
      */
     public function getPorts($filters = [])
     {
-        $ports = Port::with('country')
+        $ports = Port::with('country')->whereNotIn('status', ['2', '3'])
             ->when(! empty($filters['country']), function ($query) use ($filters) {
                 $query->where('country_id', $filters['country']);
             })->when(! empty($filters['port_code']), function ($query) use ($filters) {
@@ -33,21 +33,22 @@ final class PortService
             })->when(! empty($filters['q']), function ($query) use ($filters) {
                 return $query->where(DB::raw("CONCAT(COALESCE(port_code, ''), COALESCE(port_name, ''))"), 'ILIKE', "%{$filters['q']}%");
             })
-            ->whereNotIn('status', ['2', '3'])
             ->orderBy('port_name', 'asc');
 
         $totalRecords = Port::count();
-        $filteredRecords = $ports->count();
+
+        $portCollections = $ports->get();
+
+        $filteredRecords = count($portCollections);
 
         return ObjectResponse::success(
             message: __('crud.fetched', ['name' => 'Port']),
             statusCode: Response::HTTP_OK,
             data: (object) [
-                'ports' => $ports->get(),
+                'ports' => $portCollections,
                 'portDatatables' => $ports->skip(request()->get('start', 0))
                     ->take(request()->get('length', 10))
-                    ->orderBy('date_created', 'DESC')
-                    ->get(),
+                    ->orderBy('date_created', 'DESC'),
                 'totalRecords' => $totalRecords,
                 'filteredRecords' => $filteredRecords
             ]

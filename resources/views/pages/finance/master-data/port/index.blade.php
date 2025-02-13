@@ -43,10 +43,8 @@
 
     <x:layout.modal.filter-modal>
         <div class="col-12">
-            <x:form.select label="Port Name" name="port_name" defaultOption="Select Port Name" :model="request()">
-            </x:form.select>
-            <x:form.select label="Port Code" name="port_code" defaultOption="Select Port Code" :model="request()">
-            </x:form.select>
+            <x:form.select2 label="Port Name" name="port_name" placeholder="Select Port Name" :model="request()" />
+            <x:form.select2 label="Port Code" name="port_code" placeholder="Select Port Code" :model="request()" />
         </div>
     </x:layout.modal.filter-modal>
 @endsection
@@ -91,32 +89,52 @@
 ])
 @endcomponent
 
+<script src="{{ asset('assets/js/custom/filter-handler.js') }}"></script>
 <script>
     $(document).ready(function () {
+
+        new FilterHandler({
+            filters: [
+                { name: 'port_name', label: 'Port Name' },
+                { name: 'port_code', label: 'Port Code' }
+            ]
+        });
+
         ['port_name', 'port_code'].forEach(item => {
-            let labelText = item.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')
-            let labelName = 'Select ' + labelText;
-            let url = "{{ route('api.finance.master-data.port.data_filter', ['column' => ':column']) }}";
-            url = url.replace(':column', item);
+            let placeholder = item == 'port_name' ? 'Select Port Name' : 'Select Port Code';
 
             generateAjaxSelect2(
                 item,
-                url,
-                labelName,
+                "{{ route('api.finance.master-data.port.filter-data') }}",
+                placeholder,
                 function (result) {
-                    return {
-                        results: getMappingResult(item, result),
-                    };
+                    let pagingData = result.data;
+                    let hasMorePages = pagingData.next_page_url !== null;
+
+                    if (item == 'port_name') {
+                        return {
+                            results: pagingData.data.map(item => ({
+                                id: item.port_id,
+                                text: item.port_name
+                            })),
+                            pagination: {
+                                more: hasMorePages
+                            }
+                        };
+                    } else {
+                        return {
+                            results: pagingData.data.map(item => ({
+                                id: item.port_id,
+                                text: item.port_code
+                            })),
+                            pagination: {
+                                more: hasMorePages
+                            }
+                        };
+                    }
                 }
             );
         })
     })
-
-    function getMappingResult(columnName, result) {
-        return result.data.map(item => ({
-            id: item.port_id,
-            text: columnName == 'port_name' ? item.port_name : item.port_code
-        }))
-    }
 </script>
 @endpush

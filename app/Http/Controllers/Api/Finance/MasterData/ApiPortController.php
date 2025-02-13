@@ -25,19 +25,10 @@ final class ApiPortController extends Controller
         );
     }
 
-    public function getPortFilterData(string $column)
+    public function getPortForFilters()
     {
-        $portQuery = Port::select('port_id', $column)->whereNotIn('status', ['2', '3'])->get();
+        $ports = Port::select('port_id', 'port_code', 'port_name')->whereNotIn('status', ['2', '3'])->paginate(10);
 
-        $data = [
-            'message' => __('crud.fetched', ['name' => str($column)->title()]),
-            'data' => $portQuery,
-        ];
-
-        return ResponseJson::success(
-            Response::HTTP_OK,
-            $data['message'],
-            $data['data']
-        );
+        return ResponseJson::success(code: 200, message: __('crud.fetched', ['name' => 'Port']), data: $ports);
     }
 }

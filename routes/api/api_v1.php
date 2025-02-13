@@ -45,7 +45,9 @@ Route::group([
             'as' => 'port.',
         ], function () {
             Route::get('/', [ApiPortController::class, 'list'])->name('list');
-            Route::get('/{column}/get', [ApiPortController::class, 'getPortFilterData'])->name('data_filter');
+
+            // Filters
+            Route::get('/port-filter', [ApiPortController::class, 'getPortForFilters'])->name('filter-data');
         });
 
         // Service Type Route

@@ -33,9 +33,9 @@ final class PortController extends Controller
      */
     public function index(): View
     {
-        $ports = $this->portService->getPorts()->data->ports;
+        // $ports = $this->portService->getPorts()->data->ports;
 
-        return view('pages.finance.master-data.port.index', compact('ports'));
+        return view('pages.finance.master-data.port.index');
     }
 
     /**

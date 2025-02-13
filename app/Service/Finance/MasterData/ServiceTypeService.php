@@ -37,8 +37,7 @@ final class ServiceTypeService
             data: (object) [
                 'serviceTypes' => $serviceTypeCollections,
                 'serviceTypeDatatables' => $serviceTypes->skip(request()->get('start', 0))
-                    ->take(request()->get('length', 10))
-                    ->get(),
+                    ->take(request()->get('length', 10)),
                 'totalRecords' => $totalRecords,
                 'filteredRecords' => $filteredRecords
             ]

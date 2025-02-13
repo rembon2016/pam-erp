@@ -39,57 +39,85 @@
 
     <x:layout.modal.filter-modal>
         <div class="col-12">
-            <x:form.select label="Unit Code" name="unit_code" defaultOption="Select Unit Code" :model="request()">
-                @foreach ($units->pluck('unit_name') as $code)
-                    <option value="{{ $code }}" @selected($code == request()->query('unit_code'))>{{ $code }}</option>
-                @endforeach
-            </x:form.select>
-            <x:form.select label="Unit Name" name="unit_name" defaultOption="Select Unit Name" :model="request()">
-                @foreach ($units->pluck('description') as $name)
-                    <option value="{{ $name }}" @selected($name == request()->query('unit_name'))>{{ $name }}</option>
-                @endforeach
-            </x:form.select>
+            <x:form.select2 label="Unit Code" name="unit_code" placeholder="Select Unit Code" :model="request()" />
+            <x:form.select2 label="Unit Name" name="unit_name" placeholder="Select Unit Name" :model="request()" />
         </div>
     </x:layout.modal.filter-modal>
 @endsection
 
 @push('js')
-@component('components.layout.table.datatable', [
-    'id' => 'unit_table',
-    'url' => route('finance.master-data.unit.list'),
-    'dynamicParam' => true,
-    'columns' => [
-        [
-            "data" => "DT_RowIndex",
-            "name" => "DT_RowIndex",
-            "orderable" => false,
-            "searchable" => false
-        ],
-        [
-            "data" => "unit_name",
-            "name" => "unit_name",
-        ],
-        [
-            "data" => "description",
-            "name" => "description",
-        ],
-        [
-            "data" => "action",
-            "name" => "action",
-        ],
-    ]
-])
-@endcomponent
+    @component('components.layout.table.datatable', [
+        'id' => 'unit_table',
+        'url' => route('finance.master-data.unit.list'),
+        'dynamicParam' => true,
+        'columns' => [
+            [
+                "data" => "DT_RowIndex",
+                "name" => "DT_RowIndex",
+                "orderable" => false,
+                "searchable" => false
+            ],
+            [
+                "data" => "unit_name",
+                "name" => "unit_name",
+            ],
+            [
+                "data" => "description",
+                "name" => "description",
+            ],
+            [
+                "data" => "action",
+                "name" => "action",
+            ],
+        ]
+    ])
+    @endcomponent
 
-<script src="{{ asset('assets/js/custom/filter-handler.js') }}"></script>
-<script>
-    $(document).ready(function () {
-        new FilterHandler({
-            filters: [
-                { name: 'unit_code', label: 'Unit Code' },
-                { name: 'unit_name', label: 'Unit Name' }
-            ]
+    <script src="{{ asset('assets/js/custom/filter-handler.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            new FilterHandler({
+                filters: [
+                    { name: 'unit_code', label: 'Unit Code' },
+                    { name: 'unit_name', label: 'Unit Name' }
+                ]
+            });
+
+            ['unit_code', 'unit_name'].forEach(item => {
+                let placeholder = item == 'unit_code' ? 'Select Unit Code' : 'Select Unit Name';
+
+                generateAjaxSelect2(
+                    item,
+                    "{{ route('api.finance.master-data.unit.filter-data') }}",
+                    placeholder,
+                    function (result) {
+                        let pagingData = result.data;
+                        let hasMorePages = pagingData.next_page_url !== null;
+
+                        if (item == 'unit_code') {
+                            return {
+                                results: pagingData.data.map(item => ({
+                                    id: item.unit_id,
+                                    text: item.unit_name
+                                })),
+                                pagination: {
+                                    more: hasMorePages
+                                }
+                            };
+                        } else {
+                            return {
+                                results: pagingData.data.map(item => ({
+                                    id: item.unit_id,
+                                    text: item.description
+                                })),
+                                pagination: {
+                                    more: hasMorePages
+                                }
+                            };
+                        }
+                    }
+                );
+            })
         });
-    });
-</script>
+    </script>
 @endpush

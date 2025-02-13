@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\Finance\MasterData\ApiCountryController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiCustomerController;
 use App\Http\Controllers\Api\Finance\GeneralWise\ApiGeneralWiseController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiServiceTypeController;
+use App\Http\Controllers\Api\Finance\MasterData\ApiUnitController;
 
 Route::get('/', fn () => 'Api @v1')->name('index');
 
@@ -71,6 +72,17 @@ Route::group([
             // Filters
             Route::get('/country-filter', [ApiCountryController::class, 'getCountryForFilters'])->name('filter-data');
         });
+
+        // Unit Routes
+        Route::group([
+            'prefix' => 'unit',
+            'as' => 'unit.',
+        ], function () {
+
+            // Filters
+            Route::get('/unit-filter', [ApiUnitController::class, 'getUnitForFilters'])->name('filter-data');
+        });
+
 
         // Charge Route
         Route::group([

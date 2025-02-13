@@ -31,9 +31,7 @@ final class UnitController extends Controller
      */
     public function index(): View
     {
-        $units = $this->unitService->getUnitCollections();
-
-        return view('pages.finance.master-data.unit.index', compact('units'));
+        return view('pages.finance.master-data.unit.index');
     }
 
     /**

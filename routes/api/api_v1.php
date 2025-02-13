@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\Finance\MasterData\ApiChargeController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiCountryController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiCustomerController;
 use App\Http\Controllers\Api\Finance\GeneralWise\ApiGeneralWiseController;
+use App\Http\Controllers\Api\Finance\MasterData\ApiPaymentTermController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiServiceTypeController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiUnitController;
 
@@ -81,6 +82,16 @@ Route::group([
 
             // Filters
             Route::get('/unit-filter', [ApiUnitController::class, 'getUnitForFilters'])->name('filter-data');
+        });
+
+        // Payment Terms Routes
+        Route::group([
+            'prefix' => 'payment-term',
+            'as' => 'payment-term.',
+        ], function () {
+
+            // Filters
+            Route::get('/payment-term-filter', [ApiPaymentTermController::class, 'getPaymentTermForFilters'])->name('filter-data');
         });
 
 

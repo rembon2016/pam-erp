@@ -38,11 +38,7 @@
 
     <x:layout.modal.filter-modal>
         <div class="col-12">
-            <x:form.select label="Payment Term Name" name="payment_terms" defaultOption="Select Payment Terms" :model="request()">
-                @foreach ($payment_terms as $item)
-                    <option value="{{ $item }}" @selected($item == request()->query('payment_terms'))>{{ $item }}</option>
-                @endforeach
-            </x:form.select>
+            <x:form.select2 label="Payment Term Name" name="payment_terms" placeholder="Select Payment Terms" :model="request()" />
         </div>
     </x:layout.modal.filter-modal>
 @endsection
@@ -79,6 +75,26 @@
                 { name: 'payment_terms', label: 'Payment Term Name' }
             ]
         });
+
+        generateAjaxSelect2(
+            'payment_terms',
+            "{{ route('api.finance.master-data.payment-term.filter-data') }}",
+            'Select Payment Terms',
+            function (result) {
+                let pagingData = result.data;
+                let hasMorePages = pagingData.next_page_url !== null;
+
+                return {
+                    results: pagingData.data.map(item => ({
+                        id: item.payment_terms,
+                        text: item.payment_terms
+                    })),
+                    pagination: {
+                        more: hasMorePages
+                    }
+                };
+            }
+        );
     });
 </script>
 @endpush

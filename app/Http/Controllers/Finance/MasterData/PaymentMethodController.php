@@ -30,13 +30,7 @@ final class PaymentMethodController extends Controller
      */
     public function index(): View
     {
-        $payment_terms = $this->paymentMethodService
-            ->getPaymentMethods()
-            ->data
-            ->paymentMethods
-            ->pluck('payment_terms');
-
-        return view('pages.finance.master-data.payment-method.index', compact('payment_terms'));
+        return view('pages.finance.master-data.payment-method.index');
     }
 
     /**

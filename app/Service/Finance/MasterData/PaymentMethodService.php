@@ -19,17 +19,19 @@ final class PaymentMethodService
         })->orderBy('payment_terms', 'DESC');
 
         $totalRecords = PaymentMethod::count();
-        $filteredRecords = $paymentMethods->count();
+
+        $paymentMethodCollections = $paymentMethods->get();
+
+        $filteredRecords = count($paymentMethodCollections);
 
         return ObjectResponse::success(
             message: __('crud.fetched', ['name' => 'Payment Method']),
             statusCode: Response::HTTP_OK,
             data: (object) [
-                'paymentMethods' => $paymentMethods->get(),
+                'paymentMethods' => $paymentMethodCollections,
                 'paymentMethodDatatables' => $paymentMethods->skip(request()->get('start', 0))
                     ->take(request()->get('length', 10))
-                    ->orderBy('created_at', 'DESC')
-                    ->get(),
+                    ->orderBy('created_at', 'DESC'),
                 'totalRecords' => $totalRecords,
                 'filteredRecords' => $filteredRecords
             ]

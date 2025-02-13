@@ -49,13 +49,16 @@ final class CustomerService
             ->orderBy('customer_name', 'asc');
 
         $totalRecords = Customer::count();
-        $filteredRecords = $customer->count();
+
+        $customerCollections = $customer->get();
+
+        $filteredRecords = count($customerCollections);
 
         return ObjectResponse::success(
             message: __('crud.fetched', ['name' => 'Customer']),
             statusCode: Response::HTTP_OK,
             data: (object) [
-                'customers' => $customer->get(),
+                'customers' => $customerCollections,
                 'customerDatatables' => $customer->skip(request()->get('start', 0))
                     ->take(request()->get('length', 10))
                     ->orderBy('created_at', 'DESC')

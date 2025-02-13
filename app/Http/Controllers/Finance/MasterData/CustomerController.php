@@ -48,38 +48,38 @@ final class CustomerController extends Controller
     public function list()
     {
         $customerResponse = $this->customerService->getCustomers(request()->query());
+        return DataTables::of($customerResponse->data->customerDatatables)
+            ->addIndexColumn()
+            ->with([
+                'draw' => request()->query('draw'),
+                'recordsTotal' => $customerResponse->data->totalRecords,
+                'recordsFiltered' => $customerResponse->data->filteredRecords,
+            ])
+            ->addColumn('customer_type', function ($item) {
+
+                $html = '<ul class="d-flex flex-column" style="list-style-type:none; margin:0;padding:0; row-gap: 5px;">';
+
+                foreach ($item->customerTypes as $customerType) {
+                    $customerTypeName = empty($customerType) ? 'N/A' : e($customerType->name);
+                    $html .= '<li><span class="badge badge-soft-success">'.$customerTypeName.'</span></li>';
+                }
+
+                $html .= '</ul>';
+
+                return $html;
+            })
+            ->addColumn('action', function ($item) {
+                return Utility::generateTableActions([
+                    'edit' => route('finance.master-data.customer.edit', $item->id),
+                    'delete' => route('finance.master-data.customer.destroy', $item->id),
+                ]);
+            })
+            ->rawColumns(['customer_type', 'action'])
+            ->setTotalRecords($customerResponse->data->totalRecords)
+            ->setFilteredRecords($customerResponse->data->filteredRecords)
+            ->skipPaging()
+            ->make(true);
         if (request()->ajax()) {
-            return DataTables::of($customerResponse->data->customerDatatables)
-                ->addIndexColumn()
-                ->with([
-                    'draw' => request()->query('draw'),
-                    'recordsTotal' => $customerResponse->data->totalRecords,
-                    'recordsFiltered' => $customerResponse->data->filteredRecords,
-                ])
-                ->addColumn('customer_type', function ($item) {
-
-                    $html = '<ul class="d-flex flex-column" style="list-style-type:none; margin:0;padding:0; row-gap: 5px;">';
-
-                    foreach ($item->customerTypes as $customerType) {
-                        $customerTypeName = empty($customerType) ? 'N/A' : e($customerType->name);
-                        $html .= '<li><span class="badge badge-soft-success">'.$customerTypeName.'</span></li>';
-                    }
-
-                    $html .= '</ul>';
-
-                    return $html;
-                })
-                ->addColumn('action', function ($item) {
-                    return Utility::generateTableActions([
-                        'edit' => route('finance.master-data.customer.edit', $item->id),
-                        'delete' => route('finance.master-data.customer.destroy', $item->id),
-                    ]);
-                })
-                ->rawColumns(['customer_type', 'action'])
-                ->setTotalRecords($customerResponse->data->totalRecords)
-                ->setFilteredRecords($customerResponse->data->filteredRecords)
-                ->skipPaging()
-                ->make(true);
         }
 
         return ResponseJson::error(

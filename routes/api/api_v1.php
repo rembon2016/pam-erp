@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\Finance\MasterData\ApiChargeController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiCountryController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiCustomerController;
 use App\Http\Controllers\Api\Finance\GeneralWise\ApiGeneralWiseController;
+use App\Http\Controllers\Api\Finance\MasterData\ApiServiceTypeController;
 
 Route::get('/', fn () => 'Api @v1')->name('index');
 
@@ -45,6 +46,17 @@ Route::group([
         ], function () {
             Route::get('/', [ApiPortController::class, 'list'])->name('list');
             Route::get('/{column}/get', [ApiPortController::class, 'getPortFilterData'])->name('data_filter');
+        });
+
+        // Service Type Route
+        Route::group([
+            'prefix' => 'service-type',
+            'as' => 'service-type.',
+        ], function () {
+
+            // Filters
+            Route::get('service-type-filter', [ApiServiceTypeController::class, 'getServiceTypeForFilters'])->name('filter-data');
+
         });
 
         // Port Route

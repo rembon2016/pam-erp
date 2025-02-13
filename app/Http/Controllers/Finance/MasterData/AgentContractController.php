@@ -55,9 +55,7 @@ final class AgentContractController extends Controller
      */
     public function index(): View
     {
-        $services = $this->serviceTypeService->getServiceTypes()->data->serviceTypes;
-
-        return view('pages.finance.master-data.agent-contract.index', compact('services'));
+        return view('pages.finance.master-data.agent-contract.index');
     }
 
     /**

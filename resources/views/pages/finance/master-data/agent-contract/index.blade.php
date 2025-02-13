@@ -47,11 +47,7 @@
             <x:form.select label="Customer" name="customer" defaultOption="Select Contract No" :model="request()" />
         </div>
         <div class="col-12">
-            <x:form.select label="Service" name="service_type" defaultOption="Select Service" :model="request()">
-                @foreach ($services as $service)
-                    <option value="{{ $service->id }}" @selected(request()->query('service_type') == $service->id)>{{ $service->service_code }}</option>
-                @endforeach
-            </x:form.select>
+            <x:form.select label="Service" name="service_type" defaultOption="Select Service" :model="request()" />
         </div>
     </x:layout.modal.filter-modal>
 @endsection
@@ -116,19 +112,44 @@
         });
 
         // Existing select2 initialization
-        generateAjaxSelect2(
-            'customer',
-            "{{ route('api.finance.master-data.customer.list') }}",
-            "Select Customer",
-            function (result) {
-                return {
-                    results: result.data.map(item => ({
-                        id: item.id,
-                        text: item.customer_name
-                    })),
-                };
-            }
-        );
+        ['customer', 'service_type'].forEach(item => {
+            let placeholder = item == 'customer' ? 'Select Customer' : 'Select Service Type';
+            let url = item == 'customer'
+                ? "{{ route('api.finance.master-data.customer.filter-data') }}"
+                : "{{ route('api.finance.master-data.service-type.filter-data') }}";
+
+            generateAjaxSelect2(
+                item,
+                url,
+                placeholder,
+                function (result) {
+                    let pagingData = result.data;
+                    let hasMorePages = pagingData.next_page_url !== null;
+
+                    if (item == 'customer') {
+                        return {
+                            results: pagingData.data.map(item => ({
+                                id: item.id,
+                                text: item.customer_name
+                            })),
+                            pagination: {
+                                more: hasMorePages
+                            }
+                        };
+                    } else {
+                        return {
+                            results: pagingData.data.map(item => ({
+                                id: item.id,
+                                text: item.service_code
+                            })),
+                            pagination: {
+                                more: hasMorePages
+                            }
+                        };
+                    }
+                }
+            );
+        })
     })
 </script>
 @endpush

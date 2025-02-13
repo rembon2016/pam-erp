@@ -18,17 +18,19 @@ final class DaybookService
         })->orderBy('code', 'ASC');
 
         $totalRecords = Daybook::count();
-        $filteredRecords = $daybooks->count();
+
+        $daybookCollections = $daybooks->get();
+
+        $filteredRecords = count($daybookCollections);
 
         return ObjectResponse::success(
             message: __('crud.fetched', ['name' => 'Daybook']),
             statusCode: Response::HTTP_OK,
             data: (object) [
-                'daybooks' => $daybooks->get(),
+                'daybooks' => $daybookCollections,
                 'daybookDatatables' => $daybooks->skip(request()->get('start', 0))
                     ->take(request()->get('length', 10))
-                    ->orderBy('created_at', 'DESC')
-                    ->get(),
+                    ->orderBy('created_at', 'DESC'),
                 'totalRecords' => $totalRecords,
                 'filteredRecords' => $filteredRecords
             ]

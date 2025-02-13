@@ -41,11 +41,7 @@
 
     <x:layout.modal.filter-modal>
         <div class="col-12">
-            <x:form.select label="Daybook Code" name="daybook_code" defaultOption="Select Daybook Code" :model="request()">
-                @foreach ($daybook_codes as $code)
-                    <option value="{{ $code }}" @selected($code == request()->query('daybook_code'))>{{ $code }}</option>
-                @endforeach
-            </x:form.select>
+            <x:form.select2 label="Daybook Code" name="daybook_code" placeholder="Select Daybook Code" :model="request()" />
         </div>
     </x:layout.modal.filter-modal>
 @endsection
@@ -90,6 +86,26 @@
                 { name: 'daybook_code', label: 'Daybook Code' }
             ]
         });
+
+        generateAjaxSelect2(
+            'daybook_code',
+            "{{ route('api.finance.master-data.daybook.filter-data') }}",
+            'Select Daybook Code',
+            function (result) {
+                let pagingData = result.data;
+                let hasMorePages = pagingData.next_page_url !== null;
+
+                return {
+                    results: pagingData.data.map(item => ({
+                        id: item.id,
+                        text: item.code + ' - ' + item.name
+                    })),
+                    pagination: {
+                        more: hasMorePages
+                    }
+                };
+            }
+        );
     });
 </script>
 @endpush

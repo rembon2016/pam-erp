@@ -35,9 +35,7 @@ final class CurrencyController extends Controller
      */
     public function index(): View
     {
-        $currencies = $this->currencyService->getCurrencies()->data->currencies;
-
-        return view('pages.finance.master-data.currency.index', compact('currencies'));
+        return view('pages.finance.master-data.currency.index');
     }
 
     /**

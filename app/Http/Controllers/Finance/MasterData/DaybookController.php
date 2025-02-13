@@ -30,13 +30,7 @@ final class DaybookController extends Controller
      */
     public function index(): View
     {
-        $daybook_codes = $this->daybookService
-            ->getDaybooks()
-            ->data
-            ->daybooks
-            ->pluck('code');
-
-        return view('pages.finance.master-data.daybook.index', compact('daybook_codes'));
+        return view('pages.finance.master-data.daybook.index');
     }
 
     /**

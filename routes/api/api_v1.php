@@ -15,6 +15,8 @@ use App\Http\Controllers\Api\Finance\MasterData\ApiChargeController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiCountryController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiCustomerController;
 use App\Http\Controllers\Api\Finance\GeneralWise\ApiGeneralWiseController;
+use App\Http\Controllers\Api\Finance\MasterData\ApiCurrencyController;
+use App\Http\Controllers\Api\Finance\MasterData\ApiDaybookController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiPaymentTermController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiServiceTypeController;
 use App\Http\Controllers\Api\Finance\MasterData\ApiUnitController;
@@ -84,6 +86,16 @@ Route::group([
             Route::get('/unit-filter', [ApiUnitController::class, 'getUnitForFilters'])->name('filter-data');
         });
 
+        // Currency Routes
+        Route::group([
+            'prefix' => 'currency',
+            'as' => 'currency.',
+        ], function () {
+
+            // Filters
+            Route::get('/currency-filter', [ApiCurrencyController::class, 'getCurrencyForFilters'])->name('filter-data');
+        });
+
         // Payment Terms Routes
         Route::group([
             'prefix' => 'payment-term',
@@ -102,6 +114,19 @@ Route::group([
         ], function () {
             Route::get('/', [ApiChargeController::class, 'list'])->name('list');
             Route::get('/{id}', [ApiChargeController::class, 'show'])->name('show');
+
+            // Filters
+            Route::get('/charge-filter', [ApiChargeController::class, 'getChargeForFilters'])->name('filter-data');
+        });
+
+        // Daybook Routes
+        Route::group([
+            'prefix' => 'daybook',
+            'as' => 'daybook.',
+        ], function () {
+
+            // Filters
+            Route::get('/daybook-filter', [ApiDaybookController::class, 'getDaybookForFilters'])->name('filter-data');
         });
     });
 

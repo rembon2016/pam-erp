@@ -40,16 +40,8 @@
 
     <x:layout.modal.filter-modal>
         <div class="col-12">
-            <x:form.select label="Currency Code" name="currency_code" defaultOption="Select Currency Code" :model="request()">
-                @foreach ($currencies->pluck('currency_code') as $code)
-                    <option value="{{ $code }}" @selected($code == request()->query('currency_code'))>{{ $code }}</option>
-                @endforeach
-            </x:form.select>
-            <x:form.select label="Currency Name" name="currency_name" defaultOption="Select Currency Name" :model="request()">
-                @foreach ($currencies->pluck('currency_name') as $name)
-                    <option value="{{ $name }}" @selected($name == request()->query('currency_name'))>{{ $name }}</option>
-                @endforeach
-            </x:form.select>
+            <x:form.select2 label="Currency Code" name="currency_code" placeholder="Select Currency Code" :model="request()" />
+            <x:form.select2 label="Currency Name" name="currency_name" placeholder="Select Currency Name" :model="request()" />
         </div>
     </x:layout.modal.filter-modal>
 @endsection
@@ -91,6 +83,42 @@
                 { name: 'currency_name', label: 'Currency Name' }
             ]
         });
+
+        // Select 2 Data Binding
+        ['currency_code', 'currency_name'].forEach(item => {
+            let placeholder = item == 'currency_code' ? 'Select Currency Code' : 'Select Currency Name';
+            generateAjaxSelect2(
+                item,
+                "{{ route('api.finance.master-data.currency.filter-data') }}",
+                placeholder,
+                function (result) {
+                    let pagingData = result.data;
+                    let hasMorePages = pagingData.next_page_url !== null;
+
+                    if (item == 'currency_code') {
+                        return {
+                            results: pagingData.data.map(item => ({
+                                id: item.id,
+                                text: item.currency_code
+                            })),
+                            pagination: {
+                                more: hasMorePages
+                            }
+                        };
+                    } else {
+                        return {
+                            results: pagingData.data.map(item => ({
+                                id: item.id,
+                                text: item.currency_name
+                            })),
+                            pagination: {
+                                more: hasMorePages
+                            }
+                        };
+                    }
+                }
+            );
+        })
     });
 </script>
 @endpush

@@ -14,13 +14,21 @@ use Illuminate\Support\Str;
 
 final class ChartOfAccountService
 {
-    public function getChartOfAccounts(): Collection
+    public function getChartOfAccounts(bool $withPaging = false): Collection
     {
-        $data = ChartOfAccount::select([
-            'id',
-            'account_number as code',
-            'account_name',
-        ])->orderBy('account_number', 'asc')->get();
+        if ($withPaging) {
+            $data = ChartOfAccount::select([
+                'id',
+                'account_number as code',
+                'account_name',
+            ])->orderBy('account_number', 'asc')->paginate(10);
+        } else {
+            $data = ChartOfAccount::select([
+                'id',
+                'account_number as code',
+                'account_name',
+            ])->orderBy('account_number', 'asc')->get();
+        }
 
         return $data;
     }

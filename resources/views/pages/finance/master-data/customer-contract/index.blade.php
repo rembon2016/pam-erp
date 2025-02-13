@@ -100,14 +100,19 @@
         // Existing select2 initialization
         generateAjaxSelect2(
             'customer',
-            "{{ route('api.finance.master-data.customer.list') }}",
+            "{{ route('api.finance.master-data.customer.filter-data') }}",
             "Select Customer",
             function (result) {
+                let pagingData = result.data;
+                let hasMorePages = pagingData.next_page_url !== null;
                 return {
-                    results: result.data.map(item => ({
+                    results: pagingData.data.map(item => ({
                         id: item.id,
                         text: item.customer_name
                     })),
+                    pagination: {
+                        more: hasMorePages
+                    }
                 };
             }
         );

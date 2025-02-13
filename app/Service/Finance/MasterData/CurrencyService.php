@@ -26,13 +26,16 @@ final class CurrencyService
         })->orderBy('currency_code', 'ASC');
 
         $totalRecords = Currency::count();
-        $filteredRecords = $currencies->count();
+
+        $currencyCollections = $currencies->get();
+
+        $filteredRecords = count($currencyCollections);
 
         return ObjectResponse::success(
             message: __('crud.fetched', ['name' => 'Currency']),
             statusCode: Response::HTTP_OK,
             data: (object) [
-                'currencies' => $currencies->get(),
+                'currencies' => $currencyCollections,
                 'currencyDatatables' => $currencies->skip(request()->get('start', 0))
                     ->take(request()->get('length', 10))
                     ->orderBy('created_at', 'DESC')

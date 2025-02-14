@@ -26,6 +26,7 @@ use Illuminate\Http\Response;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Cache;
 
 final class AirImportController extends Controller
 {
@@ -146,13 +147,19 @@ final class AirImportController extends Controller
     {
         $joborder = JobOrder::with(['detail', 'loading', 'doc'])->findOrFail($id);
 
-        $vendor_all = $this->dataService->getCustomer('All');
-        $vendor_truck = $this->dataService->getCustomer('Trucking Company');
-        $vendor_port = $this->dataService->getCustomer('Dubai Port');
-        $vendor_air = $this->dataService->getCustomer('Carrier Agent');
-        $vendor_line = $this->dataService->getCustomer('Shipping Line');
+        $vendors = $this->dataService->getCustomers();
 
-        $charge = Charge::whereNull('deleted_at')->get();
+        $vendor_all   = $vendors['vendor_all'];
+        $vendor_truck = $vendors['vendor_truck'];
+        $vendor_port  = $vendors['vendor_port'];
+        $vendor_air   = $vendors['vendor_air'];
+        $vendor_line  = $vendors['vendor_line'];
+
+        $charge = Cache::remember('charges', now()->addMinutes(5), function () {
+            return Charge::select('id', 'charge_code', 'charge_name')
+                ->whereNull('deleted_at')
+                ->get();
+        });
         $currency = Currency::whereNull('deleted_at')->get();
 
         $loadingplan = LoadingPlan::where('plan_id', $joborder->loading_plan_id)->get();

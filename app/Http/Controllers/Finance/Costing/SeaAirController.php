@@ -30,6 +30,7 @@ use Illuminate\Http\Response;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Cache;
 
 final class SeaAirController extends Controller
 {
@@ -131,14 +132,25 @@ final class SeaAirController extends Controller
 
         $loading = LoadingReportDetail::with('bl')->where('status', '!=', 3)->where('bl_id', $joborder->loading_plan_id)->get();
 
-        $vendor_all = $this->dataService->getCustomer('All');
-        $vendor_truck = $this->dataService->getCustomer('Trucking Company');
-        $vendor_port = $this->dataService->getCustomer('Dubai Port');
-        $vendor_air = $this->dataService->getCustomer('Carrier Agent');
-        $vendor_line = $this->dataService->getCustomer('Shipping Line');
+        $vendors = $this->dataService->getCustomers();
 
-        $charge = Charge::whereNull('deleted_at')->get();
-        $currency = Currency::whereNull('deleted_at')->get();
+
+        [
+            'vendor_all'   => $vendor_all,
+            'vendor_truck' => $vendor_truck,
+            'vendor_port'  => $vendor_port,
+            'vendor_air'   => $vendor_air,
+            'vendor_line'  => $vendor_line
+        ] = $vendors;
+
+
+
+        $charge = Cache::remember('charges', now()->addMinutes(5), function () {
+            return Charge::select('id', 'charge_code', 'charge_name')
+                ->whereNull('deleted_at')
+                ->get();
+        });
+        $currency = Currency::select('id','currency_code')->whereNull('deleted_at')->get();
         $bl = LoadingReportBl::with('shipping')->where('loading_id', $joborder->loading_plan_id)->where('status', '!=', 3)->get();
 
         $ship = ShippingInstruction::where('status', '!=', 3)

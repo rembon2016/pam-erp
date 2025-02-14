@@ -26,6 +26,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Service\Finance\Costing\CostingService;
 use App\Service\Finance\Costing\DataService;
 use App\Service\Finance\Costing\Dxb\CalculationService;
+use Illuminate\Support\Facades\Cache;
 
 final class TruckingController extends Controller
 {
@@ -137,13 +138,19 @@ final class TruckingController extends Controller
     public function cost($id) {
         $joborder = JobOrder::with(['detail', 'loading', 'doc','detail.shipping'])->findOrFail($id);
 
-        $vendor_all = $this->dataService->getCustomer('All');
-        $vendor_truck = $this->dataService->getCustomer('Trucking Company');
-        $vendor_port = $this->dataService->getCustomer('Dubai Port');
-        $vendor_air = $this->dataService->getCustomer('Carrier Agent');
-        $vendor_line = $this->dataService->getCustomer('Shipping Line');
+        $vendors = $this->dataService->getCustomers();
 
-        $charge = Charge::whereNull('deleted_at')->get();
+        $vendor_all   = $vendors['vendor_all'];
+        $vendor_truck = $vendors['vendor_truck'];
+        $vendor_port  = $vendors['vendor_port'];
+        $vendor_air   = $vendors['vendor_air'];
+        $vendor_line  = $vendors['vendor_line'];
+
+        $charge = Cache::remember('charges', now()->addMinutes(5), function () {
+            return Charge::select('id', 'charge_code', 'charge_name')
+                ->whereNull('deleted_at')
+                ->get();
+        });
         $currency = Currency::whereNull('deleted_at')->get();
 
         $cost = Costing::with(['truck', 'port', 'agent', 'special', 'head', 'head.detail'])->where('job_order_id', $joborder->job_order_id);

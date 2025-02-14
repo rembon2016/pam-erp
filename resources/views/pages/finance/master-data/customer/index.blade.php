@@ -43,8 +43,13 @@
 
     <x:layout.modal.filter-modal>
         <div class="col-12">
+            <input type="hidden" id="customer_id" name="customer_id">
             <x:form.select2 label="Customer Name" name="customer_name" placeholder="Select Customer Name" :model="request()" />
-            <x:form.select2 label="Customer Type" name="customer_type_name[]" id="customer_type_name" placeholder="Select Customer Type" :model="request()" multiple="true" />
+            <x:form.select2 label="Customer Type" name="customer_type[]" id="customer_type" placeholder="Select Customer Type" :model="request()" multiple="true">
+                @foreach ($customerTypes as $customerType)
+                    <option value="{{ $customerType }}">{{ $customerType }}</option>
+                @endforeach
+            </x:form.select2>
         </div>
     </x:layout.modal.filter-modal>
 @endsection
@@ -88,7 +93,7 @@
         new FilterHandler({
             filters: [
                 { name: 'customer_name', label: 'Customer Name' },
-                { name: 'customer_type_name[]', label: 'Customer Type' }
+                { name: 'customer_type[]', label: 'Customer Type' }
             ]
         });
 
@@ -100,39 +105,32 @@
         }
 
         // Select 2 Data Binding
-        ['customer_name', 'customer_type_name'].forEach(item => {
-            let placeholder = item == 'customer_name' ? 'Select Customer Name' : 'Select Customer Type Name';
-            generateAjaxSelect2(
-                item,
-                "{{ route('api.finance.master-data.customer.filter-data') }}",
-                placeholder,
-                function (result) {
-                    let pagingData = result.data;
-                    let hasMorePages = pagingData.next_page_url !== null;
+        generateAjaxSelect2(
+            'customer_name',
+            "{{ route('api.finance.master-data.customer.filter-data') }}",
+            'Select Customer Name',
+            function (result) {
+                let pagingData = result.data;
+                let hasMorePages = pagingData.next_page_url !== null;
 
-                    if (item == 'customer_name') {
-                        return {
-                            results: pagingData.data.map(item => ({
-                                id: btoa(item.id + '|' + item.customer_name),
-                                text: item.customer_name
-                            })),
-                            pagination: {
-                                more: hasMorePages
-                            }
-                        };
-                    } else {
-                        return {
-                            results: pagingData.data.map(item => ({
-                                id: btoa(item.id + '|' + item.customer_code),
-                                text: item.customer_code
-                            })),
-                            pagination: {
-                                more: hasMorePages
-                            }
-                        };
-                    }
+                if (item == 'customer_name') {
+                    return {
+                        results: pagingData.data.map(item => ({
+                            id: item.customer_name,
+                            text: item.customer_name,
+                            customer_id: item.id,
+                        })),
+                        pagination: {
+                            more: hasMorePages
+                        }
+                    };
                 }
-            );
+            }
+        );
+
+        $('#customer_name').change(function () {
+            let customerId = $(this).select2('data')[0].customer_id;
+            $('#customer_id').val(customerId);
         })
     })
 </script>

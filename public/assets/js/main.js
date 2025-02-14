@@ -42,7 +42,6 @@ async function generateAjaxSelect2(id, url, placeholder, processFunction, select
 
     if (selectedValue.length > 1) {
         const option = new Option(selectedValue[1], selectedValue[0], true, true);
-        $(`#${id}`).append(option).trigger('change');
     } else {
         if (queryParamValue) {
             const option = new Option(queryParamValue, queryParamValue, true, true);

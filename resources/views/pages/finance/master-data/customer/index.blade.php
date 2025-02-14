@@ -16,6 +16,8 @@
                 exportCsvLink="{{ route('finance.master-data.customer.export.csv') }}"
                 exportPdfLink="{{ route('finance.master-data.customer.export.pdf') }}"
                 withFilter="true"
+                featureName="master_customer"
+                moduleName="finance"
             />
         </x:layout.card.header>
         <x:layout.card.body>

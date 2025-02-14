@@ -6,6 +6,8 @@
     'customLink' => $customLink ?? [],
     'withFilter' => $withFilter ?? false,
     'withSearch' => $withSearch ?? true,
+    'featureName' => $featureName ?? null,
+    'moduleName' => $moduleName ?? null,
 ])
 
 {{-- <div class="card-toolbar flex-row-fluid justify-content-start gap-2">
@@ -127,7 +129,10 @@
             @endif
 
 
-            @if (!empty($exportExcelLink) || !empty($exportCsvLink) || !empty($exportPdfLink))
+            @if (
+                (is_null($featureName) && (!empty($exportExcelLink) || !empty($exportCsvLink) || !empty($exportPdfLink))) ||
+                (!is_null($featureName) && !is_null($moduleName) && auth()->user()->can("{$moduleName}.export_{$featureName}") && (!empty($exportExcelLink) || !empty($exportCsvLink) || !empty($exportPdfLink)))
+            )
                 <li>
                     <div class="dropdown dropdown-action" data-bs-toggle="tooltip" data-bs-placement="bottom"
                         data-bs-original-title="Download">
@@ -198,7 +203,10 @@
                 </li>
             @endif
 
-            @if (!empty($createDataLink))
+            @if (
+                (is_null($featureName) && !empty($createDataLink)) ||
+                (!is_null($featureName) && !is_null($moduleName) && auth()->user()->can("{$moduleName}.add_{$featureName}") && !empty($createDataLink))
+            )
                 <li>
                     <a class="btn btn-primary" href="{{ $createDataLink }}">
                         <i class="fa fa-plus-circle me-2" aria-hidden="true"></i> Add

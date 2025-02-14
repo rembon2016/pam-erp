@@ -8,7 +8,10 @@
                     <x:layout.sidebar-v2.menu-item name="Dashboard" iconClass="fe fe-home" link="{{ route('dashboard') }}" :activeCondition="Route::is('dashboard')" />
 
                     <x:layout.sidebar-v2.dropdown-menu name="Master Data" iconClass="fe fe-database">
-                        <x:layout.sidebar-v2.menu-item name="Customer" link="{{ route('finance.master-data.customer.index') }}" :activeCondition="Route::is('finance.master-data.customer.*')" />
+                        @can('finance.show_master_customer')
+                            <x:layout.sidebar-v2.menu-item name="Customer" link="{{ route('finance.master-data.customer.index') }}" :activeCondition="Route::is('finance.master-data.customer.*')" />
+                        @endcan
+
                         <x:layout.sidebar-v2.menu-item name="Customer Contract" link="{{ route('finance.master-data.customer-contract.index') }}" :activeCondition="Route::is('finance.master-data.customer-contract.*')" />
                         <x:layout.sidebar-v2.menu-item name="Agent Contract" link="{{ route('finance.master-data.agent-contract.index') }}" :activeCondition="Route::is('finance.master-data.agent-contract.*')" />
                         <x:layout.sidebar-v2.menu-item name="Country" link="{{ route('finance.master-data.country.index') }}" :activeCondition="Route::is('finance.master-data.country.*')" />

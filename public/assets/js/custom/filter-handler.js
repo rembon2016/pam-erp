@@ -29,8 +29,52 @@ class FilterHandler {
         
         this.filters.forEach(filter => {
             const value = this.getUrlParameter(filter.name);
+            const isArray = Array.isArray(value);
+
             if (value) {
-                filterValues.push(`${filter.label} : <span class="fw-bold">${Array.isArray(value) ? value.join(', ') : value}</span>`);
+                try {
+                    const valuesToCheck = isArray ? value : [value];
+                    let isBase64 = true;
+
+                    for (const val of valuesToCheck) {
+                        if (!(val.length % 4 === 0 && /^[A-Za-z0-9+/]+={0,2}$/.test(val))) {
+                            isBase64 = false;
+                            break;
+                        }
+                        
+                        try {
+                            atob(val);
+                        } catch(e) {
+                            isBase64 = false;
+                            break;
+                        }
+                    }
+
+                    if(isBase64) {
+                        if (isArray) {
+                            let names = [];
+                            value.forEach(item => {
+                                const decodedValue = atob(item).split('|');
+                                names.push(decodedValue[decodedValue.length - 1]); 
+                            });
+            
+                            if (names.length > 0) {
+                                filterValues.push(`${filter.label} : <span class="fw-bold">${names.join(',')}</span>`);
+                            }
+                        } else if (value) {
+                            const decodedValue = atob(value).split('|');
+                            const name = decodedValue[decodedValue.length - 1]; 
+            
+                            if (name) {
+                                filterValues.push(`${filter.label} : <span class="fw-bold">${name}</span>`);
+                            }
+                        }
+                    } else {
+                        filterValues.push(`${filter.label} : <span class="fw-bold">${Array.isArray(value) ? value.join(', ') : value}</span>`);
+                    }
+                } catch (error) {
+                    console.error('Error processing values:', error);
+                }
             }
         });
 

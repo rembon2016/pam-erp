@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace App\Service\Finance\MasterData;
 
+use Illuminate\Support\Str;
+use Illuminate\Http\Response;
+use App\Functions\ResponseJson;
 use App\Functions\ObjectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Models\Finance\AccountGroup;
 use App\Models\Finance\ChartOfAccount;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Pipeline;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 final class ChartOfAccountService
 {
-    public function getChartOfAccounts(bool $withPaging = false): Collection
+    public function getChartOfAccounts(bool $withPaging = false): Collection|LengthAwarePaginator
     {
         if ($withPaging) {
             $data = ChartOfAccount::select([

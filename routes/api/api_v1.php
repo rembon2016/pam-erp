@@ -113,7 +113,7 @@ Route::group([
             'as' => 'charge.',
         ], function () {
             Route::get('/', [ApiChargeController::class, 'list'])->name('list');
-            Route::get('/{id}', [ApiChargeController::class, 'show'])->name('show');
+            Route::get('/{id}/show', [ApiChargeController::class, 'show'])->name('show');
 
             // Filters
             Route::get('/charge-filter', [ApiChargeController::class, 'getChargeForFilters'])->name('filter-data');

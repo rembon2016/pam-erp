@@ -37,8 +37,7 @@ final class ChargeController extends Controller
      */
     public function index(): View
     {
-        $accounts = $this->coaService->getChartOfAccounts();
-        return view('pages.finance.master-data.charge.index', compact('accounts'));
+        return view('pages.finance.master-data.charge.index');
     }
 
     /**

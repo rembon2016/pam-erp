@@ -155,6 +155,7 @@ $(document).ready(function () {
 
         if ($('.filter-modal').hasClass('open-filter') && !$(event.target).closest(".sidebar-layout-filter, .sidebar-closes, .btn-filters.popup-toggle").length) {
             $(".filter-modal").removeClass("open-filter");
+            $("body").removeClass("filter-opened");
         }
     });
 });

@@ -43,8 +43,23 @@ final class CustomerService
     public function getCustomers($filters = [])
     {
         $customer = Customer::query()
-            ->when(! empty($filters['customer_name']), fn ($query) => $query->where('customer_name', 'ilike', '%'.$filters['customer_name'].'%'))
-            ->when(! empty($filters['customer_type_name']), fn ($query) => $query->whereHas('customerTypes', fn ($q) => $q->whereIn('name', $filters['customer_type_name'])))
+            ->when(! empty($filters['customer_name']), function ($query) use ($filters) {
+                $customerUuid = explode('|', base64_decode($filters['customer_name']))[0];
+
+                return $query->where('id', $customerUuid);
+            })
+            ->when(! empty($filters['customer_type_name']), function ($query) use ($filters) {
+
+                $customerUuids = array_map(function ($encodes) {
+                    $customerUuid = explode('|', base64_decode($encodes));
+
+                    return $customerUuid[0];
+
+                }, $filters['customer_type_name']);
+
+                return $query->whereIn('id', $customerUuids);
+            })
+
             ->when(!empty($filters['is_exists_customer']) && $filters['is_exists_customer'] == 'true', fn ($query) => $query->whereNotNull('customer_code'))
             ->orderBy('customer_name', 'asc');
 

@@ -195,7 +195,7 @@ final class ShipmentController extends Controller
                 'data' => array_map(function ($item, $index) {
                     // Add DT_RowIndex to each item
                     $item['DT_RowIndex'] = $index + 1;
-                    $item['checkbox'] = '<input type="checkbox" class="row-checkbox" value="'.$item['job_id'].'" />';
+                    $item['checkbox'] = '<label class="custom_check"><input type="checkbox" class="row-checkbox" value="'.$item['job_id'].'"><span class="checkmark"></span></label>';
                     $item['action'] = '';
 
                     // Handle nested properties with null coalescing operator

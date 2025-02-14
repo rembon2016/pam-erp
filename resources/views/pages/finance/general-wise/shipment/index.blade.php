@@ -14,6 +14,13 @@
     <x:layout.card.wrapper>
         <x:layout.card.header>
             <x:layout.card.toolbar-shipment :type="$type" />
+            {{-- <x:layout.card.toolbar
+                createDataLink="{{ route('finance.master-data.agent-contract.create') }}"
+                exportExcelLink="{{ route('finance.master-data.agent-contract.export.excel') }}"
+                exportCsvLink="{{ route('finance.master-data.agent-contract.export.csv') }}"
+                exportPdfLink="{{ route('finance.master-data.agent-contract.export.pdf') }}"
+                withFilter="true"
+            /> --}}
             <div class="col-12">
                 <x-filter.filter-shipment :tableId="'shipment_table'" :type="$type" />
             </div>
@@ -22,7 +29,11 @@
             <x:layout.table.wrapper id="shipment_table">
                 <thead>
                     <x:layout.table.row>
-                        <th class="th-datatable-checkbox-all"><input type="checkbox" class="row-checkbox" id="select_all">
+                        <th class="th-datatable-checkbox-all">
+                            <label class="custom_check">
+                                <input type="checkbox" class="row-checkbox" id="select_all">
+                                <span class="checkmark"></span>
+                            </label>
                         </th>
 
                         @foreach(App\Service\Finance\GeneralWise\ShipmentColumnService::getColumns($type) as $column)
@@ -90,7 +101,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn cstm-f-color-magenta" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn cstm-f-color-blue" id="confirmDownload">Download</button>
+                    <button type="button" class="btn cstm-f-color-blue mx-3" id="confirmDownload">Download</button>
                 </div>
             </div>
         </div>
@@ -125,7 +136,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn cstm-f-color-magenta" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn cstm-f-color-blue" id="confirmExport">Download</button>
+                    <button type="button" class="btn cstm-f-color-blue mx-3" id="confirmExport">Download</button>
                 </div>
             </div>
         </div>
@@ -199,7 +210,7 @@
         });
 
             // Add "Rows per page" text to length element
-            $('#shipment_table_length label').prepend('Rows per page: ');
+            // $('#shipment_table_length label').prepend('Rows per page: ');
 
             // Modify DataTable wrapper styling
             $('#shipment_table_wrapper').find('.row:last').each(function() {

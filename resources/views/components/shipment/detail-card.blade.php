@@ -5,15 +5,15 @@
 
 <div class="card mb-5 mb-xl-10">
     <div class="card-header justify-content-end header-shipment-detail">
-        <div class="card-toolbar">
-            <a href="{{ url()->previous() }}" class="btn-close-shipment-detail">
+        <div class="card-toolbar d-flex justify-content-end">
+            <a href="{{ preg_replace('/\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/', '', url()->current()) }}" class="btn-close-shipment-detail">
                 Close <i class="fas fa-times text-white ms-2"></i>
             </a>
         </div>
     </div>
 
     <div class="my-card-padding">
-        <div class="bg-light-success p-5 mb-5">
+        <div class="bg-light-success p-2 mb-1">
             <div class="d-flex justify-content-between align-items-center w-100">
                 <div class="d-flex gap-3 flex-column p-4">
                     <div class="d-flex align-items-center gap-2">

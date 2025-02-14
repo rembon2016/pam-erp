@@ -167,7 +167,7 @@
 .button-export {
     border: none;
     font-size: 13px;
-    background-color: #21a366;
+    /* background-color: #21a366; */
     color: #ffffff;
     border-radius: 3px;
     transition: 0.7s;
@@ -182,12 +182,13 @@
 
 .button-export:hover {
     background-color: #33c481;
+    color: #ffffff !important;
 }
 
 .button-download-multiple-doc {
     border: none;
     font-size: 13px;
-    background-color: rgb(47, 80, 219);
+    /* background-color: rgb(47, 80, 219); */
     color: #ffffff;
     border-radius: 3px;
     transition: 0.7s;
@@ -201,6 +202,7 @@
 
 .button-download-multiple-doc:hover {
     background-color: rgb(29, 55, 165);
+    color: #ffffff !important;
 }
 
 .search-input {
@@ -219,7 +221,7 @@ table#shipment_table tr {
 
 table#shipment_table  td,  table#shipment_table th {
     padding: 8px !important;
-    font-size: .95rem;
+    font-size: 13px !important;
 }
 
 table#shipment_table thead th {
@@ -274,8 +276,8 @@ table#shipment_table .badge {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     padding: 4px 6px 5px !important;
     display: inline-block;
-    font-size: .88rem;
-    font-weight: 700;
+    font-size: 12px;
+    font-weight: 600;
     line-height: 1;
     text-align: center;
     white-space: nowrap;
@@ -310,8 +312,29 @@ table#shipment_table .btn-view-shipment:hover {
    border: none !important;
 }
 
+#shipment_table_filter {
+    display: none;
+}
+
+.shipment-filter-result .badge {
+    font-size: .8rem;
+}
+
+#rightSidebar h5{
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.th-datatable-checkbox-all .custom_check {
+    margin-left: 7px;
+}
+
 .th-datatable-checkbox-all {
     padding-left: 16px !important;
+}
+
+.th-datatable-checkbox-all {
+    text-align: center !important;
 }
 
 .td-ctd_number {
@@ -336,9 +359,9 @@ table#shipment_table .btn-view-shipment:hover {
     background-color: #BCFFCC !important;
 }
 
-.header-shipment-detail {
+/* .header-shipment-detail {
     margin-top: 40px;
-}
+} */
 
 .ctd-mini-info {
     font-size: 13px;

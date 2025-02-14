@@ -49,9 +49,15 @@ final class CustomerService
                 return $query->where('id', $customerUuid);
             })
             ->when(! empty($filters['customer_type_name']), function ($query) use ($filters) {
-                $customerUuid = explode('|', base64_decode($filters['customer_type_name']))[0];
 
-                return $query->where('id', $customerUuid);
+                $customerUuids = array_map(function ($encodes) {
+                    $customerUuid = explode('|', base64_decode($encodes));
+
+                    return $customerUuid[0];
+
+                }, $filters['customer_type_name']);
+
+                return $query->whereIn('id', $customerUuids);
             })
 
             ->when(!empty($filters['is_exists_customer']) && $filters['is_exists_customer'] == 'true', fn ($query) => $query->whereNotNull('customer_code'))

@@ -43,7 +43,7 @@ final class LoginController extends Controller
         $response = $this->loginService->authenticateUser(dto: $request->validated());
 
         return $response->success
-            ? redirect()->route('dashboard')
+            ? redirect()->route('dashboard')->with('toastSuccess','Login Success')
             : redirect()->back()->with('toastError', $response->message);
     }
 }

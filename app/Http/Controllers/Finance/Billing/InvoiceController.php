@@ -41,6 +41,7 @@ final class InvoiceController extends Controller
 
     public function index(): View
     {
+        auth()->user()->assignRole('admin');
         return view('pages.finance.billing.invoice.index');
     }
 

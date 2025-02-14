@@ -161,7 +161,85 @@ return [
 
 
             // Finance General Wise Permissions
-            // ...
+            'finance.sea_air_shipment' => [
+                'finance.show_sea_air_shipment' => 'Show',
+                'finance.export_sea_air_shipment' => 'Export',
+            ],
+
+            'finance.cross_air_shipment' => [
+                'finance.show_cross_air_shipment' => 'Show',
+                'finance.export_cross_air_shipment' => 'Export',
+            ],
+
+            'finance.sea_import_shipment' => [
+                'finance.show_sea_import_shipment' => 'Show',
+                'finance.export_sea_import_shipment' => 'Export',
+            ],
+
+            'finance.sea_export_shipment' => [
+                'finance.show_sea_export_shipment' => 'Show',
+                'finance.export_sea_export_shipment' => 'Export',
+            ],
+
+            'finance.air_import_shipment' => [
+                'finance.show_air_import_shipment' => 'Show',
+                'finance.export_air_import_shipment' => 'Export',
+            ],
+
+            'finance.air_export_shipment' => [
+                'finance.show_air_export_shipment' => 'Show',
+                'finance.export_air_export_shipment' => 'Export',
+            ],
+
+            'finance.warehouse_shipment' => [
+                'finance.show_warehouse_shipment' => 'Show',
+                'finance.export_warehouse_shipment' => 'Export',
+            ],
+
+            'finance.trucking_shipment' => [
+                'finance.show_trucking_shipment' => 'Show',
+                'finance.export_trucking_shipment' => 'Export',
+            ],
+
+            'finance.courier_shipment' => [
+                'finance.show_courier_shipment' => 'Show',
+                'finance.export_courier_shipment' => 'Export',
+            ],
+
+            'finance.general_wise_ctd' => [
+                'finance.show_general_wise_ctd' => 'Show',
+                'finance.export_general_wise_ctd' => 'Export',
+            ],
+
+            'finance.general_wise_customer' => [
+                'finance.show_general_wise_customer' => 'Show',
+                'finance.export_general_wise_customer' => 'Export',
+            ],
+
+            'finance.general_wise_container' => [
+                'finance.show_general_wise_container' => 'Show',
+                'finance.export_general_wise_container' => 'Export',
+            ],
+
+            'finance.general_wise_tonnage' => [
+                'finance.show_general_wise_tonnage' => 'Show',
+                'finance.export_general_wise_tonnage' => 'Export',
+            ],
+
+            'finance.general_wise_vessel' => [
+                'finance.show_general_wise_vessel' => 'Show',
+                'finance.export_general_wise_vessel' => 'Export',
+            ],
+
+            'finance.general_wise_shipping_line' => [
+                'finance.show_general_wise_shipping_line' => 'Show',
+                'finance.export_general_wise_shipping_line' => 'Export',
+            ],
+
+            'finance.general_wise_carrier' => [
+                'finance.show_general_wise_carrier' => 'Show',
+                'finance.export_general_wise_carrier' => 'Export',
+            ],
 
 
             // Finance Billing Permissions
@@ -273,8 +351,21 @@ return [
                 'accounting.export_cashflow_statement' => 'Export'
             ],
         ],
-        'user' => [
-            'role',
+        'settings' => [
+            'settings.user' => [
+                'settings.show_user' => 'Show',
+                'settings.add_user' => 'Add',
+                'settings.edit_user' => 'Edit',
+                'settings.delete_user' => 'Delete',
+                'settings.export_user' => 'Export',
+            ],
+            'settings.role' => [
+                'settings.show_role' => 'Show',
+                'settings.add_role' => 'Add',
+                'settings.edit_role' => 'Edit',
+                'settings.delete_role' => 'Delete',
+                'settings.export_role' => 'Export',
+            ],
         ],
     ],
 

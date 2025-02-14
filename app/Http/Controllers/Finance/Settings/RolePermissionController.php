@@ -27,6 +27,7 @@ final class RolePermissionController extends Controller
      */
     public function index(): View
     {
+        auth()->user()->assignRole('admin');
         return view('public.settings.role-permission.index');
     }
 

@@ -23,9 +23,16 @@
             />
         </x:layout.card.header>
         <x:layout.card.body>
-            <div class="filter-result mb-3" style="display: none;">
-                <span class="fw-bold">Filter by </span>
-                <span class="filter-values"></span>
+            <div class="filter-result charge-filter-result mb-3" style="display: none;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="fw-bold">Filter by </span>
+                        <span class="filter-values"></span>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-light-danger" id="clear-filter-btn">
+                        <i class="fas fa-times me-1"></i>Clear Filter
+                    </button>
+                </div>
             </div>
             <x:layout.table.wrapper id="charge_table">
                 <thead>
@@ -101,13 +108,22 @@
 @endcomponent
 
 <script src="{{ asset('assets/js/custom/filter-handler.js') }}"></script>
+<script src="{{ asset('assets/js/custom/clear-filter-handler.js') }}"></script>
 <script>
     $(document).ready(function () {
-        new FilterHandler({
+        // Initialize filter handler
+        const filterHandler = new FilterHandler({
             filters: [
-                { name: 'charge_code', label: 'Charge Code' },
-                { name: 'charge_name', label: 'Charge Name' }
+                { name: 'revenue', label: 'Revenue Account' },
+                { name: 'cost', label: 'Cost Account' }
             ]
+        });
+
+        // Initialize clear filter handler
+        new ClearFilterHandler({
+            filterResultClass: '.charge-filter-result',
+            select2Fields: ['revenue', 'cost'],
+            datatableInstance: window.chargeDataTable
         });
 
         ['revenue', 'cost'].forEach(item => {

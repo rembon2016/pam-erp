@@ -18,9 +18,16 @@
             />
         </x:layout.card.header>
         <x:layout.card.body>
-            <div class="filter-result mb-3" style="display: none;">
-                <span class="fw-bold">Filter by </span>
-                <span class="filter-values"></span>
+            <div class="filter-result agent-contract-filter-result mb-3" style="display: none;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="fw-bold">Filter by </span>
+                        <span class="filter-values"></span>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-light-danger" id="clear-filter-btn">
+                        <i class="fas fa-times me-1"></i>Clear Filter
+                    </button>
+                </div>
             </div>
             <x:layout.table.wrapper id="agent_contract_table">
                 <thead>
@@ -101,14 +108,22 @@
 @endcomponent
 
 <script src="{{ asset('assets/js/custom/filter-handler.js') }}"></script>
+<script src="{{ asset('assets/js/custom/clear-filter-handler.js') }}"></script>
 <script>
     $(document).ready(function () {
         // Initialize filter handler
-        new FilterHandler({
+        const filterHandler = new FilterHandler({
             filters: [
                 { name: 'customer', label: 'Customer' },
-                { name: 'service_type', label: 'Service' },
+                { name: 'service_type', label: 'Service' }
             ]
+        });
+
+        // Initialize clear filter handler
+        new ClearFilterHandler({
+            filterResultClass: '.agent-contract-filter-result',
+            select2Fields: ['customer', 'service_type'],
+            datatableInstance: window.agentContractDataTable
         });
 
         // Existing select2 initialization

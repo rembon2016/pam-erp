@@ -18,9 +18,16 @@
             />
         </x:layout.card.header>
         <x:layout.card.body>
-            <div class="filter-result mb-3" style="display: none;">
-                <span class="fw-bold">Filter by </span>
-                <span class="filter-values"></span>
+            <div class="filter-result unit-filter-result mb-3" style="display: none;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="fw-bold">Filter by </span>
+                        <span class="filter-values"></span>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-light-danger" id="clear-filter-btn">
+                        <i class="fas fa-times me-1"></i>Clear Filter
+                    </button>
+                </div>
             </div>
             <x:layout.table.wrapper id="unit_table">
                 <thead>
@@ -74,13 +81,22 @@
     @endcomponent
 
     <script src="{{ asset('assets/js/custom/filter-handler.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/clear-filter-handler.js') }}"></script>
     <script>
         $(document).ready(function () {
-            new FilterHandler({
+            // Initialize filter handler
+            const filterHandler = new FilterHandler({
                 filters: [
                     { name: 'unit_code', label: 'Unit Code' },
                     { name: 'unit_name', label: 'Unit Name' }
                 ]
+            });
+
+            // Initialize clear filter handler
+            new ClearFilterHandler({
+                filterResultClass: '.unit-filter-result',
+                select2Fields: ['unit_code', 'unit_name'],
+                datatableInstance: window.unitDataTable
             });
 
             ['unit_code', 'unit_name'].forEach(item => {

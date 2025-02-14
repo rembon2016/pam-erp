@@ -114,3 +114,30 @@
     visibility: visible;
     opacity: 1;
 }
+
+/* Filter Result Styling */
+.filter-result {
+    margin-bottom: 1rem;
+}
+
+.filter-result .badge {
+    background-color: #f8f9fa;
+    color: #343a40;
+    margin-right: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-weight: 500;
+    border-radius: 4px;
+}
+
+/* Clear Filter Button Styling */
+.btn-light-danger {
+    color: #2d2d2d;
+    background-color: transparent;
+    border-color: #fde9eb;
+}
+
+.btn-light-danger:hover {
+    color: #242424;
+    background-color: #e8e8e8;
+    border-color: #eaeaea;
+}

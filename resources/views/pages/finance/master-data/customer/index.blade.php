@@ -19,11 +19,16 @@
             />
         </x:layout.card.header>
         <x:layout.card.body>
-            <div class="filter-result mb-3" style="display: none;">
-                <span class="fw-bold">Filter by </span>
-                <span class="filter-values"></span>
-
-                {{-- <button class="btn-clear clear-filter">Clear Filter</button> --}}
+            <div class="filter-result customer-filter-result mb-3" style="display: none;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="fw-bold">Filter by </span>
+                        <span class="filter-values"></span>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-light-danger" id="clear-filter-btn">
+                        <i class="fas fa-times me-1"></i>Clear Filter
+                    </button>
+                </div>
             </div>
             <x:layout.table.wrapper id="customer_table">
                 <thead>
@@ -87,10 +92,11 @@
 @endcomponent
 
 <script src="{{ asset('assets/js/custom/filter-handler.js') }}"></script>
+<script src="{{ asset('assets/js/custom/clear-filter-handler.js') }}"></script>
 <script>
     $(document).ready(function () {
         // Initialize filter handler
-        new FilterHandler({
+        const filterHandler = new FilterHandler({
             filters: [
                 { name: 'customer_name', label: 'Customer Name' },
                 { name: 'customer_type[]', label: 'Customer Type' }
@@ -103,6 +109,13 @@
             customerTypeNameElement.val(initialCustomerTypes);
             customerTypeNameElement.trigger('change');
         }
+
+        // Initialize clear filter handler
+        new ClearFilterHandler({
+            filterResultClass: '.customer-filter-result',
+            select2Fields: ['customer_name', 'customer_type'],
+            datatableInstance: window.customerDataTable
+        });
 
         // Select 2 Data Binding
         generateAjaxSelect2(
@@ -127,9 +140,13 @@
         );
 
         $('#customer_name').change(function () {
-            let customerId = $(this).select2('data')[0].customer_id;
-            $('#customer_id').val(customerId);
-        })
+            const selectedData = $(this).select2('data')[0];
+            if (selectedData && selectedData.customer_id) {
+                $('#customer_id').val(selectedData.customer_id);
+            } else {
+                $('#customer_id').val('');
+            }
+        });
     })
 </script>
 @endpush

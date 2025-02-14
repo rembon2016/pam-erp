@@ -19,9 +19,16 @@
             />
         </x:layout.card.header>
         <x:layout.card.body>
-            <div class="filter-result mb-3" style="display: none;">
-                <span class="fw-bold">Filter by </span>
-                <span class="filter-values"></span>
+            <div class="filter-result daybook-filter-result mb-3" style="display: none;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="fw-bold">Filter by </span>
+                        <span class="filter-values"></span>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-light-danger" id="clear-filter-btn">
+                        <i class="fas fa-times me-1"></i>Clear Filter
+                    </button>
+                </div>
             </div>
             <x:layout.table.wrapper id="daybook_table">
                 <thead>
@@ -79,12 +86,21 @@
 @endcomponent
 
 <script src="{{ asset('assets/js/custom/filter-handler.js') }}"></script>
+<script src="{{ asset('assets/js/custom/clear-filter-handler.js') }}"></script>
 <script>
     $(document).ready(function () {
-        new FilterHandler({
+        // Initialize filter handler
+        const filterHandler = new FilterHandler({
             filters: [
                 { name: 'daybook_code', label: 'Daybook Code' }
             ]
+        });
+
+        // Initialize clear filter handler
+        new ClearFilterHandler({
+            filterResultClass: '.daybook-filter-result',
+            select2Fields: ['daybook_code'],
+            datatableInstance: window.daybookDataTable
         });
 
         generateAjaxSelect2(

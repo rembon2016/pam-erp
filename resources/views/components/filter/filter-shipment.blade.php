@@ -115,6 +115,16 @@
     <script>
         const API_BASE = `${window.location.protocol}//${'{!! in_array($type, ['seaair', 'crossair']) ? env('API_ORIGIN') : env('API_DXB') !!}'}`;
         
+        function formatDateForDisplay(dateStr) {
+            if (!dateStr) return '';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+
         function getSelect2Value(elementId) {
             try {
                 const element = $(`#${elementId}`);
@@ -122,6 +132,11 @@
                 
                 const select2Data = element.select2('data');
                 if (!select2Data || !select2Data[0]) return null;
+                
+                // Special handling for eta field
+                if (elementId === 'eta') {
+                    return formatDateForDisplay(select2Data[0].id);
+                }
                 
                 return select2Data[0].text;
             } catch (error) {
@@ -243,15 +258,9 @@
                             };
                         }
                         if (elementId === 'eta') {
-                            const date = new Date(item[valueField]);
-                            const formattedDate = date.toLocaleDateString('en-GB', {
-                                day: '2-digit',
-                                month: 'short',
-                                year: 'numeric'
-                            });
                             return {
                                 id: item[valueField],
-                                text: formattedDate
+                                text: formatDateForDisplay(item[valueField])
                             };
                         }
                         if (elementId === 'carrier') {
@@ -304,6 +313,16 @@
                             return null;
                         }
                     }).val(null).trigger('change');
+
+                    // After initialization, check URL parameters
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const paramValue = urlParams.get(elementId);
+                    if (paramValue) {
+                        const matchingOption = data.find(item => item.id === paramValue || item.text === paramValue);
+                        if (matchingOption) {
+                            $(`#${elementId}`).val(matchingOption.id).trigger('change');
+                        }
+                    }
 
                     $(`#${elementId}`).on('change', function(e) {
                         $(this).select2('close');
@@ -393,6 +412,112 @@
 
             $('#from_date_etd, #to_date_etd').off('change');
 
+            // Function to update URL with filter parameters
+            function updateURL(filters) {
+                const url = new URL(window.location.href);
+                
+                // Clear existing parameters
+                url.search = '';
+                
+                // Add new parameters
+                Object.entries(filters).forEach(([key, value]) => {
+                    if (value && value !== 'null' && value !== 'undefined') {
+                        url.searchParams.append(key, value);
+                    }
+                });
+                
+                // Update URL without page reload
+                window.history.pushState({}, '', url);
+            }
+
+            // Function to get URL parameters
+            function getURLParameters() {
+                const params = new URLSearchParams(window.location.search);
+                const filters = {};
+                
+                for (const [key, value] of params.entries()) {
+                    filters[key] = value;
+                }
+                
+                return filters;
+            }
+
+            // Function to apply filters from URL
+            function applyFiltersFromURL() {
+                const filters = getURLParameters();
+                
+                // Wait for all select2 initializations
+                const waitForSelect2 = setInterval(() => {
+                    const allSelect2Ready = ['origin', 'destination', 'vessel', 'status', 'carrier', 'shipper', 'consignee'].every(id => {
+                        const element = $(`#${id}`);
+                        return !element.length || element.hasClass('select2-hidden-accessible');
+                    });
+
+                    if (allSelect2Ready) {
+                        clearInterval(waitForSelect2);
+                        
+                        // Handle date inputs first
+                        if (filters.etd_from) {
+                            $('#from_date_etd').val(filters.etd_from);
+                        }
+                        if (filters.etd_to) {
+                            $('#to_date_etd').val(filters.etd_to);
+                        }
+                        if (filters.eta) {
+                            const etaElement = $('#eta');
+                            if (etaElement.length) {
+                                const formattedDate = formatDateForDisplay(filters.eta);
+                                if (!etaElement.find(`option[value="${filters.eta}"]`).length) {
+                                    const newOption = new Option(formattedDate, filters.eta, true, true);
+                                    etaElement.append(newOption).trigger('change');
+                                }
+                                etaElement.val(filters.eta).trigger('change');
+                            }
+                        }
+                        
+                        // Now apply filters
+                        Object.entries(filters).forEach(([key, value]) => {
+                            const element = $(`#${key}`);
+                            if (element.length) {
+                                if (element.hasClass('select2-hidden-accessible')) {
+                                    if (key === 'vessel' && filters.voyage) {
+                                        // For vessel, combine vessel name and voyage number
+                                        const vesselValue = `${value} - ${filters.voyage}`;
+                                        const existingOption = element.find(`option`).filter(function() {
+                                            return $(this).text() === vesselValue;
+                                        });
+                                        
+                                        if (!existingOption.length) {
+                                            const newOption = new Option(vesselValue, vesselValue, true, true);
+                                            element.append(newOption);
+                                        }
+                                        element.val(existingOption.length ? existingOption.val() : vesselValue).trigger('change');
+                                    } else if (key !== 'voyage') { // Skip voyage as it's handled with vessel
+                                        // For other select2 fields
+                                        if (!element.find(`option[value="${value}"]`).length) {
+                                            const newOption = new Option(value, value, true, true);
+                                            element.append(newOption);
+                                        }
+                                        element.val(value).trigger('change');
+                                    }
+                                } else if (!['from_date_etd', 'to_date_etd', 'eta'].includes(key)) {
+                                    // Regular inputs (excluding date inputs as they're handled above)
+                                    element.val(value);
+                                }
+                            }
+                        });
+
+                        // Only trigger filter if we have parameters
+                        if (Object.keys(filters).length > 0) {
+                            $('.filter-buttons button[type="submit"]').not('#reset-filter-btn').trigger('click');
+                        }
+                    }
+                }, 100); // Check every 100ms
+
+                // Set a timeout to clear the interval if it takes too long
+                setTimeout(() => clearInterval(waitForSelect2), 5000);
+            }
+
             $('.filter-buttons button[type="submit"]').not('#reset-filter-btn').on('click', function(e) {
                 e.preventDefault();
                 
@@ -422,13 +547,18 @@
                     }
                 }
 
+                // Get vessel data
+                const vesselData = $('#vessel').length ? $('#vessel').select2('data')[0] : null;
+                const vesselText = vesselData?.text || '';
+                const [vesselName, voyageNumber] = vesselText.split(' - ');
+
                 const filterValues = {
                     origin_name: $('#origin').val() || '',
                     port_destination_name: $('#destination').val() || '',
-                    mother_vessel_name: $('#vessel').val() || '',
+                    mother_vessel_name: vesselName || '',
+                    mother_vessel_id: vesselData?.mother_vessel_id || '',
+                    voyage_number_mother: voyageNumber || '',
                     status_shipment: $('#status').length ? $('#status').select2('data')[0]?.text || '' : '',
-                    mother_vessel_id: $('#vessel').length ? $('#vessel').select2('data')[0]?.mother_vessel_id || '' : '',
-                    voyage_number_mother: $('#vessel').length ? $('#vessel').select2('data')[0]?.voyage_number_mother || '' : '',
                     carrier_id: $('#carrier').length ? $('#carrier').select2('data')[0]?.carrier_id || '' : '',
                     from_shipper: $('#shipper').length ? $('#shipper').select2('data')[0]?.shipper_id || '' : '',
                     to_consignee: $('#consignee').length ? $('#consignee').select2('data')[0]?.consignee_id || '' : '',
@@ -448,12 +578,51 @@
                             case 'courier': return 'COURIER';
                             default: return '';
                         }
-                    })()
+                    })(),
+                    // URL parameters
+                    vessel: vesselName || '',
+                    voyage: voyageNumber || '',
+                    origin: $('#origin').val() || '',
+                    destination: $('#destination').val() || '',
+                    status: $('#status').length ? $('#status').select2('data')[0]?.text || '' : '',
+                    carrier: $('#carrier').length ? $('#carrier').select2('data')[0]?.carrier_id || '' : '',
+                    shipper: $('#shipper').length ? $('#shipper').select2('data')[0]?.shipper_id || '' : '',
+                    consignee: $('#consignee').length ? $('#consignee').select2('data')[0]?.consignee_id || '' : '',
+                    etd_from: fromDateEtd || '',
+                    etd_to: toDateEtd || '',
+                    eta: $('#eta').val() || ''
+                };
+
+                // Update URL with new filter values
+                updateURL(filterValues);
+
+                // Prepare data for API call - use the original format
+                const apiFilterValues = {
+                    origin_name: filterValues.origin_name,
+                    port_destination_name: filterValues.port_destination_name,
+                    mother_vessel_name: filterValues.mother_vessel_name,
+                    mother_vessel_id: filterValues.mother_vessel_id,
+                    voyage_number_mother: filterValues.voyage_number_mother,
+                    status_shipment: $('#status').length ? $('#status').select2('data')[0]?.text || '' : '', // Pastikan ini sesuai dengan yang diexpect API
+                    carrier_id: filterValues.carrier_id,
+                    from_shipper: filterValues.from_shipper,
+                    to_consignee: filterValues.to_consignee,
+                    etd: filterValues.etd,
+                    status: filterValues.status,
+                    shipment_by: filterValues.shipment_by
                 };
 
                 var dataTable = window.shipmentDataTable;
 
                 if (dataTable) {
+                    // Override ajax parameters before reload
+                    dataTable.settings()[0].ajax.data = function(d) {
+                        return {
+                            ...d,
+                            ...apiFilterValues
+                        };
+                    };
+                    
                     dataTable.ajax.reload(null, false);
 
                     updateFilterValues(true);
@@ -463,7 +632,7 @@
                     $.ajax({
                         url: totalOrderUrl,
                         type: 'GET',
-                        data: filterValues,
+                        data: apiFilterValues,
                         success: function(response) {
                             $('#totalOrderSection').show();
 
@@ -501,26 +670,71 @@
                 }
             });
 
+            // Apply filters from URL when page loads
+            applyFiltersFromURL();
+
             $('#reset-filter-btn').on('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 
+                // Reset all select2 fields
                 $('#shipment_by, #origin, #destination, #vessel, #eta, #status, #carrier, #shipper, #consignee').each(function() {
                     if ($(this).data('select2')) {
                         $(this).val(null).trigger('change');
                     }
                 });
 
+                // Reset date inputs
                 $('#from_date_etd, #to_date_etd').val('');
+                
+                // Reset export text and checkboxes
                 $('.button-export-text').text('Export All Data to CSV');
                 $('.row-checkbox, #select_all').prop('checked', false);
                 $('#totalOrderSection').hide();
 
+                // Reset URL to base without parameters
+                const baseUrl = window.location.pathname;
+                window.history.pushState({}, '', baseUrl);
+
                 var dataTable = window.shipmentDataTable;
                 if (dataTable) {
+                    // Reset all DataTable parameters
+                    dataTable.search('').columns().search('');
+                    
+                    // Reset the ajax data function to its original state
+                    dataTable.settings()[0].ajax.data = function(d) {
+                        return {
+                            ...d,
+                            status: 6,
+                            shipment_by: (() => {
+                                const type = '{{ $type }}';
+                                switch(type) {
+                                    case 'seaair': return 'SEAAIR';
+                                    case 'crossair': return 'AIR';
+                                    case 'seaimport': return 'SEAIMPORT';
+                                    case 'seaexport': return 'SEAEXPORT';
+                                    case 'airimport': return 'AIRIMPORT';
+                                    case 'airexport': return 'AIREXPORT';
+                                    case 'warehouse': return 'WAREHOUSE';
+                                    case 'trucking': return 'TRUCKING';
+                                    case 'courier': return 'COURIER';
+                                    default: return '';
+                                }
+                            })()
+                        };
+                    };
+                    
+                    // Clear any custom filters
+                    dataTable.settings()[0].oFeatures.bFilter = true;
+                    
+                    // Reload the table with default parameters
                     dataTable.ajax.reload(function() {
                         updateFilterValues(false);
                         $('.sidebar-closes').click();
+                        
+                        // Reset the filter result section
+                        $('.shipment-filter-result').hide();
+                        $('.shipment-filter-result .filter-values').empty();
                     }, false);
                 } else {
                     console.error('DataTable instance not found');

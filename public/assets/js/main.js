@@ -147,4 +147,14 @@ $(document).ready(function () {
             width: "100%",
         })
     })
+
+    $(document).click(function (event) {
+        $(".btn-filters.popup-toggle").click(function (event) {
+            $(".filter-modal").toggleClass('open-filter');
+        });
+
+        if ($('.filter-modal').hasClass('open-filter') && !$(event.target).closest(".sidebar-layout-filter, .sidebar-closes, .btn-filters.popup-toggle").length) {
+            $(".filter-modal").removeClass("open-filter");
+        }
+    });
 });

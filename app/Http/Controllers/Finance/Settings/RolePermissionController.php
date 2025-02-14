@@ -74,7 +74,7 @@ final class RolePermissionController extends Controller
 
         $role = new Role;
         $rolePermissions = [];
-        $permissions = Permission::latest()->get()->groupBy('type');
+        $permissions = $this->getRolePermissionList();
 
         return view('public.settings.role-permission.form', compact('data', 'role', 'permissions', 'rolePermissions'));
     }
@@ -125,7 +125,7 @@ final class RolePermissionController extends Controller
         ];
 
         $rolePermissions = $role->permissions->pluck('id')->toArray();
-        $permissions = Permission::latest()->get()->groupBy('type');
+        $permissions = $this->getRolePermissionList();
 
         return view('public.settings.role-permission.form', compact('data', 'role', 'permissions', 'rolePermissions'));
     }
@@ -205,5 +205,24 @@ final class RolePermissionController extends Controller
         $file_name = 'list_role_'.time().'.csv';
 
         return Excel::download(new RolePermissionExport, $file_name);
+    }
+
+    private function getRolePermissionList()
+    {
+        $permissions = Permission::latest()->get()->groupBy('type');
+        $permissions = $permissions->map(function ($item) {
+            $list_of_permissions = [];
+            foreach ($item as $permission) {
+                if (!is_null($permission->group_name)) {
+                    $list_of_permissions[$permission->group_name][] = $permission;
+                } else {
+                    $list_of_permissions[] = $permission;
+                }
+            }
+
+            return $list_of_permissions;
+        });
+
+        return $permissions;
     }
 }

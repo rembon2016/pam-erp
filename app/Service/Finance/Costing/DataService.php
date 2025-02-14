@@ -49,14 +49,44 @@ final class DataService
         ];
     }
 
-    public function getCustomer($type)
-    {
-        return Customer::select('id as vendor_id', 'customer_name as vendor_name', 'customer_code as vendor_code')->with('customerTypes')->whereHas('customerTypes', function ($query) use ($type) {
-            if ($type != 'All') {
-                $query->where('name', $type);
-            }
-        })->get();
+    public function getCustomers()
+{
+    // Specify exact columns needed from customerTypes to reduce data transfer
+    $customers = Customer::with(['customerTypes' => function($query) {
+        $query->select('id', 'name', 'customer_id');
+    }])
+    ->select(
+        'id',
+        'id as vendor_id',
+        'customer_name as vendor_name',
+        'customer_code as vendor_code'
+    )
+    ->get();
+
+    // Pre-define customer type categories
+    $customerTypes = [
+        'Trucking Company' => collect(),
+        'Dubai Port' => collect(),
+        'Carrier Agent' => collect(),
+        'Shipping Line' => collect(),
+        'Others' => collect()
+    ];
+
+    // Single loop untuk grouping
+    foreach ($customers as $customer) {
+        $type = $customer->customerTypes->first()?->name ?? 'Others';
+        $customerTypes[$type] = $customerTypes[$type] ?? collect();
+        $customerTypes[$type]->push($customer);
     }
+
+    return [
+        'vendor_all' => $customers,
+        'vendor_truck' => $customerTypes['Trucking Company'],
+        'vendor_port' => $customerTypes['Dubai Port'],
+        'vendor_air' => $customerTypes['Carrier Agent'],
+        'vendor_line' => $customerTypes['Shipping Line'],
+    ];
+}
 
     public function getPort(Request $request)
     {

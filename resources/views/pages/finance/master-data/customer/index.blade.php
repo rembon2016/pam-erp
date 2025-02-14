@@ -113,7 +113,7 @@
                     if (item == 'customer_name') {
                         return {
                             results: pagingData.data.map(item => ({
-                                id: item.id,
+                                id: btoa(item.id + '|' + item.customer_name),
                                 text: item.customer_name
                             })),
                             pagination: {

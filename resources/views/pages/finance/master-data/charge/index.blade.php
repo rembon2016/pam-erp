@@ -48,18 +48,10 @@
 
     <x:layout.modal.filter-modal>
         <div class="col-12">
-            <x:form.select2 label="Revenue Account" name="revenue" placeholder="Select Account" :model="request()">
-                @foreach ($accounts as $account)
-                    <option value="{{ $account->id }}" @selected($account->id == request()->query('charge_code'))>{{ "{$account->code}: {$account->account_name}" }}</option>
-                @endforeach
-            </x:form.select2>
+            <x:form.select2 label="Revenue Account" name="revenue" placeholder="Select Account" :model="request()" />
         </div>
         <div class="col-12">
-            <x:form.select2 label="Cost Account" name="cost" placeholder="Select Account" :model="request()">
-                @foreach ($accounts as $account)
-                    <option value="{{ $account->id }}" @selected($account->id == request()->query('charge_code'))>{{ "{$account->code}: {$account->account_name}" }}</option>
-                @endforeach
-            </x:form.select2>
+            <x:form.select2 label="Cost Account" name="cost" placeholder="Select Account" :model="request()" />
         </div>
     </x:layout.modal.filter-modal>
 @endsection
@@ -117,6 +109,28 @@
                 { name: 'charge_name', label: 'Charge Name' }
             ]
         });
+
+        ['revenue', 'cost'].forEach(item => {
+            generateAjaxSelect2(
+                item,
+                "{{ route('api.finance.master-data.charge.filter-data') }}",
+                'Select Account',
+                function (result) {
+                    let pagingData = result.data;
+                    let hasMorePages = pagingData.next_page_url !== null;
+
+                    return {
+                        results: pagingData.data.map(item => ({
+                            id: item.id,
+                            text: (item.code ?? 'N/A') + ': ' + item.account_name
+                        })),
+                        pagination: {
+                            more: hasMorePages
+                        }
+                    };
+                }
+            );
+        })
     });
 </script>
 @endpush

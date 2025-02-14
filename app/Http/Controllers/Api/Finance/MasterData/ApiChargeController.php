@@ -37,7 +37,7 @@ final class ApiChargeController extends Controller
 
     public function getChargeForFilters(): JsonResponse
     {
-        $charges = Charge::with('revenue', 'cost')->paginate(10);
+        $charges = $this->coaService->getChartOfAccounts(withPaging: true);
 
         return ResponseJson::success(code: 200, message: __('crud.fetched', ['name' => 'Charge']), data: $charges);
     }

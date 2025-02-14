@@ -53,33 +53,225 @@ return [
             'hrm.address_employee',
         ],
         'finance' => [
+            // 'finance.dashboard',
+            // 'finance.cost_sea_freight',
+            // 'finance.cost_air_freight',
+            // 'finance.cost_sea_air_freight',
+            // 'finance.master_charge',
+            // 'finance.master_customer',
+            // 'finance.master_contract_agent',
+            // 'finance.master_transaction',
+            // 'finance.master_unit_type',
+            // 'finance.master_vendor',
+            // 'finance.master_vendor_shipping_line',
+            // 'finance.master_vendor_origin',
+            // 'finance.master_vendor_local',
+            // 'finance.master_vendor_carrier',
+            // 'finance.transaction_shipment_list',
+            // 'finance.transaction_invoices',
+
+            // Finance Dashboard Permissions
             'finance.dashboard',
-            'finance.cost_sea_freight',
-            'finance.cost_air_freight',
-            'finance.cost_sea_air_freight',
-            'finance.master_charge',
-            'finance.master_customer',
-            'finance.master_contract_agent',
-            'finance.master_transaction',
-            'finance.master_unit_type',
-            'finance.master_vendor',
-            'finance.master_vendor_shipping_line',
-            'finance.master_vendor_origin',
-            'finance.master_vendor_local',
-            'finance.master_vendor_carrier',
-            'finance.transaction_shipment_list',
-            'finance.transaction_invoices',
+
+            // Finance Master Data Permissions
+            'finance.master_customer' => [
+                'finance.show_master_customer' => 'Show',
+                'finance.add_master_customer' => 'Add',
+                'finance.edit_master_customer' => 'Edit',
+                'finance.delete_master_customer' => 'Delete',
+                'finance.export_master_customer' => 'Export'
+            ],
+            'finance.master_customer_contract' => [
+                'finance.show_master_customer_contract' => 'Show',
+                'finance.add_master_customer_contract' => 'Add',
+                'finance.edit_master_customer_contract' => 'Edit',
+                'finance.delete_master_customer_contract' => 'Delete',
+                'finance.export_master_customer_contract' => 'Export'
+            ],
+            'finance.master_agent_contract' => [
+                'finance.show_master_agent_contract' => 'Show',
+                'finance.add_master_agent_contract' => 'Add',
+                'finance.edit_master_agent_contract' => 'Edit',
+                'finance.delete_master_agent_contract' => 'Delete',
+                'finance.export_master_agent_contract' => 'Export'
+            ],
+            'finance.master_country' => [
+                'finance.show_master_country' => 'Show',
+                'finance.add_master_country' => 'Add',
+                'finance.edit_master_country' => 'Edit',
+                'finance.delete_master_country' => 'Delete',
+                'finance.export_master_country' => 'Export'
+            ],
+            'finance.master_port' => [
+                'finance.show_master_port' => 'Show',
+                'finance.add_master_port' => 'Add',
+                'finance.edit_master_port' => 'Edit',
+                'finance.delete_master_port' => 'Delete',
+                'finance.export_master_port' => 'Export'
+            ],
+            'finance.master_service_type' => [
+                'finance.show_master_service_type' => 'Show',
+                'finance.add_master_service_type' => 'Add',
+                'finance.edit_master_service_type' => 'Edit',
+                'finance.delete_master_service_type' => 'Delete',
+                'finance.export_master_service_type' => 'Export'
+            ],
+            'finance.master_unit' => [
+                'finance.show_master_unit' => 'Show',
+                'finance.add_master_unit' => 'Add',
+                'finance.edit_master_unit' => 'Edit',
+                'finance.delete_master_unit' => 'Delete',
+                'finance.export_master_unit' => 'Export'
+            ],
+            'finance.master_payment_method' => [
+                'finance.show_master_payment_method' => 'Show',
+                'finance.add_master_payment_method' => 'Add',
+                'finance.edit_master_payment_method' => 'Edit',
+                'finance.delete_master_payment_method' => 'Delete',
+                'finance.export_master_payment_method' => 'Export'
+            ],
+            'finance.master_currency' => [
+                'finance.show_master_currency' => 'Show',
+                'finance.add_master_currency' => 'Add',
+                'finance.edit_master_currency' => 'Edit',
+                'finance.delete_master_currency' => 'Delete',
+                'finance.export_master_currency' => 'Export'
+            ],
+            'finance.master_charge' => [
+                'finance.show_master_charge' => 'Show',
+                'finance.add_master_charge' => 'Add',
+                'finance.edit_master_charge' => 'Edit',
+                'finance.delete_master_charge' => 'Delete',
+                'finance.export_master_charge' => 'Export'
+            ],
+            'finance.master_chart_of_account' => [
+                'finance.show_master_chart_of_account' => 'Show',
+                'finance.add_master_chart_of_account' => 'Add',
+                'finance.edit_master_chart_of_account' => 'Edit',
+                'finance.delete_master_chart_of_account' => 'Delete',
+                'finance.export_master_chart_of_account' => 'Export'
+            ],
+            'finance.master_daybook' => [
+                'finance.show_master_daybook' => 'Show',
+                'finance.add_master_daybook' => 'Add',
+                'finance.edit_master_daybook' => 'Edit',
+                'finance.delete_master_daybook' => 'Delete',
+                'finance.export_master_daybook' => 'Export'
+            ],
+
+
+            // Finance General Wise Permissions
+            // ...
+
+
+            // Finance Billing Permissions
+            'finance.billing_invoice' => [
+                'finance.show_billing_invoice' => 'Show',
+                'finance.add_billing_invoice' => 'Add',
+                'finance.edit_billing_invoice' => 'Edit',
+                'finance.delete_billing_invoice' => 'Delete',
+                'finance.export_billing_invoice' => 'Export',
+            ],
+
+            // Finance Costing Permissions
+            'finance.sea_air_costing' => [
+                'finance.show_sea_air_costing' => 'Show',
+                'finance.add_sea_air_costing' => 'Add',
+                'finance.edit_sea_air_costing' => 'Edit',
+                'finance.delete_sea_air_costing' => 'Delete',
+                'finance.export_sea_air_costing' => 'Export',
+            ],
+
+            'finance.cross_air_costing' => [
+                'finance.show_cross_air_costing' => 'Show',
+                'finance.add_cross_air_costing' => 'Add',
+                'finance.edit_cross_air_costing' => 'Edit',
+                'finance.delete_cross_air_costing' => 'Delete',
+                'finance.export_cross_air_costing' => 'Export',
+            ],
+
+            'finance.sea_import_costing' => [
+                'finance.show_sea_import_costing' => 'Show',
+                'finance.add_sea_import_costing' => 'Add',
+                'finance.edit_sea_import_costing' => 'Edit',
+                'finance.delete_sea_import_costing' => 'Delete',
+                'finance.export_sea_import_costing' => 'Export',
+            ],
+
+            'finance.sea_export_costing' => [
+                'finance.show_sea_export_costing' => 'Show',
+                'finance.add_sea_export_costing' => 'Add',
+                'finance.edit_sea_export_costing' => 'Edit',
+                'finance.delete_sea_export_costing' => 'Delete',
+                'finance.export_sea_export_costing' => 'Export',
+            ],
+
+            'finance.air_import_costing' => [
+                'finance.show_air_import_costing' => 'Show',
+                'finance.add_air_import_costing' => 'Add',
+                'finance.edit_air_import_costing' => 'Edit',
+                'finance.delete_air_import_costing' => 'Delete',
+                'finance.export_air_import_costing' => 'Export',
+            ],
+
+            'finance.air_export_costing' => [
+                'finance.show_air_export_costing' => 'Show',
+                'finance.add_air_export_costing' => 'Add',
+                'finance.edit_air_export_costing' => 'Edit',
+                'finance.delete_air_export_costing' => 'Delete',
+                'finance.export_air_export_costing' => 'Export',
+            ],
+
+            'finance.warehouse_costing' => [
+                'finance.show_warehouse_costing' => 'Show',
+                'finance.add_warehouse_costing' => 'Add',
+                'finance.edit_warehouse_costing' => 'Edit',
+                'finance.delete_warehouse_costing' => 'Delete',
+                'finance.export_warehouse_costing' => 'Export',
+            ],
+
+            'finance.trucking_costing' => [
+                'finance.show_trucking_costing' => 'Show',
+                'finance.add_trucking_costing' => 'Add',
+                'finance.edit_trucking_costing' => 'Edit',
+                'finance.delete_trucking_costing' => 'Delete',
+                'finance.export_trucking_costing' => 'Export',
+            ],
+
+            'finance.courier_costing' => [
+                'finance.show_courier_costing' => 'Show',
+                'finance.add_courier_costing' => 'Add',
+                'finance.edit_courier_costing' => 'Edit',
+                'finance.delete_courier_costing' => 'Delete',
+                'finance.export_courier_costing' => 'Export',
+            ],
         ],
         'accounting' => [
-            'acc.dashboard',
-            'acc.master_accounts',
-            'acc.transaction_journal',
-            'acc.transaction_journal_entries',
-            'acc.transaction_automatic',
-            'acc.report_cashflow',
-            'acc.report_balance_sheet',
-            'acc.report_cashflow_balance_sheet',
-            'acc.report_profit_and_loss',
+            // 'acc.dashboard',
+            // 'acc.master_accounts',
+            // 'acc.transaction_journal',
+            // 'acc.transaction_journal_entries',
+            // 'acc.transaction_automatic',
+            // 'acc.report_cashflow',
+            // 'acc.report_balance_sheet',
+            // 'acc.report_cashflow_balance_sheet',
+            // 'acc.report_profit_and_loss',
+
+            'accounting.general_ledger_report' => [
+                'accounting.export_general_ledger_report' => 'Export'
+            ],
+            'accounting.trial_balance_report' => [
+                'accounting.export_trial_balance_report' => 'Export'
+            ],
+            'accounting.balance_sheet_statement' => [
+                'accounting.export_balance_sheet_statement' => 'Export'
+            ],
+            'accounting.profit_and_loss_statement' => [
+                'accounting.export_profit_and_loss_statement' => 'Export'
+            ],
+            'accounting.cashflow_statement' => [
+                'accounting.export_cashflow_statement' => 'Export'
+            ],
         ],
         'user' => [
             'role',

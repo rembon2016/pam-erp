@@ -30,16 +30,36 @@
                     <div class="row">
                         @foreach ($permissions as $key => $row)
                             <h6 class="mt-5 mb-2">{{ Str::upper($key) }}</h6>
-                            @foreach($row as $permission)
-                                <div class="col-md-4">
-                                    <div class="d-flex mt-2">
-                                        <label class="form-check form-check-sm form-check-custom form-check-solid me-5">
-                                            <input class="form-check-input permission" name="permission[]" type="checkbox"
-                                                value="{{ $permission->name }}" @if (in_array($permission->id, $rolePermissions)) checked @endif>
-                                            <span class="form-check-label">{{ $permission->name }}</span>
-                                        </label>
+                            @foreach($row as $index => $value)
+                                @if (is_array($value))
+                                    <div class="col-md-4">
+                                        <div class="d-flex mt-2">
+                                            <label class="form-check form-check-sm form-check-custom form-check-solid me-5">
+                                                <input class="form-check-input permission parent-permission" type="checkbox" value="{{ $index }}">
+                                                <span class="form-check-label fw-semibold">{{ $index }}</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="d-flex flex-column ps-4 child-permission-box">
+                                            @foreach ($value as $permission)
+                                                <label class="form-check form-check-sm form-check-custom form-check-solid me-5">
+                                                    <input class="form-check-input permission child-permission" value="{{ $permission->name }}" name="permission[]" data-attr-group="{{ $permission->group_name }}" type="checkbox" @checked(in_array($permission->id, $rolePermissions))>
+                                                    <span class="form-check-label">{{ $permission->feature_type }}</span>
+                                                </label>
+                                            @endforeach
+                                        </div>
                                     </div>
-                                </div>
+                                    @else
+                                    <div class="col-md-4">
+                                        <div class="d-flex mt-2">
+                                            <label class="form-check form-check-sm form-check-custom form-check-solid me-5">
+                                                <input class="form-check-input permission" name="permission[]" type="checkbox"
+                                                    value="{{ $value->name }}" @if (in_array($value->id, $rolePermissions)) checked @endif>
+                                                <span class="form-check-label fw-semibold">{{ $value->name }}</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                @endif
                             @endforeach
 
                             @error('permission')
@@ -66,5 +86,15 @@
                 $('.permission').prop('checked', false);
             }
         });
+
+        $(".parent-permission").change(function () {
+            const value = $(this).val();
+
+            if ($(this).is(':checked')) {
+                $(`.child-permission[data-attr-group="${value}"]`).prop('checked', true);
+            } else {
+                $(`.child-permission[data-attr-group="${value}"]`).prop('checked', false);
+            }
+        })
     </script>
 @endpush

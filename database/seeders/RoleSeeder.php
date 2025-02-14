@@ -16,7 +16,7 @@ final class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        // app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
         collect(User::ROLES)
             ->each(function ($role) {
                 $createdRole = Role::create([
@@ -27,7 +27,43 @@ final class RoleSeeder extends Seeder
                     ? 'permission.list'
                     : ($role == User::SALES_ROLE ? 'permission.list.crm' : "permission.list.{$role}");
 
-                $createdRole->syncPermissions(Arr::flatten(config($configPermission)));
+
+                $permissions = $this->generatePermissionList($configPermission);
+                $createdRole->syncPermissions($permissions);
             });
+    }
+
+    private function generatePermissionList($config_name): array
+    {
+        $list_of_permissions = config($config_name);
+        $permissions = collect();
+
+        if ($config_name == "permission.list") {
+            collect($list_of_permissions)->each(function ($features) use ($permissions) {
+                collect($features)->each(function ($value, $index) use ($permissions) {
+                    if (is_array($value)) {
+                        collect($value)->each(function ($label_name, $name_of_feature) use ($permissions) {
+                            $permissions->push($name_of_feature);
+                        });
+                    } else {
+                        $permissions->push($value);
+                    }
+                });
+
+                return $permissions;
+            });
+        } else {
+            collect($list_of_permissions)->each(function ($value, $index) use ($permissions) {
+                if (is_array($value)) {
+                    collect($value)->each(function ($label_name, $name_of_feature) use ($permissions) {
+                        $permissions->push($name_of_feature);
+                    });
+                } else {
+                    $permissions->push($value);
+                }
+            });
+        }
+
+        return $permissions->toArray();
     }
 }

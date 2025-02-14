@@ -131,10 +131,18 @@
             }
         },
         columns: @json($columns),
+        // language: {
+        //     info: "_START_-_END_ of _TOTAL_",
+        //     infoFiltered: ""
+        // },
         language: {
-            info: "_START_-_END_ of _TOTAL_",
-            infoFiltered: ""
-        },
+				search: ' ',
+				sLengthMenu: '_MENU_',
+				paginate: {
+					next: 'Next <i class=" fa fa-angle-double-right ms-2"></i>',
+					previous: '<i class="fa fa-angle-double-left me-2"></i> Previous'
+				},
+			 },
         columnDefs: [{
             targets: '_all',
             render: function(data, type, row, meta) {
@@ -326,7 +334,7 @@
 
             .close-sidebar {
                 border: none;
-                background: none;
+                background: #ffffff;
                 font-size: 24px;
                 cursor: pointer;
             }
@@ -401,28 +409,30 @@
             .timeline-details.active, .timeline-details.active p {
                 color: #fff;
                 font-weight: 500;
+                font-size: 12px;
             }
 
             .timeline-date {
                 color: #2196F3;
                 font-weight: 500;
-                margin: 5px 0;
+                margin: 2px 0;
             }
 
             .timeline-location {
                 color: #666;
-                margin: 5px 0;
+                margin: 2px 0;
+                margin-top: 6px;
             }
 
             .timeline-email {
                 color: #666;
-                margin: 5px 0;
+                margin: 2px 0;
             }
 
             .timeline-secondary-date {
                 color: #999;
                 font-size: 12px;
-                margin: 5px 0;
+                margin: 2px 0;
             }
 
             .timeline-loading {
@@ -478,7 +488,7 @@
                 <div id="rightSidebar" class="right-sidebar">
                     <div class="sidebar-header">
                         <h5>History Shipping</h5>
-                        <button class="close-sidebar">&times;</button>
+                        <button class="close-sidebar"><i class="fa-regular fa-circle-xmark"></i></button>
                     </div>
                     <div class="sidebar-content">
                         <p><strong>CTD Number:</strong> <span id="selectedCTD"></span></p>
@@ -562,7 +572,8 @@
             }
 
             // Handle close button click
-            if (e.target.classList.contains('close-sidebar')) {
+            if (e.target.classList.contains('close-sidebar') || e.target.closest('.close-sidebar')) {
+                e.stopPropagation();
                 const sidebar = document.getElementById('rightSidebar');
                 if (sidebar) {
                     sidebar.classList.remove('open');

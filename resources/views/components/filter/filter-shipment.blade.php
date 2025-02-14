@@ -1,5 +1,7 @@
-<div>
-    <div class="filter-container">
+@props(['type', 'tableId'])
+
+<x:layout.modal.filter-modal>
+    <div class="col-12">
         {{-- <x-form.select2
             label="Shipment By"
             name="shipment_by"
@@ -61,7 +63,7 @@
                 placeholder="Choose"
                 :allowClear="false"
                 :isFilterShipment="true">
-        </x-form.select2>
+            </x-form.select2>
         @endif
 
         @if(!in_array($type, ['warehouse', 'trucking', 'courier']))
@@ -76,14 +78,14 @@
         @endif
 
         @if(in_array($type, ['seaair', 'crossair']))
-            <div class="filter-group">
-                <label class="filter-label">From Date ETD</label>
-                <input type="date" class="filter-date" id="from_date_etd" placeholder="mm/dd/yyyy">
+            <div class="mb-2 mt-2">
+                <label class="form-label">From Date ETD</label>
+                <input type="date" class="form-control" id="from_date_etd" placeholder="mm/dd/yyyy">
             </div>
 
-            <div class="filter-group">
-                <label class="filter-label">To Date ETD</label>
-                <input type="date" class="filter-date" id="to_date_etd" placeholder="mm/dd/yyyy">
+            <div class="mb-2 mt-2">
+                <label class="form-label">To Date ETD</label>
+                <input type="date" class="form-control" id="to_date_etd" placeholder="mm/dd/yyyy">
             </div>
         @endif
 
@@ -106,28 +108,119 @@
                 :isFilterShipment="true">
             </x-form.select2>
         @endif
-
-
-
-        <div class="d-flex flex-column align-items-center">
-            <button class="btn-clear" id="btn-clear">Clear Filter</button>
-            <button class="btn-filter" id="btn-filter-shipment">Filter</button>
-        </div>
     </div>
-</div>
+</x:layout.modal.filter-modal>
 
 @push('js')
     <script>
         const API_BASE = `${window.location.protocol}//${'{!! in_array($type, ['seaair', 'crossair']) ? env('API_ORIGIN') : env('API_DXB') !!}'}`;
+        
+        function getSelect2Value(elementId) {
+            try {
+                const element = $(`#${elementId}`);
+                if (element.length === 0) return null;
+                
+                const select2Data = element.select2('data');
+                if (!select2Data || !select2Data[0]) return null;
+                
+                return select2Data[0].text;
+            } catch (error) {
+                console.warn(`Error getting select2 value for ${elementId}:`, error);
+                return null;
+            }
+        }
+        
+        function updateFilterValues(shouldShow = false) {
+            const filterValues = [];
+            
+            const status = getSelect2Value('status');
+            const origin = getSelect2Value('origin');
+            const destination = getSelect2Value('destination');
+            const vessel = getSelect2Value('vessel');
+            const carrier = getSelect2Value('carrier');
+            const eta = getSelect2Value('eta');
+            
+            const fromDateEtd = $('#from_date_etd').val();
+            const toDateEtd = $('#to_date_etd').val();
+            
+            const shipper = getSelect2Value('shipper');
+            const consignee = getSelect2Value('consignee');
+
+            function formatDate(dateStr) {
+                if (!dateStr) return '';
+                const date = new Date(dateStr);
+                return date.toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
+                });
+            }
+
+            if (status) filterValues.push(`<span class="badge bg-light text-dark me-2">Status: ${status}</span>`);
+            if (origin) filterValues.push(`<span class="badge bg-light text-dark me-2">Origin: ${origin}</span>`);
+            if (destination) filterValues.push(`<span class="badge bg-light text-dark me-2">Destination: ${destination}</span>`);
+            if (vessel) filterValues.push(`<span class="badge bg-light text-dark me-2">Vessel/Carrier: ${vessel}</span>`);
+            if (carrier) filterValues.push(`<span class="badge bg-light text-dark me-2">Carrier: ${carrier}</span>`);
+            if (eta) filterValues.push(`<span class="badge bg-light text-dark me-2">ETA: ${eta}</span>`);
+
+            if (fromDateEtd || toDateEtd) {
+                const formattedFromDate = formatDate(fromDateEtd);
+                const formattedToDate = formatDate(toDateEtd);
+                
+                if (fromDateEtd && toDateEtd) {
+                    filterValues.push(`<span class="badge bg-light text-dark me-2">ETD: ${formattedFromDate} to ${formattedToDate}</span>`);
+                } else if (fromDateEtd) {
+                    filterValues.push(`<span class="badge bg-light text-dark me-2">From ETD: ${formattedFromDate}</span>`);
+                } else if (toDateEtd) {
+                    filterValues.push(`<span class="badge bg-light text-dark me-2">To ETD: ${formattedToDate}</span>`);
+                }
+            }
+
+            if (shipper) filterValues.push(`<span class="badge bg-light text-dark me-2">Shipper: ${shipper}</span>`);
+            if (consignee) filterValues.push(`<span class="badge bg-light text-dark me-2">Consignee: ${consignee}</span>`);
+
+            // Create filter result div if it doesn't exist
+            const filterResultDiv = $('.shipment-filter-result');
+            if (filterResultDiv.length === 0) {
+                const newFilterResultDiv = `
+                    <div class="filter-result shipment-filter-result mb-3" style="display: none;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="fw-bold">Filter by </span>
+                                <span class="filter-values"></span>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-light-danger" id="clear-filter-btn">
+                                <i class="fas fa-times me-1"></i>Clear Filter
+                            </button>
+                        </div>
+                    </div>
+                `;
+                $('.card-body').prepend(newFilterResultDiv);
+
+                $(document).on('click', '#clear-filter-btn', function() {
+                    $('#reset-filter-btn').click();
+                });
+            }
+
+            const filterValuesElement = $('.shipment-filter-result .filter-values');
+            const filterResultElement = $('.shipment-filter-result');
+
+            if (shouldShow && filterValues.length > 0) {
+                filterValuesElement.html(filterValues.join(''));
+                filterResultElement.show();
+            } else {
+                filterValuesElement.html('');
+                filterResultElement.hide();
+            }
+        }
+
         function initializeSelect2WithData(elementId, url, valueField) {
             $.ajax({
                 url: url,
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    // Transform the data
                     const data = response.data.map(function(item) {
-                        // Special handling for status
                         if (elementId === 'status') {
                             return {
                                 id: item.status_name,
@@ -135,14 +228,12 @@
                                 status_id: item.status_id
                             };
                         }
-                        // Special handling for destination
                         if (elementId === 'destination') {
                             return {
                                 id: item[valueField],
                                 text: item.port_destination_code ? `${item.port_destination_code} - ${item.port_destination_name}` : item.port_destination_name
                             };
                         }
-                        // Special handling for vessel
                         if (elementId === 'vessel') {
                             return {
                                 id: item[valueField],
@@ -151,7 +242,6 @@
                                 voyage_number_mother: item.voyage_number_mother
                             };
                         }
-                        // Special handling for ETA
                         if (elementId === 'eta') {
                             const date = new Date(item[valueField]);
                             const formattedDate = date.toLocaleDateString('en-GB', {
@@ -164,15 +254,13 @@
                                 text: formattedDate
                             };
                         }
-                        // Special handling for carrier
                         if (elementId === 'carrier') {
                             return {
-                                id: item.carrier_id,  // Use carrier_id as the id
-                                text: item.carrier_name, // Display carrier_name as the text
+                                id: item.carrier_id,
+                                text: item.carrier_name,
                                 carrier_id: item.carrier_id
                             };
                         }
-                        // Special handling for shipper
                         if (elementId === 'shipper') {
                             return {
                                 id: item.from_shipper,
@@ -180,7 +268,6 @@
                                 shipper_id: item.from_shipper
                             };
                         }
-                        // Special handling for consignee
                         if (elementId === 'consignee') {
                             return {
                                 id: item.to_consignee,
@@ -195,14 +282,12 @@
                         };
                     });
 
-                    // Initialize select2 with the data
                     $(`#${elementId}`).select2({
                         placeholder: 'Choose',
                         allowClear: false,
                         data: data,
-                        // initSelection: function(element, callback) {
-                        //     callback(null);
-                        // },
+                        dropdownParent: $('.sidebar-layout-filter'),
+                        closeOnSelect: true,
                         matcher: function(params, data) {
                             if ($.trim(params.term) === '') {
                                 return data;
@@ -219,24 +304,20 @@
                             return null;
                         }
                     }).val(null).trigger('change');
+
+                    $(`#${elementId}`).on('change', function(e) {
+                        $(this).select2('close');
+                    });
                 },
                 error: function(xhr, status, error) {
-                    console.error('Error fetching data for ' + elementId + ':', error);
-                    console.error('Response:', xhr.responseText);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'API Error',
-                        text: 'Failed to fetch data. Please try again.'
-                    });
+                    console.error(`Error loading ${elementId}:`, error);
                 }
             });
         }
 
         $(document).ready(function() {
-            // Get current page type
             const currentType = '{{ $type }}';
 
-            // Initialize shipment_by select2 with static data
             $('#shipment_by').select2({
                 placeholder: 'Choose',
                 allowClear: false,
@@ -244,12 +325,10 @@
                     { id: 'SEA AIR', text: 'SEA AIR' },
                     { id: 'AIR', text: 'AIR' }
                 ],
-                // initSelection: function(element, callback) {
-                //     callback(null);
-                // }
+                dropdownParent: $('.sidebar-layout-filter'),
+                closeOnSelect: true
             }).val(null).trigger('change');
 
-            // Initialize other dynamic select2s based on conditions
             if (['seaair', 'crossair', 'seaimport', 'airimport'].includes(currentType)) {
                 initializeSelect2WithData(
                     'origin',
@@ -274,7 +353,6 @@
                 );
             }
 
-            // Only initialize carrier select2 for airimport and airexport
             if (['airimport', 'airexport'].includes(currentType)) {
                 initializeSelect2WithData(
                     'carrier',
@@ -313,22 +391,23 @@
                 );
             }
 
-            // Update the filter button click handler
-            $('#btn-filter-shipment').on('click', function() {
+            $('#from_date_etd, #to_date_etd').off('change');
+
+            $('.filter-buttons button[type="submit"]').not('#reset-filter-btn').on('click', function(e) {
+                e.preventDefault();
+                
                 const fromDateEtd = $('#from_date_etd').val();
                 const toDateEtd = $('#to_date_etd').val();
 
-                // Check if one date is filled but the other isn't
                 if ((fromDateEtd && !toDateEtd) || (!fromDateEtd && toDateEtd)) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Validation Error',
                         text: 'Both From Date ETD and To Date ETD must be filled if one is provided'
                     });
-                    return; // Stop execution if validation fails
+                    return;
                 }
 
-                // Check if dates are filled and compare them
                 if (fromDateEtd && toDateEtd) {
                     const fromDate = new Date(fromDateEtd);
                     const toDate = new Date(toDateEtd);
@@ -339,11 +418,10 @@
                             title: 'Validation Error',
                             text: 'To Date ETD cannot be earlier than From Date ETD'
                         });
-                        return; // Stop execution if validation fails
+                        return;
                     }
                 }
 
-                // Get all filter values
                 const filterValues = {
                     origin_name: $('#origin').val() || '',
                     port_destination_name: $('#destination').val() || '',
@@ -355,7 +433,7 @@
                     from_shipper: $('#shipper').length ? $('#shipper').select2('data')[0]?.shipper_id || '' : '',
                     to_consignee: $('#consignee').length ? $('#consignee').select2('data')[0]?.consignee_id || '' : '',
                     etd: fromDateEtd && toDateEtd ? `${fromDateEtd},${toDateEtd}` : '',
-                    status: 6, // Add fixed status parameter
+                    status: 6,
                     shipment_by: (() => {
                         const type = '{{ $type }}';
                         switch(type) {
@@ -373,13 +451,13 @@
                     })()
                 };
 
-                // Get DataTable instance from window object
                 var dataTable = window.shipmentDataTable;
 
                 if (dataTable) {
                     dataTable.ajax.reload(null, false);
 
-                    // Make the total order API call
+                    updateFilterValues(true);
+
                     const totalOrderUrl = `${API_BASE}/api/shippinginstruction/totalorder`;
 
                     $.ajax({
@@ -387,10 +465,8 @@
                         type: 'GET',
                         data: filterValues,
                         success: function(response) {
-                            // Show the total order section
                             $('#totalOrderSection').show();
 
-                            // Helper function to format numbers
                             const formatNumber = (value) => {
                                 if (value === null || value === undefined || value === '') return '-';
                                 const numValue = parseFloat(value);
@@ -401,19 +477,19 @@
                                 });
                             };
 
-                            // Update the values with proper formatting
                             $('#totalQty').text(formatNumber(response?.data?.qty || "-"));
                             $('#totalChargable').text(formatNumber(response?.data?.chargable || "-"));
                             $('#totalGrossWeight').text(formatNumber(response?.data?.gross_weight || "-"));
                             $('#totalMeasurement').text(formatNumber(response?.data?.measurement || "-"));
                             $('#totalTeus').text(formatNumber(response?.data?.container || "-"));
+
+                            $('.sidebar-closes').click();
                         },
                         error: function(xhr, status, error) {
                             console.error('Error fetching total order data:', error);
                             $('#totalOrderSection').hide();
-
-                            // Reset all values to '-' on error
                             $('#totalQty, #totalChargable, #totalGrossWeight, #totalMeasurement, #totalTeus').text('-');
+                            $('.sidebar-closes').click();
                         }
                     });
                 } else {
@@ -425,34 +501,54 @@
                 }
             });
 
-            // Update clear button handler to hide total order section
-            $('#btn-clear').on('click', function() {
-                // Clear all select2 fields
-                $('#shipment_by, #origin, #destination, #vessel, #eta, #status, #carrier, #shipper, #consignee').val(null).trigger('change');
+            $('#reset-filter-btn').on('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                $('#shipment_by, #origin, #destination, #vessel, #eta, #status, #carrier, #shipper, #consignee').each(function() {
+                    if ($(this).data('select2')) {
+                        $(this).val(null).trigger('change');
+                    }
+                });
 
-                // Clear date inputs
                 $('#from_date_etd, #to_date_etd').val('');
-
-                // Reset export button text to initial state
                 $('.button-export-text').text('Export All Data to CSV');
-
-                // Uncheck all checkboxes
-                $('.row-checkbox').prop('checked', false);
-                $('#select_all').prop('checked', false);
-
-                // Hide total order section
+                $('.row-checkbox, #select_all').prop('checked', false);
                 $('#totalOrderSection').hide();
 
-                // Get the DataTable instance and reload
-                var dataTable = $('#datatable').DataTable();
+                var dataTable = window.shipmentDataTable;
                 if (dataTable) {
-                    dataTable.ajax.reload();
+                    dataTable.ajax.reload(function() {
+                        updateFilterValues(false);
+                        $('.sidebar-closes').click();
+                    }, false);
                 } else {
+                    console.error('DataTable instance not found');
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
                         text: 'DataTable instance not found'
                     });
+                }
+                
+                return false;
+            });
+        });
+
+        $(document).ready(function() {
+            $(document).on('click', function(e) {
+                const $sidebar = $('.toggle-sidebar.open-filter.show-layout');
+                const $target = $(e.target);
+                
+                if ($sidebar.length > 0) {
+                    if (!$target.closest('.toggle-sidebar').length && 
+                        !$target.closest('.filter-button').length && 
+                        !$target.closest('.filter-btn').length && 
+                        !$target.closest('.btn-filter').length &&
+                        !$target.closest('.btn-filters').length) {
+                        
+                        $('.sidebar-closes').trigger('click');
+                    }
                 }
             });
         });

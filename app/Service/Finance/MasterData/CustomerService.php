@@ -45,9 +45,14 @@ final class CustomerService
         $customer = Customer::query()
             ->when(! empty($filters['customer_name']), function ($query) use ($filters) {
                 $customerUuid = explode('|', base64_decode($filters['customer_name']))[0];
+
                 return $query->where('id', $customerUuid);
             })
-            ->when(! empty($filters['customer_type_name']), fn ($query) => $query->whereHas('customerTypes', fn ($q) => $q->whereIn('name', $filters['customer_type_name'])))
+            ->when(! empty($filters['customer_type_name']), function ($query) use ($filters) {
+                $customerUuid = explode('|', base64_decode($filters['customer_type_name']))[0];
+
+                return $query->where('id', $customerUuid);
+            })
 
             ->when(!empty($filters['is_exists_customer']) && $filters['is_exists_customer'] == 'true', fn ($query) => $query->whereNotNull('customer_code'))
             ->orderBy('customer_name', 'asc');

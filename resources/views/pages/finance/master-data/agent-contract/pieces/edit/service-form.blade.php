@@ -97,6 +97,9 @@
                                 id="por_port_id_{{ $index + 1 }}"
                                 data-placeholder="Select an option"
                                 style="min-width: 100%;">
+                                <option value="" @selected(is_null($service->por_port_id)) hidden>
+                                    Port
+                                </option>
                                 @foreach($ports as $port)
                                     <option
                                         value="{{$port->port_id}}"
@@ -132,6 +135,9 @@
                                 id="fdc_port_id_{{ $index + 1 }}"
                                 data-placeholder="Select an option"
                                 style="min-width: 100%;">
+                                <option value="" @selected(is_null($service->fdc_port_id)) hidden>
+                                    Country
+                                </option>
                                 @foreach($ports as $port)
                                     <option
                                         value="{{$port->port_id}}"

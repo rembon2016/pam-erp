@@ -113,18 +113,16 @@
                 let pagingData = result.data;
                 let hasMorePages = pagingData.next_page_url !== null;
 
-                if (item == 'customer_name') {
-                    return {
-                        results: pagingData.data.map(item => ({
-                            id: item.customer_name,
-                            text: item.customer_name,
-                            customer_id: item.id,
-                        })),
-                        pagination: {
-                            more: hasMorePages
-                        }
-                    };
-                }
+                return {
+                    results: pagingData.data.map(item => ({
+                        id: item.customer_name,
+                        text: item.customer_name,
+                        customer_id: item.id,
+                    })),
+                    pagination: {
+                        more: hasMorePages
+                    }
+                };
             }
         );
 

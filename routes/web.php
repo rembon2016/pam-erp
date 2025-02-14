@@ -61,13 +61,13 @@ Route::group(['middleware' => ['auth']], function () {
                 'prefix' => 'customer',
                 'as' => 'customer.',
             ], function () {
-                Route::get('/', [CustomerController::class, 'index'])->name('index');
+                Route::get('/', [CustomerController::class, 'index'])->name('index')->middleware('can:finance.show_master_customer');
                 Route::get('/list', [CustomerController::class, 'list'])->name('list');
-                Route::get('/create', [CustomerController::class, 'create'])->name('create');
-                Route::post('/', [CustomerController::class, 'store'])->name('store');
-                Route::get('/{id}/edit', [CustomerController::class, 'edit'])->name('edit');
-                Route::put('/{id}', [CustomerController::class, 'update'])->name('update');
-                Route::get('/{id}/delete', [CustomerController::class, 'destroy'])->name('destroy');
+                Route::get('/create', [CustomerController::class, 'create'])->name('create')->middleware('can:finance.add_master_customer');
+                Route::post('/', [CustomerController::class, 'store'])->name('store')->middleware('can:finance.add_master_customer');
+                Route::get('/{id}/edit', [CustomerController::class, 'edit'])->name('edit')->middleware('can:finance.edit_master_customer');
+                Route::put('/{id}', [CustomerController::class, 'update'])->name('update')->middleware('can:finance.edit_master_customer');
+                Route::get('/{id}/delete', [CustomerController::class, 'destroy'])->name('destroy')->middleware('can:finance.delete_master_customer');
 
                 // Export Route
                 Route::get('/export/pdf', [CustomerController::class, 'exportPdf'])->name('export.pdf');

@@ -90,7 +90,7 @@
 {{-- @livewireScriptConfig --}}
 
 <!-- Theme Settings JS -->
-<script src="{{ asset('/assets-v2/js/theme-settings.js') }}"></script>
+{{-- <script src="{{ asset('/assets-v2/js/theme-settings.js') }}"></script> --}}
 <script src="{{ asset('/assets-v2/js/greedynav.js') }}"></script>
 
 <!-- Custom JS -->

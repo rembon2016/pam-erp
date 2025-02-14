@@ -46,6 +46,8 @@ final class CustomerController extends Controller
 
     public function list()
     {
+        $user = auth()->user();
+
         $customerResponse = $this->customerService->getCustomers(request()->query());
         if (request()->ajax()) {
             return DataTables::of($customerResponse->data->customerDatatables)
@@ -68,11 +70,19 @@ final class CustomerController extends Controller
 
                     return $html;
                 })
-                ->addColumn('action', function ($item) {
-                    return Utility::generateTableActions([
-                        'edit' => route('finance.master-data.customer.edit', $item->id),
-                        'delete' => route('finance.master-data.customer.destroy', $item->id),
-                    ]);
+                ->addColumn('action', function ($item) use ($user) {
+                    if ($user?->canany([
+                        'finance.edit_master_customer',
+                        'finance.delete_master_customer'
+                    ])) {
+                        $utilities = [];
+                        if ($user?->can('finance.edit_master_customer')) $utilities['edit'] = route('finance.master-data.customer.edit', $item->id);
+                        if ($user?->can('finance.delete_master_customer')) $utilities['delete'] = route('finance.master-data.customer.destroy', $item->id);
+
+                        return Utility::generateTableActions($utilities);
+                    }
+
+                    return '';
                 })
                 ->rawColumns(['customer_type', 'action'])
                 ->setTotalRecords($customerResponse->data->totalRecords)

@@ -4,9 +4,9 @@
     'method' => $method ?? 'GET'
 ])
 
-<div class="toggle-sidebar">
+<div class="toggle-sidebar filter-modal backdrop">
     <div class="sidebar-layout-filter">
-        <div class="sidebar-header">
+    <div class="sidebar-header">
             <h5>Filter</h5>
             <a href="#" class="sidebar-closes"><i class="fa-regular fa-circle-xmark"></i></a>
         </div>
@@ -16,7 +16,6 @@
                     <div class="row">
                       {{ $slot }}
                     </div>
-
 
                     <div class="filter-buttons">
                         <button type="submit"
